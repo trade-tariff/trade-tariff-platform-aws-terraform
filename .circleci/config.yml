@@ -1,0 +1,177 @@
+version: 2.1
+executors:
+  default:
+    working_directory: "/tmp/terraform"
+    resource_class: small
+    docker:
+      - image: hashicorp/terraform:1.3.9
+
+commands:
+  install_terragrunt:
+    description: Install Terragrunt
+    steps:
+      - run:
+          name: Download Terragrunt
+          command: wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.44.4/terragrunt_linux_amd64 -O /usr/local/bin/terragrunt
+      - run:
+          name: Make Terragrunt executable
+          command: chmod u+x /usr/local/bin/terragrunt
+
+jobs:
+  terraform_fmt_validate:
+    executor: default
+    parameters:
+      environment:
+        type: string
+    steps:
+      - checkout
+      - install_terragrunt
+      - run: terraform fmt
+      - run: terragrunt run-all validate --terragrunt-non-interactive
+
+  terragrunt_plan:
+    executor: default
+    parameters:
+      environment:
+        type: string
+    steps:
+      - checkout
+      - install_terragrunt
+      - run:
+          name: Terraform plan
+          command: |
+            cd environment/<< parameters.environment >>/base
+            terragrunt plan
+
+      - checkout
+      - install_terragrunt
+      - run:
+          name: Terraform plan
+          command: |
+            cd environment/<< parameters.environment >>/application
+            terragrunt plan
+
+  terragrunt_apply:
+    executor: default
+    parameters:
+      environment:
+        type: string
+    steps:
+      - checkout
+      - install_terragrunt
+      - run:
+          name: Terraform apply
+          command: |
+            cd environment/<< parameters.environment >>/base
+            terragrunt run-all apply --terragrunt-non-interactive
+
+      - checkout
+      - install_terragrunt
+      - run:
+          name: Terraform apply
+          command: |
+            cd environment/<< parameters.environment >>/application
+            terragrunt run-all apply --terragrunt-non-interactive
+
+      - checkout
+      - install_terragrunt
+      - run:
+          name: Terraform apply
+          command: |
+            cd environment/<< parameters.environment >>/common
+            terragrunt run-all apply --terragrunt-non-interactive
+
+workflows:
+  version: 2
+  terraform:
+    jobs:
+    # terragrunt validata
+      - terraform_fmt_validate:
+          name: terraform-fmt-development
+          environment: development
+          context: trade-tariff-terraform-aws-development
+
+#       - terraform_fmt_validate:
+#           name: terraform-fmt-staging
+#           environment: staging
+#           context: <context name>
+
+#       - terraform_fmt_validate:
+#           name: terraform-fmt-production
+#           environment: production
+#           context: <context name>
+
+      # terragrunt plan
+      - terragrunt_plan:
+          name: terragrunt-plan-development
+          requires:
+            - terraform-fmt-development
+          environment: development
+          context: trade-tariff-terraform-aws-development
+
+#       - terragrunt_plan:
+#           name: terragrunt-plan-staging
+#           requires:
+#             - terraform-fmt-staging
+#           environment: staging
+#           context: <context name>
+
+#       - terragrunt_plan:
+#           name: terragrunt-plan-production
+#           requires:
+#             - terraform-fmt-production
+#           environment: production
+#           context: <context name>
+
+      # terragrunt apply
+      - terragrunt_apply:
+          name: terragrunt-apply-development
+          environment: development
+          context: trade-tariff-terraform-aws-development
+
+          requires:
+            - terragrunt-plan-development
+          filters:
+            branches:
+              only:
+                - main
+
+#       - terragrunt_apply:
+#           name: terragrunt-apply-staging
+#           environment: staging
+#           context: <context name>
+
+#           requires:
+#             - terragrunt-plan-staging
+#           filters:
+#             branches:
+#               only:
+#                 - main
+
+#       - hold_apply_staging:
+#           type: approval
+#           requires: [terragrunt-plan-staging]
+#           filters:
+#             branches:
+#               only:
+#                 - main
+
+#       - terragrunt_apply:
+#           name: terragrunt-apply
+#           environment: production
+#           context: <context name>
+
+#           requires:
+#             - terragrunt-plan-production
+#           filters:
+#             branches:
+#               only:
+#                 - main
+
+#       - hold_apply_production:
+#           type: approval
+#           requires: [terragrunt-plan-production]
+#           filters:
+#             branches:
+#               only:
+#                 - main
