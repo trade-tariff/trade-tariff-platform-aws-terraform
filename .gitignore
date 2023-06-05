@@ -1,4 +1,48 @@
+#terraform
 .terraform
 terraform.tfstate
 *.tfstate*
 *.tfstate.*
+
+# vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]*.s[a-rt-v][a-z]
+[._]*.ss[a-gi-z]
+[._]sw[a-p]
+session.vimSessionx.vim.netrwhist
+*~
+tags
+[._]*.un~
+
+#macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# vscode
+.vscode/*
+!.vscode/task.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Texmate
+*.tmproj
+*.tmproject
+tmtags
+
+**/.terragrunt-cache
+skip-deprovision
+**/_pycache__

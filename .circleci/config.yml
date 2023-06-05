@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Terraform plan
           command: |
-            cd environment/<< parameters.environment >>/base
+            cd environments/<< parameters.environment >>/base
             terragrunt plan
 
       - checkout
@@ -48,7 +48,15 @@ jobs:
       - run:
           name: Terraform plan
           command: |
-            cd environment/<< parameters.environment >>/application
+            cd environments/<< parameters.environment >>/applications
+            terragrunt plan
+
+      - checkout
+      - install_terragrunt
+      - run:
+          name: Terraform plan
+          command: |
+            cd environments/<< parameters.environment >>/common
             terragrunt plan
 
   terragrunt_apply:
@@ -62,7 +70,7 @@ jobs:
       - run:
           name: Terraform apply
           command: |
-            cd environment/<< parameters.environment >>/base
+            cd environments/<< parameters.environment >>/base
             terragrunt run-all apply --terragrunt-non-interactive
 
       - checkout
@@ -70,7 +78,7 @@ jobs:
       - run:
           name: Terraform apply
           command: |
-            cd environment/<< parameters.environment >>/application
+            cd environments/<< parameters.environment >>/applications
             terragrunt run-all apply --terragrunt-non-interactive
 
       - checkout
@@ -78,7 +86,7 @@ jobs:
       - run:
           name: Terraform apply
           command: |
-            cd environment/<< parameters.environment >>/common
+            cd environments/<< parameters.environment >>/common
             terragrunt run-all apply --terragrunt-non-interactive
 
 workflows:
