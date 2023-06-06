@@ -27,6 +27,7 @@ jobs:
       - checkout
       - install_terragrunt
       - run: terraform fmt
+      - run: terragrunt hclfmt
       - run: terragrunt run-all validate --terragrunt-non-interactive
 
   terragrunt_plan:
@@ -38,23 +39,19 @@ jobs:
       - checkout
       - install_terragrunt
       - run:
-          name: Terraform plan
+          name: Terraform plan base
           command: |
             cd environments/<< parameters.environment >>/base
             terragrunt plan
 
-      - checkout
-      - install_terragrunt
       - run:
-          name: Terraform plan
+          name: Terraform plan applications
           command: |
             cd environments/<< parameters.environment >>/applications
             terragrunt plan
 
-      - checkout
-      - install_terragrunt
       - run:
-          name: Terraform plan
+          name: Terraform plan common
           command: |
             cd environments/<< parameters.environment >>/common
             terragrunt plan
@@ -68,21 +65,17 @@ jobs:
       - checkout
       - install_terragrunt
       - run:
-          name: Terraform apply
+          name: Terraform apply base
           command: |
             cd environments/<< parameters.environment >>/base
             terragrunt run-all apply --terragrunt-non-interactive
 
-      - checkout
-      - install_terragrunt
       - run:
-          name: Terraform apply
+          name: Terraform apply applications
           command: |
             cd environments/<< parameters.environment >>/applications
             terragrunt run-all apply --terragrunt-non-interactive
 
-      - checkout
-      - install_terragrunt
       - run:
           name: Terraform apply
           command: |
