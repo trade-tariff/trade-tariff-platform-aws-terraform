@@ -7,7 +7,7 @@ module "ecs" {
     execute_command_configuration = {
       logging = "OVERRIDE"
       log_configuration = {
-        cloud_watch_log_group_name = "/aws/ecs/trade-tariff-ecs-${local.environment}"
+        cloud_watch_log_group_name = "/aws/ecs/trade-tariff-ecs-${var.environment}"
       }
     }
   }
@@ -32,7 +32,15 @@ module "ecs" {
   # add autoscaling_capacity_providers
 }
 
+resource "aws_kms_key" "log_key" {
+  description             = "CloudWatch Log Key"
+  deletion_window_in_days = 10
+  key_usage               = "ENCRYPT_DECRYPT"
+  enable_key_rotation     = true
+}
+
 resource "aws_cloudwatch_log_group" "this" {
-  name              = "/aws/ecs/trade-tariff-ecs-${local.environment}"
+  name              = "/aws/ecs/trade-tariff-ecs-${var.environment}"
   retention_in_days = 7
+  kms_key_id        = aws_kms_key.log_key.key_id
 }
