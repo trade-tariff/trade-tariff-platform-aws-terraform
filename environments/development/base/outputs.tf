@@ -5,12 +5,12 @@ output "region" {
 
 output "public_subnet_id" {
   description = "subnet id"
-  value       = module.vpc.public_subnets[*]
+  value       = module.vpc.public_subnets
 }
 
 output "private_subnets_id" {
   description = "subnet id"
-  value       = module.vpc.private_subnets[*]
+  value       = module.vpc.private_subnets
 }
 
 output "vpc_id" {
