@@ -37,6 +37,33 @@ resource "aws_kms_key" "log_key" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = "kms:*",
+        Effect   = "Allow"
+        Resource = "*"
+        Principal = {
+          AWS = "arn:aws:iam::${local.account_id}:root"
+        }
+      },
+      {
+        Action = [
+          "kms:Encrypt*",
+          "kms:Decrypt*",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:Describe*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+        Principal = {
+          Service = "logs.${var.region}.amazonaws.com"
+        }
+      }
+    ]
+  })
 }
 
 resource "aws_cloudwatch_log_group" "this" {

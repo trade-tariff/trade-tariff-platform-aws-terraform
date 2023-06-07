@@ -10,23 +10,17 @@
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
+No providers.
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ecs"></a> [ecs](#module\_ecs) | github.com/trade-tariff/terraform-aws-ecs | 57244e69abea685f7d45352abc994779b5f6d352 |
-| <a name="module_trade_tariff_development_vcp"></a> [trade\_tariff\_development\_vcp](#module\_trade\_tariff\_development\_vcp) | github.com/trade-tariff/terraform-aws-vpc | 0ea859dd659701e6e8dda61e61c47629eeda5ba3 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | github.com/trade-tariff/terraform-aws-vpc | 0ea859dd659701e6e8dda61e61c47629eeda5ba3 |
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
-| [aws_kms_key.log_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+No resources.
 
 ## Inputs
 
@@ -46,9 +40,8 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cluster_security_group_id"></a> [cluster\_security\_group\_id](#output\_cluster\_security\_group\_id) | Security group ids attached to the cluster control plane |
 | <a name="output_private_subnets_id"></a> [private\_subnets\_id](#output\_private\_subnets\_id) | subnet id |
 | <a name="output_public_subnet_id"></a> [public\_subnet\_id](#output\_public\_subnet\_id) | subnet id |
 | <a name="output_region"></a> [region](#output\_region) | AWS region |
-| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | subnet id |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
