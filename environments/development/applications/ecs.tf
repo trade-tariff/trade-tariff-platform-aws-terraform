@@ -65,9 +65,12 @@ resource "aws_kms_key" "log_key" {
     ]
   })
 }
+/* comment for now as its broken the pipeline and it may also rely on the
+aws_kms_key to be created first
 
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/ecs/trade-tariff-ecs-${var.environment}"
   retention_in_days = 7
   kms_key_id        = aws_kms_key.log_key.key_id
 }
+*/
