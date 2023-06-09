@@ -37,9 +37,7 @@ No providers.
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../common/security-group/ | n/a |
+No modules.
 
 ## Resources
 
@@ -47,10 +45,7 @@ No resources.
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | Vpc Cidr Block | `string` | `"10.0.0.0/16"` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `"development"` | no |
+No inputs.
 
 ## Outputs
 

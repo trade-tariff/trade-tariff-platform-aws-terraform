@@ -15,5 +15,5 @@ output "private_subnets_id" {
 
 output "vpc_id" {
   description = "VPC ID"
-  value       = module.vpc.vpc_id
+  value       = try(module.vpc.vpc_id.id[0].id, null)
 }
