@@ -1,7 +1,7 @@
-variable "environment" {
-  description = "Deployment environment."
-  type        = string
-}
+# variable "environment" {
+#   description = "Deployment environment."
+#   type        = string
+# }
 
 variable "region" {
   description = "AWS region. Defaults to `eu-west-2`."
@@ -9,8 +9,7 @@ variable "region" {
   default     = "eu-west-2"
 }
 
-variable "vpc_id" {
-  description = "VPC ID"
-  type        = string
-}
-
+# variable "vpc_id" {
+#   description = "VPC ID"
+#   type        = string
+# }
