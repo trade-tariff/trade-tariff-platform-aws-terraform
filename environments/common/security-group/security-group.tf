@@ -2,9 +2,9 @@
 /* This is to supress tfsec erroring allow all ingress traffic to the load balancer */
 #  tfsec:ignore:aws-ec2-no-public-ingress-sgr
 resource "aws_security_group" "alb_security_group" {
-  name        = "trade-tariff-alb-security-group${var.environment}"
+  name        = "trade-tariff-alb-security-group-${var.environment}"
   description = "Allow TLS inbound traffic"
-  vpc_id      = data.aws_vpc.vpc_id
+  vpc_id      = data.terraform_remote_state.base.outputs.vpc_id
 
   ingress {
     description = "https access"
@@ -28,11 +28,10 @@ resource "aws_security_group" "alb_security_group" {
 }
 
 /* Security group for the ecs application */
-
 resource "aws_security_group" "ecs_security_group" {
-  name        = "trade-tariff-allipcation-security-group${var.environment}"
+  name        = "trade-tariff-allipcation-security-group-${var.environment}"
   description = "Allow TLS inbound traffic"
-  vpc_id      = data.aws_vpc.vpc_id
+  vpc_id      = data.terraform_remote_state.base.outputs.vpc_id
 
   # ingres traffic from alb
   ingress {
@@ -54,8 +53,4 @@ resource "aws_security_group" "ecs_security_group" {
   tags = {
     Name = "ECS Security Group"
   }
-}
-
-data "aws_vpc" "vpc_id" {
-  id = var.vpc_id
 }
