@@ -1,5 +1,5 @@
 variable "environment" {
-  description = "Deployment environment."
+  description = "Built environment."
   type        = string
 }
 
@@ -20,7 +20,8 @@ variable "cidr_block" {
   type        = string
 }
 
-variable "vpc_id" {
-  description = "VPC ID"
+variable "aws_account_id" {
+  description = "Development Account ID."
   type        = string
+  default     = "844815912454"
 }
