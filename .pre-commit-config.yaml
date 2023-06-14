@@ -16,7 +16,7 @@ repos:
       - id: terraform_docs
         args:
           - --hook-config=--add-to-existing-file=true
-          - --hook-config=--path-to-file=README.md
+          # - --hook-config=--path-to-file=README.md
           - --hook-config=--create-file-if-not-exist=true
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
