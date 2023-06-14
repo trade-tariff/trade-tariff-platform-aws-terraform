@@ -23,7 +23,7 @@ resource "aws_security_group" "alb_security_group" {
   }
 
   tags = {
-    Name = "Trade Tariff alb security group"
+    Name = "Trade Tariff ALB Security Group"
   }
 }
 
