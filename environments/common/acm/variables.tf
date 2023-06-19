@@ -18,4 +18,5 @@ variable "region" {
 variable "domain_name" {
   description = "Name of the test domain"
   type        = string
+  default     = "transformtrade.co.uk"
 }
