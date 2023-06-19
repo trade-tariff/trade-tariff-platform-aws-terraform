@@ -13,4 +13,5 @@ variable "cidr_block" {
 variable "domain_name" {
   description = "Name of the test Domain"
   type        = string
+  default     = "transformtrade.co.uk"
 }
