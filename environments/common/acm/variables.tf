@@ -3,12 +3,6 @@ variable "environment" {
   type        = string
 }
 
-variable "domain_name" {
-  description = "Domain name"
-  type        = string
-  default     = ""
-}
-
 variable "alternative_names" {
   description = "Set of domains that should be SANs in the issued certificate"
   type        = string
@@ -37,4 +31,10 @@ variable "region" {
   description = "AWS region. Defaults to `eu-west-2`."
   type        = string
   default     = "eu-west-2"
+}
+
+variable "domain_name" {
+  description = "Name of the test domain"
+  type        = string
+  default     = "transformtrade.co.uk"
 }
