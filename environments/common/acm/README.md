@@ -31,7 +31,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_alternative_names"></a> [alternative\_names](#input\_alternative\_names) | Set of domains that should be SANs in the issued certificate | `string` | `""` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Name of the test domain | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | A map of tags to add to all resources | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |

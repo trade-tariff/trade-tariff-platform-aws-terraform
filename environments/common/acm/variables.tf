@@ -3,12 +3,6 @@ variable "environment" {
   type        = string
 }
 
-variable "alternative_names" {
-  description = "Set of domains that should be SANs in the issued certificate"
-  type        = string
-  default     = ""
-}
-
 variable "validation_timeout" {
   description = "How long to wait for a certificate to be issued, default max 45m"
   type        = string
