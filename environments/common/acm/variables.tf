@@ -9,18 +9,6 @@ variable "alternative_names" {
   default     = ""
 }
 
-variable "validation_method" {
-  description = "method to use for validation DNS or EMAIL are valid"
-  type        = string
-  default     = "DNS"
-}
-
-variable "private_zone" {
-  description = "is private zone"
-  type        = string
-  default     = false
-}
-
 variable "validation_timeout" {
   description = "How long to wait for a certificate to be issued, default max 45m"
   type        = string
