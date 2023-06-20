@@ -34,7 +34,7 @@ variable "security_group_ids" {
 }
 
 variable "backup_window" {
-  description = "The daily time range (in UTC) during which automated backups are created if they are enabled. 09:46-10:16"
+  description = "The daily time range (in UTC) during which automated backups are created if they are enabled, eg: `09:46-10:16`"
   type        = string
 }
 
