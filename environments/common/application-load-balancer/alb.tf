@@ -23,7 +23,7 @@ resource "aws_lb" "application_load_balancer" {
 }
 
 resource "aws_lb_target_group" "trade_trade_tariff_frontend_target_group" {
-  name        = "trade-tariff-target-group-${var.environment}"
+  name        = "trade_trade_tariff_frontend_target_group-${var.environment}"
   port        = var.application_port
   protocol    = var.protocol
   target_type = var.target_type
@@ -35,7 +35,7 @@ resource "aws_lb_target_group" "trade_trade_tariff_frontend_target_group" {
 }
 
 resource "aws_lb_target_group" "trade_tariff_backend_target_group" {
-  name        = "trade-tariff-target-group-${var.environment}"
+  name        = "trade_tariff_backend_target_group-${var.environment}"
   port        = var.application_port
   protocol    = var.protocol
   target_type = var.target_type
@@ -47,7 +47,7 @@ resource "aws_lb_target_group" "trade_tariff_backend_target_group" {
 }
 
 resource "aws_lb_target_group" "trade_tariff_trade_tariff_duty_cal_target_group" {
-  name        = "trade-tariff-target-group-${var.environment}"
+  name        = "trade_tariff_trade_tariff_duty_cal_target_group-${var.environment}"
   port        = var.application_port
   protocol    = var.protocol
   target_type = var.target_type
