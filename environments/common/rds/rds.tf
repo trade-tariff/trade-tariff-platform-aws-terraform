@@ -17,10 +17,9 @@ resource "aws_db_instance" "this" {
   # this prevents downtime as the server restarts
   apply_immediately = false
 
-  # build a username that works with any of the engine types
-  username = local.master_username
-  # manage the master password with Secrets Manager
-  manage_master_user_password = true
+  username                            = local.master_username
+  manage_master_user_password         = true
+  iam_database_authentication_enabled = true
 
   performance_insights_enabled          = true
   performance_insights_retention_period = var.performance_insights_retention_period
