@@ -1,8 +1,7 @@
 /* ssl certificate resource */
 resource "aws_acm_certificate" "acm_certificate" {
-  domain_name               = var.domain_name
-  subject_alternative_names = [var.alternative_names]
-  validation_method         = var.validation_method
+  domain_name       = var.domain_name
+  validation_method = "DNS"
 
   lifecycle {
     create_before_destroy = true
@@ -16,7 +15,7 @@ resource "aws_acm_certificate" "acm_certificate" {
 /* get details about a route 53 hosted zone */
 data "aws_route53_zone" "route53_zone" {
   name         = var.domain_name
-  private_zone = var.private_zone
+  private_zone = false
 }
 
 
