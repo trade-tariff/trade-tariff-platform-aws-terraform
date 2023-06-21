@@ -9,5 +9,6 @@ module "postgres" {
   backup_window      = "22:00-23:00"
   maintenance_window = "Fri:23:00-Sat:01:00"
 
-  region = var.region
+  region      = var.region
+  environment = var.environment
 }

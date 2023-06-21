@@ -4,6 +4,11 @@ variable "region" {
   default     = "eu-west-2"
 }
 
+variable "environment" {
+  description = "Deployment environment."
+  type        = string
+}
+
 variable "allocated_storage" {
   description = "Storage to allocate initially to the instance in gibibytes (i.e. 2^30 bytes). Can autoscale."
   type        = number

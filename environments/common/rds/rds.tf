@@ -31,7 +31,7 @@ resource "aws_db_instance" "this" {
 }
 
 resource "aws_kms_key" "this" {
-  description         = "KMS key for the ${var.name} RDS instance."
+  description         = "KMS key for the ${var.name} RDS instance on ${var.environment}."
   key_usage           = "ENCRYPT_DECRYPT"
   enable_key_rotation = true
   tags                = local.tags
