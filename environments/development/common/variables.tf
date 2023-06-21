@@ -15,3 +15,9 @@ variable "domain_name" {
   type        = string
   default     = "transformtariff.co.uk"
 }
+
+variable "region" {
+  description = "AWS Region to use. Defaults to `eu-west-2`."
+  type        = string
+  default     = "eu-west-2"
+}
