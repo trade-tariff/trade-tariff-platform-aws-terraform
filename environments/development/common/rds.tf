@@ -5,7 +5,8 @@ module "postgres" {
   engine         = "postgres"
   engine_version = "13.11"
 
-  instance_type      = "db.t2.small" # smallest that supports encryption at rest
+  # smallest that supports encryption at rest and postgres 13.11
+  instance_type      = "db.t3.micro"
   backup_window      = "22:00-23:00"
   maintenance_window = "Fri:23:00-Sat:01:00"
 
