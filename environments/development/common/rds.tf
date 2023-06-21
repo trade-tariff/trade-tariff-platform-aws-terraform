@@ -1,7 +1,7 @@
 module "postgres" {
   source = "../../common/rds"
 
-  name           = "postgres${upper(var.environment)}"
+  name           = "trade-tariff-postgres-${var.environment}"
   engine         = "postgres"
   engine_version = "13.11"
 
