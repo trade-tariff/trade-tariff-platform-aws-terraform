@@ -21,3 +21,15 @@ variable "region" {
   type        = string
   default     = "eu-west-2"
 }
+
+variable "alb_name" {
+  description = "The name of the alb"
+  type        = string
+  default     = "trade-tariff-alb"
+}
+
+variable "public_subnet_id" {
+  description = "The name of the alb"
+  type        = string
+  default     = "VPC public subnet"
+}
