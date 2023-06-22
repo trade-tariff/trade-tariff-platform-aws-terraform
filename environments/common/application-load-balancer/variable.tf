@@ -27,6 +27,13 @@ variable "target_type" {
   default     = "ip"
 }
 
+variable "aws_account_id" {
+  description = "Development Account ID."
+  type        = string
+  default     = "844815912454"
+}
+
+
 variable "listening_port" {
   description = "Port on which the load balancer listens to"
   type        = string
