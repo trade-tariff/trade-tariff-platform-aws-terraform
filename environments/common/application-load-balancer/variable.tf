@@ -72,3 +72,8 @@ variable "alb_name" {
   type        = string
   default     = "trade-tariff-alb-"
 }
+
+variable "vpc_id" {
+  description = "The id of the vpc"
+  type        = string
+}
