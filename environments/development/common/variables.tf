@@ -28,8 +28,13 @@ variable "alb_name" {
   default     = "trade-tariff-alb"
 }
 
-variable "public_subnet_id" {
+variable "public_subnets_id" {
   description = "The name of the alb"
   type        = string
   default     = "VPC public subnet"
+}
+
+variable "vpc_id" {
+  description = "The id of the vpc"
+  type        = string
 }

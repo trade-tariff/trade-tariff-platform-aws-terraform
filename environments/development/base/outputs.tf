@@ -3,7 +3,7 @@ output "region" {
   value       = var.region
 }
 
-output "public_subnet_id" {
+output "public_subnets_id" {
   description = "subnet id"
   value       = module.vpc.public_subnets
 }

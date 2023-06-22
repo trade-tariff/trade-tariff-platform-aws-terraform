@@ -25,7 +25,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   port        = var.application_port
   protocol    = var.protocol
   target_type = var.target_type
-  vpc_id      = var.public_subnet_id
+  vpc_id      = data.aws_vpc.selected.id
 
   lifecycle {
     create_before_destroy = true

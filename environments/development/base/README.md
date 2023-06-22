@@ -41,7 +41,7 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_private_subnets_id"></a> [private\_subnets\_id](#output\_private\_subnets\_id) | subnet id |
-| <a name="output_public_subnet_id"></a> [public\_subnet\_id](#output\_public\_subnet\_id) | subnet id |
+| <a name="output_public_subnets_id"></a> [public\_subnets\_id](#output\_public\_subnets\_id) | subnet id |
 | <a name="output_region"></a> [region](#output\_region) | AWS region |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
