@@ -33,3 +33,9 @@ variable "public_subnet_id" {
   type        = string
   default     = "VPC public subnet"
 }
+
+variable "aws_account_id" {
+  description = "Development Account ID."
+  type        = string
+  default     = "844815912454"
+}

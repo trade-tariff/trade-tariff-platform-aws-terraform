@@ -5,4 +5,5 @@ module "alb" {
   public_subnet_id      = var.public_subnet_id
   certificate_arn       = module.acm.certificate_arn
   environment           = var.environment
+  vpc_id                = data.terraform_remote_state.base.outputs.vpc_id
 }
