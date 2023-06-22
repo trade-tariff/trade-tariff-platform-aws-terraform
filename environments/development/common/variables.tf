@@ -28,11 +28,11 @@ variable "alb_name" {
   default     = "trade-tariff-alb"
 }
 
-variable "public_subnet_id" {
-  description = "The name of the alb"
-  type        = string
-  default     = "VPC public subnet"
-}
+# variable "public_subnet_id" {
+#   description = "The name of the alb"
+#   type        = string
+#   default     = "VPC public subnet"
+# }
 
 variable "aws_account_id" {
   description = "Development Account ID."

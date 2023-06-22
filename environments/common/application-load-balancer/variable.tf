@@ -64,7 +64,7 @@ variable "idle_timeout" {
 
 variable "public_subnet_id" {
   description = "Public subnet ID"
-  type        = string
+  type        = list(any)
 }
 
 variable "alb_name" {
