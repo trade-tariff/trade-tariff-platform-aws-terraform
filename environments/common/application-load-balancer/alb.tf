@@ -40,6 +40,40 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.trade_tariff_target_groups["trade-tariff-fe-tg-${var.environment}"].arn
   }
+
+}
+
+resource "aws_lb_listener_rule" "trade_tariff_backend_listeners_rules" {
+  listener_arn = aws_lb_listener.trade_tariff_listeners.arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["trade-tariff-be-tg-${var.environment}"].arn
+  }
+
+  ## have to ideal for now
+  condition {
+    path_pattern {
+      values = ["/backend/*"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "trade_tariff_duty_cal_listeners_rules" {
+  listener_arn = aws_lb_listener.trade_tariff_listeners.arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["trade-tariff-dc-tg-${var.environment}"].arn
+  }
+
+  ## have to ideal for now
+  condition {
+    path_pattern {
+      values = ["/duty-calulator/*"]
+    }
+  }
 }
 
 resource "aws_lb_listener_certificate" "https_cert_resource" {
