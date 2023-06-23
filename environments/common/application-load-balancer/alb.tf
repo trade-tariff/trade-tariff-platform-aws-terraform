@@ -43,6 +43,6 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
 }
 
 resource "aws_lb_listener_certificate" "https_cert_resource" {
-  listener_arn    = aws_lb_listener.trade_tariff_listeners["trade-tariff-fe-tg-${var.environment}"].arn
+  listener_arn    = aws_lb_listener.trade_tariff_listeners.arn
   certificate_arn = var.certificate_arn
 }
