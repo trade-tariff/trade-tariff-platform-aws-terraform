@@ -86,92 +86,28 @@ workflows:
   version: 2
   terraform:
     jobs:
-      # terragrunt validata
       - terraform_fmt_validate:
           name: terraform-fmt-development
           environment: development
           context: trade-tariff-terraform-aws-development
+          filters:
+            branches:
+              ignore: [main]
 
-      #       - terraform_fmt_validate:
-      #           name: terraform-fmt-staging
-      #           environment: staging
-      #           context: <context name>
-
-      #       - terraform_fmt_validate:
-      #           name: terraform-fmt-production
-      #           environment: production
-      #           context: <context name>
-
-      # terragrunt plan
       - terragrunt_plan:
           name: terragrunt-plan-development
           requires:
             - terraform-fmt-development
           environment: development
           context: trade-tariff-terraform-aws-development
+          filters:
+            branches:
+              ignore: [main]
 
-      #       - terragrunt_plan:
-      #           name: terragrunt-plan-staging
-      #           requires:
-      #             - terraform-fmt-staging
-      #           environment: staging
-      #           context: <context name>
-
-      #       - terragrunt_plan:
-      #           name: terragrunt-plan-production
-      #           requires:
-      #             - terraform-fmt-production
-      #           environment: production
-      #           context: <context name>
-
-      # terragrunt apply
       - terragrunt_apply:
           name: terragrunt-apply-development
           environment: development
           context: trade-tariff-terraform-aws-development
-
-          requires:
-            - terragrunt-plan-development
           filters:
             branches:
-              only:
-                - main
-#       - terragrunt_apply:
-#           name: terragrunt-apply-staging
-#           environment: staging
-#           context: <context name>
-
-#           requires:
-#             - terragrunt-plan-staging
-#           filters:
-#             branches:
-#               only:
-#                 - main
-
-#       - hold_apply_staging:
-#           type: approval
-#           requires: [terragrunt-plan-staging]
-#           filters:
-#             branches:
-#               only:
-#                 - main
-
-#       - terragrunt_apply:
-#           name: terragrunt-apply
-#           environment: production
-#           context: <context name>
-
-#           requires:
-#             - terragrunt-plan-production
-#           filters:
-#             branches:
-#               only:
-#                 - main
-
-#       - hold_apply_production:
-#           type: approval
-#           requires: [terragrunt-plan-production]
-#           filters:
-#             branches:
-#               only:
-#                 - main
+              only: [main]
