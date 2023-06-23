@@ -68,3 +68,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "deletion_protection" {
+  description = "Whether to protect the database from deletion. Defaults to `true`."
+  type        = bool
+  default     = true
+}

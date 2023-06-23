@@ -5,6 +5,8 @@ module "postgres" {
   engine         = "postgres"
   engine_version = "13.11"
 
+  deletion_protection = false # while configuring
+
   # smallest that supports encryption at rest and postgres 13.11
   instance_type      = "db.t3.micro"
   backup_window      = "22:00-23:00"
