@@ -50,6 +50,10 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_lb_listener_certificate" "https_cert_resource" {
