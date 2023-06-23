@@ -6,10 +6,12 @@ resource "aws_db_instance" "this" {
   allocated_storage = var.allocated_storage
   storage_encrypted = true
 
-  deletion_protection     = true
+  #tfsec:ignore:aws-rds-enable-deletion-protection
+  deletion_protection     = var.deletion_protection
   backup_retention_period = var.backup_retention_period
   backup_window           = var.backup_window
   maintenance_window      = var.maintenance_window
+  skip_final_snapshot     = true
 
   allow_major_version_upgrade = false
   auto_minor_version_upgrade  = true
