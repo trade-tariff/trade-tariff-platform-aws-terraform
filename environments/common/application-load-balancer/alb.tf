@@ -26,20 +26,10 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   protocol    = var.protocol
   target_type = var.target_type
   vpc_id      = var.vpc_id
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 /* target group name cannot be longer than 30 char */
 resource "aws_lb_listener" "trade_tariff_listeners" {
-  for_each = toset([
-    "trade-tariff-fe-tg-${var.environment}",
-    "trade-tariff-be-tg-${var.environment}",
-    "trade-tariff-dc-tg-${var.environment}",
-  ])
-
   load_balancer_arn = aws_lb.application_load_balancer.arn
   port              = var.listening_port
   protocol          = var.protocol
@@ -48,11 +38,7 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
-  }
-
-  lifecycle {
-    create_before_destroy = true
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["trade-tariff-fe-tg-${var.environment}"].arn
   }
 }
 
