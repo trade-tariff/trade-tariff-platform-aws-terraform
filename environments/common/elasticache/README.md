@@ -51,5 +51,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Configuration endpoint of the replication group. |
+| <a name="output_replica_arns"></a> [replica\_arns](#output\_replica\_arns) | List of ARNs of the replica nodes. |
 | <a name="output_replication_group_arn"></a> [replication\_group\_arn](#output\_replication\_group\_arn) | ARN of the replication group. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
