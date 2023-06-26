@@ -13,5 +13,5 @@ module "redis" {
   replicas        = 1
 
   maintenance_window = "sun:00:00-sun:03:00"
-  snapshot_window    = "sun:04:00-sun:06:00"
+  snapshot_window    = "00:00-02:00"
 }
