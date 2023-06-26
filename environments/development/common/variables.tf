@@ -39,3 +39,11 @@ variable "aws_account_id" {
   type        = string
   default     = "844815912454"
 }
+
+variable "tags" {
+  description = "A map of tags to assign to the resource"
+  type        = map(string)
+  default = {
+    name = "elastic-container-registery",
+  }
+}
