@@ -35,6 +35,7 @@ No outputs.
 
 | Name | Version |
 |------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -46,11 +47,14 @@ No outputs.
 | <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../common/security-group/ | n/a |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../common/ecr/ | n/a |
 | <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../common/rds | n/a |
+| <a name="module_redis"></a> [redis](#module\_redis) | ../../common/elasticache/ | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [terraform_remote_state.base](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
 ## Inputs
@@ -63,7 +67,7 @@ No outputs.
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Name of the test Domain | `string` | `"transformtariff.co.uk"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `"development"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resource | `map(string)` | <pre>{<br>  "name": "elastic-container-registery"<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br>  "Terraform": true<br>}</pre> | no |
 
 ## Outputs
 

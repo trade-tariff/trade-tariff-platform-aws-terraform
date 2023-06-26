@@ -28,12 +28,6 @@ variable "alb_name" {
   default     = "trade-tariff-alb"
 }
 
-# variable "public_subnet_id" {
-#   description = "The name of the alb"
-#   type        = string
-#   default     = "VPC public subnet"
-# }
-
 variable "aws_account_id" {
   description = "Development Account ID."
   type        = string
@@ -41,9 +35,9 @@ variable "aws_account_id" {
 }
 
 variable "tags" {
-  description = "A map of tags to assign to the resource"
+  description = "A map of tags to assign to resources."
   type        = map(string)
   default = {
-    name = "elastic-container-registery",
+    Terraform = true
   }
 }
