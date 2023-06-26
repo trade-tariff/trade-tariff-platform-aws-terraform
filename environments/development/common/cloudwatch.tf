@@ -11,4 +11,23 @@ resource "aws_kms_key" "this" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+  policy = jsonencode({
+    Effect = "Allow",
+    Principal = {
+      Service = "logs.${var.region}.amazonaws.com"
+    },
+    Action = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Describe*"
+    ],
+    Resource = "*",
+    Condition = {
+      ArnEquals = {
+        "kms:EncryptionContext:aws:logs:arn" : "arn:aws:logs:${var.region}:${local.account_id}:*"
+      }
+    }
+  })
 }
