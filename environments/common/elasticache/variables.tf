@@ -61,3 +61,8 @@ variable "transit_encryption_enabled" {
   type        = bool
   default     = true
 }
+
+variable "parameter_group" {
+  description = "Parameter group for replication group. For example, `default.redis3.2.cluster.on`."
+  type        = string
+}

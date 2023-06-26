@@ -6,9 +6,10 @@ resource "aws_elasticache_replication_group" "this" {
   automatic_failover_enabled = true
   apply_immediately          = var.apply_immediately
 
-  engine         = "redis"
-  engine_version = var.redis_version
-  port           = 6739
+  engine               = "redis"
+  engine_version       = var.redis_version
+  port                 = 6739
+  parameter_group_name = var.parameter_group
 
   at_rest_encryption_enabled = true
   kms_key_id                 = aws_kms_key.this.arn
