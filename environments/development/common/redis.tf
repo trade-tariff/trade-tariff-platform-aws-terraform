@@ -4,7 +4,7 @@ module "redis" {
   environment = var.environment
   region      = var.region
 
-  cloudwatch_log_group = aws_cloudwatch_log_group.this.name
+  cloudwatch_log_group = module.cloudwatch.log_group_name
 
   group_name      = "tariff-redis-${var.environment}"
   redis_version   = "5.0.6"

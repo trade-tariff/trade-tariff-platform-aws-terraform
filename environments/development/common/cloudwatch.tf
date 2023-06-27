@@ -1,38 +1,6 @@
-resource "aws_cloudwatch_log_group" "this" {
-  name              = "trade-tariff-logs-${var.environment}"
-  retention_in_days = 7
-  skip_destroy      = true
-  kms_key_id        = aws_kms_key.this.arn
-  depends_on        = [aws_kms_key.this]
-}
-
-resource "aws_kms_key" "this" {
-  description             = "KMS key to encrypt CloudWatch logs."
-  deletion_window_in_days = 10
-  key_usage               = "ENCRYPT_DECRYPT"
-  enable_key_rotation     = true
-}
-
-resource "aws_kms_alias" "cloudwatch" {
-  name          = "alias/cloudwatch-${var.environment}"
-  target_key_id = aws_kms_key.this.key_id
-}
-
-resource "aws_kms_key_policy" "cloudwatch" {
-  key_id = aws_kms_key.this.id
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Effect  = "Allow",
-    Principal = {
-      Service = "logs.${var.region}.amazonaws.com"
-    },
-    Action = [
-      "kms:Encrypt*",
-      "kms:Decrypt*",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:Describe*"
-    ],
-    Resource = aws_cloudwatch_log_group.this.arn
-  })
+module "cloudwatch" {
+  source            = "../../common/cloudwatch/"
+  name              = "platform-logs-${var.environment}"
+  retention_in_days = 31
+  region            = var.region
 }
