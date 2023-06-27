@@ -11,6 +11,15 @@ resource "aws_kms_key" "this" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+}
+
+resource "aws_kms_alias" "cloudwatch" {
+  name          = "alias/cloudwatch-${var.environment}"
+  target_key_id = aws_kms_key.this.key_id
+}
+
+resource "aws_kms_key_policy" "cloudwatch" {
+  key_id = aws_kms_key.this.id
   policy = jsonencode({
     Effect = "Allow",
     Principal = {
@@ -25,9 +34,4 @@ resource "aws_kms_key" "this" {
     ],
     Resource = aws_kms_key.this.arn
   })
-}
-
-resource "aws_kms_alias" "cloudwatch" {
-  name          = "alias/cloudwatch-${var.environment}"
-  target_key_id = aws_kms_key.this.key_id
 }
