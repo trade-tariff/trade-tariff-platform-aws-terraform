@@ -23,19 +23,28 @@ resource "aws_elasticache_replication_group" "this" {
   security_group_names       = var.security_group_names
   transit_encryption_enabled = var.transit_encryption_enabled
 
-  log_delivery_configuration {
-    destination      = var.cloudwatch_log_group
-    destination_type = "cloudwatch-logs"
-    log_format       = "json"
-    log_type         = "slow-log"
+  # Logging requires Redis >=6.0 (SLOWLOG), and >=6.2 (engine log)
+  # https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Log_Delivery.html
+
+  dynamic "log_delivery_configuration" {
+    for_each = local.redis_major_version >= 6 && var.cloudwatch_log_group != null ? [1] : []
+    content {
+      destination      = var.cloudwatch_log_group
+      destination_type = "cloudwatch-logs"
+      log_format       = "json"
+      log_type         = "slow-log"
+    }
   }
 
-  # log_delivery_configuration {
-  #   destination      = aws_kinesis_firehose_delivery_stream.example.name
-  #   destination_type = "kinesis-firehose"
-  #   log_format       = "json"
-  #   log_type         = "engine-log"
-  # }
+  dynamic "log_delivery_configuration" {
+    for_each = local.redis_major_version >= 6 && local.redis_minor_version >= 2 && var.cloudwatch_log_group != null ? [1] : []
+    content {
+      destination      = var.cloudwatch_log_group
+      destination_type = "cloudwatch-logs"
+      log_format       = "json"
+      log_type         = "engine-log"
+    }
+  }
 
   lifecycle {
     ignore_changes = [num_cache_clusters]
