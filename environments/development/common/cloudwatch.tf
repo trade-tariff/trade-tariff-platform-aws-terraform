@@ -11,8 +11,18 @@ resource "aws_kms_key" "this" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+}
+
+resource "aws_kms_alias" "cloudwatch" {
+  name          = "alias/cloudwatch-${var.environment}"
+  target_key_id = aws_kms_key.this.key_id
+}
+
+resource "aws_kms_key_policy" "cloudwatch" {
+  key_id = aws_kms_key.this.id
   policy = jsonencode({
-    Effect = "Allow",
+    Version = "2012-10-17",
+    Effect  = "Allow",
     Principal = {
       Service = "logs.${var.region}.amazonaws.com"
     },
@@ -23,11 +33,6 @@ resource "aws_kms_key" "this" {
       "kms:GenerateDataKey*",
       "kms:Describe*"
     ],
-    Resource = "*",
-    Condition = {
-      ArnEquals = {
-        "kms:EncryptionContext:aws:logs:arn" : "arn:aws:logs:${var.region}:${local.account_id}:*"
-      }
-    }
+    Resource = aws_kms_key.this.arn
   })
 }
