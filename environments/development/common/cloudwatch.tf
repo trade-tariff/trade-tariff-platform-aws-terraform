@@ -33,6 +33,6 @@ resource "aws_kms_key_policy" "cloudwatch" {
       "kms:GenerateDataKey*",
       "kms:Describe*"
     ],
-    Resource = aws_kms_key.this.arn
+    Resource = aws_cloudwatch_log_group.this.arn
   })
 }
