@@ -27,7 +27,7 @@ resource "aws_elasticache_replication_group" "this" {
   # https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Log_Delivery.html
 
   dynamic "log_delivery_configuration" {
-    for_each = var.redis_version >= 6 && var.cloudwatch_log_group != null ? [1] : []
+    for_each = local.redis_major_version >= 6 && var.cloudwatch_log_group != null ? [1] : []
     content {
       destination      = var.cloudwatch_log_group
       destination_type = "cloudwatch-logs"
@@ -37,7 +37,7 @@ resource "aws_elasticache_replication_group" "this" {
   }
 
   dynamic "log_delivery_configuration" {
-    for_each = var.redis_version >= 6.2 && var.cloudwatch_log_group != null ? [1] : []
+    for_each = local.redis_major_version >= 6 && local.redis_minor_version >= 2 && var.cloudwatch_log_group != null ? [1] : []
     content {
       destination      = var.cloudwatch_log_group
       destination_type = "cloudwatch-logs"
