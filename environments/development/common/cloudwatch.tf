@@ -21,7 +21,8 @@ resource "aws_kms_alias" "cloudwatch" {
 resource "aws_kms_key_policy" "cloudwatch" {
   key_id = aws_kms_key.this.id
   policy = jsonencode({
-    Effect = "Allow",
+    Version = "2012-10-17",
+    Effect  = "Allow",
     Principal = {
       Service = "logs.${var.region}.amazonaws.com"
     },
