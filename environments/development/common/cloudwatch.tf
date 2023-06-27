@@ -23,11 +23,11 @@ resource "aws_kms_key" "this" {
       "kms:GenerateDataKey*",
       "kms:Describe*"
     ],
-    Resource = "*",
-    Condition = {
-      ArnEquals = {
-        "kms:EncryptionContext:aws:logs:arn" : "arn:aws:logs:${var.region}:${local.account_id}:*"
-      }
-    }
+    Resource = aws_kms_key.this.arn
   })
+}
+
+resource "aws_kms_alias" "cloudwatch" {
+  name          = "alias/cloudwatch-${var.environment}"
+  target_key_id = aws_kms_key.this.key_id
 }
