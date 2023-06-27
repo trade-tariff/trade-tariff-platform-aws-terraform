@@ -3,7 +3,6 @@ resource "aws_kms_key" "ecr_kms" {
   enable_key_rotation = true
 }
 
-
 # tfsec:ignore:aws-ecr-enforce-immutable-repository
 resource "aws_ecr_repository" "trade_tariff_ecr_repo" {
   name                 = "trade-tariff-ecr-${var.environment}"
@@ -17,6 +16,6 @@ resource "aws_ecr_repository" "trade_tariff_ecr_repo" {
 
   encryption_configuration {
     encryption_type = "KMS"
-    kms_key         = aws_kms_key.ecr_kms.key_id
+    kms_key         = aws_kms_key.ecr_kms.arn
   }
 }

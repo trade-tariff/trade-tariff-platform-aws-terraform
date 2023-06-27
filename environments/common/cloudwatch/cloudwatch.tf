@@ -3,7 +3,10 @@ resource "aws_cloudwatch_log_group" "this" {
   retention_in_days = var.retention_in_days
   skip_destroy      = true
   kms_key_id        = aws_kms_key.this.arn
-  depends_on        = [aws_kms_key.this]
+  depends_on = [
+    aws_kms_key.this,
+    aws_kms_key_policy.this
+  ]
 }
 
 resource "aws_kms_key" "this" {
@@ -34,7 +37,7 @@ resource "aws_kms_key_policy" "this" {
       {
         Effect = "Allow",
         Principal = {
-          Service = "logs.${var.region}.amazonaws.com"
+          Service = "logs.${local.region}.amazonaws.com"
         },
         Action = [
           "kms:Encrypt*",
@@ -46,7 +49,7 @@ resource "aws_kms_key_policy" "this" {
         Resource = "*",
         Condition = {
           ArnEquals = {
-            "kms:EncryptionContext:aws:logs:arn" = aws_cloudwatch_log_group.this.arn
+            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${local.region}:${local.account_id}:log-group:${var.name}"
           }
         }
     }]
