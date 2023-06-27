@@ -35,7 +35,6 @@ No outputs.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -45,6 +44,7 @@ No outputs.
 | <a name="module_acm"></a> [acm](#module\_acm) | ../../common/acm/ | n/a |
 | <a name="module_alb"></a> [alb](#module\_alb) | ../../common/application-load-balancer/ | n/a |
 | <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../common/security-group/ | n/a |
+| <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../common/cloudwatch/ | n/a |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../common/ecr/ | n/a |
 | <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../common/rds | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../common/elasticache/ | n/a |
@@ -53,10 +53,6 @@ No outputs.
 
 | Name | Type |
 |------|------|
-| [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
-| [aws_kms_alias.cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
-| [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
-| [aws_kms_key_policy.cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key_policy) | resource |
 | [terraform_remote_state.base](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
 ## Inputs
