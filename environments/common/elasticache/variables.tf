@@ -29,8 +29,14 @@ variable "instance_type" {
   type        = string
 }
 
+variable "shards" {
+  description = "Number of node groups (shards) for this group. Defaults to `1`."
+  type        = number
+  default     = 1
+}
+
 variable "replicas" {
-  description = "Number of replicas to create. Defaults to `0`."
+  description = "Number of replicas to create, between 0 (none) and 5. Defaults to `0`."
   type        = number
   default     = 0
 }

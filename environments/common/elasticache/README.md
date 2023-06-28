@@ -24,7 +24,6 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_elasticache_cluster.replica](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster) | resource |
 | [aws_elasticache_replication_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group) | resource |
 | [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 
@@ -41,8 +40,9 @@ No modules.
 | <a name="input_parameter_group"></a> [parameter\_group](#input\_parameter\_group) | Parameter group for replication group. For example, `default.redis3.2.cluster.on`. | `string` | n/a | yes |
 | <a name="input_redis_version"></a> [redis\_version](#input\_redis\_version) | Engine version to use. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region to use. | `string` | n/a | yes |
-| <a name="input_replicas"></a> [replicas](#input\_replicas) | Number of replicas to create. Defaults to `0`. | `number` | `0` | no |
+| <a name="input_replicas"></a> [replicas](#input\_replicas) | Number of replicas to create, between 0 (none) and 5. Defaults to `0`. | `number` | `0` | no |
 | <a name="input_security_group_names"></a> [security\_group\_names](#input\_security\_group\_names) | List of security group names to associate with the group. | `list(string)` | `null` | no |
+| <a name="input_shards"></a> [shards](#input\_shards) | Number of node groups (shards) for this group. Defaults to `1`. | `number` | `1` | no |
 | <a name="input_snapshot_window"></a> [snapshot\_window](#input\_snapshot\_window) | Daily time range during which ElastiCache will take a snapshot of the cache cluster. Minimum time of 60 minutes. For example: `05:00-06:00`. | `string` | n/a | yes |
 | <a name="input_transit_encryption_enabled"></a> [transit\_encryption\_enabled](#input\_transit\_encryption\_enabled) | Whether to enable encryption in transit. Defaults to `true`. | `bool` | `true` | no |
 
@@ -51,6 +51,4 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Configuration endpoint of the replication group. |
-| <a name="output_replica_arns"></a> [replica\_arns](#output\_replica\_arns) | List of ARNs of the replica nodes. |
-| <a name="output_replication_group_arn"></a> [replication\_group\_arn](#output\_replication\_group\_arn) | ARN of the replication group. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
