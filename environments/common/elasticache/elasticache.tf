@@ -16,9 +16,10 @@ resource "aws_elasticache_replication_group" "this" {
 
   maintenance_window = var.maintenance_window
   snapshot_window    = var.snapshot_window
-
-  num_cache_clusters = 2
   node_type          = var.instance_type
+
+  num_node_groups         = var.shards
+  replicas_per_node_group = var.replicas
 
   security_group_names       = var.security_group_names
   transit_encryption_enabled = var.transit_encryption_enabled
@@ -45,20 +46,10 @@ resource "aws_elasticache_replication_group" "this" {
       log_type         = "engine-log"
     }
   }
-
-  lifecycle {
-    ignore_changes = [num_cache_clusters]
-  }
 }
 
 resource "aws_kms_key" "this" {
   description         = "KMS key for Redis on ${var.environment}."
   key_usage           = "ENCRYPT_DECRYPT"
   enable_key_rotation = true
-}
-
-resource "aws_elasticache_cluster" "replica" {
-  count                = var.replicas
-  cluster_id           = "replica-${count.index}"
-  replication_group_id = aws_elasticache_replication_group.this.id
 }
