@@ -1,8 +1,9 @@
 locals {
   applications = [
-    "frontend",
+    "admin",
     "backend",
     "duty-calculator",
-    "admin"
+    "frontend",
+    "search-query-parser",
   ]
 }
