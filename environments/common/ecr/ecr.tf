@@ -3,13 +3,9 @@ resource "aws_kms_key" "this" {
   enable_key_rotation = true
 }
 
-locals {
-  applications = [
-    "frontend",
-    "backend",
-    "duty-calculator",
-    "admin"
-  ]
+resource "aws_kms_alias" "this" {
+  name          = "alias/ecr-kms-key"
+  target_key_id = aws_kms_key.this.key_id
 }
 
 # tfsec:ignore:aws-ecr-enforce-immutable-repository
