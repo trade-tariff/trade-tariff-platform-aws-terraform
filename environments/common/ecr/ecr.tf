@@ -19,3 +19,8 @@ resource "aws_ecr_repository" "trade_tariff_ecr_repo" {
     kms_key         = aws_kms_key.ecr_kms.arn
   }
 }
+
+output "repository_url" {
+  description = "ECR repository URL"
+  value       = aws_ecr_repository.trade_tariff_ecr_repo.repository_url
+}

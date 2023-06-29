@@ -35,5 +35,7 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_repository_url"></a> [repository\_url](#output\_repository\_url) | ECR repository URL |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
