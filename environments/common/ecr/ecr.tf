@@ -1,11 +1,21 @@
-resource "aws_kms_key" "ecr_kms" {
+resource "aws_kms_key" "this" {
   description         = "ECR KMS key"
   enable_key_rotation = true
 }
 
+locals {
+  applications = [
+    "frontend",
+    "backend",
+    "duty-calculator",
+    "admin"
+  ]
+}
+
 # tfsec:ignore:aws-ecr-enforce-immutable-repository
-resource "aws_ecr_repository" "trade_tariff_ecr_repo" {
-  name                 = "trade-tariff-ecr-${var.environment}"
+resource "aws_ecr_repository" "this" {
+  for_each             = toset(local.applications)
+  name                 = "tariff-${each.key}-${var.environment}"
   image_tag_mutability = "MUTABLE"
   force_delete         = false
   tags                 = var.tags
@@ -16,11 +26,13 @@ resource "aws_ecr_repository" "trade_tariff_ecr_repo" {
 
   encryption_configuration {
     encryption_type = "KMS"
-    kms_key         = aws_kms_key.ecr_kms.arn
+    kms_key         = aws_kms_key.this.arn
   }
 }
 
-output "repository_url" {
-  description = "ECR repository URL"
-  value       = aws_ecr_repository.trade_tariff_ecr_repo.repository_url
+output "repository_urls" {
+  description = "Map of ECR repository URLs, sorted by service."
+  value = {
+    for k in toset(local.applications) : k => aws_ecr_repository.this[k].repository_url
+  }
 }

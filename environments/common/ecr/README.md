@@ -22,8 +22,8 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_ecr_repository.trade_tariff_ecr_repo](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
-| [aws_kms_key.ecr_kms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+| [aws_ecr_repository.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
+| [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 
 ## Inputs
 
@@ -37,5 +37,5 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_repository_url"></a> [repository\_url](#output\_repository\_url) | ECR repository URL |
+| <a name="output_repository_urls"></a> [repository\_urls](#output\_repository\_urls) | Map of ECR repository URLs, sorted by service. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -5,9 +5,10 @@ module "ecr" {
 }
 
 resource "aws_ssm_parameter" "ecr_url" {
-  name        = "/${var.environment}/ECR_URL"
-  description = "ECR repository URL for ${var.environment}."
+  for_each    = module.ecr.repository_urls
+  name        = "/${var.environment}/${upper(each.key)}_ECR_URL"
+  description = "${title(each.key)} ECR repository URL for ${var.environment}."
   type        = "SecureString"
-  value       = module.ecr.repository_url
+  value       = each.value
   tags        = var.tags
 }
