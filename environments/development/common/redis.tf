@@ -17,3 +17,13 @@ module "redis" {
   maintenance_window = "sun:00:00-sun:03:00"
   snapshot_window    = "04:00-06:00"
 }
+
+resource "aws_secretsmanager_secret" "redis_connection_string" {
+  name       = "redis-connection-string"
+  kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
+}
+
+resource "aws_secretsmanager_secret_version" "redis_connection_string_value" {
+  secret_id     = aws_secretsmanager_secret.redis_connection_string.id
+  secret_string = module.redis.endpoint
+}

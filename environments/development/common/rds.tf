@@ -15,3 +15,13 @@ module "postgres" {
   region      = var.region
   environment = var.environment
 }
+
+resource "aws_secretsmanager_secret" "postgres_connection_string" {
+  name       = "postgres-connection-string"
+  kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
+}
+
+resource "aws_secretsmanager_secret_version" "postgres_connection_string_value" {
+  secret_id     = aws_secretsmanager_secret.postgres_connection_string.id
+  secret_string = module.postgres.db_endpoint
+}
