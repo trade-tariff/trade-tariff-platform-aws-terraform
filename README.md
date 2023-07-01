@@ -1,7 +1,5 @@
 # trade-tariff-platform-aws-terraform
 
-Repository to store Terraform for the AWS Infra.
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
