@@ -5,9 +5,14 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4" # Don't upgrade to 5.x.x yet
     }
+
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3"
+    }
   }
 }
 
 provider "aws" {
-  region = "eu-west-2"
+  region = var.region
 }
