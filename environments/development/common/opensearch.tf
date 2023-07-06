@@ -32,6 +32,9 @@ module "opensearch_packages_bucket" {
     }
   }
 
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
   logging = {
     target_bucket = module.logs.s3_bucket_id
     target_prefix = "log/"
@@ -56,6 +59,9 @@ module "search_configuration_bucket" {
     }
   }
 
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
   logging = {
     target_bucket = module.logs.s3_bucket_id
     target_prefix = "log/"
@@ -75,7 +81,8 @@ module "opensearch" {
   instance_type           = "t3.small.search" # small one for dev :)
   ebs_volume_size         = 80
 
-  create_master_user = true
-  encrypt_kms_key_id = aws_kms_key.opensearch_kms_key.key_id
-  ssm_secret_name    = "/${var.environment}/ELASTICSEARCH_URL"
+  create_service_role = true
+  create_master_user  = true
+  encrypt_kms_key_id  = aws_kms_key.opensearch_kms_key.key_id
+  ssm_secret_name     = "/${var.environment}/ELASTICSEARCH_URL"
 }
