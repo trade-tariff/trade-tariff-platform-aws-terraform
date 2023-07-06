@@ -81,8 +81,7 @@ module "opensearch" {
   instance_type           = "t3.small.search" # small one for dev :)
   ebs_volume_size         = 80
 
-  create_service_role = true
-  create_master_user  = true
-  encrypt_kms_key_id  = aws_kms_key.opensearch_kms_key.key_id
-  ssm_secret_name     = "/${var.environment}/ELASTICSEARCH_URL"
+  create_master_user = true
+  encrypt_kms_key_id = aws_kms_key.opensearch_kms_key.key_id
+  ssm_secret_name    = "/${var.environment}/ELASTICSEARCH_URL"
 }
