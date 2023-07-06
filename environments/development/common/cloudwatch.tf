@@ -14,6 +14,9 @@ module "logs" {
   bucket = "trade-tariff-logs-${local.account_id}"
   acl    = "log-delivery-write"
 
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
   server_side_encryption_configuration = {
     rule = {
       apply_server_side_encryption_by_default = {

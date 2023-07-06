@@ -32,6 +32,9 @@ module "opensearch_packages_bucket" {
     }
   }
 
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
   logging = {
     target_bucket = module.logs.s3_bucket_id
     target_prefix = "log/"
@@ -55,6 +58,9 @@ module "search_configuration_bucket" {
       }
     }
   }
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
 
   logging = {
     target_bucket = module.logs.s3_bucket_id
