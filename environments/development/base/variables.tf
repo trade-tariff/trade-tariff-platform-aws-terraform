@@ -4,11 +4,6 @@ variable "environment" {
   default     = "development"
 }
 
-variable "cidr_block" {
-  type    = string
-  default = "10.0.0.0/16"
-}
-
 variable "private_subnets" {
   description = "A list of private subnets inside the VPC"
   type        = list(string)
@@ -38,19 +33,4 @@ variable "availability_zone" {
 variable "region" {
   type    = string
   default = "eu-west-2"
-}
-
-variable "enable_nat_gateway" {
-  type    = string
-  default = "true"
-}
-
-variable "enable_vpn_gateway" {
-  type    = string
-  default = "true"
-}
-
-variable "enable_dns_hostnames" {
-  type    = string
-  default = "true"
 }
