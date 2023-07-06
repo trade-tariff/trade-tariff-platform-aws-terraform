@@ -106,6 +106,16 @@ workflows:
 
       - terragrunt_apply:
           name: terragrunt-apply-development
+          requires:
+            - terragrunt-plan-development
+          environment: development
+          context: trade-tariff-terraform-aws-development
+          filters:
+            branches:
+              ignore: [main]
+
+      - terragrunt_apply:
+          name: terragrunt-apply-development
           environment: development
           context: trade-tariff-terraform-aws-development
           filters:
