@@ -84,5 +84,7 @@ No outputs.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_secretsmanager_kms_key_arn"></a> [secretsmanager\_kms\_key\_arn](#output\_secretsmanager\_kms\_key\_arn) | ARN of the key used to encrypt SecretsManager Secrets. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
