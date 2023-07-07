@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Terraform Plan Development
           command: |
-            cd environments/<< parameters.environment >>/base
+            cd environments/<< parameters.environment >>
             terragrunt run-all plan --terragrunt-non-interactive
 
   terragrunt_apply:
