@@ -3,6 +3,7 @@
 terraform.tfstate
 *.tfstate*
 *.tfstate.*
+backend.tf
 
 # vim
 [._]*.s[a-v][a-z]

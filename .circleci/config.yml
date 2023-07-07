@@ -39,22 +39,10 @@ jobs:
       - checkout
       - install_terragrunt
       - run:
-          name: Terraform plan base
+          name: Terraform Plan Development
           command: |
             cd environments/<< parameters.environment >>/base
-            terragrunt plan
-
-      - run:
-          name: Terraform plan applications
-          command: |
-            cd environments/<< parameters.environment >>/applications
-            terragrunt plan
-
-      - run:
-          name: Terraform plan common
-          command: |
-            cd environments/<< parameters.environment >>/common
-            terragrunt plan
+            terragrunt run-all plan --terragrunt-non-interactive
 
   terragrunt_apply:
     executor: default
