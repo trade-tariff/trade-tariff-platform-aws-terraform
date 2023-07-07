@@ -41,3 +41,13 @@ variable "tags" {
     Terraform = true
   }
 }
+
+variable "s3_tags" {
+  description = "Tags"
+  type        = map(string)
+  default = {
+    Project     = "trade-tariff"
+    Environment = "development"
+    Billing     = "TRN.HMR11896"
+  }
+}
