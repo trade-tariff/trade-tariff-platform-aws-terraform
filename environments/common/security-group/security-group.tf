@@ -41,7 +41,7 @@ resource "aws_security_group" "ecs_security_group" {
     from_port   = 80
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = [data.terraform_remote_state.base.outputs.vpc_cidr]
+    cidr_blocks = ["10.0.0.0/16"]
   }
 
   ingress {
@@ -49,7 +49,7 @@ resource "aws_security_group" "ecs_security_group" {
     from_port   = 443
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = [data.terraform_remote_state.base.outputs.vpc_cidr]
+    cidr_blocks = ["10.0.0.0/16"]
   }
 
   # We want egress out to the public internet here

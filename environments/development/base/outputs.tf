@@ -17,8 +17,3 @@ output "vpc_id" {
   description = "VPC ID"
   value       = module.vpc.vpc_id
 }
-
-output "vpc_cidr" {
-  description = "VPC CIDR block for use with security groups."
-  value       = module.vpc.vpc_cidr_block
-}
