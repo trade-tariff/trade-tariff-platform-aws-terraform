@@ -31,9 +31,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allowed_ingress_traffic"></a> [allowed\_ingress\_traffic](#input\_allowed\_ingress\_traffic) | Ingress traffic allowed | `string` | `"0.0.0.0/0"` | no |
 | <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | Development Account ID. | `string` | `"844815912454"` | no |
-| <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | VPC Cidr Block | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Built environment. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 
