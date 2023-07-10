@@ -4,10 +4,15 @@ variable "environment" {
   default     = "development"
 }
 
-variable "region" {
-  description = "AWS region. Defaults to `eu-west-2`."
+variable "project" {
+  description = "The name of the project"
   type        = string
-  default     = "eu-west-2"
+  default     = "trade-tariff"
+}
+
+variable "s3_tags" {
+  description = "Tags"
+  type        = map(string)
 }
 
 variable "aws_account_id" {
@@ -15,4 +20,3 @@ variable "aws_account_id" {
   type        = string
   default     = "844815912454"
 }
-
