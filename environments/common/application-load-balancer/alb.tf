@@ -39,10 +39,6 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
     protocol            = "HTTP"
     matcher             = "200"
   }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 /* target group name cannot be longer than 30 char */
