@@ -21,18 +21,35 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
     "trade-tariff-be-tg-${var.environment}",
     "trade-tariff-dc-tg-${var.environment}",
   ])
+
   name        = each.value
   port        = var.application_port
-  protocol    = var.protocol
-  target_type = var.target_type
+  protocol    = "HTTP"
+  target_type = "ip"
   vpc_id      = var.vpc_id
+
+  health_check {
+    enabled             = true
+    interval            = "10"
+    path                = "/healthcheck"
+    port                = "traffic-port"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 6
+    protocol            = "HTTP"
+    matcher             = "200"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 /* target group name cannot be longer than 30 char */
 resource "aws_lb_listener" "trade_tariff_listeners" {
   load_balancer_arn = aws_lb.application_load_balancer.arn
   port              = var.listening_port
-  protocol          = var.protocol
+  protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
   certificate_arn   = var.certificate_arn
 

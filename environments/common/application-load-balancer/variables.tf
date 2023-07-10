@@ -9,24 +9,11 @@ variable "alb_security_group_id" {
   type        = string
 }
 
-variable "protocol" {
-  description = "The protocol version"
-  type        = string
-  default     = "HTTPS"
-}
-
 variable "application_port" {
   description = "application port"
   type        = string
   default     = 8080
 }
-
-variable "target_type" {
-  description = "Type of target that you must specify when registering targets with this target group."
-  type        = string
-  default     = "ip"
-}
-
 variable "listening_port" {
   description = "Port on which the load balancer listens to"
   type        = string
