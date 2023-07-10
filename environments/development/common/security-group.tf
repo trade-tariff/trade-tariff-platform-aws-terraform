@@ -1,6 +1,4 @@
 module "alb-security-group" {
-  source = "../../common/security-group/"
-
-  cidr_block  = var.cidr_block
+  source      = "../../common/security-group/"
   environment = var.environment
 }
