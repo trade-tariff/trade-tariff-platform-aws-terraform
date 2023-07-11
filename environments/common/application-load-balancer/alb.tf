@@ -28,6 +28,9 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   target_type = "ip"
   vpc_id      = var.vpc_id
 
+  deregistration_delay   = 60
+  connection_termination = true
+
   health_check {
     enabled             = true
     interval            = "10"
