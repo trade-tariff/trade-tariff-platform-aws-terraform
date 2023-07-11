@@ -2,7 +2,7 @@ locals {
   buckets = {
     persistence          = "${var.project}-persistence-${var.environment}-${var.aws_account_id}"
     tariff-pdf           = "${var.project}-tariff-pdf-${var.environment}-${var.aws_account_id}"
-    search-configuration = "${var.project}-trade-tariff-search-configuration-${var.environment}-${var.aws_account_id}"
+    search-configuration = "${var.project}-search-config-${var.environment}-${var.aws_account_id}" # expected length of bucket to be in the range (0 - 63)
   }
 }
 
