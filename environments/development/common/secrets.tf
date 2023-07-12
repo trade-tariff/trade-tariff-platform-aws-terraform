@@ -29,3 +29,19 @@ variable "newrelic_license_key" {
   type        = string
   sensitive   = true
 }
+
+resource "aws_secretsmanager_secret" "backend_secret_key_base" {
+  name       = "backend-secret-key-base"
+  kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
+}
+
+resource "aws_secretsmanager_secret_version" "backend_secret_key_base_value" {
+  secret_id     = aws_secretsmanager_secret.backend_secret_key_base.id
+  secret_string = var.backend_secret_key_base
+}
+
+variable "backend_secret_key_base" {
+  description = "Value of SECRET_KEY_BASE for the backend."
+  type        = string
+  sensitive   = true
+}

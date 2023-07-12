@@ -63,10 +63,12 @@ No outputs.
 | [aws_kms_alias.secretsmanager_kms_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.opensearch_kms_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_kms_key.secretsmanager_kms_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+| [aws_secretsmanager_secret.backend_secret_key_base](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret.frontend_secret_key_base](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret.newrelic_license_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret.postgres_connection_string](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret.redis_connection_string](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.backend_secret_key_base_value](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_secretsmanager_secret_version.frontend_secret_key_base_value](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_secretsmanager_secret_version.newrelic_license_key_value](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_secretsmanager_secret_version.postgres_connection_string_value](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
@@ -81,6 +83,7 @@ No outputs.
 |------|-------------|------|---------|:--------:|
 | <a name="input_alb_name"></a> [alb\_name](#input\_alb\_name) | The name of the alb | `string` | `"trade-tariff-alb"` | no |
 | <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | Development Account ID. | `string` | `"844815912454"` | no |
+| <a name="input_backend_secret_key_base"></a> [backend\_secret\_key\_base](#input\_backend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the backend. | `string` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Name of the test Domain | `string` | `"transformtariff.co.uk"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `"development"` | no |
 | <a name="input_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#input\_frontend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the frontend. | `string` | n/a | yes |
