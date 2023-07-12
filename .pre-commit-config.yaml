@@ -13,6 +13,9 @@ repos:
       - id: terraform_validate
       - id: terraform_tflint
       - id: terraform_tfsec
+        args:
+          - >
+            --args=--config-file tfsec.yml
       - id: terraform_docs
         args:
           - --hook-config=--add-to-existing-file=true
