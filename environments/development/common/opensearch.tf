@@ -85,3 +85,39 @@ module "opensearch" {
   encrypt_kms_key_id = aws_kms_key.opensearch_kms_key.key_id
   ssm_secret_name    = "/${var.environment}/ELASTICSEARCH_URL"
 }
+
+# tfsec:ignore:aws-iam-no-user-attached-policies
+resource "aws_iam_user" "opensearch" {
+  name = "tariff-opensearch-user"
+}
+
+data "aws_iam_policy_document" "opensearch_policy" {
+  statement {
+    effect    = "Allow"
+    actions   = ["es:*"] # TODO: can we define a set of opensearch policies without using a wildcard?
+    resources = [""]
+    # resources = [module.opensearch.domain_arn] requires PR
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:...",
+    ]
+    resources = [
+      module.opensearch_packages_bucket.s3_bucket_arn,
+      "${module.opensearch_packages_bucket.s3_bucket_arn}/*",
+      module.search_configuration_bucket.s3_bucket_arn,
+      "${module.search_configuration_bucket.s3_bucket_arn}/*"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "opensearch" {
+  name   = "opensearch-policy"
+  policy = data.aws_iam_policy_document.opensearch_policy.json
+}
+
+resource "aws_iam_user_policy_attachment" "opensearch" {
+  user       = aws_iam_user.opensearch.name
+  policy_arn = aws_iam_policy.opensearch.arn
+}
