@@ -69,7 +69,7 @@ module "search_configuration_bucket" {
 }
 
 module "opensearch" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch?ref=aws/opensearch-v1.0.0"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch?ref=aws/opensearch-v1.1.0"
 
   cluster_name    = "tariff-search-${var.environment}"
   cluster_domain  = var.domain_name
@@ -91,18 +91,46 @@ resource "aws_iam_user" "opensearch" {
   name = "tariff-opensearch-user"
 }
 
+# TODO: can we define a set of opensearch policies without using a wildcard?
 data "aws_iam_policy_document" "opensearch_policy" {
   statement {
     effect    = "Allow"
-    actions   = ["es:*"] # TODO: can we define a set of opensearch policies without using a wildcard?
-    resources = [""]
-    # resources = [module.opensearch.domain_arn] requires PR
+    actions   = ["es:*"] # tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = [module.opensearch.domain_arn]
   }
+
   statement {
     effect = "Allow"
     actions = [
-      "s3:...",
+      "s3:AbortMultipartUpload",
+      "s3:AbortUpload",
+      "s3:DeleteObject",
+      "s3:DeleteObjectTagging",
+      "s3:DeleteObjectVersion",
+      "s3:DeleteObjectVersionTagging",
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:GetObjectAcl",
+      "s3:GetObjectTagging",
+      "s3:GetObjectTorrent",
+      "s3:GetObjectVersion",
+      "s3:GetObjectVersionAcl",
+      "s3:GetObjectVersionTagging",
+      "s3:GetObjectVersionTorrent",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListBucketVersions",
+      "s3:ListMultipartUploadParts",
+      "s3:ListObjectsV2",
+      "s3:ListUploadParts",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:PutObjectTagging",
+      "s3:PutObjectVersionAcl",
+      "s3:PutObjectVersionTagging",
+      "s3:RestoreObject"
     ]
+    # tfsec:ignore:aws-iam-no-policy-wildcards
     resources = [
       module.opensearch_packages_bucket.s3_bucket_arn,
       "${module.opensearch_packages_bucket.s3_bucket_arn}/*",
