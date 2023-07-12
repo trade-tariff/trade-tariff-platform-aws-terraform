@@ -45,3 +45,21 @@ variable "s3_tags" {
     Billing     = "TRN.HMR11896"
   }
 }
+
+variable "newrelic_license_key" {
+  description = "License key for NewRelic."
+  type        = string
+  sensitive   = true
+}
+
+variable "backend_secret_key_base" {
+  description = "Value of SECRET_KEY_BASE for the backend."
+  type        = string
+  sensitive   = true
+}
+
+variable "frontend_secret_key_base" {
+  description = "Value of SECRET_KEY_BASE for the frontend."
+  type        = string
+  sensitive   = true
+}
