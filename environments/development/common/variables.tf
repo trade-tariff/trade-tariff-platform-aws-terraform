@@ -63,3 +63,9 @@ variable "frontend_secret_key_base" {
   type        = string
   sensitive   = true
 }
+
+variable "duty_calculator_secret_key_base" {
+  description = "Value of SECRET_KEY_BASE for the duty calculator."
+  type        = string
+  sensitive   = true
+}
