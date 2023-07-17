@@ -14,12 +14,15 @@ resource "aws_lb" "application_load_balancer" {
   drop_invalid_header_fields       = true
 }
 
-/* target group name cannot be longer than 30 char */
+/* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
   for_each = toset([
     "trade-tariff-fe-tg-${var.environment}",
     "trade-tariff-be-tg-${var.environment}",
     "trade-tariff-dc-tg-${var.environment}",
+    "trade-tariff-sqp-tg-${var.environment}",
+    "trade-tariff-ad-tg-${var.environment}",
+    "trade-tariff-so-tg-${var.environment}"
   ])
 
   name        = each.value
