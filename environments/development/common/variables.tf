@@ -69,3 +69,45 @@ variable "duty_calculator_secret_key_base" {
   type        = string
   sensitive   = true
 }
+
+variable "tariff_backend_sentry_dsn" {
+  description = "Value of Backend Sentry DSN."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_sync_email" {
+  description = "Value of Tariff Sync email."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_sync_host" {
+  description = "Value of Tariff Sync host."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_sync_password" {
+  description = "Value of Tariff Sync password."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_sync_username" {
+  description = "Value of Tariff Sync username."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_oauth_id" {
+  description = "Value of Tariff Backend OAuth ID."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_oauth_secret" {
+  description = "Value of Tariff Backend OAuth secret."
+  type        = string
+  sensitive   = true
+}
