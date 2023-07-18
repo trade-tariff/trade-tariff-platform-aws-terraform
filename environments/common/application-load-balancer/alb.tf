@@ -16,16 +16,8 @@ resource "aws_lb" "application_load_balancer" {
 
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
-  for_each = toset([
-    "trade-tariff-fe-tg-${var.environment}",
-    "trade-tariff-be-tg-${var.environment}",
-    "trade-tariff-dc-tg-${var.environment}",
-    "trade-tariff-sqp-tg-${var.environment}",
-    "trade-tariff-ad-tg-${var.environment}",
-    "trade-tariff-so-tg-${var.environment}"
-  ])
-
-  name        = each.value
+  for_each    = local.services
+  name        = each.value.target_group_name
   port        = var.application_port
   protocol    = "HTTP"
   target_type = "ip"
@@ -44,7 +36,6 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   }
 }
 
-/* target group name cannot be longer than 30 char */
 resource "aws_lb_listener" "trade_tariff_listeners" {
   load_balancer_arn = aws_lb.application_load_balancer.arn
   port              = var.listening_port
@@ -54,39 +45,23 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["trade-tariff-fe-tg-${var.environment}"].arn
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["frontend"].arn
   }
 }
 
-resource "aws_lb_listener_rule" "trade_tariff_backend_listeners_rules" {
+resource "aws_lb_listener_rule" "this" {
+  for_each     = local.services
   listener_arn = aws_lb_listener.trade_tariff_listeners.arn
+  priority     = each.value.priority
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["trade-tariff-be-tg-${var.environment}"].arn
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
   }
 
-  ## have to ideal for now
   condition {
     path_pattern {
-      values = ["/backend/*"]
-    }
-  }
-}
-
-resource "aws_lb_listener_rule" "trade_tariff_duty_cal_listeners_rules" {
-  listener_arn = aws_lb_listener.trade_tariff_listeners.arn
-  priority     = 100
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["trade-tariff-dc-tg-${var.environment}"].arn
-  }
-
-  ## have to ideal for now
-  condition {
-    path_pattern {
-      values = ["/duty-calulator/*"]
+      values = each.value.paths
     }
   }
 }
