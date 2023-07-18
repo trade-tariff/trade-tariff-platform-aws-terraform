@@ -45,7 +45,7 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["trade-tariff-fe-tg-${var.environment}"].arn
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["frontend"].arn
   }
 }
 
