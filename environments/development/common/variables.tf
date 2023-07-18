@@ -69,3 +69,27 @@ variable "duty_calculator_secret_key_base" {
   type        = string
   sensitive   = true
 }
+
+variable "admin_secret_key_base" {
+  description = "Value of SECRET_KEY_BASE for the admin tool."
+  type        = string
+  sensitive   = true
+}
+
+variable "admin_oauth_id" {
+  description = "Value of TARIFF_ADMIN_OAUTH_ID for the admin tool."
+  type        = string
+  sensitive   = true
+}
+
+variable "admin_oauth_secret" {
+  description = "Value of TARIFF_ADMIN_OAUTH_SECRET for the admin tool."
+  type        = string
+  sensitive   = true
+}
+
+variable "admin_bearer_token" {
+  description = "Value of BEARER_TOKEN for the admin tool."
+  type        = string
+  sensitive   = true
+}
