@@ -38,7 +38,6 @@ module "backend_sentry_dsn" {
   secret_string   = var.tariff_backend_sentry_dsn
 }
 
-
 module "backend_sync_email" {
   source          = "../../common/secret/"
   name            = "backend_sync_email"
