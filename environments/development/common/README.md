@@ -45,7 +45,14 @@ No outputs.
 | <a name="module_acm"></a> [acm](#module\_acm) | ../../common/acm/ | n/a |
 | <a name="module_alb"></a> [alb](#module\_alb) | ../../common/application-load-balancer/ | n/a |
 | <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../common/security-group/ | n/a |
+| <a name="module_backend_oauth_id"></a> [backend\_oauth\_id](#module\_backend\_oauth\_id) | ../../common/secret/ | n/a |
+| <a name="module_backend_oauth_secret"></a> [backend\_oauth\_secret](#module\_backend\_oauth\_secret) | ../../common/secret/ | n/a |
 | <a name="module_backend_secret_key_base"></a> [backend\_secret\_key\_base](#module\_backend\_secret\_key\_base) | ../../common/secret/ | n/a |
+| <a name="module_backend_sentry_dsn"></a> [backend\_sentry\_dsn](#module\_backend\_sentry\_dsn) | ../../common/secret/ | n/a |
+| <a name="module_backend_sync_email"></a> [backend\_sync\_email](#module\_backend\_sync\_email) | ../../common/secret/ | n/a |
+| <a name="module_backend_sync_host"></a> [backend\_sync\_host](#module\_backend\_sync\_host) | ../../common/secret/ | n/a |
+| <a name="module_backend_sync_password"></a> [backend\_sync\_password](#module\_backend\_sync\_password) | ../../common/secret/ | n/a |
+| <a name="module_backend_sync_username"></a> [backend\_sync\_username](#module\_backend\_sync\_username) | ../../common/secret/ | n/a |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../common/cloudwatch/ | n/a |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../common/ecr/ | n/a |
@@ -94,6 +101,13 @@ No outputs.
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_s3_tags"></a> [s3\_tags](#input\_s3\_tags) | Tags | `map(string)` | <pre>{<br>  "Billing": "TRN.HMR11896",<br>  "Environment": "development",<br>  "Project": "trade-tariff"<br>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br>  "Terraform": true<br>}</pre> | no |
+| <a name="input_tariff_backend_oauth_id"></a> [tariff\_backend\_oauth\_id](#input\_tariff\_backend\_oauth\_id) | Value of Tariff Backend OAuth ID. | `string` | n/a | yes |
+| <a name="input_tariff_backend_oauth_secret"></a> [tariff\_backend\_oauth\_secret](#input\_tariff\_backend\_oauth\_secret) | Value of Tariff Backend OAuth secret. | `string` | n/a | yes |
+| <a name="input_tariff_backend_sentry_dsn"></a> [tariff\_backend\_sentry\_dsn](#input\_tariff\_backend\_sentry\_dsn) | Value of Backend Sentry DSN. | `string` | n/a | yes |
+| <a name="input_tariff_backend_sync_email"></a> [tariff\_backend\_sync\_email](#input\_tariff\_backend\_sync\_email) | Value of Tariff Sync email. | `string` | n/a | yes |
+| <a name="input_tariff_backend_sync_host"></a> [tariff\_backend\_sync\_host](#input\_tariff\_backend\_sync\_host) | Value of Tariff Sync host. | `string` | n/a | yes |
+| <a name="input_tariff_backend_sync_password"></a> [tariff\_backend\_sync\_password](#input\_tariff\_backend\_sync\_password) | Value of Tariff Sync password. | `string` | n/a | yes |
+| <a name="input_tariff_backend_sync_username"></a> [tariff\_backend\_sync\_username](#input\_tariff\_backend\_sync\_username) | Value of Tariff Sync username. | `string` | n/a | yes |
 
 ## Outputs
 
