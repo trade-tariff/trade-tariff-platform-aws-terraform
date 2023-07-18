@@ -56,7 +56,7 @@ resource "aws_lb_listener_rule" "this" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.value.target_group_name].arn
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
   }
 
   condition {
