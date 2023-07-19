@@ -65,16 +65,16 @@ resource "aws_lb_listener_rule" "this" {
   }
 
   dynamic "condition" {
-    for_each = each.value.host != null ? [true] : []
+    for_each = lookup(local.services[each.key], "host", null) != null ? [true] : []
     content {
       host_header {
-        values = condition.value.host
+        values = each.value.host
       }
     }
   }
 
   dynamic "condition" {
-    for_each = each.value.paths != null ? [true] : []
+    for_each = lookup(local.services[each.key], "paths", null) != null ? [true] : []
     content {
       path_pattern {
         values = each.value.paths
