@@ -48,8 +48,8 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
     type = "fixed-response"
     fixed_response {
       content_type = "text/plain"
-      message_body = "OK"
-      status_code  = "200"
+      message_body = "Not Found"
+      status_code  = "404"
     }
   }
 }
