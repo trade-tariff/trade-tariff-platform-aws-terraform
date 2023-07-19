@@ -1,10 +1,12 @@
 resource "aws_db_instance" "this" {
-  db_name           = var.name
-  engine            = var.engine
-  engine_version    = var.engine_version
-  instance_class    = var.instance_type
-  allocated_storage = var.allocated_storage
-  storage_encrypted = true
+  db_name        = var.name
+  engine         = var.engine
+  engine_version = var.engine_version
+  instance_class = var.instance_type
+
+  allocated_storage     = var.allocated_storage
+  max_allocated_storage = var.max_allocated_storage
+  storage_encrypted     = true
 
   #tfsec:ignore:aws-rds-enable-deletion-protection
   deletion_protection     = var.deletion_protection

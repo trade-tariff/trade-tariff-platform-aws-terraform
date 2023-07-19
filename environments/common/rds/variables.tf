@@ -15,6 +15,12 @@ variable "allocated_storage" {
   default     = 5
 }
 
+variable "max_allocated_storage" {
+  description = "Maximum allocated storage for the instance. Defaults to 5 (no autoscaling)."
+  type        = number
+  default     = 5
+}
+
 variable "instance_type" {
   description = "Instance type for the database. See https://aws.amazon.com/rds/instance-types/"
   type        = string
