@@ -43,9 +43,14 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
   certificate_arn   = var.certificate_arn
 
+  # our rules will take over
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["frontend"].arn
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "OK"
+      status_code  = "200"
+    }
   }
 }
 
@@ -59,9 +64,21 @@ resource "aws_lb_listener_rule" "this" {
     target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
   }
 
-  condition {
-    path_pattern {
-      values = each.value.paths
+  dynamic "condition" {
+    for_each = each.value.host != null ? [true] : []
+    content {
+      host_header {
+        values = condition.value.host
+      }
+    }
+  }
+
+  dynamic "condition" {
+    for_each = each.value.paths != null ? [true] : []
+    content {
+      path_pattern {
+        values = each.value.paths
+      }
     }
   }
 }
