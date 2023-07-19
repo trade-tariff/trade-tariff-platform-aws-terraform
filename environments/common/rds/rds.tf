@@ -5,7 +5,7 @@ resource "aws_db_instance" "this" {
   instance_class = var.instance_type
 
   allocated_storage     = var.allocated_storage
-  max_allocated_storage = var.max_allocated_storage
+  max_allocated_storage = local.max_allocated_storage
   storage_encrypted     = true
 
   #tfsec:ignore:aws-rds-enable-deletion-protection
