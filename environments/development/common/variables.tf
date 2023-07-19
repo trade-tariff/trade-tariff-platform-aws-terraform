@@ -70,8 +70,20 @@ variable "duty_calculator_secret_key_base" {
   sensitive   = true
 }
 
+variable "admin_secret_key_base" {
+  description = "Value of SECRET_KEY_BASE for the admin tool."
+  type        = string
+  sensitive   = true
+}
+
 variable "tariff_backend_sentry_dsn" {
   description = "Value of Backend Sentry DSN."
+  type        = string
+  sensitive   = true
+}
+
+variable "admin_oauth_id" {
+  description = "Value of TARIFF_ADMIN_OAUTH_ID for the admin tool."
   type        = string
   sensitive   = true
 }
@@ -82,8 +94,20 @@ variable "tariff_backend_sync_email" {
   sensitive   = true
 }
 
+variable "admin_oauth_secret" {
+  description = "Value of TARIFF_ADMIN_OAUTH_SECRET for the admin tool."
+  type        = string
+  sensitive   = true
+}
+
 variable "tariff_backend_sync_host" {
   description = "Value of Tariff Sync host."
+  type        = string
+  sensitive   = true
+}
+
+variable "admin_bearer_token" {
+  description = "Value of BEARER_TOKEN for the admin tool."
   type        = string
   sensitive   = true
 }
