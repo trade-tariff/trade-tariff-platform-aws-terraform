@@ -16,10 +16,3 @@ module "vpc" {
 
   tags = local.tags
 }
-
-resource "aws_service_discovery_private_dns_namespace" "this" {
-  name        = "tariff.internal"
-  description = "Private DNS namespace."
-  vpc         = module.vpc.vpc_id
-  tags        = local.tags
-}
