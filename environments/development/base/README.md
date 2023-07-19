@@ -10,7 +10,9 @@
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
 
 ## Modules
 
@@ -20,7 +22,9 @@ No providers.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [aws_service_discovery_private_dns_namespace.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_private_dns_namespace) | resource |
 
 ## Inputs
 
@@ -36,6 +40,9 @@ No resources.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_private_dns_namespace_arn"></a> [private\_dns\_namespace\_arn](#output\_private\_dns\_namespace\_arn) | ARN of the private DNS namespace. |
+| <a name="output_private_dns_namespace_hosted_zone_id"></a> [private\_dns\_namespace\_hosted\_zone\_id](#output\_private\_dns\_namespace\_hosted\_zone\_id) | ID of the Route 53 zone for the private DNS namespace. |
+| <a name="output_private_dns_namespace_id"></a> [private\_dns\_namespace\_id](#output\_private\_dns\_namespace\_id) | ID of the private DNS namespace. |
 | <a name="output_private_subnets_id"></a> [private\_subnets\_id](#output\_private\_subnets\_id) | subnet id |
 | <a name="output_public_subnet_id"></a> [public\_subnet\_id](#output\_public\_subnet\_id) | subnet id |
 | <a name="output_region"></a> [region](#output\_region) | AWS region |

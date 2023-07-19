@@ -14,8 +14,12 @@ module "vpc" {
   enable_dns_support   = true
   single_nat_gateway   = true
 
-  tags = {
-    Terraform   = "true"
-    Environment = var.environment
-  }
+  tags = local.tags
+}
+
+resource "aws_service_discovery_private_dns_namespace" "this" {
+  name        = "tariff.internal"
+  description = "Private DNS namespace."
+  vpc         = module.vpc.vpc_id
+  tags        = local.tags
 }
