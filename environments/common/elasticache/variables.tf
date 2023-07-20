@@ -19,11 +19,6 @@ variable "environment" {
   type        = string
 }
 
-variable "region" {
-  description = "AWS region to use."
-  type        = string
-}
-
 variable "instance_type" {
   description = "Instance type, i.e. `cache.t3.small`."
   type        = string

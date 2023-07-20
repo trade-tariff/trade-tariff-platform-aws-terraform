@@ -67,8 +67,6 @@ No outputs.
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../common/rds | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../common/elasticache/ | n/a |
-| <a name="module_redis_admin"></a> [redis\_admin](#module\_redis\_admin) | ../../common/elasticache/ | n/a |
-| <a name="module_redis_backend"></a> [redis\_backend](#module\_redis\_backend) | ../../common/elasticache/ | n/a |
 | <a name="module_s3"></a> [s3](#module\_s3) | ../../common/s3 | n/a |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 
