@@ -49,7 +49,7 @@ resource "aws_elasticache_replication_group" "this" {
 }
 
 resource "aws_kms_key" "this" {
-  description         = "KMS key for Redis on ${var.environment}."
+  description         = "KMS key for ${var.group_name}"
   key_usage           = "ENCRYPT_DECRYPT"
   enable_key_rotation = true
 }
