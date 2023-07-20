@@ -14,8 +14,5 @@ module "vpc" {
   enable_dns_support   = true
   single_nat_gateway   = true
 
-  tags = {
-    Terraform   = "true"
-    Environment = var.environment
-  }
+  tags = local.tags
 }

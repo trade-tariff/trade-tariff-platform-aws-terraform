@@ -27,9 +27,6 @@ module "ecs" {
       }
     }
   }
-
-  # TODO
-  # add autoscaling_capacity_providers
 }
 
 resource "aws_kms_key" "log_key" {
@@ -65,12 +62,9 @@ resource "aws_kms_key" "log_key" {
     ]
   })
 }
-/* comment for now as its broken the pipeline and it may also rely on the
-aws_kms_key to be created first
 
-resource "aws_cloudwatch_log_group" "this" {
-  name              = "/aws/ecs/trade-tariff-ecs-${var.environment}"
-  retention_in_days = 7
-  kms_key_id        = aws_kms_key.log_key.key_id
+resource "aws_service_discovery_private_dns_namespace" "this" {
+  name        = "tariff.internal"
+  description = "Private DNS namespace."
+  vpc         = data.terraform_remote_state.base.outputs.vpc_id
 }
-*/
