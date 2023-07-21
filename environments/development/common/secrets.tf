@@ -64,7 +64,7 @@ module "admin_bearer_token" {
 
 module "backend_sentry_dsn" {
   source          = "../../common/secret/"
-  name            = "backend_sentry_dsn"
+  name            = "backend-sentry-dsn"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_sentry_dsn
@@ -72,7 +72,7 @@ module "backend_sentry_dsn" {
 
 module "backend_sync_email" {
   source          = "../../common/secret/"
-  name            = "backend_sync_email"
+  name            = "backend-sync-email"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_sync_email
@@ -80,7 +80,7 @@ module "backend_sync_email" {
 
 module "backend_sync_host" {
   source          = "../../common/secret/"
-  name            = "backend_sync_host"
+  name            = "backend-sync-host"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_sync_host
@@ -88,7 +88,7 @@ module "backend_sync_host" {
 
 module "backend_sync_password" {
   source          = "../../common/secret/"
-  name            = "backend_sync_password"
+  name            = "backend-sync-password"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_sync_password
@@ -96,7 +96,7 @@ module "backend_sync_password" {
 
 module "backend_sync_username" {
   source          = "../../common/secret/"
-  name            = "backend_sync_username"
+  name            = "backend-sync-username"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_sync_username
@@ -104,7 +104,7 @@ module "backend_sync_username" {
 
 module "backend_oauth_id" {
   source          = "../../common/secret/"
-  name            = "backend_oauth_id"
+  name            = "backend-oauth-id"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_oauth_id
@@ -112,7 +112,7 @@ module "backend_oauth_id" {
 
 module "backend_oauth_secret" {
   source          = "../../common/secret/"
-  name            = "backend_oauth_secret"
+  name            = "backend-oauth-secret"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_oauth_secret
