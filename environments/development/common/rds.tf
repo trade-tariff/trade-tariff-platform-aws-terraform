@@ -20,7 +20,7 @@ module "postgres" {
 }
 
 data "aws_secretsmanager_secret_version" "postgres_master_user_details" {
-  secret_id = module.postgres.master_user_secret.id
+  secret_id = module.postgres.master_user_secret
 }
 
 locals {
