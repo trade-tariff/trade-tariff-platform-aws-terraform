@@ -70,5 +70,8 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_dns_name"></a> [dns\_name](#output\_dns\_name) | DNS name of the load balancer. |
+| <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | Zone ID of the load balancer. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
