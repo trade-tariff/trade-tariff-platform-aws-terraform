@@ -1,5 +1,5 @@
 module "cloudwatch" {
-  source            = "../../common/cloudwatch/"
+  source            = "../../../modules/cloudwatch/"
   name              = "platform-logs-${var.environment}"
   retention_in_days = 30
 }

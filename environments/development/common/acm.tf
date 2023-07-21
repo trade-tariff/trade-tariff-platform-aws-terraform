@@ -1,5 +1,5 @@
 module "acm" {
-  source = "../../common/acm/"
+  source = "../../../modules/acm/"
 
   domain_name = var.domain_name
   environment = var.environment

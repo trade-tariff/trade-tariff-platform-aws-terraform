@@ -1,5 +1,5 @@
 module "ecr" {
-  source      = "../../common/ecr/"
+  source      = "../../../modules/ecr/"
   tags        = var.tags
   environment = var.environment
 }

@@ -1,5 +1,5 @@
 module "postgres" {
-  source = "../../common/rds"
+  source = "../../../modules/rds"
 
   name           = local.database_name
   engine         = "postgres"
@@ -30,7 +30,7 @@ locals {
 }
 
 module "backend_database_connection_string" {
-  source          = "../../common/secret/"
+  source          = "../../../modules/secret/"
   name            = "backend-database-connection-string"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7

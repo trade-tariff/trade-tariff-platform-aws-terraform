@@ -7,7 +7,7 @@ locals {
 }
 
 module "redis" {
-  source   = "../../common/elasticache/"
+  source   = "../../../modules/elasticache/"
   for_each = local.redis
 
   group_name           = "redis-${each.key}-${var.environment}"

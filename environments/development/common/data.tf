@@ -1,11 +1,3 @@
-
-/*
- *   The terraform_remote_state data source allows us to
- *   retrieve the root module output values from the base directory
- */
-
-
-
 data "terraform_remote_state" "base" {
   backend = "s3"
 
