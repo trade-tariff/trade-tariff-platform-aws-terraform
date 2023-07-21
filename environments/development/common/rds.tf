@@ -24,8 +24,8 @@ data "aws_secretsmanager_secret_version" "postgres_master_user_details" {
 }
 
 locals {
-  postgres_username = jsondecode(data.aws_secretsmanager_secret_version.postgres_master_user_details.secret_string)["username"]
-  postgres_password = jsondecode(data.aws_secretsmanager_secret_version.postgres_master_user_details.secret_string)["password"]
+  postgres_username = urlencode(jsondecode(data.aws_secretsmanager_secret_version.postgres_master_user_details.secret_string)["username"])
+  postgres_password = urlencode(jsondecode(data.aws_secretsmanager_secret_version.postgres_master_user_details.secret_string)["password"])
 }
 
 module "backend_database_connection_string" {
