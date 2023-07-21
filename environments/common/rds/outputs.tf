@@ -1,4 +1,4 @@
-output "master_user_password" {
+output "master_user_secret" {
   description = "AWS Secrets Manager Secret containing the master user password."
   value       = aws_db_instance.this.master_user_secret
 }
