@@ -1,7 +1,7 @@
 module "postgres" {
   source = "../../common/rds"
 
-  name           = "TradeTariffPostgres${title(var.environment)}"
+  name           = local.database_name
   engine         = "postgres"
   engine_version = "13.11"
 
@@ -26,6 +26,7 @@ data "aws_secretsmanager_secret_version" "postgres_master_user_details" {
 locals {
   postgres_username = urlencode(jsondecode(data.aws_secretsmanager_secret_version.postgres_master_user_details.secret_string)["username"])
   postgres_password = urlencode(jsondecode(data.aws_secretsmanager_secret_version.postgres_master_user_details.secret_string)["password"])
+  database_name     = "TradeTariffPostgres${title(var.environment)}"
 }
 
 module "backend_database_connection_string" {
@@ -33,5 +34,5 @@ module "backend_database_connection_string" {
   name            = "backend-database-connection-string"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = "postgres://${local.postgres_username}:${local.postgres_password}@${module.postgres.db_endpoint}"
+  secret_string   = "postgres://${local.postgres_username}:${local.postgres_password}@${module.postgres.db_endpoint}/${local.database_name}"
 }
