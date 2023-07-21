@@ -19,12 +19,19 @@ module "postgres" {
   environment = var.environment
 }
 
-resource "aws_secretsmanager_secret" "postgres_connection_string" {
-  name       = "postgres-connection-string"
-  kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
+data "aws_secretsmanager_secret_version" "postgres_master_user_details" {
+  secret_id = module.postgres.master_user_secret
 }
 
-resource "aws_secretsmanager_secret_version" "postgres_connection_string_value" {
-  secret_id     = aws_secretsmanager_secret.postgres_connection_string.id
-  secret_string = module.postgres.db_endpoint
+locals {
+  postgres_username = jsondecode(data.aws_secretsmanager_secret_version.postgres_master_user_details.secret_string)["username"]
+  postgres_password = jsondecode(data.aws_secretsmanager_secret_version.postgres_master_user_details.secret_string)["password"]
+}
+
+module "backend_database_connection_string" {
+  source          = "../../common/secret/"
+  name            = "backend-database-connection-string"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = "postgres://${local.postgres_username}:${local.postgres_password}@${module.postgres.db_endpoint}"
 }

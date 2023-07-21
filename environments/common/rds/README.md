@@ -59,5 +59,5 @@ No modules.
 | <a name="output_db_endpoint"></a> [db\_endpoint](#output\_db\_endpoint) | Connection endpoint for the RDS instance. Format: `address:port`. |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | ARN of the KMS Key created to encrypt database performance insights data. |
 | <a name="output_kms_key_id"></a> [kms\_key\_id](#output\_kms\_key\_id) | Globally unique ID of the KMS Key created to encrypt database performance insights data. |
-| <a name="output_master_user_password"></a> [master\_user\_password](#output\_master\_user\_password) | AWS Secrets Manager Secret containing the master user password. |
+| <a name="output_master_user_secret"></a> [master\_user\_secret](#output\_master\_user\_secret) | ARN of the AWS Secrets Manager Secret containing the master user password. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
