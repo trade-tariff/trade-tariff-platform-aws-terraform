@@ -75,3 +75,24 @@ resource "aws_security_group" "ecs_security_group" {
     Name = "ECS Security Group"
   }
 }
+
+
+/* Security group to allow ingress from backend to RDS instance */
+resource "aws_security_group" "be_to_rds_ingress" {
+  name        = "trade-tariff-be-rd-${var.environment}"
+  description = "Allow Ingress from Backend to RDS Instances"
+  vpc_id      = data.terraform_remote_state.base.outputs.vpc_id
+
+  # ingress traffic from Backend to RDS
+  ingress {
+    description = "Ingress from backend to RDS"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = var.private_subnets
+  }
+
+  tags = {
+    Name = "Backend to RDS Ingress Security Group"
+  }
+}
