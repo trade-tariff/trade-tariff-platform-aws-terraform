@@ -8,7 +8,16 @@ resource "aws_security_group" "alb_security_group" {
 
   # tfsec:ignore:aws-ec2-no-public-ingress-sgr
   ingress {
-    description = "HTTPS Ingress from CDN"
+    description = "HTTP Ingress from Internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # tfsec:ignore:aws-ec2-no-public-ingress-sgr
+  ingress {
+    description = "HTTPS Ingress from Internet"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
