@@ -36,6 +36,7 @@ No resources.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_private_subnets"></a> [private\_subnets](#output\_private\_subnets) | Private subnets |
 | <a name="output_private_subnets_id"></a> [private\_subnets\_id](#output\_private\_subnets\_id) | subnet id |
 | <a name="output_public_subnet_id"></a> [public\_subnet\_id](#output\_public\_subnet\_id) | subnet id |
 | <a name="output_region"></a> [region](#output\_region) | AWS region |
