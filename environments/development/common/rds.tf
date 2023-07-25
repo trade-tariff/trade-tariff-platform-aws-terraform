@@ -15,6 +15,7 @@ module "postgres" {
 
   allocated_storage     = 20
   max_allocated_storage = 40
+  security_group_ids    = module.alb-security-group.be_to_rds_group_id
 
   region      = var.region
   environment = var.environment
