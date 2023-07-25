@@ -40,6 +40,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_certificate_arn"></a> [certificate\_arn](#output\_certificate\_arn) | n/a |
 | <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | n/a |
+| <a name="output_validated_certificate_arn"></a> [validated\_certificate\_arn](#output\_validated\_certificate\_arn) | Validated certificate ARN for use with other resources. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
