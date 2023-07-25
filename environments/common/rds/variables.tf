@@ -80,3 +80,8 @@ variable "deletion_protection" {
   type        = bool
   default     = true
 }
+
+variable "private_subnets_id" {
+  description = "A list of private subnet IDs"
+  type        = list(string)
+}
