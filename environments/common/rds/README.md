@@ -27,6 +27,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_db_instance.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance) | resource |
+| [aws_db_subnet_group.rds_private_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group) | resource |
 | [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [random_string.master_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [random_string.prefix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
@@ -47,6 +48,7 @@ No modules.
 | <a name="input_max_allocated_storage"></a> [max\_allocated\_storage](#input\_max\_allocated\_storage) | Maximum allocated storage for the instance. Defaults to `null` (no autoscaling). | `number` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the database. | `string` | n/a | yes |
 | <a name="input_performance_insights_retention_period"></a> [performance\_insights\_retention\_period](#input\_performance\_insights\_retention\_period) | Amount of time, in days, (minimum 7, maximum 731, or any multiple of 31) to retain performance insights data. | `number` | `31` | no |
+| <a name="input_private_subnets_id"></a> [private\_subnets\_id](#input\_private\_subnets\_id) | A list of private subnet IDs | `list(string)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | A list of security group IDs to associate with this RDS instance. | `list(string)` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to apply to all taggable resources. | `map(string)` | `{}` | no |
