@@ -13,8 +13,8 @@ module "postgres" {
   maintenance_window = "Fri:23:00-Sat:01:00"
   private_subnets_id = data.terraform_remote_state.base.outputs.private_subnets_id
 
-  allocated_storage     = 10
-  max_allocated_storage = 20
+  allocated_storage     = 20
+  max_allocated_storage = 40
 
   region      = var.region
   environment = var.environment
