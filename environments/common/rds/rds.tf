@@ -7,6 +7,7 @@ resource "aws_db_instance" "this" {
   allocated_storage     = var.allocated_storage
   max_allocated_storage = local.max_allocated_storage
   storage_encrypted     = true
+  db_subnet_group_name  = aws_db_subnet_group.rds_private_subnet.name
 
   #tfsec:ignore:aws-rds-enable-deletion-protection
   deletion_protection     = var.deletion_protection
@@ -50,4 +51,14 @@ resource "random_string" "prefix" {
   length  = 1
   special = false
   numeric = false
+}
+
+# rds private subnet
+resource "aws_db_subnet_group" "rds_private_subnet" {
+  name       = "rds-subnet-group-${var.environment}"
+  subnet_ids = var.private_subnets_id
+
+  tags = {
+    Name = "RBS Private Subnet Group ${var.environment}"
+  }
 }
