@@ -15,10 +15,14 @@ module "postgres" {
 
   allocated_storage     = 20
   max_allocated_storage = 40
-  security_group_ids    = module.alb-security-group.be_to_rds_group_id
+  security_group_ids    = data.aws_security_group.be_to_rds_security_group.id
 
   region      = var.region
   environment = var.environment
+}
+
+data "aws_security_group" "be_to_rds_security_group" {
+  id = module.alb-security-group.be_to_rds_security_group_id
 }
 
 data "aws_secretsmanager_secret_version" "postgres_master_user_details" {

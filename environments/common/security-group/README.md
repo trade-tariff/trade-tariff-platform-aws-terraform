@@ -42,6 +42,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_alb_security_group_id"></a> [alb\_security\_group\_id](#output\_alb\_security\_group\_id) | n/a |
-| <a name="output_be_to_rds_group_id"></a> [be\_to\_rds\_group\_id](#output\_be\_to\_rds\_group\_id) | n/a |
+| <a name="output_be_to_rds_security_group_id"></a> [be\_to\_rds\_security\_group\_id](#output\_be\_to\_rds\_security\_group\_id) | n/a |
 | <a name="output_ecs_security_group_id"></a> [ecs\_security\_group\_id](#output\_ecs\_security\_group\_id) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
