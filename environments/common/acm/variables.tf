@@ -20,3 +20,8 @@ variable "domain_name" {
   type        = string
   default     = "transformtrade.co.uk"
 }
+
+variable "hosted_zone_id" {
+  description = "ID of the hosted zone."
+  type        = string
+}

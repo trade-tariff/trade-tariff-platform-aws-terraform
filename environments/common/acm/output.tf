@@ -2,6 +2,7 @@ output "domain_name" {
   value = var.domain_name
 }
 
-output "certificate_arn" {
-  value = aws_acm_certificate.acm_certificate.arn
+output "validated_certificate_arn" {
+  description = "Validated certificate ARN for use with other resources."
+  value       = aws_acm_certificate_validation.validate_acm_certificates.certificate_arn
 }

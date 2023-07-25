@@ -14,12 +14,6 @@ resource "aws_acm_certificate" "acm_certificate" {
   }
 }
 
-/* get details about a route 53 hosted zone */
-data "aws_route53_zone" "route53_zone" {
-  name         = var.domain_name
-  private_zone = false
-}
-
 /* create a record set for route53 for domain validation */
 resource "aws_route53_record" "route53_record" {
   for_each = {
@@ -35,7 +29,7 @@ resource "aws_route53_record" "route53_record" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.route53_zone.zone_id
+  zone_id         = var.hosted_zone_id
 }
 
 /*validate acm certificates */
