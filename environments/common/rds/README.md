@@ -49,7 +49,6 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | Name of the database. | `string` | n/a | yes |
 | <a name="input_performance_insights_retention_period"></a> [performance\_insights\_retention\_period](#input\_performance\_insights\_retention\_period) | Amount of time, in days, (minimum 7, maximum 731, or any multiple of 31) to retain performance insights data. | `number` | `31` | no |
 | <a name="input_private_subnets_id"></a> [private\_subnets\_id](#input\_private\_subnets\_id) | A list of private subnet IDs | `list(string)` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | AWS region. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | A list of security group IDs to associate with this RDS instance. | `list(string)` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to apply to all taggable resources. | `map(string)` | `{}` | no |
 

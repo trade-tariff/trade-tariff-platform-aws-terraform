@@ -1,6 +1,7 @@
 module "postgres" {
   source = "../../common/rds"
 
+  environment    = var.environment
   name           = local.database_name
   engine         = "postgres"
   engine_version = "13.11"
@@ -15,14 +16,11 @@ module "postgres" {
 
   allocated_storage     = 20
   max_allocated_storage = 40
-  security_group_ids    = [data.aws_security_group.be_to_rds_security_group.id]
+  security_group_ids    = [module.alb-security-group.be_to_rds_security_group_id]
 
-  region      = var.region
-  environment = var.environment
-}
-
-data "aws_security_group" "be_to_rds_security_group" {
-  id = module.alb-security-group.be_to_rds_security_group_id
+  depends_on = [
+    module.alb-security-group
+  ]
 }
 
 data "aws_secretsmanager_secret_version" "postgres_master_user_details" {
