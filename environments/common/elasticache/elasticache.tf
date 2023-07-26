@@ -14,6 +14,7 @@ resource "aws_elasticache_cluster" "this" {
   node_type                = var.instance_type
 
   security_group_ids = var.security_group_ids
+  subnet_group_name  = var.subnet_group_name
   network_type       = "ipv4"
 
   # Logging requires Redis >=6.0 (SLOWLOG), and >=6.2 (engine log)

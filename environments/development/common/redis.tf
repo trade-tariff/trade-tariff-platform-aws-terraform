@@ -17,9 +17,15 @@ module "redis" {
   cloudwatch_log_group = module.cloudwatch.log_group_name
 
   security_group_ids = [module.alb-security-group.redis_security_group_id]
+  subnet_group_name  = aws_elasticache_subnet_group.this.name
 
   maintenance_window = "sun:04:00-sun:05:00"
   snapshot_window    = "02:00-04:00"
+}
+
+resource "aws_elasticache_subnet_group" "this" {
+  name       = "redis-subnet-group"
+  subnet_ids = [data.terraform_remote_state.base.outputs.private_subnets_id]
 }
 
 resource "aws_secretsmanager_secret" "redis_connection_string" {

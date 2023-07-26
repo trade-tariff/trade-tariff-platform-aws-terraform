@@ -50,3 +50,8 @@ variable "parameter_group" {
   description = "Parameter group for replication group. For example, `default.redis5.0`."
   type        = string
 }
+
+variable "subnet_group_name" {
+  description = "Name of the subnet group to be used."
+  type        = string
+}
