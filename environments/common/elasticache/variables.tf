@@ -54,4 +54,5 @@ variable "parameter_group" {
 variable "subnet_group_name" {
   description = "Name of the subnet group to be used."
   type        = string
+  default     = null
 }
