@@ -14,3 +14,8 @@ variable "aws_account_id" {
   type        = string
   default     = "844815912454"
 }
+
+variable "private_subnets" {
+  description = "A list of private subnets inside the VPC"
+  type        = list(string)
+}
