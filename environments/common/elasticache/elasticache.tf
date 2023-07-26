@@ -1,28 +1,20 @@
-resource "aws_elasticache_replication_group" "this" {
-  replication_group_id = var.group_name
-  description          = "Redis replica group for ${var.environment}."
-
-  multi_az_enabled           = true
-  automatic_failover_enabled = true
-  apply_immediately          = var.apply_immediately
+resource "aws_elasticache_cluster" "this" {
+  cluster_id        = var.group_name
+  apply_immediately = var.apply_immediately
 
   engine               = "redis"
   engine_version       = var.redis_version
   port                 = 6739
   parameter_group_name = var.parameter_group
+  num_cache_nodes      = 1
 
-  at_rest_encryption_enabled = true
-  kms_key_id                 = aws_kms_key.this.arn
+  maintenance_window       = var.maintenance_window
+  snapshot_window          = var.snapshot_window
+  snapshot_retention_limit = var.snapshot_retention_limit
+  node_type                = var.instance_type
 
-  maintenance_window = var.maintenance_window
-  snapshot_window    = var.snapshot_window
-  node_type          = var.instance_type
-
-  num_node_groups         = var.shards
-  replicas_per_node_group = var.replicas
-
-  security_group_ids         = var.security_group_ids
-  transit_encryption_enabled = var.transit_encryption_enabled
+  security_group_ids = var.security_group_ids
+  network_type       = "ipv4"
 
   # Logging requires Redis >=6.0 (SLOWLOG), and >=6.2 (engine log)
   # https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Log_Delivery.html
@@ -46,10 +38,4 @@ resource "aws_elasticache_replication_group" "this" {
       log_type         = "engine-log"
     }
   }
-}
-
-resource "aws_kms_key" "this" {
-  description         = "KMS key for ${var.group_name}"
-  key_usage           = "ENCRYPT_DECRYPT"
-  enable_key_rotation = true
 }

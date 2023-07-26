@@ -14,26 +14,9 @@ variable "redis_version" {
   type        = string
 }
 
-variable "environment" {
-  description = "Deployment environment (i.e., `development`, `staging`, `production`)."
-  type        = string
-}
-
 variable "instance_type" {
   description = "Instance type, i.e. `cache.t3.small`."
   type        = string
-}
-
-variable "shards" {
-  description = "Number of node groups (shards) for this group. Defaults to `1`."
-  type        = number
-  default     = 1
-}
-
-variable "replicas" {
-  description = "Number of replicas to create, between 0 (none) and 5. Defaults to `0`."
-  type        = number
-  default     = 0
 }
 
 variable "cloudwatch_log_group" {
@@ -51,19 +34,19 @@ variable "snapshot_window" {
   type        = string
 }
 
+variable "snapshot_retention_limit" {
+  description = "Number of days of snapshots to retain. Defaults to `7`."
+  type        = number
+  default     = 7
+}
+
 variable "security_group_ids" {
   description = "List of security group IDs to associate with the group."
   type        = list(string)
   default     = null
 }
 
-variable "transit_encryption_enabled" {
-  description = "Whether to enable encryption in transit. Defaults to `true`."
-  type        = bool
-  default     = true
-}
-
 variable "parameter_group" {
-  description = "Parameter group for replication group. For example, `default.redis3.2.cluster.on`."
+  description = "Parameter group for replication group. For example, `default.redis5.0`."
   type        = string
 }
