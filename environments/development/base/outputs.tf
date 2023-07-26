@@ -3,24 +3,19 @@ output "region" {
   value       = var.region
 }
 
-output "public_subnet_id" {
-  description = "subnet id"
+output "public_subnet_ids" {
+  description = "A list of the VPC's public subnet IDs."
   value       = module.vpc.public_subnets
 }
 
-output "private_subnets_id" {
-  description = "subnet id"
+output "private_subnet_ids" {
+  description = "A list of the VPC's private subnet IDs."
   value       = module.vpc.private_subnets
 }
 
 output "vpc_id" {
   description = "VPC ID"
   value       = module.vpc.vpc_id
-}
-
-output "private_subnets" {
-  description = "Private subnets"
-  value       = module.vpc.private_subnets
 }
 
 output "private_subnets_cidr_blocks" {

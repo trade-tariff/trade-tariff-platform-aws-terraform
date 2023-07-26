@@ -36,10 +36,9 @@ No resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_private_subnets"></a> [private\_subnets](#output\_private\_subnets) | Private subnets |
+| <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | A list of the VPC's private subnet IDs. |
 | <a name="output_private_subnets_cidr_blocks"></a> [private\_subnets\_cidr\_blocks](#output\_private\_subnets\_cidr\_blocks) | List of cidr\_blocks of private subnets |
-| <a name="output_private_subnets_id"></a> [private\_subnets\_id](#output\_private\_subnets\_id) | subnet id |
-| <a name="output_public_subnet_id"></a> [public\_subnet\_id](#output\_public\_subnet\_id) | subnet id |
+| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | A list of the VPC's public subnet IDs. |
 | <a name="output_region"></a> [region](#output\_region) | AWS region |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -25,7 +25,7 @@ module "redis" {
 
 resource "aws_elasticache_subnet_group" "this" {
   name       = "redis-subnet-group"
-  subnet_ids = [data.terraform_remote_state.base.outputs.private_subnets_id]
+  subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 }
 
 resource "aws_secretsmanager_secret" "redis_connection_string" {
