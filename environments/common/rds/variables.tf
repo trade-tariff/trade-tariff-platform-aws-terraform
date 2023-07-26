@@ -75,7 +75,7 @@ variable "deletion_protection" {
   default     = true
 }
 
-variable "private_subnets_id" {
+variable "private_subnet_ids" {
   description = "A list of private subnet IDs"
   type        = list(string)
 }

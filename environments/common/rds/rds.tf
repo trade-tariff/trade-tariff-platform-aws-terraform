@@ -56,7 +56,7 @@ resource "random_string" "prefix" {
 # rds private subnet
 resource "aws_db_subnet_group" "rds_private_subnet" {
   name       = "rds-subnet-group-${var.environment}"
-  subnet_ids = var.private_subnets_id
+  subnet_ids = var.private_subnet_ids
 
   tags = {
     Name = "RDS Private Subnet Group ${var.environment}"
