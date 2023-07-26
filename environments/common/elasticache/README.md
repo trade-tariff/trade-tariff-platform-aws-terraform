@@ -40,7 +40,7 @@ No modules.
 | <a name="input_parameter_group"></a> [parameter\_group](#input\_parameter\_group) | Parameter group for replication group. For example, `default.redis3.2.cluster.on`. | `string` | n/a | yes |
 | <a name="input_redis_version"></a> [redis\_version](#input\_redis\_version) | Engine version to use. | `string` | n/a | yes |
 | <a name="input_replicas"></a> [replicas](#input\_replicas) | Number of replicas to create, between 0 (none) and 5. Defaults to `0`. | `number` | `0` | no |
-| <a name="input_security_group_names"></a> [security\_group\_names](#input\_security\_group\_names) | List of security group names to associate with the group. | `list(string)` | `null` | no |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | List of security group IDs to associate with the group. | `list(string)` | `null` | no |
 | <a name="input_shards"></a> [shards](#input\_shards) | Number of node groups (shards) for this group. Defaults to `1`. | `number` | `1` | no |
 | <a name="input_snapshot_window"></a> [snapshot\_window](#input\_snapshot\_window) | Daily time range during which ElastiCache will take a snapshot of the cache cluster. Minimum time of 60 minutes. For example: `05:00-06:00`. | `string` | n/a | yes |
 | <a name="input_transit_encryption_enabled"></a> [transit\_encryption\_enabled](#input\_transit\_encryption\_enabled) | Whether to enable encryption in transit. Defaults to `true`. | `bool` | `true` | no |

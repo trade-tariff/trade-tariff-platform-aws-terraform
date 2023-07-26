@@ -102,3 +102,29 @@ resource "aws_security_group" "be_to_rds_ingress" {
     Name = "Backend to RDS Ingress Security Group"
   }
 }
+
+resource "aws_security_group" "redis" {
+  name        = "trade-tariff-redis-security-group-${var.environment}"
+  description = "Traffic flow between Elasticache and ECS"
+  vpc_id      = data.terraform_remote_state.base.outputs.vpc_id
+
+  ingress {
+    description = "Ingress from private subnets"
+    from_port   = 6379
+    to_port     = 6379
+    protocol    = "tcp"
+    cidr_blocks = var.private_subnets
+  }
+
+  egress {
+    description = "Egress back out to private subnets"
+    from_port   = 6379
+    to_port     = 6379
+    protocol    = "tcp"
+    cidr_blocks = var.private_subnets
+  }
+
+  tags = {
+    Name = "Redis Security Group"
+  }
+}

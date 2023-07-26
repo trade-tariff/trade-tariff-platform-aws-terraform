@@ -51,8 +51,8 @@ variable "snapshot_window" {
   type        = string
 }
 
-variable "security_group_names" {
-  description = "List of security group names to associate with the group."
+variable "security_group_ids" {
+  description = "List of security group IDs to associate with the group."
   type        = list(string)
   default     = null
 }

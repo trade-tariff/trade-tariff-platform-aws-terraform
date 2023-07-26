@@ -18,6 +18,8 @@ module "redis" {
   shards               = 2
   replicas             = 1
 
+  security_group_ids = [module.alb-security-group.redis_security_group_id]
+
   maintenance_window = "sun:04:00-sun:05:00"
   snapshot_window    = "02:00-04:00"
 

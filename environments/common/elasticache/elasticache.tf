@@ -21,7 +21,7 @@ resource "aws_elasticache_replication_group" "this" {
   num_node_groups         = var.shards
   replicas_per_node_group = var.replicas
 
-  security_group_names       = var.security_group_names
+  security_group_ids         = var.security_group_ids
   transit_encryption_enabled = var.transit_encryption_enabled
 
   # Logging requires Redis >=6.0 (SLOWLOG), and >=6.2 (engine log)
