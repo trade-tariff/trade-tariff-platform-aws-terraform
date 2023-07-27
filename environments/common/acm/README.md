@@ -31,9 +31,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Name of the test domain | `string` | `"transformtrade.co.uk"` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | A map of tags to add to all resources | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment name. | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | ID of the hosted zone. | `string` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | AWS region. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_validation_timeout"></a> [validation\_timeout](#input\_validation\_timeout) | How long to wait for a certificate to be issued, default max 45m | `string` | `null` | no |
 
 ## Outputs
