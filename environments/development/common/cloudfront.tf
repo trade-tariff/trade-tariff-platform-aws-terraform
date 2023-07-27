@@ -3,9 +3,10 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
 }
 
 module "cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.0.1"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.1.0"
 
   aliases         = [var.domain_name]
+  create_alias    = true
   route53_zone_id = data.aws_route53_zone.this.id
   comment         = "${title(var.environment)} CDN"
 
