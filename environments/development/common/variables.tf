@@ -135,3 +135,9 @@ variable "tariff_backend_oauth_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "waf_rpm_limit" {
+  description = "Request per minute limit for the WAF."
+  type        = number
+  default     = 100
+}
