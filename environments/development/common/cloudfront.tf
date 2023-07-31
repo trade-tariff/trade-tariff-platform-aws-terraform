@@ -3,7 +3,7 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
 }
 
 module "cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.1.1"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.2.1"
 
   aliases         = [var.domain_name]
   create_alias    = true
