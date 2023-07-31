@@ -57,7 +57,7 @@ module "admin_oauth_secret" {
 module "admin_bearer_token" {
   source          = "../../common/secret/"
   name            = "admin-bearer-token"
-  kms_key_arn     = aws_kms_key.opensearch_kms_key.arn
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.admin_bearer_token
 }
