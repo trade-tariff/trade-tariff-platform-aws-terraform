@@ -21,3 +21,15 @@ resource "aws_route53_record" "origin_root" {
     evaluate_target_health = true
   }
 }
+
+resource "aws_route53_record" "origin_wildcard" {
+  zone_id = aws_route53_zone.origin.zone_id
+  name    = "*.${local.origin_domain_name}"
+  type    = "A"
+
+  alias {
+    name                   = module.alb.dns_name
+    zone_id                = module.alb.zone_id
+    evaluate_target_health = true
+  }
+}
