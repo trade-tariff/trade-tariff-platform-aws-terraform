@@ -79,3 +79,8 @@ variable "private_subnet_ids" {
   description = "A list of private subnet IDs"
   type        = list(string)
 }
+
+variable "secret_kms_key_arn" {
+  description = "ARN of the KMS Key to use to encrypt the connection string secret."
+  type        = string
+}
