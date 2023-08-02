@@ -35,30 +35,15 @@ resource "aws_db_instance" "this" {
   tags = local.tags
 }
 
+resource "aws_db_subnet_group" "rds_private_subnet" {
+  name       = "subnet-group-${random_string.private_subnet_suffix.result}"
+  subnet_ids = var.private_subnet_ids
+  tags       = local.tags
+}
+
 resource "aws_kms_key" "this" {
   description         = "KMS key for the ${var.name} RDS instance on ${var.environment}."
   key_usage           = "ENCRYPT_DECRYPT"
   enable_key_rotation = true
   tags                = local.tags
-}
-
-resource "random_string" "master_username" {
-  length  = 7
-  special = false
-}
-
-resource "random_string" "prefix" {
-  length  = 1
-  special = false
-  numeric = false
-}
-
-# rds private subnet
-resource "aws_db_subnet_group" "rds_private_subnet" {
-  name       = "rds-subnet-group-${var.environment}"
-  subnet_ids = var.private_subnet_ids
-
-  tags = {
-    Name = "RDS Private Subnet Group ${var.environment}"
-  }
 }
