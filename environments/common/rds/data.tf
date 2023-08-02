@@ -18,6 +18,7 @@ resource "random_password" "master_password" {
 resource "random_string" "private_subnet_suffix" {
   length  = 8
   special = false
+  upper   = false
 }
 
 data "aws_secretsmanager_secret_version" "this" {
