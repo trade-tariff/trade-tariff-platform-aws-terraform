@@ -35,7 +35,3 @@ resource "aws_secretsmanager_secret_version" "this" {
   secret_id     = aws_secretsmanager_secret.this.id
   secret_string = "${var.engine}://${local.master_username}:${local.master_password}@${aws_db_instance.this.endpoint}/${var.name}"
 }
-
-locals {
-  master_password = urlencode(jsondecode(data.aws_secretsmanager_secret_version.this.secret_string)["password"])
-}
