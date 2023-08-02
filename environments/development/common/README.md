@@ -72,6 +72,10 @@ No outputs.
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../common/elasticache/ | n/a |
 | <a name="module_s3"></a> [s3](#module\_s3) | ../../common/s3 | n/a |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
+| <a name="module_signon_devise_pepper"></a> [signon\_devise\_pepper](#module\_signon\_devise\_pepper) | ../../common/secret/ | n/a |
+| <a name="module_signon_devise_secret_key"></a> [signon\_devise\_secret\_key](#module\_signon\_devise\_secret\_key) | ../../common/secret/ | n/a |
+| <a name="module_signon_govuk_notify_api_key"></a> [signon\_govuk\_notify\_api\_key](#module\_signon\_govuk\_notify\_api\_key) | ../../common/secret/ | n/a |
+| <a name="module_signon_secret_key_base"></a> [signon\_secret\_key\_base](#module\_signon\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.1.3 |
 
 ## Resources
@@ -120,6 +124,10 @@ No outputs.
 | <a name="input_newrelic_license_key"></a> [newrelic\_license\_key](#input\_newrelic\_license\_key) | License key for NewRelic. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_s3_tags"></a> [s3\_tags](#input\_s3\_tags) | Tags | `map(string)` | <pre>{<br>  "Billing": "TRN.HMR11896",<br>  "Environment": "development",<br>  "Project": "trade-tariff"<br>}</pre> | no |
+| <a name="input_signon_devise_pepper"></a> [signon\_devise\_pepper](#input\_signon\_devise\_pepper) | Value of DEVISE\_PEPPER for the signon app. | `string` | n/a | yes |
+| <a name="input_signon_devise_secret_key"></a> [signon\_devise\_secret\_key](#input\_signon\_devise\_secret\_key) | Value of DEVISE\_SECRET\_KEY for the signon app. | `string` | n/a | yes |
+| <a name="input_signon_govuk_notify_api_key"></a> [signon\_govuk\_notify\_api\_key](#input\_signon\_govuk\_notify\_api\_key) | Value of GOVUK\_NOTIFY\_API\_KEY for the signon app. | `string` | n/a | yes |
+| <a name="input_signon_secret_key_base"></a> [signon\_secret\_key\_base](#input\_signon\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the signon app. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br>  "Terraform": true<br>}</pre> | no |
 | <a name="input_tariff_backend_oauth_id"></a> [tariff\_backend\_oauth\_id](#input\_tariff\_backend\_oauth\_id) | Value of Tariff Backend OAuth ID. | `string` | n/a | yes |
 | <a name="input_tariff_backend_oauth_secret"></a> [tariff\_backend\_oauth\_secret](#input\_tariff\_backend\_oauth\_secret) | Value of Tariff Backend OAuth secret. | `string` | n/a | yes |
