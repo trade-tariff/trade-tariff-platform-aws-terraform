@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   health_check {
     enabled             = true
     interval            = 60
-    path                = "/healthcheckz"
+    path                = each.value.healthcheck_path
     port                = "traffic-port"
     healthy_threshold   = 3
     unhealthy_threshold = 3
