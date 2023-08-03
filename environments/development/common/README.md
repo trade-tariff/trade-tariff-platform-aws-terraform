@@ -29,7 +29,7 @@ No outputs.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4.6 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.3 |
 
 ## Providers
 
@@ -70,6 +70,7 @@ No outputs.
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../common/rds | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../common/elasticache/ | n/a |
+| <a name="module_redis_new"></a> [redis\_new](#module\_redis\_new) | ../../common/elasticache-redis/ | n/a |
 | <a name="module_s3"></a> [s3](#module\_s3) | ../../common/s3 | n/a |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.1.3 |
