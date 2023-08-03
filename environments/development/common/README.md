@@ -73,7 +73,7 @@ No outputs.
 | <a name="module_redis_new"></a> [redis\_new](#module\_redis\_new) | ../../common/elasticache-redis/ | n/a |
 | <a name="module_s3"></a> [s3](#module\_s3) | ../../common/s3 | n/a |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
-| <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | ce48dd19135b89b85d8227ac5b6bd830a4b6676b |
+| <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | 6fec05665ea4ccc8b5c22977743bd68cc3d8d7da |
 
 ## Resources
 
