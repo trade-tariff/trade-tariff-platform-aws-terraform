@@ -1,7 +1,7 @@
 resource "aws_elasticache_replication_group" "this" {
   engine                      = "redis"
   port                        = 6739
-  replication_group_id        = "${var.replication_group_id}"
+  replication_group_id        = var.replication_group_id
   description                 = var.description
   parameter_group_name        = var.parameter_group_name
   num_node_groups             = var.num_node_groups
