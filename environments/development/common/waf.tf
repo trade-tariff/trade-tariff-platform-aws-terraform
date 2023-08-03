@@ -1,5 +1,5 @@
 module "waf" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf?ref=6fec05665ea4ccc8b5c22977743bd68cc3d8d7da"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf?ref=bbfe8ec"
 
   name  = "tariff-waf-${var.environment}"
   scope = "CLOUDFRONT"
