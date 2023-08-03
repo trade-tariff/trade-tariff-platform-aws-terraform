@@ -14,7 +14,7 @@ A module to create a Redis cluster.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.10.0 |
 
 ## Modules
 

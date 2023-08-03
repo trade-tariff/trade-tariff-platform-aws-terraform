@@ -48,19 +48,19 @@ module "redis_new" {
   replication_group_id        = "redis-${each.key}-${var.environment}-new"
   description                 = "ott-redis-${each.key}-${var.environment}"
   parameter_group_name        = "default.redis7"
-  num_node_groups         = 1
-  replicas_per_node_group = 2
+  num_node_groups             = 1
+  replicas_per_node_group     = 2
   node_type                   = "cache.t3.micro"
-  security_group_ids = [module.alb-security-group.redis_security_group_id]
-  subnet_group_name = aws_elasticache_subnet_group.this.name
-  multi_az_enabled = true
+  security_group_ids          = [module.alb-security-group.redis_security_group_id]
+  subnet_group_name           = aws_elasticache_subnet_group.this.name
+  multi_az_enabled            = true
   automatic_failover_enabled  = true
   preferred_cache_cluster_azs = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
 
   auto_minor_version_upgrade = true
-  maintenance_window = "sun:04:00-sun:05:00"
-  snapshot_window    = "02:00-04:00"
-  snapshot_retention_limit = 7
+  maintenance_window         = "sun:04:00-sun:05:00"
+  snapshot_window            = "02:00-04:00"
+  snapshot_retention_limit   = 7
 
-  apply_immediately          = true
+  apply_immediately = true
 }
