@@ -23,7 +23,7 @@ resource "aws_db_instance" "this" {
   apply_immediately = false
 
   username                            = local.master_username
-  manage_master_user_password         = true
+  password                            = local.master_password
   iam_database_authentication_enabled = true
 
   performance_insights_enabled          = true
