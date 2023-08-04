@@ -16,12 +16,13 @@ resource "aws_lb" "application_load_balancer" {
 
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
-  for_each    = local.services
-  name        = each.value.target_group_name
-  port        = var.application_port
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = var.vpc_id
+  for_each             = local.services
+  name                 = each.value.target_group_name
+  port                 = var.application_port
+  protocol             = "HTTP"
+  target_type          = "ip"
+  vpc_id               = var.vpc_id
+  deregistration_delay = 20
 
   health_check {
     enabled             = true
