@@ -1,8 +1,3 @@
-output "master_user_secret" {
-  description = "ARN of the AWS Secrets Manager Secret containing the master user password."
-  value       = aws_db_instance.this.master_user_secret[0].secret_arn
-}
-
 output "db_arn" {
   description = "ARN of the RDS instance."
   value       = aws_db_instance.this.arn
