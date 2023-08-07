@@ -12,11 +12,23 @@ variable "replication_group_id" {
 variable "apply_immediately" {
   description = "Whether to apply changes to the replication group immediately (`true`), or to wait for the next maintenance window (`false`)."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "multi_az_enabled" {
   description = "Redis multi-az configuration."
+  type        = bool
+  default     = true
+}
+
+variable "at_rest_encryption_enabled" {
+  description = "Encryption at rest."
+  type        = bool
+  default     = true
+}
+
+variable "transit_encryption_enabled" {
+  description = "Encryption in transit."
   type        = bool
   default     = true
 }
@@ -51,6 +63,22 @@ variable "replicas_per_node_group" {
 variable "node_type" {
   description = "Instance type, i.e. `cache.t3.small`."
   type        = string
+}
+
+variable "log_delivery_configuration" {
+  type = list(object({
+    destination_type = string
+    destination      = string
+    log_format       = string
+    log_type         = string
+  }))
+  description = "Log delivery configuration for redis cluster."
+  default     = []
+
+  validation {
+    condition     = length(var.log_delivery_configuration) <= 2
+    error_message = "You can set 2 targets at most for log delivery options."
+  }
 }
 
 variable "maintenance_window" {
@@ -90,4 +118,10 @@ variable "preferred_cache_cluster_azs" {
   description = "Availability zones to spread the nodes."
   type        = list(string)
   default     = null
+}
+
+variable "tags" {
+  description = "Map of tags to apply to all taggable resources."
+  type        = map(string)
+  default     = {}
 }
