@@ -28,7 +28,6 @@ jobs:
       - install_terragrunt
       - run: terraform fmt
       - run: terragrunt hclfmt
-      - run: terraform init -upgrade
       - run: terragrunt run-all validate --terragrunt-non-interactive
 
   terragrunt_plan:
