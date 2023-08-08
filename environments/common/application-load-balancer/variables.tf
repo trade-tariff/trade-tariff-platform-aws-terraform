@@ -25,12 +25,6 @@ variable "certificate_arn" {
   type        = string
 }
 
-variable "region" {
-  description = "AWS region. Defaults to `eu-west-2`."
-  type        = string
-  default     = "eu-west-2"
-}
-
 variable "enable_deletion_protection" {
   description = "If true, deletion of the load balancer will be disabled via the AWS API"
   type        = string
