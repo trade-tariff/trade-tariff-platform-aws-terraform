@@ -24,13 +24,13 @@ variable "multi_az_enabled" {
 variable "at_rest_encryption_enabled" {
   description = "Encryption at rest."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "transit_encryption_enabled" {
   description = "Encryption in transit."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "automatic_failover_enabled" {

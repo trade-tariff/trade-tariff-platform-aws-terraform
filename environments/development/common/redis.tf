@@ -77,10 +77,10 @@ module "redis" {
   automatic_failover_enabled  = true
   preferred_cache_cluster_azs = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
 
-  # tfsec:ignore:aws-elasticache-enable-at-rest-encryption
-  at_rest_encryption_enabled = false
-  # tfsec:ignore:aws-elasticache-enable-in-transit-encryption
-  transit_encryption_enabled = false
+  # # tfsec:ignore:aws-elasticache-enable-at-rest-encryption
+  # at_rest_encryption_enabled = false
+  # # tfsec:ignore:aws-elasticache-enable-in-transit-encryption
+  # transit_encryption_enabled = false
 
   auto_minor_version_upgrade = true
   maintenance_window         = "sun:04:00-sun:05:00"
