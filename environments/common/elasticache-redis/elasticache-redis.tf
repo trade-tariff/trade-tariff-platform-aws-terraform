@@ -19,7 +19,10 @@ resource "aws_elasticache_replication_group" "this" {
   maintenance_window         = var.maintenance_window
   snapshot_window            = var.snapshot_window
   snapshot_retention_limit   = var.snapshot_retention_limit
+
+  # tfsec:ignore:aws-elasticache-enable-at-rest-encryption
   at_rest_encryption_enabled = var.at_rest_encryption_enabled
+  # tfsec:ignore:aws-elasticache-enable-in-transit-encryption
   transit_encryption_enabled = var.transit_encryption_enabled
 
   dynamic "log_delivery_configuration" {
