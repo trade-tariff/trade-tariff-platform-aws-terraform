@@ -30,14 +30,14 @@ locals {
 
     worker_uk = {
       target_group_name = "worker-uk-tg-${var.environment}"
-      priority          = 30
+      priority          = 55
       paths             = ["/uk/api/beta/*"]
       healthcheck_path  = "/healthcheckz"
     }
 
     worker_xi = {
       target_group_name = "worker-xi-tg-${var.environment}"
-      priority          = 35
+      priority          = 60
       paths             = ["/xi/api/beta/*"]
       healthcheck_path  = "/healthcheckz"
     }
