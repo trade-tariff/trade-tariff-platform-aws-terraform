@@ -28,6 +28,20 @@ locals {
       healthcheck_path  = "/healthcheckz"
     }
 
+    worker_uk = {
+      target_group_name = "worker-uk-tg-${var.environment}"
+      priority          = 30
+      paths             = ["/uk/api/beta/*"]
+      healthcheck_path  = "/healthcheckz"
+    }
+
+    worker_xi = {
+      target_group_name = "worker-xi-tg-${var.environment}"
+      priority          = 35
+      paths             = ["/xi/api/beta/*"]
+      healthcheck_path  = "/healthcheckz"
+    }
+
     duty_calculator = {
       target_group_name = "trade-tariff-dc-tg-${var.environment}"
       priority          = 40
