@@ -8,7 +8,7 @@ Creates an AWS RDS instance.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4.6 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.3 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3 |
 
 ## Providers
@@ -35,7 +35,6 @@ No modules.
 | [random_string.master_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [random_string.prefix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [random_string.private_subnet_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
-| [aws_secretsmanager_secret_version.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 
 ## Inputs
 
@@ -66,5 +65,4 @@ No modules.
 | <a name="output_db_endpoint"></a> [db\_endpoint](#output\_db\_endpoint) | Connection endpoint for the RDS instance. Format: `address:port`. |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | ARN of the KMS Key created to encrypt database performance insights data. |
 | <a name="output_kms_key_id"></a> [kms\_key\_id](#output\_kms\_key\_id) | Globally unique ID of the KMS Key created to encrypt database performance insights data. |
-| <a name="output_master_user_secret"></a> [master\_user\_secret](#output\_master\_user\_secret) | ARN of the AWS Secrets Manager Secret containing the master user password. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
