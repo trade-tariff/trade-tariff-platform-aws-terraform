@@ -46,6 +46,16 @@ variable "s3_tags" {
   }
 }
 
+variable "waf_rpm_limit" {
+  description = "Request per minute limit for the WAF."
+  type        = number
+  default     = 100
+}
+
+#
+# super secret stuff
+#
+
 variable "newrelic_license_key" {
   description = "License key for NewRelic."
   type        = string
@@ -72,6 +82,12 @@ variable "duty_calculator_secret_key_base" {
 
 variable "admin_secret_key_base" {
   description = "Value of SECRET_KEY_BASE for the admin tool."
+  type        = string
+  sensitive   = true
+}
+
+variable "signon_secret_key_base" {
+  description = "Value of SECRET_KEY_BASE for the signon app."
   type        = string
   sensitive   = true
 }
@@ -136,8 +152,20 @@ variable "tariff_backend_oauth_secret" {
   sensitive   = true
 }
 
-variable "waf_rpm_limit" {
-  description = "Request per minute limit for the WAF."
-  type        = number
-  default     = 100
+variable "signon_devise_pepper" {
+  description = "Value of DEVISE_PEPPER for the signon app."
+  type        = string
+  sensitive   = true
+}
+
+variable "signon_devise_secret_key" {
+  description = "Value of DEVISE_SECRET_KEY for the signon app."
+  type        = string
+  sensitive   = true
+}
+
+variable "signon_govuk_notify_api_key" {
+  description = "Value of GOVUK_NOTIFY_API_KEY for the signon app."
+  type        = string
+  sensitive   = true
 }
