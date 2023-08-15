@@ -1,7 +1,8 @@
 locals {
   redis = toset([
     "frontend",
-    "backend",
+    "backend-uk",
+    "backend-xi",
     "admin"
   ])
 }
