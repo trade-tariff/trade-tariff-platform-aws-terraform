@@ -32,14 +32,7 @@ variable "tags" {
   description = "A map of tags to assign to resources."
   type        = map(string)
   default = {
-    Terraform = true
-  }
-}
-
-variable "s3_tags" {
-  description = "Tags"
-  type        = map(string)
-  default = {
+    Terraform   = true
     Project     = "trade-tariff"
     Environment = "development"
     Billing     = "TRN.HMR11896"
