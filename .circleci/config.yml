@@ -1,10 +1,21 @@
 version: 2.1
+
+deploy-feature-branches: &deploy-fb
+  filters:
+    branches:
+      ignore: [main]
+
+deploy-main: &deploy-main
+  filters:
+    branches:
+      only: [main]
+
 executors:
   default:
     working_directory: "/tmp/terraform"
     resource_class: small
     docker:
-      - image: hashicorp/terraform:1.4.6
+      - image: hashicorp/terraform:1.5.5
 
 commands:
   install_terragrunt:
@@ -39,7 +50,7 @@ jobs:
       - checkout
       - install_terragrunt
       - run:
-          name: Terraform Plan Development
+          name: Terraform Plan
           command: |
             cd environments/<< parameters.environment >>
             terragrunt run-all plan --terragrunt-non-interactive
@@ -65,47 +76,87 @@ jobs:
             terragrunt run-all apply --terragrunt-non-interactive
 
       - run:
-          name: Terraform apply
+          name: Terraform apply common
           command: |
             cd environments/<< parameters.environment >>/common
             terragrunt run-all apply --terragrunt-non-interactive
 
 workflows:
   version: 2
-  terraform:
+  Deploy-to-Development:
     jobs:
       - terraform_fmt_validate:
           name: terraform-fmt-development
+          <<: *deploy-fb
           environment: development
           context: trade-tariff-terraform-aws-development
-          filters:
-            branches:
-              ignore: [main]
 
       - terragrunt_plan:
           name: terragrunt-plan-development
+          <<: *deploy-fb
           requires:
             - terraform-fmt-development
           environment: development
           context: trade-tariff-terraform-aws-development
-          filters:
-            branches:
-              ignore: [main]
 
       - terragrunt_apply:
           name: terragrunt-apply-development
+          <<: *deploy-fb
           requires:
             - terragrunt-plan-development
           environment: development
           context: trade-tariff-terraform-aws-development
-          filters:
-            branches:
-              ignore: [main]
 
       - terragrunt_apply:
           name: terragrunt-apply-development
+          <<: *deploy-main
           environment: development
           context: trade-tariff-terraform-aws-development
-          filters:
-            branches:
-              only: [main]
+
+  Deploy-to-Staging:
+    jobs:
+      - terraform_fmt_validate:
+          name: terraform-fmt-staging
+          <<: *deploy-main
+          environment: staging
+          context: trade-tariff-terraform-aws-staging
+
+      - terragrunt_plan:
+          name: terragrunt-plan-staging
+          <<: *deploy-main
+          requires:
+            - terraform-fmt-staging
+          environment: staging
+          context: trade-tariff-terraform-aws-staging
+
+      - terragrunt_apply:
+          name: terragrunt-apply-staging
+          <<: *deploy-main
+          requires:
+            - terragrunt-plan-staging
+          environment: staging
+          context: trade-tariff-terraform-aws-staging
+
+  Deploy-to-Production:
+    jobs:
+      - terraform_fmt_validate:
+          name: terraform-fmt-production
+          <<: *deploy-main
+          environment: production
+          context: trade-tariff-terraform-aws-production
+
+      - terragrunt_plan:
+          name: terragrunt-plan-production
+          <<: *deploy-main
+          requires:
+            - terraform-fmt-production
+          environment: production
+          context: trade-tariff-terraform-aws-production
+
+      - terragrunt_apply:
+          name: terragrunt-apply-production
+          <<: *deploy-main
+          requires:
+            - terragrunt-plan-production
+          environment: production
+          context: trade-tariff-terraform-aws-production
