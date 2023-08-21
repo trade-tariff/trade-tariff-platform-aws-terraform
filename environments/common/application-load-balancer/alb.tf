@@ -73,7 +73,6 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
 resource "aws_lb_listener_rule" "this" {
   for_each     = local.blue_green
   listener_arn = aws_lb_listener.trade_tariff_listeners.arn
-  priority     = each.value.priority
 
   action {
     type             = "forward"
