@@ -8,11 +8,10 @@ resource "aws_kms_alias" "this" {
   target_key_id = aws_kms_key.this.key_id
 }
 
-# tfsec:ignore:aws-ecr-enforce-immutable-repository
 resource "aws_ecr_repository" "this" {
   for_each             = toset(local.applications)
   name                 = "tariff-${each.key}-${var.environment}"
-  image_tag_mutability = "MUTABLE"
+  image_tag_mutability = "IMMUTABLE"
   force_delete         = false
   tags                 = var.tags
 
@@ -24,6 +23,31 @@ resource "aws_ecr_repository" "this" {
     encryption_type = "KMS"
     kms_key         = aws_kms_key.this.arn
   }
+}
+
+resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
+  for_each = toset(local.applications)
+
+  repository = "tariff-${each.key}-${var.environment}"
+
+  policy = jsonencode({
+    rules = [{
+      rulePriority = 1
+      description  = "Expire untagged images older than 14 days"
+      selection = {
+        tagStatus   = "untagged"
+        countType   = "sinceImagePushed"
+        countNumber = 14
+        countUnit   = "days"
+      }
+      action = {
+        type = "expire"
+      }
+    }]
+  })
+  depends_on = [
+    aws_ecr_repository.this,
+  ]
 }
 
 output "repository_urls" {
