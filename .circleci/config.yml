@@ -39,7 +39,9 @@ jobs:
       - install_terragrunt
       - run: terraform fmt
       - run: terragrunt hclfmt
-      - run: terragrunt run-all validate --terragrunt-non-interactive
+      - run: |
+          cd environments/<< parameters.environment >>
+          terragrunt run-all validate --terragrunt-non-interactive
 
   terragrunt_plan:
     executor: default
@@ -141,8 +143,7 @@ workflows:
   # Production:
       - PROMOTE_TO_PRODUCTION?:
           type: approval
-          requires:
-            - terragrunt-apply-staging
+          <<: *deploy-main
 
       - terraform_fmt_validate:
           name: terraform-fmt-production
