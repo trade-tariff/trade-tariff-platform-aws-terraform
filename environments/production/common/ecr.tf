@@ -38,6 +38,6 @@ resource "aws_ssm_parameter" "ecr_url" {
 
 resource "aws_ecr_repository_policy" "ecr_allow_staging_and_development" {
   for_each   = module.ecr.repository_urls
-  repository = each.key
+  repository = "tariff-${each.key}-${var.environment}"
   policy     = data.aws_iam_policy_document.ecr_policy_document.json
 }
