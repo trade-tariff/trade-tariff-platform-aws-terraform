@@ -113,7 +113,8 @@ workflows:
           environment: development
           context: trade-tariff-terraform-aws-development
 
-  Deploy-to-Staging:
+  Deploy-to-Staging-and-Production:
+  # Staging:
     jobs:
       - terraform_fmt_validate:
           name: terraform-fmt-staging
@@ -137,12 +138,18 @@ workflows:
           environment: staging
           context: trade-tariff-terraform-aws-staging
 
-  Deploy-to-Production:
-    jobs:
+  # Production:
+      - PROMOTE_TO_PRODUCTION?:
+          type: approval
+          requires:
+            - terragrunt-apply-staging
+
       - terraform_fmt_validate:
           name: terraform-fmt-production
           <<: *deploy-main
           environment: production
+          requires:
+            - PROMOTE_TO_PRODUCTION?
           context: trade-tariff-terraform-aws-production
 
       - terragrunt_plan:
