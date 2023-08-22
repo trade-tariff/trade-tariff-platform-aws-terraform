@@ -29,7 +29,7 @@ module "ecr" {
 
 resource "aws_ssm_parameter" "ecr_url" {
   for_each    = module.ecr.repository_urls
-  name        = "/${replace(upper(each.key), "-", "_")}_ECR_URL"
+  name        = "/${var.environment}/${replace(upper(each.key), "-", "_")}_ECR_URL"
   description = "${title(each.key)} ECR repository URL."
   type        = "SecureString"
   value       = each.value
