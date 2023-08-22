@@ -16,12 +16,6 @@ variable "region" {
   default     = "eu-west-2"
 }
 
-variable "alb_name" {
-  description = "The name of the alb"
-  type        = string
-  default     = "trade-tariff-alb"
-}
-
 variable "aws_account_id" {
   description = "Development Account ID."
   type        = string

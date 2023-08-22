@@ -1,10 +1,10 @@
 #tfsec:ignore:aws-elb-alb-not-public
 resource "aws_lb" "application_load_balancer" {
-  name               = "${var.alb_name}-${var.environment}"
+  name               = var.alb_name
   load_balancer_type = "application"
   internal           = false
 
-  subnets                          = var.public_subnet_id
+  subnets                          = var.public_subnet_ids
   security_groups                  = [var.alb_security_group_id]
   enable_deletion_protection       = var.enable_deletion_protection
   enable_http2                     = var.enable_http2
@@ -16,8 +16,8 @@ resource "aws_lb" "application_load_balancer" {
 
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
-  for_each             = local.services
-  name                 = each.value.target_group_name
+  for_each             = local.blue_green
+  name                 = replace(each.value.target_group_name, "_", "-")
   port                 = var.application_port
   protocol             = "HTTP"
   target_type          = "ip"
@@ -71,9 +71,8 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
 }
 
 resource "aws_lb_listener_rule" "this" {
-  for_each     = local.services
+  for_each     = local.blue_green
   listener_arn = aws_lb_listener.trade_tariff_listeners.arn
-  priority     = each.value.priority
 
   action {
     type             = "forward"
@@ -81,7 +80,7 @@ resource "aws_lb_listener_rule" "this" {
   }
 
   dynamic "condition" {
-    for_each = lookup(local.services[each.key], "host", null) != null ? [true] : []
+    for_each = lookup(local.blue_green[each.key], "host", null) != null ? [true] : []
     content {
       host_header {
         values = each.value.host
@@ -90,7 +89,7 @@ resource "aws_lb_listener_rule" "this" {
   }
 
   dynamic "condition" {
-    for_each = lookup(local.services[each.key], "paths", null) != null ? [true] : []
+    for_each = lookup(local.blue_green[each.key], "paths", null) != null ? [true] : []
     content {
       path_pattern {
         values = each.value.paths
