@@ -13,9 +13,9 @@ variable "region" {
 }
 
 variable "environment" {
-  description = "Production environment."
+  description = "Staging environment."
   type        = string
-  default     = "production"
+  default     = "staging"
 }
 
 variable "account_ids" {

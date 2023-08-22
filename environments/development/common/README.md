@@ -61,7 +61,7 @@ No outputs.
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.2.1 |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../common/cloudwatch/ | n/a |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../common/secret/ | n/a |
-| <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../common/ecr/ | fbed2ce |
+| <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../common/ecr/ | n/a |
 | <a name="module_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#module\_frontend\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_mysql"></a> [mysql](#module\_mysql) | ../../common/rds | n/a |
@@ -119,6 +119,7 @@ No outputs.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br>  "development": "844815912454",<br>  "production": "382373577178",<br>  "staging": "451934005581"<br>}</pre> | no |
 | <a name="input_admin_bearer_token"></a> [admin\_bearer\_token](#input\_admin\_bearer\_token) | Value of BEARER\_TOKEN for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_id"></a> [admin\_oauth\_id](#input\_admin\_oauth\_id) | Value of TARIFF\_ADMIN\_OAUTH\_ID for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_secret"></a> [admin\_oauth\_secret](#input\_admin\_oauth\_secret) | Value of TARIFF\_ADMIN\_OAUTH\_SECRET for the admin tool. | `string` | n/a | yes |

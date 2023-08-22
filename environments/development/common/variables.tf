@@ -22,6 +22,15 @@ variable "aws_account_id" {
   default     = "844815912454"
 }
 
+variable "account_ids" {
+  type = map(string)
+  default = {
+    "development" = "844815912454"
+    "staging"     = "451934005581"
+    "production"  = "382373577178"
+  }
+}
+
 variable "tags" {
   description = "A map of tags to assign to resources."
   type        = map(string)
