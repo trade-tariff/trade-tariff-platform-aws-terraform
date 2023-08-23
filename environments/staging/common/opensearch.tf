@@ -78,7 +78,7 @@ module "opensearch" {
   master_instance_enabled = false
   warm_instance_enabled   = false
   instance_count          = 3
-  instance_type           = "t3.small.search" # small one for dev :)
+  instance_type           = "m6.xlarge.search"
   ebs_volume_size         = 80
 
   create_master_user = true
