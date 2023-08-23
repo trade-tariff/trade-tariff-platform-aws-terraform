@@ -5,7 +5,7 @@ variable "environment" {
 }
 
 variable "domain_name" {
-  description = "Name of the test Domain"
+  description = "Domain name of the service."
   type        = string
   default     = "transformtariff.co.uk"
 }
@@ -14,12 +14,6 @@ variable "region" {
   description = "AWS Region to use. Defaults to `eu-west-2`."
   type        = string
   default     = "eu-west-2"
-}
-
-variable "aws_account_id" {
-  description = "Development Account ID."
-  type        = string
-  default     = "844815912454"
 }
 
 variable "account_ids" {

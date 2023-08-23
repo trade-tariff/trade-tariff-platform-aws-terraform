@@ -6,12 +6,6 @@ variable "tags" {
   }
 }
 
-variable "region" {
-  description = "AWS Region to use. Defaults to `eu-west-2`."
-  type        = string
-  default     = "eu-west-2"
-}
-
 variable "environment" {
   description = "Production environment."
   type        = string
