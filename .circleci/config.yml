@@ -1,11 +1,11 @@
 version: 2.1
 
-deploy-feature-branches: &deploy-fb
+deploy-feature-branches: &ignore-main
   filters:
     branches:
       ignore: [main]
 
-deploy-main: &deploy-main
+only-main: &only-main
   filters:
     branches:
       only: [main]
@@ -89,13 +89,13 @@ workflows:
     jobs:
       - terraform_fmt_validate:
           name: terraform-fmt-development
-          <<: *deploy-fb
+          <<: *ignore-main
           environment: development
           context: trade-tariff-terraform-aws-development
 
       - terragrunt_plan:
           name: terragrunt-plan-development
-          <<: *deploy-fb
+          <<: *ignore-main
           requires:
             - terraform-fmt-development
           environment: development
@@ -103,7 +103,7 @@ workflows:
 
       - terragrunt_apply:
           name: terragrunt-apply-development
-          <<: *deploy-fb
+          <<: *ignore-main
           requires:
             - terragrunt-plan-development
           environment: development
@@ -111,7 +111,7 @@ workflows:
 
       - terragrunt_apply:
           name: terragrunt-apply-development
-          <<: *deploy-main
+          <<: *only-main
           environment: development
           context: trade-tariff-terraform-aws-development
 
@@ -119,13 +119,13 @@ workflows:
     jobs:
       - terraform_fmt_validate:
           name: terraform-fmt-staging
-          <<: *deploy-main
+          <<: *ignore-main
           environment: staging
           context: trade-tariff-terraform-aws-staging
 
       - terragrunt_plan:
           name: terragrunt-plan-staging
-          <<: *deploy-main
+          <<: *ignore-main
           requires:
             - terraform-fmt-staging
           environment: staging
@@ -133,38 +133,34 @@ workflows:
 
       - terragrunt_apply:
           name: terragrunt-apply-staging
-          <<: *deploy-main
-          requires:
-            - terragrunt-plan-staging
+          <<: *only-main
           environment: staging
           context: trade-tariff-terraform-aws-staging
 
   Deploy-to-Production:
     jobs:
-      - Promote_to_Production?:
-          type: approval
-          <<: *deploy-main
-
       - terraform_fmt_validate:
           name: terraform-fmt-production
-          <<: *deploy-main
+          <<: *ignore-main
           environment: production
-          requires:
-            - Promote_to_Production?
           context: trade-tariff-terraform-aws-production
 
       - terragrunt_plan:
           name: terragrunt-plan-production
-          <<: *deploy-main
+          <<: *ignore-main
           requires:
             - terraform-fmt-production
           environment: production
           context: trade-tariff-terraform-aws-production
 
+      - Promote_to_Production?:
+          type: approval
+          <<: *only-main
+
       - terragrunt_apply:
           name: terragrunt-apply-production
-          <<: *deploy-main
+          <<: *only-main
           requires:
-            - terragrunt-plan-production
+            - Promote_to_Production?
           environment: production
           context: trade-tariff-terraform-aws-production
