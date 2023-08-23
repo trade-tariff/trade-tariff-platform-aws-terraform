@@ -4,7 +4,7 @@
 resource "aws_security_group" "alb_security_group" {
   name        = "trade-tariff-alb-security-group-${var.environment}"
   description = "Allow TLS inbound traffic"
-  vpc_id      = data.terraform_remote_state.base.outputs.vpc_id
+  vpc_id      = var.vpc_id
 
   # tfsec:ignore:aws-ec2-no-public-ingress-sgr
   ingress {
@@ -42,7 +42,7 @@ resource "aws_security_group" "alb_security_group" {
 resource "aws_security_group" "ecs_security_group" {
   name        = "trade-tariff-ecs-security-group-${var.environment}"
   description = "Allow HTTP/S ingress, all egress"
-  vpc_id      = data.terraform_remote_state.base.outputs.vpc_id
+  vpc_id      = var.vpc_id
 
   # ingress traffic from alb
   ingress {
@@ -80,7 +80,7 @@ resource "aws_security_group" "ecs_security_group" {
 resource "aws_security_group" "be_to_rds_ingress" {
   name        = "trade-tariff-be-rd-${var.environment}"
   description = "Allow Ingress from Backend to RDS Instances"
-  vpc_id      = data.terraform_remote_state.base.outputs.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "Ingress from private subnets to RDS"
@@ -106,7 +106,7 @@ resource "aws_security_group" "be_to_rds_ingress" {
 resource "aws_security_group" "redis" {
   name        = "trade-tariff-redis-security-group-${var.environment}"
   description = "Traffic flow between Elasticache and ECS"
-  vpc_id      = data.terraform_remote_state.base.outputs.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "Ingress from private subnets"
