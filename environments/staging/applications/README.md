@@ -34,7 +34,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment. | `string` | `"development"` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment. | `string` | `"staging"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 
 ## Outputs
