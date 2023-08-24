@@ -106,12 +106,6 @@ variable "admin_oauth_secret" {
   sensitive   = true
 }
 
-variable "tariff_backend_sync_host" {
-  description = "Value of Tariff Sync host."
-  type        = string
-  sensitive   = true
-}
-
 variable "admin_bearer_token" {
   description = "Value of BEARER_TOKEN for the admin tool."
   type        = string
