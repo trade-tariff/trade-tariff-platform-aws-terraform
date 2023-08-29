@@ -16,8 +16,8 @@ resource "aws_lb" "application_load_balancer" {
 
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
-  for_each             = local.blue_green
-  name                 = replace(each.value.target_group_name, "_", "-")
+  for_each             = local.services
+  name                 = replace(each.key, "_", "-")
   port                 = var.application_port
   protocol             = "HTTP"
   target_type          = "ip"
@@ -71,7 +71,7 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
 }
 
 resource "aws_lb_listener_rule" "this" {
-  for_each     = local.blue_green
+  for_each     = local.services
   listener_arn = aws_lb_listener.trade_tariff_listeners.arn
 
   action {
@@ -80,7 +80,7 @@ resource "aws_lb_listener_rule" "this" {
   }
 
   dynamic "condition" {
-    for_each = lookup(local.blue_green[each.key], "host", null) != null ? [true] : []
+    for_each = lookup(local.services[each.key], "host", null) != null ? [true] : []
     content {
       host_header {
         values = each.value.host
@@ -89,7 +89,7 @@ resource "aws_lb_listener_rule" "this" {
   }
 
   dynamic "condition" {
-    for_each = lookup(local.blue_green[each.key], "paths", null) != null ? [true] : []
+    for_each = lookup(local.services[each.key], "paths", null) != null ? [true] : []
     content {
       path_pattern {
         values = each.value.paths
