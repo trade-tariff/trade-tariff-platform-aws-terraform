@@ -2,7 +2,7 @@
 module "vpc" {
   source = "github.com/trade-tariff/terraform-aws-vpc?ref=0ea859dd659701e6e8dda61e61c47629eeda5ba3"
 
-  name = "trade_tariff_development_vpc"
+  name = "trade-tariff-${var.environment}-vpc"
   cidr = "10.0.0.0/16"
 
   azs             = var.availability_zone
