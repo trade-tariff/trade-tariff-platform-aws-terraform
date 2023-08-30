@@ -1,7 +1,8 @@
 locals {
   buckets = {
-    persistence = "trade-tariff-persistence-${local.account_id}"
-    pdf         = "trade-tariff-pdf-${local.account_id}"
+    persistence       = "trade-tariff-persistence-${local.account_id}"
+    pdf               = "trade-tariff-pdf-${local.account_id}"
+    lambda-deployment = "trade-tariff-lambda-deployment-${local.account_id}"
   }
 }
 
