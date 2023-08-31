@@ -109,35 +109,3 @@ module "backend_oauth_secret" {
   recovery_window = 7
   secret_string   = var.tariff_backend_oauth_secret
 }
-
-module "signon_secret_key_base" {
-  source          = "../../common/secret/"
-  name            = "signon-secret-key-base"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_secret_key_base
-}
-
-module "signon_devise_pepper" {
-  source          = "../../common/secret/"
-  name            = "signon-devise-pepper"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_devise_pepper
-}
-
-module "signon_devise_secret_key" {
-  source          = "../../common/secret/"
-  name            = "signon-devise-secret-key"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_devise_secret_key
-}
-
-module "signon_govuk_notify_api_key" {
-  source          = "../../common/secret/"
-  name            = "signon-govuk-notify-api-key"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_govuk_notify_api_key
-}
