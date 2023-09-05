@@ -1,6 +1,3 @@
-#tfsec:ignore:aws-dynamodb-enable-recovery
-#tfsec:ignore:aws-dynamodb-enable-at-rest-encryption
-#tfsec:ignore:aws-dynamodb-table-customer-key
 resource "aws_dynamodb_table" "lock" {
   for_each = toset(local.applications)
 

@@ -4,10 +4,6 @@ module "cloudwatch" {
   retention_in_days = 30
 }
 
-#tfsec:ignore:aws-s3-bucket-logging
-#tfsec:ignore:aws-s3-enable-versioning
-#tfsec:ignore:aws-s3-enable-bucket-encryption
-#tfsec:ignore:aws-s3-encryption-customer-key
 module "logs" {
   source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v3.14.0"
 
