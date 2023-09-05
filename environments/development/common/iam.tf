@@ -1,13 +1,13 @@
-resource "aws_iam_user" "serverless-lambda-ci" {
+resource "aws_iam_user" "serverless_lambda_ci" {
   name = "serverless-lambda-ci"
 }
 
-resource "aws_iam_user_policy_attachment" "serverless-lambda-ci-attachment" {
-  user       = aws_iam_user.serverless-lambda-ci.name
-  policy_arn = aws_iam_policy.ci-lambda-deployment-policy.arn
+resource "aws_iam_user_policy_attachment" "serverless_lambda_ci_attachment" {
+  user       = aws_iam_user.serverless_lambda_ci.name
+  policy_arn = aws_iam_policy.ci_lambda_deployment_policy.arn
 }
 
-resource "aws_iam_policy" "ci-lambda-deployment-policy" {
+resource "aws_iam_policy" "ci_lambda_deployment_policy" {
   name        = "ci-lambda-deployment-policy"
   description = "Policy for CircleCI deployments of serverless applications"
 
