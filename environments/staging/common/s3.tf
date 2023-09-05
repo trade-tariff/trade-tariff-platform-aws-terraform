@@ -18,7 +18,6 @@ resource "aws_kms_alias" "s3_kms_alias" {
   target_key_id = aws_kms_key.s3.key_id
 }
 
-# tfsec:ignore:aws-s3-enable-bucket-logging
 resource "aws_s3_bucket" "this" {
   for_each = local.buckets
   bucket   = each.value

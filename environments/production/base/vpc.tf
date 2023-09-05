@@ -1,4 +1,3 @@
-#tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs
 module "vpc" {
   source = "github.com/trade-tariff/terraform-aws-vpc?ref=0ea859dd659701e6e8dda61e61c47629eeda5ba3"
 

@@ -6,7 +6,6 @@ resource "aws_security_group" "alb_security_group" {
   description = "Allow TLS inbound traffic"
   vpc_id      = var.vpc_id
 
-  # tfsec:ignore:aws-ec2-no-public-ingress-sgr
   ingress {
     description = "HTTP Ingress from Internet"
     from_port   = 80
@@ -15,7 +14,6 @@ resource "aws_security_group" "alb_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # tfsec:ignore:aws-ec2-no-public-ingress-sgr
   ingress {
     description = "HTTPS Ingress from Internet"
     from_port   = 443
@@ -24,7 +22,6 @@ resource "aws_security_group" "alb_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # tfsec:ignore:aws-ec2-no-public-egress-sgr
   egress {
     description = "Allow All Egress From VPC"
     from_port   = 0
@@ -62,7 +59,6 @@ resource "aws_security_group" "ecs_security_group" {
   }
 
   # We want egress out to the public internet here
-  # tfsec:ignore:aws-ec2-no-public-egress-sgr
   egress {
     description = "Allow All Egress"
     from_port   = 0

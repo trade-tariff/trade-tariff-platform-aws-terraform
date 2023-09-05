@@ -9,9 +9,8 @@ resource "aws_kms_alias" "this" {
 }
 
 resource "aws_ecr_repository" "this" {
-  for_each = toset(local.applications)
-  name     = "tariff-${each.key}-${var.environment}"
-  #tfsec:ignore:aws-ecr-enforce-immutable-repository
+  for_each             = toset(local.applications)
+  name                 = "tariff-${each.key}-${var.environment}"
   image_tag_mutability = "MUTABLE"
   force_delete         = false
   tags                 = var.tags

@@ -14,9 +14,6 @@ resource "aws_kms_alias" "opensearch_kms_alias" {
   target_key_id = aws_kms_key.opensearch_kms_key.key_id
 }
 
-#tfsec:ignore:aws-s3-enable-versioning
-#tfsec:ignore:aws-s3-enable-bucket-encryption
-#tfsec:ignore:aws-s3-encryption-customer-key
 module "opensearch_packages_bucket" {
   source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v3.14.0"
 
@@ -41,9 +38,6 @@ module "opensearch_packages_bucket" {
   }
 }
 
-#tfsec:ignore:aws-s3-enable-versioning
-#tfsec:ignore:aws-s3-enable-bucket-encryption
-#tfsec:ignore:aws-s3-encryption-customer-key
 module "search_configuration_bucket" {
   source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v3.14.0"
 
@@ -86,7 +80,6 @@ module "opensearch" {
   ssm_secret_name    = "/${var.environment}/ELASTICSEARCH_URL"
 }
 
-# tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user" "opensearch" {
   name = "tariff-opensearch-user"
 }
@@ -130,7 +123,6 @@ data "aws_iam_policy_document" "opensearch_policy" {
       "s3:PutObjectVersionTagging",
       "s3:RestoreObject"
     ]
-    # tfsec:ignore:aws-iam-no-policy-wildcards
     resources = [
       module.opensearch_packages_bucket.s3_bucket_arn,
       "${module.opensearch_packages_bucket.s3_bucket_arn}/*",

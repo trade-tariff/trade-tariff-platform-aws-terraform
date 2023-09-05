@@ -13,14 +13,12 @@ resource "aws_elasticache_subnet_group" "this" {
   subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 }
 
-# tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "redis_slow_lg" {
   for_each          = local.redis
   name              = "redis-${each.key}-${var.environment}-slow-lg"
   retention_in_days = 30
 }
 
-# tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "redis_engine_lg" {
   for_each          = local.redis
   name              = "redis-${each.key}-${var.environment}-engine-lg"

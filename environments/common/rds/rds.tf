@@ -9,7 +9,6 @@ resource "aws_db_instance" "this" {
   storage_encrypted     = true
   db_subnet_group_name  = aws_db_subnet_group.rds_private_subnet.name
 
-  #tfsec:ignore:aws-rds-enable-deletion-protection
   deletion_protection     = var.deletion_protection
   backup_retention_period = var.backup_retention_period
   backup_window           = var.backup_window
