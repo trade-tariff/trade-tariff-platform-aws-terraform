@@ -83,10 +83,10 @@ resource "aws_iam_user" "opensearch" {
   name = "tariff-opensearch-user"
 }
 
-# TODO: can we define a set of opensearch policies without using a wildcard?
 data "aws_iam_policy_document" "opensearch_policy" {
   statement {
     effect    = "Allow"
+    actions   = ["es:*"]
     resources = [module.opensearch.domain_arn]
   }
 
