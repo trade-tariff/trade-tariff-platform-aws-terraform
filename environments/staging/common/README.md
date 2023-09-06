@@ -32,6 +32,7 @@
 | <a name="module_backend_secret_key_base"></a> [backend\_secret\_key\_base](#module\_backend\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_backend_sentry_dsn"></a> [backend\_sentry\_dsn](#module\_backend\_sentry\_dsn) | ../../common/secret/ | n/a |
 | <a name="module_backend_sync_email"></a> [backend\_sync\_email](#module\_backend\_sync\_email) | ../../common/secret/ | n/a |
+| <a name="module_backend_sync_host"></a> [backend\_sync\_host](#module\_backend\_sync\_host) | ../../common/secret/ | n/a |
 | <a name="module_backend_sync_password"></a> [backend\_sync\_password](#module\_backend\_sync\_password) | ../../common/secret/ | n/a |
 | <a name="module_backend_sync_username"></a> [backend\_sync\_username](#module\_backend\_sync\_username) | ../../common/secret/ | n/a |
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.2.1 |
@@ -115,6 +116,7 @@
 | <a name="input_tariff_backend_oauth_secret"></a> [tariff\_backend\_oauth\_secret](#input\_tariff\_backend\_oauth\_secret) | Value of Tariff Backend OAuth secret. | `string` | n/a | yes |
 | <a name="input_tariff_backend_sentry_dsn"></a> [tariff\_backend\_sentry\_dsn](#input\_tariff\_backend\_sentry\_dsn) | Value of Backend Sentry DSN. | `string` | n/a | yes |
 | <a name="input_tariff_backend_sync_email"></a> [tariff\_backend\_sync\_email](#input\_tariff\_backend\_sync\_email) | Value of Tariff Sync email. | `string` | n/a | yes |
+| <a name="input_tariff_backend_sync_host"></a> [tariff\_backend\_sync\_host](#input\_tariff\_backend\_sync\_host) | Value of Tariff Sync host. Used to fetch CDS files | `string` | n/a | yes |
 | <a name="input_tariff_backend_sync_password"></a> [tariff\_backend\_sync\_password](#input\_tariff\_backend\_sync\_password) | Value of Tariff Sync password. | `string` | n/a | yes |
 | <a name="input_tariff_backend_sync_username"></a> [tariff\_backend\_sync\_username](#input\_tariff\_backend\_sync\_username) | Value of Tariff Sync username. | `string` | n/a | yes |
 | <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. | `number` | `500` | no |

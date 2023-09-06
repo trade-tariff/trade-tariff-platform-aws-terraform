@@ -78,6 +78,14 @@ module "backend_sync_email" {
   secret_string   = var.tariff_backend_sync_email
 }
 
+module "backend_sync_host" {
+  source          = "../../common/secret/"
+  name            = "backend-sync-host"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_sync_host
+}
+
 module "backend_sync_password" {
   source          = "../../common/secret/"
   name            = "backend-sync-password"

@@ -106,6 +106,12 @@ variable "admin_bearer_token" {
   sensitive   = true
 }
 
+variable "tariff_backend_sync_host" {
+  description = "Value of Tariff Sync host. Used to fetch CDS files"
+  type        = string
+  sensitive   = true
+}
+
 variable "tariff_backend_sync_password" {
   description = "Value of Tariff Sync password."
   type        = string
