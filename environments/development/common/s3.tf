@@ -3,6 +3,7 @@ locals {
     persistence       = "trade-tariff-persistence-${local.account_id}"
     pdf               = "trade-tariff-pdf-${local.account_id}"
     lambda-deployment = "trade-tariff-lambda-deployment-${local.account_id}"
+    api-docs          = "trade-tariff-api-docs-${local.account_id}"
   }
 }
 

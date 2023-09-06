@@ -15,3 +15,4 @@ module "acm_origin" {
   environment    = var.environment
   hosted_zone_id = aws_route53_zone.origin.zone_id
 }
+
