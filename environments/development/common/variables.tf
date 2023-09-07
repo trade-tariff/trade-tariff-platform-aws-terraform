@@ -112,19 +112,37 @@ variable "admin_bearer_token" {
   sensitive   = true
 }
 
-variable "tariff_backend_sync_host" {
-  description = "Value of Tariff Sync host. Used to fetch CDS files"
+variable "tariff_backend_uk_sync_host" {
+  description = "Value of Tariff Sync host."
   type        = string
   sensitive   = true
 }
 
-variable "tariff_backend_sync_password" {
+variable "tariff_backend_uk_sync_password" {
   description = "Value of Tariff Sync password."
   type        = string
   sensitive   = true
 }
 
-variable "tariff_backend_sync_username" {
+variable "tariff_backend_uk_sync_username" {
+  description = "Value of Tariff Sync username."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_xi_sync_host" {
+  description = "Value of Tariff Sync host."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_xi_sync_password" {
+  description = "Value of Tariff Sync password."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_xi_sync_username" {
   description = "Value of Tariff Sync username."
   type        = string
   sensitive   = true
