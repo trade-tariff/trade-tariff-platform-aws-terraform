@@ -78,29 +78,54 @@ module "backend_sync_email" {
   secret_string   = var.tariff_backend_sync_email
 }
 
-module "backend_sync_host" {
+module "backend_xi_sync_host" {
   source          = "../../common/secret/"
-  name            = "backend-sync-host"
+  name            = "backend-xi-sync-host"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = var.tariff_backend_sync_host
+  secret_string   = var.tariff_backend_xi_sync_host
 }
 
-module "backend_sync_password" {
+module "backend_xi_sync_password" {
   source          = "../../common/secret/"
-  name            = "backend-sync-password"
+  name            = "backend-xi-sync-password"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = var.tariff_backend_sync_password
+  secret_string   = var.tariff_backend_xi_sync_password
 }
 
-module "backend_sync_username" {
+module "backend_xi_sync_username" {
   source          = "../../common/secret/"
-  name            = "backend-sync-username"
+  name            = "backend-xi-sync-username"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = var.tariff_backend_sync_username
+  secret_string   = var.tariff_backend_xi_sync_username
 }
+
+module "backend_uk_sync_host" {
+  source          = "../../common/secret/"
+  name            = "backend-uk-sync-host"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_uk_sync_host
+}
+
+module "backend_uk_sync_password" {
+  source          = "../../common/secret/"
+  name            = "backend-uk-sync-password"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_uk_sync_password
+}
+
+module "backend_uk_sync_username" {
+  source          = "../../common/secret/"
+  name            = "backend-uk-sync-username"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_uk_sync_username
+}
+
 
 module "backend_oauth_id" {
   source          = "../../common/secret/"
