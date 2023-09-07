@@ -133,7 +133,7 @@ module "api_cdn" {
 
   origin = {
     api = {
-      domain_name = "api.${local.origin_domain_name}"
+      domain_name = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
