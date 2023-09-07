@@ -45,7 +45,6 @@
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../common/ecr/ | n/a |
 | <a name="module_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#module\_frontend\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
-| <a name="module_newrelic_license_key"></a> [newrelic\_license\_key](#module\_newrelic\_license\_key) | ../../common/secret/ | n/a |
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch | aws/opensearch-v1.1.0 |
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../common/rds | n/a |
@@ -107,7 +106,6 @@
 | <a name="input_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#input\_duty\_calculator\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the duty calculator. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `"production"` | no |
 | <a name="input_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#input\_frontend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the frontend. | `string` | n/a | yes |
-| <a name="input_newrelic_license_key"></a> [newrelic\_license\_key](#input\_newrelic\_license\_key) | License key for NewRelic. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br>  "Billing": "TRN.HMR11896",<br>  "Environment": "production",<br>  "Project": "trade-tariff",<br>  "Terraform": true<br>}</pre> | no |
 | <a name="input_tariff_backend_oauth_id"></a> [tariff\_backend\_oauth\_id](#input\_tariff\_backend\_oauth\_id) | Value of Tariff Backend OAuth ID. | `string` | n/a | yes |

@@ -22,14 +22,6 @@ module "duty_calculator_secret_key_base" {
   secret_string   = var.duty_calculator_secret_key_base
 }
 
-module "newrelic_license_key" {
-  source          = "../../common/secret/"
-  name            = "newrelic-license-key"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.newrelic_license_key
-}
-
 module "admin_secret_key_base" {
   source          = "../../common/secret/"
   name            = "admin-secret-key-base"
