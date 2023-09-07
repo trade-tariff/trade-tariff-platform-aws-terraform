@@ -46,12 +46,6 @@ variable "waf_rpm_limit" {
 # super secret stuff
 #
 
-variable "newrelic_license_key" {
-  description = "License key for NewRelic."
-  type        = string
-  sensitive   = true
-}
-
 variable "backend_secret_key_base" {
   description = "Value of SECRET_KEY_BASE for the backend."
   type        = string
