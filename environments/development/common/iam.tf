@@ -2,6 +2,10 @@ resource "aws_iam_user" "serverless_lambda_ci" {
   name = "serverless-lambda-ci"
 }
 
+data "aws_kms_alias" "s3" {
+  name = "alias/s3-key"
+}
+
 resource "aws_iam_user_policy_attachment" "serverless_lambda_ci_attachment" {
   user       = aws_iam_user.serverless_lambda_ci.name
   policy_arn = aws_iam_policy.ci_lambda_deployment_policy.arn
@@ -17,9 +21,11 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
       {
         Effect = "Allow",
         Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
           "s3:ListBucket",
           "s3:PutObject",
-          "s3:GetObject"
         ],
         Resource = [
           "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}",
@@ -27,35 +33,26 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         ]
       },
       {
-        Effect = "Allow",
-        Action = [
-          "cloudformation:DescribeStacks",
-          "cloudformation:DescribeStackEvents",
-          "cloudformation:DescribeStackResource",
-          "cloudformation:CreateStack",
-          "cloudformation:UpdateStack",
-          "cloudformation:ValidateTemplate"
-        ],
+        Effect   = "Allow",
+        Action   = ["cloudformation:*"],
         Resource = "*"
       },
       {
-        Effect = "Allow",
-        Action = [
-          "lambda:GetFunction",
-          "lambda:ListFunctions",
-          "lambda:CreateFunction",
-          "lambda:UpdateFunctionCode",
-          "lambda:UpdateFunctionConfiguration",
-          "lambda:InvokeFunction"
-        ],
+        Effect   = "Allow",
+        Action   = ["lambda:*"],
         Resource = "*"
       },
       {
         Effect = "Allow",
         Action = [
           "iam:CreateRole",
+          "iam:DeleteRole",
+          "iam:DeleteRolePolicy",
+          "iam:GetRole",
+          "iam:GetRolePolicy",
+          "iam:PassRole",
           "iam:PutRolePolicy",
-          "iam:PassRole"
+          "iam:TagRole"
         ],
         Resource = "*"
       },
@@ -63,18 +60,26 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         Effect = "Allow",
         Action = [
           "logs:CreateLogGroup",
+          "logs:TagResource",
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams"
         ],
         Resource = "*"
       },
       {
+        Effect   = "Allow",
+        Action   = ["events:*"],
+        Resource = "*"
+      },
+      {
         Effect = "Allow",
         Action = [
-          "events:PutRule",
-          "events:PutTargets"
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
         ],
-        Resource = "*"
+        Resource = [
+          data.aws_kms_alias.s3.target_key_arn
+        ]
       }
     ]
   })
