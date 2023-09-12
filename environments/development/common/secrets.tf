@@ -173,3 +173,11 @@ module "signon_derivation_salt" {
   recovery_window = 7
   secret_string   = var.signon_derivation_salt
 }
+
+module "signon_derivation_key" {
+  source          = "../../common/secret/"
+  name            = "signon-derivation-key"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.signon_derivation_key
+}
