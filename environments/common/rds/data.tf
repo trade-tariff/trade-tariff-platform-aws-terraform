@@ -29,5 +29,5 @@ resource "aws_secretsmanager_secret" "this" {
 
 resource "aws_secretsmanager_secret_version" "this" {
   secret_id     = aws_secretsmanager_secret.this.id
-  secret_string = "${var.engine}://${local.master_username}:${local.master_password}@${aws_db_instance.this.endpoint}/${var.name}"
+  secret_string = local.db_string
 }
