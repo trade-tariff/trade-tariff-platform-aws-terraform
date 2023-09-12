@@ -9,4 +9,9 @@ locals {
     },
     var.tags,
   )
+
+  db_engine  = var.engine == "mysql" ? "mysql2" : var.engine
+  db_options = var.engine == "mysql" ? "?reconnect=true&useSSL=true" : ""
+  db_string  = "${local.db_engine}://${local.master_username}:${local.master_password}@${aws_db_instance.this.endpoint}/${var.name}${local.db_options}"
+
 }
