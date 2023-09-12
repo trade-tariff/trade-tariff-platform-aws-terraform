@@ -2,10 +2,6 @@ resource "aws_iam_user" "serverless_lambda_ci" {
   name = "serverless-lambda-ci"
 }
 
-data "aws_kms_alias" "s3" {
-  name = "alias/s3-key"
-}
-
 resource "aws_iam_user_policy_attachment" "serverless_lambda_ci_attachment" {
   user       = aws_iam_user.serverless_lambda_ci.name
   policy_arn = aws_iam_policy.ci_lambda_deployment_policy.arn
@@ -78,7 +74,7 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "kms:Decrypt"
         ],
         Resource = [
-          data.aws_kms_alias.s3.target_key_arn
+          aws_kms_alias.s3_kms_alias.target_key_arn
         ]
       }
     ]
