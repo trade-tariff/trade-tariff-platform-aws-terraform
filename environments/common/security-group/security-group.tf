@@ -79,7 +79,7 @@ resource "aws_security_group" "be_to_rds_ingress" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description = "Ingress from private subnets to RDS"
+    description = "Ingress from private subnets to Postgres"
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
@@ -87,9 +87,25 @@ resource "aws_security_group" "be_to_rds_ingress" {
   }
 
   egress {
-    description = "Egress back out to private subnets"
+    description = "Egress back out from Postgres to private subnets"
     from_port   = 5432
     to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = var.private_subnets
+  }
+
+  ingress {
+    description = "Ingress from private subnets to MySQL"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = var.private_subnets
+  }
+
+  egress {
+    description = "Egress back out from MySQL to private subnets"
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = var.private_subnets
   }
