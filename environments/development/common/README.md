@@ -75,6 +75,8 @@ No outputs.
 | <a name="module_postgres_admin"></a> [postgres\_admin](#module\_postgres\_admin) | ../../common/rds | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../common/elasticache-redis/ | n/a |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
+| <a name="module_signon_derivation_key"></a> [signon\_derivation\_key](#module\_signon\_derivation\_key) | ../../common/secret/ | n/a |
+| <a name="module_signon_derivation_salt"></a> [signon\_derivation\_salt](#module\_signon\_derivation\_salt) | ../../common/secret/ | n/a |
 | <a name="module_signon_devise_pepper"></a> [signon\_devise\_pepper](#module\_signon\_devise\_pepper) | ../../common/secret/ | n/a |
 | <a name="module_signon_devise_secret_key"></a> [signon\_devise\_secret\_key](#module\_signon\_devise\_secret\_key) | ../../common/secret/ | n/a |
 | <a name="module_signon_govuk_notify_api_key"></a> [signon\_govuk\_notify\_api\_key](#module\_signon\_govuk\_notify\_api\_key) | ../../common/secret/ | n/a |
@@ -137,6 +139,8 @@ No outputs.
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `"development"` | no |
 | <a name="input_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#input\_frontend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the frontend. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
+| <a name="input_signon_derivation_key"></a> [signon\_derivation\_key](#input\_signon\_derivation\_key) | Value of ACTIVE\_RECORD\_ENCRYPTION\_PRIMARY\_KEY for the signon app. | `string` | n/a | yes |
+| <a name="input_signon_derivation_salt"></a> [signon\_derivation\_salt](#input\_signon\_derivation\_salt) | Value of ACTIVE\_RECORD\_ENCRYPTION\_KEY\_DERIVATION\_SALT for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_devise_pepper"></a> [signon\_devise\_pepper](#input\_signon\_devise\_pepper) | Value of DEVISE\_PEPPER for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_devise_secret_key"></a> [signon\_devise\_secret\_key](#input\_signon\_devise\_secret\_key) | Value of DEVISE\_SECRET\_KEY for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_govuk_notify_api_key"></a> [signon\_govuk\_notify\_api\_key](#input\_signon\_govuk\_notify\_api\_key) | Value of GOVUK\_NOTIFY\_API\_KEY for the signon app. | `string` | n/a | yes |

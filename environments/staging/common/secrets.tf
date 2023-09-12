@@ -165,3 +165,19 @@ module "signon_govuk_notify_api_key" {
   recovery_window = 7
   secret_string   = var.signon_govuk_notify_api_key
 }
+
+module "signon_derivation_salt" {
+  source          = "../../common/secret/"
+  name            = "signon-derivation-salt"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.signon_derivation_salt
+}
+
+module "signon_derivation_key" {
+  source          = "../../common/secret/"
+  name            = "signon-derivation-key"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.signon_derivation_key
+}

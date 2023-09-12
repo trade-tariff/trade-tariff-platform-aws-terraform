@@ -171,3 +171,15 @@ variable "signon_govuk_notify_api_key" {
   type        = string
   sensitive   = true
 }
+
+variable "signon_derivation_salt" {
+  description = "Value of ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT for the signon app."
+  type        = string
+  sensitive   = true
+}
+
+variable "signon_derivation_key" {
+  description = "Value of ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY for the signon app."
+  type        = string
+  sensitive   = true
+}
