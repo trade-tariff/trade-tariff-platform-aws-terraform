@@ -12,59 +12,65 @@ only-main: &only-main
 
 executors:
   default:
-    working_directory: "/tmp/terraform"
-    resource_class: small
     docker:
       - image: hashicorp/terraform:1.5.5
+    resource_class: small
+    working_directory: "/tmp/terraform"
+    environment:
+      TF_INPUT: 0
+      TF_IN_AUTOMATION: 1
+      TERRAGRUNT_VERSION: "0.50.15"
 
 commands:
-  install_terragrunt:
+  install-terragrunt:
     description: Install Terragrunt
     steps:
       - run:
           name: Download Terragrunt
-          command: wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.44.4/terragrunt_linux_amd64 -O /usr/local/bin/terragrunt
+          command: |
+            wget "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64" \
+              -O /usr/local/bin/terragrunt
       - run:
           name: Make Terragrunt executable
           command: chmod u+x /usr/local/bin/terragrunt
 
 jobs:
-  terraform_fmt_validate:
+  terraform-fmt-validate:
     executor: default
     parameters:
       environment:
         type: string
     steps:
       - checkout
-      - install_terragrunt
+      - install-terragrunt
       - run: terraform fmt
       - run: terragrunt hclfmt
       - run: |
           cd environments/<< parameters.environment >>
           terragrunt run-all validate --terragrunt-non-interactive
 
-  terragrunt_plan:
+  terragrunt-plan:
     executor: default
     parameters:
       environment:
         type: string
     steps:
       - checkout
-      - install_terragrunt
+      - install-terragrunt
       - run:
           name: Terraform Plan
           command: |
             cd environments/<< parameters.environment >>
             terragrunt run-all plan --terragrunt-non-interactive
 
-  terragrunt_apply:
+  terragrunt-apply:
     executor: default
     parameters:
       environment:
         type: string
     steps:
       - checkout
-      - install_terragrunt
+      - install-terragrunt
       - run:
           name: Terraform apply base
           command: |
@@ -85,15 +91,15 @@ jobs:
 
 workflows:
   version: 2
-  Deploy-to-Development:
+  deploy-to-development:
     jobs:
-      - terraform_fmt_validate:
+      - terraform-fmt-validate:
           name: terraform-fmt-development
           <<: *ignore-main
           environment: development
           context: trade-tariff-terraform-aws-development
 
-      - terragrunt_plan:
+      - terragrunt-plan:
           name: terragrunt-plan-development
           <<: *ignore-main
           requires:
@@ -101,29 +107,29 @@ workflows:
           environment: development
           context: trade-tariff-terraform-aws-development
 
-      - terragrunt_apply:
-          name: terragrunt-apply-development
+      - terragrunt-apply:
+          name: terragrunt-apply-development-feature
           <<: *ignore-main
           requires:
             - terragrunt-plan-development
           environment: development
           context: trade-tariff-terraform-aws-development
 
-      - terragrunt_apply:
+      - terragrunt-apply:
           name: terragrunt-apply-development
           <<: *only-main
           environment: development
           context: trade-tariff-terraform-aws-development
 
-  Deploy-to-Staging:
+  deploy-to-staging:
     jobs:
-      - terraform_fmt_validate:
+      - terraform-fmt-validate:
           name: terraform-fmt-staging
           <<: *ignore-main
           environment: staging
           context: trade-tariff-terraform-aws-staging
 
-      - terragrunt_plan:
+      - terragrunt-plan:
           name: terragrunt-plan-staging
           <<: *ignore-main
           requires:
@@ -131,21 +137,21 @@ workflows:
           environment: staging
           context: trade-tariff-terraform-aws-staging
 
-      - terragrunt_apply:
+      - terragrunt-apply:
           name: terragrunt-apply-staging
           <<: *only-main
           environment: staging
           context: trade-tariff-terraform-aws-staging
 
-  Deploy-to-Production:
+  deploy-to-production:
     jobs:
-      - terraform_fmt_validate:
+      - terraform-fmt-validate:
           name: terraform-fmt-production
           <<: *ignore-main
           environment: production
           context: trade-tariff-terraform-aws-production
 
-      - terragrunt_plan:
+      - terragrunt-plan:
           name: terragrunt-plan-production
           <<: *ignore-main
           requires:
@@ -153,14 +159,14 @@ workflows:
           environment: production
           context: trade-tariff-terraform-aws-production
 
-      - Promote_to_Production?:
+      - promote-to-production?:
           type: approval
           <<: *only-main
 
-      - terragrunt_apply:
+      - terragrunt-apply:
           name: terragrunt-apply-production
           <<: *only-main
           requires:
-            - Promote_to_Production?
+            - promote-to-production?
           environment: production
           context: trade-tariff-terraform-aws-production
