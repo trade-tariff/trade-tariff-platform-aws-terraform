@@ -70,6 +70,12 @@ variable "admin_secret_key_base" {
   sensitive   = true
 }
 
+variable "admin_sentry_dsn" {
+  description = "Value of Sentry DSN for the admin tool."
+  type        = string
+  sensitive   = true
+}
+
 variable "signon_secret_key_base" {
   description = "Value of SECRET_KEY_BASE for the signon app."
   type        = string
