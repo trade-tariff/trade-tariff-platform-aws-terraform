@@ -30,6 +30,14 @@ module "admin_secret_key_base" {
   secret_string   = var.admin_secret_key_base
 }
 
+module "admin_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "admin-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.admin_sentry_dsn
+}
+
 module "admin_oauth_id" {
   source          = "../../common/secret/"
   name            = "admin-oauth-id"
