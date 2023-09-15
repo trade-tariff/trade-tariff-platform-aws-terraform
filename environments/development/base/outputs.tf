@@ -1,5 +1,5 @@
 output "public_subnet_ids" {
-  description = "A list of the VPC's public subnets"
+  description = "A list of the VPC's public subnets."
   value       = module.vpc.public_subnets
 }
 
