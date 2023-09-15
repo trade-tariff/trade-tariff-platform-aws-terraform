@@ -1,27 +1,28 @@
-# trade-tariff-platform-aws-terraform
+# GOV.UK Trade Tariff Infrastructure
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
+This repository stores the IaC (Terraform) for the GOV.UK Trade Tariff service.
 
-No requirements.
+## Prerequisites
 
-## Providers
+- Terraform [v1.5.5](https://github.com/hashicorp/terraform/releases/tag/v1.5.5)
+or a compatible version of [OpenTF](https://github.com/opentffoundation/opentf)
+- Terragrunt >= [v0.50](https://github.com/gruntwork-io/terragrunt/releases)
 
-No providers.
+## Making changes
 
-## Modules
+To make changes to the infrastructure, modify files under the relevant `environment`
+subdirectory.
 
-No modules.
+- Install and run the [`pre-commit`](https://pre-commit.com/) hooks when making
+changes. These keep the Terraform documentation up to date, prevent linting
+errors, and ensure your changes conform to the repository standards.
 
-## Resources
+- Open a Pull Request with your changes. This will deploy the feature over the
+development environment to proof that `terraform apply` runs without failure.
 
-No resources.
+- Merges into `main` will deploy the changes into the staging environment, with
+a manual approval step required for production.
 
-## Inputs
+## License
 
-No inputs.
-
-## Outputs
-
-No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+[MIT License](LICENSE)
