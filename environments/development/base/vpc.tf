@@ -1,17 +1,36 @@
-module "vpc" {
-  source = "github.com/trade-tariff/terraform-aws-vpc?ref=0ea859dd659701e6e8dda61e61c47629eeda5ba3"
+data "aws_region" "current" {}
 
-  name = "trade-tariff-${var.environment}-vpc"
+locals {
+  region = data.aws_region.current.name
+}
+
+module "vpc" {
+  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v5.1.2"
+
+  name = "trade-tariff-development-vpc"
   cidr = "10.0.0.0/16"
 
-  azs             = var.availability_zone
-  private_subnets = var.private_subnets
-  public_subnets  = var.public_subnets
+  azs = [
+    "${local.region}a",
+    "${local.region}b",
+    "${local.region}c"
+  ]
 
-  enable_nat_gateway   = true
+  private_subnets = [
+    "10.0.1.0/24",
+    "10.0.2.0/24",
+    "10.0.3.0/24"
+  ]
+
+  public_subnets = [
+    "10.0.101.0/24",
+    "10.0.102.0/24",
+    "10.0.103.0/24"
+  ]
+
   enable_dns_hostnames = true
   enable_dns_support   = true
-  single_nat_gateway   = true
 
-  tags = local.tags
+  enable_nat_gateway = true
+  single_nat_gateway = true
 }
