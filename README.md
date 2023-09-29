@@ -1,11 +1,11 @@
-# GOV.UK Trade Tariff Infrastructure
+# GOV.UK Online Trade Tariff (OTT) Infrastructure
 
-This repository stores the IaC (Terraform) for the GOV.UK Trade Tariff service.
+This repository stores the IaC (Terraform) for the OTT service.
 
 ## Prerequisites
 
 - Terraform [v1.5.5](https://github.com/hashicorp/terraform/releases/tag/v1.5.5)
-or a compatible version of [OpenTF](https://github.com/opentffoundation/opentf)
+or a compatible version of [OpenTofu](https://github.com/opentofu/opentofu)
 - Terragrunt >= [v0.50](https://github.com/gruntwork-io/terragrunt/releases)
 
 ## Making changes
