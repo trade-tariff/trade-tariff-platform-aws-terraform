@@ -21,4 +21,16 @@ module "logs" {
       }
     }
   }
+
+  lifecycle_rule = [
+    {
+      id      = "log"
+      enabled = true
+
+      expiration = {
+        days                         = 30
+        expired_object_delete_marker = true
+      }
+    }
+  ]
 }
