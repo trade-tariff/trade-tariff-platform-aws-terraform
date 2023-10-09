@@ -7,6 +7,9 @@ resource "aws_cloudwatch_log_group" "this" {
     aws_kms_key.this,
     aws_kms_key_policy.this
   ]
+  tags = {
+    ExportToS3 = "true"
+  }
 }
 
 resource "aws_kms_key" "this" {
