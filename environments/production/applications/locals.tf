@@ -6,6 +6,7 @@ locals {
     "duty-calculator",
     "frontend",
     "search-query-parser",
-    "signon"
+    "signon",
+    "terraform-1.5.5-python3"
   ]
 }
