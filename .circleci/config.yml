@@ -13,9 +13,13 @@ only-main: &only-main
 executors:
   default:
     docker:
-      - image: hashicorp/terraform:1.5.5
+      - image: 382373577178.dkr.ecr.eu-west-2.amazonaws.com/terraform-1.5.5-python3:latest
+        aws_auth:
+          aws_access_key_id: $AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
     resource_class: small
     working_directory: "/tmp/terraform"
+    context: trade-tariff-terraform-aws-production
     environment:
       TF_INPUT: 0
       TF_IN_AUTOMATION: 1
