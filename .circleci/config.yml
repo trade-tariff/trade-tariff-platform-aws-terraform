@@ -19,7 +19,6 @@ executors:
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
     resource_class: small
     working_directory: "/tmp/terraform"
-    context: trade-tariff-terraform-aws-production
     environment:
       TF_INPUT: 0
       TF_IN_AUTOMATION: 1
