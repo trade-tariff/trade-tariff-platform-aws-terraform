@@ -21,7 +21,7 @@ module "notify_slack" {
   sns_topic_name       = "slack-topic"
 
   slack_webhook_url = local.slack.webhook_url
-  slack_channel     = "tariff-alerts"
+  slack_channel     = "trade-tariff-infrastructure"
   slack_username    = "@here"
 
   lambda_description = "Lambda function which sends notifications to Slack"
