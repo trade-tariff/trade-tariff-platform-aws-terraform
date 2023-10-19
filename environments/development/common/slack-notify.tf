@@ -32,21 +32,112 @@ module "notify_slack" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
-  alarm_name          = "Test slack notification from CW alarm"
+resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
+  alarm_name          = "High-5xx-errors"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
-  metric_name         = "Duration"
-  namespace           = "AWS/Lambda"
+  metric_name         = "HTTPCode_ELB_5XX_Count"
+  namespace           = "AWS/ApplicationELB"
   period              = "60"
   statistic           = "Sum"
-  threshold           = "2"
-  alarm_description   = "Test Alarm!!!"
+  unit                = "Count"
+  threshold           = 2
+  alarm_description   = "Too many HTTP 5xx errors"
+  treat_missing_data  = "ignore"
 
   alarm_actions = [module.notify_slack["development"].slack_topic_arn]
   ok_actions    = [module.notify_slack["development"].slack_topic_arn]
 
   dimensions = {
-    FunctionName = module.notify_slack["development"].notify_slack_lambda_function_name
+    LoadBalancer = module.alb.arn_suffix
   }
+}
+
+resource "aws_cloudwatch_metric_alarm" "high_4xx_codes" {
+  alarm_name          = "High-4xx-errors"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "HTTPCode_ELB_4XX_Count"
+  namespace           = "AWS/ApplicationELB"
+  period              = "60"
+  statistic           = "Sum"
+  unit                = "Count"
+  threshold           = 2
+  alarm_description   = "Too many HTTP 4xx errors"
+  treat_missing_data  = "ignore"
+
+  alarm_actions = [module.notify_slack["development"].slack_topic_arn]
+  ok_actions    = [module.notify_slack["development"].slack_topic_arn]
+
+  dimensions = {
+    LoadBalancer = module.alb.arn_suffix
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "high_connections_refused" {
+  alarm_name          = "High-connections-refused"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "5"
+  metric_name         = "RejectedConnectionCount"
+  namespace           = "AWS/ApplicationELB"
+  period              = "60"
+  statistic           = "Sum"
+  unit                = "Count"
+  threshold           = 2
+  alarm_description   = "Too many connection refused errors"
+  treat_missing_data  = "ignore"
+
+  alarm_actions = [module.notify_slack["development"].slack_topic_arn]
+  ok_actions    = [module.notify_slack["development"].slack_topic_arn]
+
+  dimensions = {
+    LoadBalancer = module.alb.arn_suffix
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "long_response_times" {
+  alarm_name          = "Long-response-times"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "TargetResponseTime"
+  namespace           = "AWS/ApplicationELB"
+  period              = "60"
+  statistic           = "Average"
+  unit                = "Seconds"
+  threshold           = 0.2
+  alarm_description   = "Long response times"
+  treat_missing_data  = "ignore"
+
+  alarm_actions = [module.notify_slack["development"].slack_topic_arn]
+  ok_actions    = [module.notify_slack["development"].slack_topic_arn]
+
+  dimensions = {
+    LoadBalancer = module.alb.arn_suffix
+  }
+}
+
+resource "aws_route53_health_check" "dns_health_check" {
+  fqdn                  = local.origin_domain_name
+  port                  = 443
+  type                  = "HTTPS"
+  measure_latency       = true
+  request_interval      = 30
+  failure_threshold     = 3
+  cloudwatch_alarm_name = aws_cloudwatch_metric_alarm.dns_alarm.alarm_name
+}
+
+resource "aws_cloudwatch_metric_alarm" "dns_alarm" {
+  alarm_name                = "dns-health-check-failed"
+  comparison_operator       = "LessThanThreshold"
+  evaluation_periods        = "1"
+  metric_name               = "HealthCheckStatus"
+  namespace                 = "AWS/Route53"
+  period                    = "60"
+  statistic                 = "Minimum"
+  threshold                 = "1"
+  insufficient_data_actions = []
+
+  alarm_actions     = [module.notify_slack["development"].slack_topic_arn]
+  ok_actions        = [module.notify_slack["development"].slack_topic_arn]
+  alarm_description = "DNS resolution failed, so environment is down"
 }
