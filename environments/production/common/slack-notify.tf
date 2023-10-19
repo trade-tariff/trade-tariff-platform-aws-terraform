@@ -12,7 +12,7 @@ module "notify_slack" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/aws-notify-slack?ref=aws/aws-notify-slack-v1.0.0"
 
   for_each = toset([
-    "development"
+    "production"
   ])
 
   enable_sns_topic_delivery_status_logs = true
@@ -45,8 +45,8 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   alarm_description   = "Too many HTTP 5xx errors"
   treat_missing_data  = "ignore"
 
-  alarm_actions = [module.notify_slack["development"].slack_topic_arn]
-  ok_actions    = [module.notify_slack["development"].slack_topic_arn]
+  alarm_actions = [module.notify_slack["production"].slack_topic_arn]
+  ok_actions    = [module.notify_slack["production"].slack_topic_arn]
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -66,8 +66,8 @@ resource "aws_cloudwatch_metric_alarm" "high_4xx_codes" {
   alarm_description   = "Too many HTTP 4xx errors"
   treat_missing_data  = "ignore"
 
-  alarm_actions = [module.notify_slack["development"].slack_topic_arn]
-  ok_actions    = [module.notify_slack["development"].slack_topic_arn]
+  alarm_actions = [module.notify_slack["production"].slack_topic_arn]
+  ok_actions    = [module.notify_slack["production"].slack_topic_arn]
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -87,8 +87,8 @@ resource "aws_cloudwatch_metric_alarm" "high_connections_refused" {
   alarm_description   = "Too many connection refused errors"
   treat_missing_data  = "ignore"
 
-  alarm_actions = [module.notify_slack["development"].slack_topic_arn]
-  ok_actions    = [module.notify_slack["development"].slack_topic_arn]
+  alarm_actions = [module.notify_slack["production"].slack_topic_arn]
+  ok_actions    = [module.notify_slack["production"].slack_topic_arn]
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -108,8 +108,8 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   alarm_description   = "Long response times"
   treat_missing_data  = "ignore"
 
-  alarm_actions = [module.notify_slack["development"].slack_topic_arn]
-  ok_actions    = [module.notify_slack["development"].slack_topic_arn]
+  alarm_actions = [module.notify_slack["production"].slack_topic_arn]
+  ok_actions    = [module.notify_slack["production"].slack_topic_arn]
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -137,7 +137,7 @@ resource "aws_cloudwatch_metric_alarm" "dns_alarm" {
   threshold                 = "1"
   insufficient_data_actions = []
 
-  alarm_actions     = [module.notify_slack["development"].slack_topic_arn]
-  ok_actions        = [module.notify_slack["development"].slack_topic_arn]
+  alarm_actions     = [module.notify_slack["production"].slack_topic_arn]
+  ok_actions        = [module.notify_slack["production"].slack_topic_arn]
   alarm_description = "DNS resolution failed, so environment is down"
 }
