@@ -21,7 +21,7 @@ module "notify_slack" {
   sns_topic_name       = "slack-topic"
 
   slack_webhook_url = local.slack.webhook_url
-  slack_channel     = "trade-tariff-infrastructure"
+  slack_channel     = "trade-tariff-cloudwatch-alarms"
   slack_username    = "@here"
 
   lambda_description = "Lambda function which sends notifications to Slack"
@@ -43,7 +43,7 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   unit                = "Count"
   threshold           = 2
   alarm_description   = "Too many HTTP 5xx errors"
-  treat_missing_data  = "ignore"
+  treat_missing_data  = "missing"
 
   alarm_actions = [module.notify_slack["production"].slack_topic_arn]
   ok_actions    = [module.notify_slack["production"].slack_topic_arn]
@@ -56,15 +56,15 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
 resource "aws_cloudwatch_metric_alarm" "high_4xx_codes" {
   alarm_name          = "High-4xx-errors"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = "2"
   metric_name         = "HTTPCode_ELB_4XX_Count"
   namespace           = "AWS/ApplicationELB"
-  period              = "60"
+  period              = "120"
   statistic           = "Sum"
   unit                = "Count"
-  threshold           = 2
+  threshold           = 3
   alarm_description   = "Too many HTTP 4xx errors"
-  treat_missing_data  = "ignore"
+  treat_missing_data  = "missing"
 
   alarm_actions = [module.notify_slack["production"].slack_topic_arn]
   ok_actions    = [module.notify_slack["production"].slack_topic_arn]
@@ -85,7 +85,7 @@ resource "aws_cloudwatch_metric_alarm" "high_connections_refused" {
   unit                = "Count"
   threshold           = 2
   alarm_description   = "Too many connection refused errors"
-  treat_missing_data  = "ignore"
+  treat_missing_data  = "missing"
 
   alarm_actions = [module.notify_slack["production"].slack_topic_arn]
   ok_actions    = [module.notify_slack["production"].slack_topic_arn]
@@ -106,7 +106,7 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   unit                = "Seconds"
   threshold           = 0.2
   alarm_description   = "Long response times"
-  treat_missing_data  = "ignore"
+  treat_missing_data  = "missing"
 
   alarm_actions = [module.notify_slack["production"].slack_topic_arn]
   ok_actions    = [module.notify_slack["production"].slack_topic_arn]
@@ -135,6 +135,7 @@ resource "aws_cloudwatch_metric_alarm" "dns_alarm" {
   period                    = "60"
   statistic                 = "Minimum"
   threshold                 = "1"
+  treat_missing_data        = "missing"
   insufficient_data_actions = []
 
   alarm_actions     = [module.notify_slack["production"].slack_topic_arn]
