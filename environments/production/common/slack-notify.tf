@@ -117,13 +117,12 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
 }
 
 resource "aws_route53_health_check" "dns_health_check" {
-  fqdn                  = "trade-tariff.service.gov.uk"
-  port                  = 443
-  type                  = "HTTPS"
-  measure_latency       = true
-  request_interval      = 30
-  failure_threshold     = 3
-  cloudwatch_alarm_name = aws_cloudwatch_metric_alarm.dns_alarm.alarm_name
+  fqdn              = "trade-tariff.service.gov.uk"
+  port              = 443
+  type              = "HTTPS"
+  measure_latency   = true
+  request_interval  = 30
+  failure_threshold = 3
 }
 
 resource "aws_cloudwatch_metric_alarm" "dns_alarm" {
