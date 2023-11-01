@@ -70,6 +70,14 @@ module "backend_sentry_dsn" {
   secret_string   = var.tariff_backend_sentry_dsn
 }
 
+module "backend_differences_to_emails" {
+  source          = "../../common/secret/"
+  name            = "backend-differences-to-emails"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_differences_to_emails
+}
+
 module "backend_sync_email" {
   source          = "../../common/secret/"
   name            = "backend-sync-email"
