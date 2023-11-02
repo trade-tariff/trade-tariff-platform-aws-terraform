@@ -29,6 +29,7 @@
 | <a name="module_alb"></a> [alb](#module\_alb) | ../../common/application-load-balancer/ | n/a |
 | <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../common/security-group/ | n/a |
 | <a name="module_api_cdn"></a> [api\_cdn](#module\_api\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.2.1 |
+| <a name="module_backend_differences_to_emails"></a> [backend\_differences\_to\_emails](#module\_backend\_differences\_to\_emails) | ../../common/secret/ | n/a |
 | <a name="module_backend_oauth_id"></a> [backend\_oauth\_id](#module\_backend\_oauth\_id) | ../../common/secret/ | n/a |
 | <a name="module_backend_oauth_secret"></a> [backend\_oauth\_secret](#module\_backend\_oauth\_secret) | ../../common/secret/ | n/a |
 | <a name="module_backend_secret_key_base"></a> [backend\_secret\_key\_base](#module\_backend\_secret\_key\_base) | ../../common/secret/ | n/a |
@@ -131,6 +132,7 @@
 | <a name="input_signon_govuk_notify_api_key"></a> [signon\_govuk\_notify\_api\_key](#input\_signon\_govuk\_notify\_api\_key) | Value of GOVUK\_NOTIFY\_API\_KEY for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_secret_key_base"></a> [signon\_secret\_key\_base](#input\_signon\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the signon app. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br>  "Billing": "TRN.HMR11896",<br>  "Environment": "staging",<br>  "Project": "trade-tariff",<br>  "Terraform": true<br>}</pre> | no |
+| <a name="input_tariff_backend_differences_to_emails"></a> [tariff\_backend\_differences\_to\_emails](#input\_tariff\_backend\_differences\_to\_emails) | Differences report TO email addresses. | `string` | n/a | yes |
 | <a name="input_tariff_backend_oauth_id"></a> [tariff\_backend\_oauth\_id](#input\_tariff\_backend\_oauth\_id) | Value of Tariff Backend OAuth ID. | `string` | n/a | yes |
 | <a name="input_tariff_backend_oauth_secret"></a> [tariff\_backend\_oauth\_secret](#input\_tariff\_backend\_oauth\_secret) | Value of Tariff Backend OAuth secret. | `string` | n/a | yes |
 | <a name="input_tariff_backend_sentry_dsn"></a> [tariff\_backend\_sentry\_dsn](#input\_tariff\_backend\_sentry\_dsn) | Value of Backend Sentry DSN. | `string` | n/a | yes |

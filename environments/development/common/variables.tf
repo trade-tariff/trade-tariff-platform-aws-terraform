@@ -94,6 +94,12 @@ variable "admin_oauth_id" {
   sensitive   = true
 }
 
+variable "tariff_backend_differences_to_emails" {
+  description = "Differences report TO email addresses."
+  type        = string
+  sensitive   = true
+}
+
 variable "tariff_backend_sync_email" {
   description = "Value of Tariff Sync email."
   type        = string

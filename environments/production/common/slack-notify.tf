@@ -117,13 +117,12 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
 }
 
 resource "aws_route53_health_check" "dns_health_check" {
-  fqdn                  = local.origin_domain_name
-  port                  = 443
-  type                  = "HTTPS"
-  measure_latency       = true
-  request_interval      = 30
-  failure_threshold     = 3
-  cloudwatch_alarm_name = aws_cloudwatch_metric_alarm.dns_alarm.alarm_name
+  fqdn              = "trade-tariff.service.gov.uk"
+  port              = 443
+  type              = "HTTPS"
+  measure_latency   = true
+  request_interval  = 30
+  failure_threshold = 3
 }
 
 resource "aws_cloudwatch_metric_alarm" "dns_alarm" {
@@ -141,4 +140,8 @@ resource "aws_cloudwatch_metric_alarm" "dns_alarm" {
   alarm_actions     = [module.notify_slack["production"].slack_topic_arn]
   ok_actions        = [module.notify_slack["production"].slack_topic_arn]
   alarm_description = "DNS resolution failed, so environment is down"
+
+  dimensions = {
+    HealthCheckId = aws_route53_health_check.dns_health_check.id
+  }
 }
