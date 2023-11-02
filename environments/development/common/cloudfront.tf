@@ -7,7 +7,7 @@ module "cdn" {
 
   aliases         = [var.domain_name, "signon.${var.domain_name}", "admin.${var.domain_name}"]
   create_alias    = true
-  route53_zone_id = data.aws_route53_zone.this.id
+  route53_zone_id = aws_route53_zone.this.id
   comment         = "${title(var.environment)} CDN"
 
   enabled         = true
@@ -117,7 +117,7 @@ module "api_cdn" {
 
   aliases         = ["api.${var.domain_name}"]
   create_alias    = true
-  route53_zone_id = data.aws_route53_zone.this.id
+  route53_zone_id = aws_route53_zone.this.id
   comment         = "API Docs ${title(var.environment)} CDN"
 
   enabled         = true
