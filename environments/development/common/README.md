@@ -169,5 +169,7 @@ No outputs.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_hosted_zone_name_servers"></a> [hosted\_zone\_name\_servers](#output\_hosted\_zone\_name\_servers) | Name servers. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
