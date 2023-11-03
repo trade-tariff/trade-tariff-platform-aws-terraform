@@ -1,39 +1,3 @@
-resource "aws_route53_zone" "origin" {
-  name = "origin.${local.tariff_domain}"
-}
-
-resource "aws_route53_record" "origin_ns" {
-  zone_id = aws_route53_zone.this.zone_id
-  name    = "origin.${local.tariff_domain}"
-  type    = "NS"
-  ttl     = "30"
-  records = aws_route53_zone.origin.name_servers
-}
-
-resource "aws_route53_record" "origin_root" {
-  zone_id = aws_route53_zone.origin.zone_id
-  name    = "origin.${local.tariff_domain}"
-  type    = "A"
-
-  alias {
-    name                   = module.alb.dns_name
-    zone_id                = module.alb.zone_id
-    evaluate_target_health = true
-  }
-}
-
-resource "aws_route53_record" "origin_wildcard" {
-  zone_id = aws_route53_zone.origin.zone_id
-  name    = "*.origin.${local.tariff_domain}"
-  type    = "A"
-
-  alias {
-    name                   = module.alb.dns_name
-    zone_id                = module.alb.zone_id
-    evaluate_target_health = true
-  }
-}
-
 data "terraform_remote_state" "development" {
   backend = "s3"
 
