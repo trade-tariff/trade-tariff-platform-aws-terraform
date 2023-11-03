@@ -102,3 +102,47 @@ resource "aws_iam_role_policy_attachment" "breakglass_role_policy_attachment" {
   role       = aws_iam_role.breakglass.name
   policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
 }
+
+resource "aws_iam_user" "appendix5a_ci" {
+  name = "appendix5a-ci"
+}
+
+resource "aws_iam_user_policy_attachment" "appendix5a_ci_attachment" {
+  user       = aws_iam_user.appendix5a_ci.name
+  policy_arn = aws_iam_policy.ci_appendix5a_peristence_readwrite_policy.arn
+}
+
+resource "aws_iam_policy" "ci_appendix5a_peristence_readwrite_policy" {
+  name        = "ci-appendix5a-persistence-readwrite-policy"
+  description = "Policy for CircleCI context to enable read/write access to Appendix5a persistence bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/config/chief_cds_guidance.json"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn
+        ]
+      }
+    ]
+  })
+}
