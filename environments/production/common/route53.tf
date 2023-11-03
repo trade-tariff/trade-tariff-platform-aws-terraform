@@ -1,7 +1,3 @@
-resource "aws_route53_zone" "this" {
-  name = local.tariff_domain
-}
-
 resource "aws_route53_zone" "origin" {
   name = "origin.${local.tariff_domain}"
 }

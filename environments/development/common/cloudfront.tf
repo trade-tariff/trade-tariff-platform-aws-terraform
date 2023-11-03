@@ -187,7 +187,7 @@ module "reporting_cdn" {
 
   aliases         = ["reporting.${var.domain_name}"]
   create_alias    = true
-  route53_zone_id = data.aws_route53_zone.this.id
+  route53_zone_id = aws_route53_zone.this.id
   comment         = "${title(var.environment)} Reporting CDN"
 
   enabled         = true
@@ -258,7 +258,7 @@ module "backups_cdn" {
 
   aliases         = ["dumps.${var.domain_name}"]
   create_alias    = true
-  route53_zone_id = data.aws_route53_zone.this.id
+  route53_zone_id = aws_route53_zone.this.id
   comment         = "${title(var.environment)} Backups CDN"
 
   enabled         = true

@@ -10,3 +10,8 @@ data "aws_route53_zone" "this" {
   name         = var.domain_name
   private_zone = false
 }
+
+data "aws_route53_zone" "trade_tariff" {
+  name         = local.tariff_domain
+  private_zone = false
+}
