@@ -58,19 +58,19 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
   certificate_arn   = var.certificate_arn
 
-  # our rules will take over
   default_action {
-    type = "fixed-response"
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "Not Found"
-      status_code  = "404"
-    }
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["frontend"].arn
   }
 }
 
 resource "aws_lb_listener_rule" "this" {
-  for_each     = local.services
+  # exclude frontend from rules as it's a default
+  # ugly horrible for_each i am sorry
+  for_each = toset([
+    for s in local.services : s if s != "frontend"
+  ])
+
   listener_arn = aws_lb_listener.trade_tariff_listeners.arn
 
   action {
