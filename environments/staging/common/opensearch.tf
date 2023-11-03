@@ -1,7 +1,3 @@
-# tfsec ignores are in place as:
-# - we do not need versioning on these buckets
-# - it is not correctly identifying the encryption
-
 resource "aws_kms_key" "opensearch_kms_key" {
   description             = "KMS key for encrypting OpenSearch cluster and buckets."
   deletion_window_in_days = 10
@@ -66,7 +62,7 @@ module "opensearch" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch?ref=aws/opensearch-v1.1.0"
 
   cluster_name    = "tariff-search-${var.environment}"
-  cluster_domain  = var.domain_name
+  cluster_domain  = "ott-staging.co.uk"
   cluster_version = "2.3"
 
   master_instance_enabled = false

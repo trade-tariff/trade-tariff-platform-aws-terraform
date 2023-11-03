@@ -1,6 +1,3 @@
-# - we do not need versioning on these buckets
-# - it is not correctly identifying the encryption
-
 resource "aws_kms_key" "opensearch_kms_key" {
   description             = "KMS key for encrypting OpenSearch cluster and buckets."
   deletion_window_in_days = 10
