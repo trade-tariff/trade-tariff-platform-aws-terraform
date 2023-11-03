@@ -1,7 +1,7 @@
 locals {
   account_id         = data.aws_caller_identity.current.account_id
   origin_domain_name = "origin.${var.domain_name}"
-
+  tariff_domain      = "trade-tariff.service.gov.uk"
 }
 
 data "aws_caller_identity" "current" {}

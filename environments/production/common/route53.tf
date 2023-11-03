@@ -1,14 +1,14 @@
 resource "aws_route53_zone" "this" {
-  name = var.domain_name
+  name = local.tariff_domain
 }
 
 resource "aws_route53_zone" "origin" {
-  name = local.origin_domain_name
+  name = "origin.${local.tariff_domain}"
 }
 
 resource "aws_route53_record" "origin_ns" {
   zone_id = aws_route53_zone.this.zone_id
-  name    = local.origin_domain_name
+  name    = "origin.${local.tariff_domain}"
   type    = "NS"
   ttl     = "30"
   records = aws_route53_zone.origin.name_servers
@@ -16,7 +16,7 @@ resource "aws_route53_record" "origin_ns" {
 
 resource "aws_route53_record" "origin_root" {
   zone_id = aws_route53_zone.origin.zone_id
-  name    = local.origin_domain_name
+  name    = "origin.${local.tariff_domain}"
   type    = "A"
 
   alias {
@@ -28,7 +28,7 @@ resource "aws_route53_record" "origin_root" {
 
 resource "aws_route53_record" "origin_wildcard" {
   zone_id = aws_route53_zone.origin.zone_id
-  name    = "*.${local.origin_domain_name}"
+  name    = "*.origin.${local.tariff_domain}"
   type    = "A"
 
   alias {
@@ -60,12 +60,12 @@ data "terraform_remote_state" "staging" {
 
 resource "aws_route53_zone" "lower_env" {
   for_each = toset(["dev", "staging"])
-  name     = "${each.key}.${var.domain_name}"
+  name     = "${each.key}.${local.tariff_domain}"
 }
 
 resource "aws_route53_record" "dev_name_servers" {
   zone_id = aws_route53_zone.lower_env["dev"].zone_id
-  name    = "dev.${var.domain_name}"
+  name    = "dev.${local.tariff_domain}"
   type    = "NS"
   ttl     = "30"
   records = data.terraform_remote_state.development.outputs.hosted_zone_name_servers
@@ -73,7 +73,7 @@ resource "aws_route53_record" "dev_name_servers" {
 
 resource "aws_route53_record" "staging_name_servers" {
   zone_id = aws_route53_zone.lower_env["staging"].zone_id
-  name    = "staging.${var.domain_name}"
+  name    = "staging.${local.tariff_domain}"
   type    = "NS"
   ttl     = "30"
   records = data.terraform_remote_state.staging.outputs.hosted_zone_name_servers
