@@ -67,9 +67,10 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
 resource "aws_lb_listener_rule" "this" {
   # exclude frontend from rules as it's a default
   # ugly horrible for_each i am sorry
-  for_each = toset([
-    for s in local.services : s if s != "frontend"
-  ])
+  for_each = {
+    for k, v in local.services : k => v
+    if k != "frontend"
+  }
 
   listener_arn = aws_lb_listener.trade_tariff_listeners.arn
 
