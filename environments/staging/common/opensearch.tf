@@ -62,7 +62,7 @@ module "opensearch" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch?ref=aws/opensearch-v1.1.0"
 
   cluster_name    = "tariff-search-${var.environment}"
-  cluster_domain  = "ott-staging.co.uk"
+  cluster_domain  = var.domain_name
   cluster_version = "2.3"
 
   master_instance_enabled = false
