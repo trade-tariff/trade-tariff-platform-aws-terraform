@@ -63,7 +63,7 @@ module "search_configuration_bucket" {
 }
 
 module "opensearch" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch?ref=aws/opensearch-v1.1.0"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch?ref=474bad3"
 
   cluster_name    = "tariff-search-${var.environment}"
   cluster_domain  = var.domain_name
