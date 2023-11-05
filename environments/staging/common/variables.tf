@@ -7,7 +7,7 @@ variable "environment" {
 variable "domain_name" {
   description = "Domain name of the service."
   type        = string
-  default     = "ott-staging.co.uk"
+  default     = "staging.trade-tariff.service.gov.uk"
 }
 
 variable "region" {

@@ -23,7 +23,7 @@ module "cdn" {
 
   origin = {
     frontend = {
-      domain_name = local.origin_domain_name
+      domain_name = module.alb.dns_name
       custom_origin_config = {
         http_port              = 80
         https_port             = 443

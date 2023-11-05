@@ -1,13 +1,13 @@
 variable "environment" {
-  type        = string
   description = "Build environment"
+  type        = string
   default     = "development"
 }
 
 variable "domain_name" {
   description = "Domain name of the service."
   type        = string
-  default     = "transformtariff.co.uk"
+  default     = "dev.trade-tariff.service.gov.uk"
 }
 
 variable "region" {

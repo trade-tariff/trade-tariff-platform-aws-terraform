@@ -188,7 +188,7 @@ module "reporting_cdn" {
   aliases         = ["reporting.${var.domain_name}"]
   create_alias    = true
   route53_zone_id = data.aws_route53_zone.this.id
-  comment         = "${title(var.environment)} Reports CDN"
+  comment         = "${title(var.environment)} Reporting CDN"
 
   enabled         = true
   is_ipv6_enabled = true
