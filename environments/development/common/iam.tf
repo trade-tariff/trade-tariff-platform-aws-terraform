@@ -37,6 +37,15 @@ resource "aws_iam_policy" "ci_reporting_policy" {
         Resource = [
           aws_kms_alias.s3_kms_alias.target_key_arn
         ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "cloudfront:CreateInvalidation",
+        ],
+        Resource = [
+          "arn:aws:cloudfront::${local.account_id}:distribution/${module.reporting_cdn.aws_cloudfront_distribution_id}"
+        ]
       }
     ]
   })
