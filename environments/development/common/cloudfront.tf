@@ -111,6 +111,28 @@ resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   }
 }
 
+resource "aws_cloudfront_origin_access_identity" "api" {
+  comment = "Origin Access Identity for ${aws_s3_bucket.this["api-docs"]} bucket"
+}
+
+data "aws_iam_policy_document" "api" {
+  statement {
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      "${aws_s3_bucket.this["api-docs"].arn}/*",
+      aws_s3_bucket.this["api-docs"].arn,
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.api.iam_arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "api" {
+  policy = data.aws_iam_policy_document.api.json
+}
+
 module "api_cdn" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
 
@@ -134,6 +156,11 @@ module "api_cdn" {
     api = {
       domain_name = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
       bucket      = aws_s3_bucket.this["api-docs"].id
+
+      s3_origin_config = {
+        origin_access_identity = aws_cloudfront_origin_access_identity.api.cloudfront_access_identity_path
+      }
+
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
@@ -181,6 +208,28 @@ module "api_cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+}
+
+resource "aws_cloudfront_origin_access_identity" "reporting" {
+  comment = "Origin Access Identity for ${aws_s3_bucket.this["reporting"]} bucket"
+}
+
+data "aws_iam_policy_document" "reporting" {
+  statement {
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      "${aws_s3_bucket.this["reporting"].arn}/*",
+      aws_s3_bucket.this["reporting"].arn,
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.reporting.iam_arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "reporting" {
+  policy = data.aws_iam_policy_document.reporting.json
 }
 
 module "reporting_cdn" {
@@ -206,6 +255,11 @@ module "reporting_cdn" {
     reporting = {
       domain_name = aws_s3_bucket.this["reporting"].bucket_regional_domain_name
       bucket      = aws_s3_bucket.this["reporting"].id
+
+      s3_origin_config = {
+        origin_access_identity = aws_cloudfront_origin_access_identity.reporting.cloudfront_access_identity_path
+      }
+
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
@@ -255,6 +309,28 @@ module "reporting_cdn" {
   }
 }
 
+resource "aws_cloudfront_origin_access_identity" "database_backups" {
+  comment = "Origin Access Identity for ${aws_s3_bucket.this["database-backups"]} bucket"
+}
+
+data "aws_iam_policy_document" "database_backups" {
+  statement {
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      "${aws_s3_bucket.this["database-backups"].arn}/*",
+      aws_s3_bucket.this["database-backups"].arn,
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.database_backups.iam_arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "database_backups" {
+  policy = data.aws_iam_policy_document.database_backups.json
+}
+
 module "backups_cdn" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
 
@@ -278,6 +354,10 @@ module "backups_cdn" {
     dumps = {
       domain_name = aws_s3_bucket.this["database-backups"].bucket_regional_domain_name
       bucket      = aws_s3_bucket.this["database-backups"].id
+
+      s3_origin_config = {
+        origin_access_identity = aws_cloudfront_origin_access_identity.database_backups.cloudfront_access_identity_path
+      }
 
       custom_origin_config = {
         http_port              = 80
