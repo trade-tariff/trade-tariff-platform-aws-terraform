@@ -112,7 +112,7 @@ resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
 }
 
 resource "aws_cloudfront_origin_access_identity" "api" {
-  comment = "Origin Access Identity for ${aws_s3_bucket.this["api-docs"]} bucket"
+  comment = "Origin Access Identity for ${aws_s3_bucket.this["api-docs"].id} bucket"
 }
 
 data "aws_iam_policy_document" "api" {
@@ -211,7 +211,7 @@ module "api_cdn" {
 }
 
 resource "aws_cloudfront_origin_access_identity" "reporting" {
-  comment = "Origin Access Identity for ${aws_s3_bucket.this["reporting"]} bucket"
+  comment = "Origin Access Identity for ${aws_s3_bucket.this["reporting"].id} bucket"
 }
 
 data "aws_iam_policy_document" "reporting" {
@@ -310,7 +310,7 @@ module "reporting_cdn" {
 }
 
 resource "aws_cloudfront_origin_access_identity" "database_backups" {
-  comment = "Origin Access Identity for ${aws_s3_bucket.this["database-backups"]} bucket"
+  comment = "Origin Access Identity for ${aws_s3_bucket.this["database-backups"].id} bucket"
 }
 
 data "aws_iam_policy_document" "database_backups" {
