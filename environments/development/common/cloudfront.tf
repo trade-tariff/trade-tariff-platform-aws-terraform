@@ -130,6 +130,7 @@ data "aws_iam_policy_document" "api" {
 }
 
 resource "aws_s3_bucket_policy" "api" {
+  bucket = aws_s3_bucket.this["api-docs"].id
   policy = data.aws_iam_policy_document.api.json
 }
 
@@ -155,7 +156,6 @@ module "api_cdn" {
   origin = {
     api = {
       domain_name = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
-      bucket      = aws_s3_bucket.this["api-docs"].id
 
       s3_origin_config = {
         origin_access_identity = aws_cloudfront_origin_access_identity.api.cloudfront_access_identity_path
@@ -229,6 +229,7 @@ data "aws_iam_policy_document" "reporting" {
 }
 
 resource "aws_s3_bucket_policy" "reporting" {
+  bucket = aws_s3_bucket.this["reporting"].id
   policy = data.aws_iam_policy_document.reporting.json
 }
 
@@ -254,7 +255,6 @@ module "reporting_cdn" {
   origin = {
     reporting = {
       domain_name = aws_s3_bucket.this["reporting"].bucket_regional_domain_name
-      bucket      = aws_s3_bucket.this["reporting"].id
 
       s3_origin_config = {
         origin_access_identity = aws_cloudfront_origin_access_identity.reporting.cloudfront_access_identity_path
@@ -328,6 +328,7 @@ data "aws_iam_policy_document" "database_backups" {
 }
 
 resource "aws_s3_bucket_policy" "database_backups" {
+  bucket = aws_s3_bucket.this["database-backups"].id
   policy = data.aws_iam_policy_document.database_backups.json
 }
 
@@ -353,7 +354,6 @@ module "backups_cdn" {
   origin = {
     dumps = {
       domain_name = aws_s3_bucket.this["database-backups"].bucket_regional_domain_name
-      bucket      = aws_s3_bucket.this["database-backups"].id
 
       s3_origin_config = {
         origin_access_identity = aws_cloudfront_origin_access_identity.database_backups.cloudfront_access_identity_path
