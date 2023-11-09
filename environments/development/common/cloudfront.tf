@@ -3,7 +3,7 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
 }
 
 module "cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.2.1"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
 
   aliases         = [var.domain_name, "signon.${var.domain_name}", "admin.${var.domain_name}"]
   create_alias    = true
@@ -112,7 +112,7 @@ resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
 }
 
 module "api_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.2.1"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
 
   aliases         = ["api.${var.domain_name}"]
   create_alias    = true
@@ -133,6 +133,7 @@ module "api_cdn" {
   origin = {
     api = {
       domain_name = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
+      bucket      = aws_s3_bucket.this["api-docs"].id
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
@@ -183,7 +184,7 @@ module "api_cdn" {
 }
 
 module "reporting_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.2.1"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
 
   aliases         = ["reporting.${var.domain_name}"]
   create_alias    = true
@@ -202,8 +203,9 @@ module "reporting_cdn" {
   }
 
   origin = {
-    api = {
+    reporting = {
       domain_name = aws_s3_bucket.this["reporting"].bucket_regional_domain_name
+      bucket      = aws_s3_bucket.this["reporting"].id
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
@@ -254,7 +256,7 @@ module "reporting_cdn" {
 }
 
 module "backups_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.2.1"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
 
   aliases         = ["dumps.${var.domain_name}"]
   create_alias    = true
@@ -273,8 +275,10 @@ module "backups_cdn" {
   }
 
   origin = {
-    api = {
+    dumps = {
       domain_name = aws_s3_bucket.this["database-backups"].bucket_regional_domain_name
+      bucket      = aws_s3_bucket.this["database-backups"].id
+
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
