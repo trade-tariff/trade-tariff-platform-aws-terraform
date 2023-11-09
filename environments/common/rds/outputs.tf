@@ -8,6 +8,11 @@ output "db_endpoint" {
   value       = aws_db_instance.this.endpoint
 }
 
+output "db_identifier" {
+  description = "Name of the RDS instance."
+  value       = aws_db_instance.this.identifier
+}
+
 output "kms_key_arn" {
   description = "ARN of the KMS Key created to encrypt database performance insights data."
   value       = aws_kms_key.this.arn
