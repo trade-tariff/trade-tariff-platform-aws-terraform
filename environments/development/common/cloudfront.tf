@@ -160,13 +160,6 @@ module "api_cdn" {
       s3_origin_config = {
         origin_access_identity = aws_cloudfront_origin_access_identity.api.cloudfront_access_identity_path
       }
-
-      custom_origin_config = {
-        http_port              = 80
-        https_port             = 443
-        origin_protocol_policy = "https-only"
-        origin_ssl_protocols   = ["TLSv1.2"]
-      }
     }
   }
 
@@ -259,13 +252,6 @@ module "reporting_cdn" {
       s3_origin_config = {
         origin_access_identity = aws_cloudfront_origin_access_identity.reporting.cloudfront_access_identity_path
       }
-
-      custom_origin_config = {
-        http_port              = 80
-        https_port             = 443
-        origin_protocol_policy = "https-only"
-        origin_ssl_protocols   = ["TLSv1.2"]
-      }
     }
   }
 
@@ -357,13 +343,6 @@ module "backups_cdn" {
 
       s3_origin_config = {
         origin_access_identity = aws_cloudfront_origin_access_identity.database_backups.cloudfront_access_identity_path
-      }
-
-      custom_origin_config = {
-        http_port              = 80
-        https_port             = 443
-        origin_protocol_policy = "https-only"
-        origin_ssl_protocols   = ["TLSv1.2"]
       }
     }
   }
