@@ -137,10 +137,11 @@ resource "aws_s3_bucket_policy" "api" {
 module "api_cdn" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
 
-  aliases         = ["api.${var.domain_name}"]
-  create_alias    = true
-  route53_zone_id = data.aws_route53_zone.this.id
-  comment         = "API Docs ${title(var.environment)} CDN"
+  aliases             = ["api.${var.domain_name}"]
+  create_alias        = true
+  route53_zone_id     = data.aws_route53_zone.this.id
+  comment             = "API Docs ${title(var.environment)} CDN"
+  default_root_object = "index.html"
 
   enabled         = true
   is_ipv6_enabled = true
