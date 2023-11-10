@@ -43,7 +43,10 @@ No outputs.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_acm"></a> [acm](#module\_acm) | ../../common/acm/ | n/a |
+| <a name="module_acm_api"></a> [acm\_api](#module\_acm\_api) | ../../common/acm | n/a |
+| <a name="module_acm_dumps"></a> [acm\_dumps](#module\_acm\_dumps) | ../../common/acm | n/a |
 | <a name="module_acm_origin"></a> [acm\_origin](#module\_acm\_origin) | ../../common/acm | n/a |
+| <a name="module_acm_reporting"></a> [acm\_reporting](#module\_acm\_reporting) | ../../common/acm | n/a |
 | <a name="module_admin_bearer_token"></a> [admin\_bearer\_token](#module\_admin\_bearer\_token) | ../../common/secret/ | n/a |
 | <a name="module_admin_oauth_id"></a> [admin\_oauth\_id](#module\_admin\_oauth\_id) | ../../common/secret/ | n/a |
 | <a name="module_admin_oauth_secret"></a> [admin\_oauth\_secret](#module\_admin\_oauth\_secret) | ../../common/secret/ | n/a |
