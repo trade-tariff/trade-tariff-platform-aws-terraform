@@ -15,24 +15,3 @@ module "acm_origin" {
   environment    = var.environment
   hosted_zone_id = aws_route53_zone.origin.zone_id
 }
-
-module "acm_reporting" {
-  source         = "../../common/acm"
-  domain_name    = "reporting.${var.domain_name}"
-  environment    = var.environment
-  hosted_zone_id = aws_route53_zone.origin.zone_id
-}
-
-module "acm_api" {
-  source         = "../../common/acm"
-  domain_name    = "api.${var.domain_name}"
-  environment    = var.environment
-  hosted_zone_id = aws_route53_zone.origin.zone_id
-}
-
-module "acm_dumps" {
-  source         = "../../common/acm"
-  domain_name    = "dumps.${var.domain_name}"
-  environment    = var.environment
-  hosted_zone_id = aws_route53_zone.origin.zone_id
-}
