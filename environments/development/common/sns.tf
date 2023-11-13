@@ -1,4 +1,10 @@
+resource "random_id" "this" {
+  byte_length = 2
+}
+
 data "aws_iam_policy_document" "sns_topic_policy" {
+  policy_id = "rds_policy_${random_id.this.dec}"
+
   statement {
     effect = "Allow"
     actions = [
