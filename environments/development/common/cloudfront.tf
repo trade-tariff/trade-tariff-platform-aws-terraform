@@ -73,28 +73,6 @@ module "cdn" {
   }
 }
 
-resource "aws_cloudfront_cache_policy" "cache_all_qsa" {
-  name        = "Cache-All-QSA-${var.environment}"
-  comment     = "Cache all QSA (managed by Terraform)"
-  default_ttl = 86400
-  max_ttl     = 31536000
-  min_ttl     = 1
-
-  parameters_in_cache_key_and_forwarded_to_origin {
-    cookies_config {
-      cookie_behavior = "none"
-    }
-
-    headers_config {
-      header_behavior = "none"
-    }
-
-    query_strings_config {
-      query_string_behavior = "all"
-    }
-  }
-}
-
 resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   name    = "Forward-All-QSA-${var.environment}"
   comment = "Forward all QSA (managed by Terraform)"
@@ -120,7 +98,7 @@ resource "aws_cloudfront_origin_request_policy" "s3" {
 
   headers_config {
     header_behavior = "whitelist"
-    headers         {
+    headers {
       items = ["Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"]
     }
   }
@@ -131,8 +109,28 @@ resource "aws_cloudfront_origin_request_policy" "s3" {
 }
 
 
-data "aws_cloudfront_cache_policy" "caching_optimised" {
-  name = "Managed-CachingOptimized"
+resource "aws_cloudfront_cache_policy" "s3" {
+  name = "s3"
+
+  comment = "Enables caching s3 buckets. Bucket policies restrict specific cloudfront distributions."
+
+  default_ttl = 86400
+  max_ttl     = 31536000
+  min_ttl     = 1
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config {
+      cookie_behavior = "none"
+    }
+
+    headers_config {
+      header_behavior = "none"
+    }
+
+    query_strings_config {
+      query_string_behavior = "all"
+    }
+  }
 }
 
 resource "aws_cloudfront_origin_access_control" "s3" {
@@ -200,7 +198,7 @@ module "api_cdn" {
       target_origin_id       = "api"
       viewer_protocol_policy = "redirect-to-https"
 
-      cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimised.id
+      cache_policy_id          = aws_cloudfront_cache_policy.s3.id
       origin_request_policy_id = aws_cloudfront_origin_request_policy.s3.id
 
       min_ttl     = 0
@@ -276,7 +274,7 @@ module "reporting_cdn" {
       target_origin_id       = "reporting"
       viewer_protocol_policy = "redirect-to-https"
 
-      cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimised.id
+      cache_policy_id          = aws_cloudfront_cache_policy.s3.id
       origin_request_policy_id = aws_cloudfront_origin_request_policy.s3.id
 
       min_ttl     = 0
@@ -352,7 +350,7 @@ module "backups_cdn" {
       target_origin_id       = "dumps"
       viewer_protocol_policy = "redirect-to-https"
 
-      cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimised.id
+      cache_policy_id          = aws_cloudfront_cache_policy.s3.id
       origin_request_policy_id = aws_cloudfront_origin_request_policy.s3.id
 
       min_ttl     = 0
