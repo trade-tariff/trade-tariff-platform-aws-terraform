@@ -3,7 +3,6 @@ locals {
     api-docs          = "trade-tariff-api-docs-${local.account_id}"
     database-backups  = "trade-tariff-database-backups-${local.account_id}"
     lambda-deployment = "trade-tariff-lambda-deployment-${local.account_id}"
-    pdf               = "trade-tariff-pdf-${local.account_id}"
     persistence       = "trade-tariff-persistence-${local.account_id}"
     reporting         = "trade-tariff-reporting-${local.account_id}"
   }
@@ -14,6 +13,37 @@ resource "aws_kms_key" "s3" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+}
+
+data "aws_iam_policy_document" "s3_kms_key_policy" {
+  statement {
+    sid       = "Enable IAM User Permissions"
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
+
+    principals {
+      identifiers = ["arn:aws:iam::${local.account_id}:root"]
+      type        = "AWS"
+    }
+  }
+
+  statement {
+    sid       = "Allow use of the key for CloudFront OAI"
+    effect    = "Allow"
+    actions   = ["kms:Decrypt"]
+    resources = ["*"]
+
+    principals {
+      identifiers = ["cloudfront.amazonaws.com"]
+      type        = "Service"
+    }
+  }
+}
+
+resource "aws_kms_key_policy" "s3_kms_key_policy" {
+  key_id = aws_kms_key.s3.key_id
+  policy = data.aws_iam_policy_document.s3_kms_key_policy.json
 }
 
 resource "aws_kms_alias" "s3_kms_alias" {
