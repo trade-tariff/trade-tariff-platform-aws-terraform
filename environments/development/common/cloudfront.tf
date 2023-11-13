@@ -111,9 +111,25 @@ resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   }
 }
 
-data "aws_cloudfront_origin_request_policy" "default" {
-  name = "Managed-CORS-S3Origin"
+resource "aws_cloudfront_origin_request_policy" "s3" {
+  name    = "CORS-S3Origin-${var.environment}"
+  comment = "Custom version of Managed-CORS-S3Origin (managed by Terraform)"
+  cookies_config {
+    cookie_behavior = "none"
+  }
+
+  headers_config {
+    header_behavior = "whitelist"
+    headers         {
+      items = ["Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"]
+    }
+  }
+
+  query_strings_config {
+    query_string_behavior = "all"
+  }
 }
+
 
 data "aws_cloudfront_cache_policy" "caching_optimised" {
   name = "Managed-CachingOptimized"
@@ -185,23 +201,13 @@ module "api_cdn" {
       viewer_protocol_policy = "redirect-to-https"
 
       cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimised.id
-      origin_request_policy_id = data.aws_cloudfront_origin_request_policy.default.id
+      origin_request_policy_id = aws_cloudfront_origin_request_policy.s3.id
 
       min_ttl     = 0
       default_ttl = 0
       max_ttl     = 0
 
       compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
     },
   }
 
@@ -271,23 +277,13 @@ module "reporting_cdn" {
       viewer_protocol_policy = "redirect-to-https"
 
       cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimised.id
-      origin_request_policy_id = data.aws_cloudfront_origin_request_policy.default.id
+      origin_request_policy_id = aws_cloudfront_origin_request_policy.s3.id
 
       min_ttl     = 0
       default_ttl = 0
       max_ttl     = 0
 
       compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
     },
   }
 
@@ -357,23 +353,13 @@ module "backups_cdn" {
       viewer_protocol_policy = "redirect-to-https"
 
       cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimised.id
-      origin_request_policy_id = data.aws_cloudfront_origin_request_policy.default.id
+      origin_request_policy_id = aws_cloudfront_origin_request_policy.s3.id
 
       min_ttl     = 0
       default_ttl = 0
       max_ttl     = 0
 
       compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
     },
   }
 
