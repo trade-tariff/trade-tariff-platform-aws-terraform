@@ -166,11 +166,8 @@ module "api_cdn" {
 
   origin = {
     api = {
-      domain_name = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
-
-      s3_origin_config = {
-        origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
-      }
+      domain_name              = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
+      origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     }
   }
 
@@ -260,11 +257,8 @@ module "reporting_cdn" {
 
   origin = {
     reporting = {
-      domain_name = aws_s3_bucket.this["reporting"].bucket_regional_domain_name
-
-      s3_origin_config = {
-        origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
-      }
+      domain_name              = aws_s3_bucket.this["reporting"].bucket_regional_domain_name
+      origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     }
   }
 
@@ -354,11 +348,8 @@ module "backups_cdn" {
 
   origin = {
     dumps = {
-      domain_name = aws_s3_bucket.this["database-backups"].bucket_regional_domain_name
-
-      s3_origin_config = {
-        origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
-      }
+      domain_name              = aws_s3_bucket.this["database-backups"].bucket_regional_domain_name
+      origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     }
   }
 
