@@ -3,7 +3,7 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
 }
 
 module "cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.3.0"
 
   aliases         = [var.domain_name, "signon.${var.domain_name}", "admin.${var.domain_name}"]
   create_alias    = true
@@ -108,7 +108,6 @@ resource "aws_cloudfront_origin_request_policy" "s3" {
   }
 }
 
-
 resource "aws_cloudfront_cache_policy" "s3" {
   name = "s3"
 
@@ -167,7 +166,7 @@ data "aws_iam_policy_document" "api" {
 }
 
 module "api_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.3.0"
 
   aliases             = ["api.${var.domain_name}"]
   create_alias        = true
@@ -244,7 +243,7 @@ data "aws_iam_policy_document" "reporting" {
 }
 
 module "reporting_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.3.0"
 
   aliases         = ["reporting.${var.domain_name}"]
   create_alias    = true
@@ -320,7 +319,7 @@ data "aws_iam_policy_document" "backups" {
 }
 
 module "backups_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=HOTT-4358-origin-access-identity"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.3.0"
 
   aliases         = ["dumps.${var.domain_name}"]
   create_alias    = true
