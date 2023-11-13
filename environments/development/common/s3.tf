@@ -1,11 +1,28 @@
 locals {
   buckets = {
-    api-docs          = "trade-tariff-api-docs-${local.account_id}"
-    database-backups  = "trade-tariff-database-backups-${local.account_id}"
-    lambda-deployment = "trade-tariff-lambda-deployment-${local.account_id}"
-    pdf               = "trade-tariff-pdf-${local.account_id}"
-    persistence       = "trade-tariff-persistence-${local.account_id}"
-    reporting         = "trade-tariff-reporting-${local.account_id}"
+    api-docs = {
+      name                        = "trade-tariff-api-docs-${local.account_id}"
+      is_cdn_origin               = true
+      cloudfront_distribution_arn = module.api_cdn.aws_cloudfront_distribution_arn
+    }
+    database-backups = {
+      name                        = "trade-tariff-database-backups-${local.account_id}"
+      is_cdn_origin               = true
+      cloudfront_distribution_arn = module.backups_cdn.aws_cloudfront_distribution_arn
+    }
+    lambda-deployment = {
+      name          = "trade-tariff-lambda-deployment-${local.account_id}"
+      is_cdn_origin = false
+    }
+    persistence = {
+      name          = "trade-tariff-persistence-${local.account_id}"
+      is_cdn_origin = false
+    }
+    reporting = {
+      name                        = "trade-tariff-reporting-${local.account_id}"
+      is_cdn_origin               = true
+      cloudfront_distribution_arn = module.reporting_cdn.aws_cloudfront_distribution_arn
+    }
   }
 }
 
@@ -23,7 +40,7 @@ resource "aws_kms_alias" "s3_kms_alias" {
 
 resource "aws_s3_bucket" "this" {
   for_each = local.buckets
-  bucket   = each.value
+  bucket   = each.value.name
 }
 
 resource "aws_s3_bucket_versioning" "this" {
@@ -54,6 +71,36 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     apply_server_side_encryption_by_default {
       kms_master_key_id = aws_kms_key.s3.arn
       sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "this" {
+  for_each = [for bucket in local.buckets : bucket if bucket.is_cdn_origin == true]
+
+  bucket = aws_s3_bucket.this[each.key].id
+  policy = data.aws_iam_policy_document.this[each.key].json
+
+}
+
+data "aws_iam_policy_document" "this" {
+  for_each = [for bucket in local.buckets : bucket if bucket.is_cdn_origin == true]
+
+  statement {
+    sid       = "AllowCloudFrontServicePrincipal"
+    effect    = "Allow"
+    actions   = ["s3:GetObject", "s3:ListBucket"]
+    resources = [aws_s3_bucket.this[each.key].arn, "${aws_s3_bucket.this[each.key].arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [each.value.cloudfront_distribution_arn]
+    }
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
   }
 }
