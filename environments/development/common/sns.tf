@@ -62,7 +62,6 @@ resource "aws_db_event_subscription" "this" {
   sns_topic = aws_sns_topic.rds.arn
 
   source_type = "db-snapshot"
-  source_ids  = [module.postgres.db_id]
 
   event_categories = [
     "creation",
