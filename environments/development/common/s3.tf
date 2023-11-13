@@ -15,6 +15,37 @@ resource "aws_kms_key" "s3" {
   enable_key_rotation     = true
 }
 
+data "aws_iam_policy_document" "s3_kms_key_policy" {
+  statement {
+    sid       = "Enable IAM User Permissions"
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
+
+    principals {
+      identifiers = ["arn:aws:iam::${local.account_id}:root"]
+      type        = "AWS"
+    }
+  }
+
+  statement {
+    sid       = "Allow use of the key for CloudFront OAI"
+    effect    = "Allow"
+    actions   = ["kms:Decrypt"]
+    resources = ["*"]
+
+    principals {
+      identifiers = ["cloudfront.amazonaws.com"]
+      type        = "Service"
+    }
+  }
+}
+
+resource "aws_kms_key_policy" "s3_kms_key_policy" {
+  key_id = aws_kms_key.s3.key_id
+  policy = data.aws_iam_policy_document.s3_kms_key_policy.json
+}
+
 resource "aws_kms_alias" "s3_kms_alias" {
   name          = "alias/s3-key"
   target_key_id = aws_kms_key.s3.key_id
