@@ -8,9 +8,9 @@ output "db_endpoint" {
   value       = aws_db_instance.this.endpoint
 }
 
-output "db_identifier" {
+output "db_id" {
   description = "ID of the RDS instance."
-  value       = aws_db_instance.this.identifier
+  value       = aws_db_instance.this.id
 }
 
 output "kms_key_arn" {

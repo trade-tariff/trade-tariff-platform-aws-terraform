@@ -26,23 +26,6 @@ module "postgres" {
   ]
 }
 
-resource "aws_sns_topic" "rds" {
-  name = "rds-events"
-}
-
-resource "aws_db_event_subscription" "this" {
-  name      = "rds-event-subscription"
-  sns_topic = aws_sns_topic.rds.arn
-
-  source_type = "db-snapshot"
-  source_ids  = [module.postgres.db_identifier]
-
-  event_categories = [
-    "creation",
-    "notification"
-  ]
-}
-
 # Admin Postgres
 module "postgres_admin" {
   source = "../../common/rds"
