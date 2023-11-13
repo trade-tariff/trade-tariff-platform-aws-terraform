@@ -111,27 +111,37 @@ resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   }
 }
 
-resource "aws_cloudfront_origin_access_identity" "api" {
-  comment = "Origin Access Identity for ${aws_s3_bucket.this["api-docs"].id} bucket"
-}
-
-data "aws_iam_policy_document" "api" {
-  statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
-    resources = [
-      "${aws_s3_bucket.this["api-docs"].arn}/*",
-      aws_s3_bucket.this["api-docs"].arn,
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.api.iam_arn]
-    }
-  }
+resource "aws_cloudfront_origin_access_control" "s3" {
+  name                              = "s3"
+  description                       = "Enables accessing s3 buckets. Bucket policies restrict specific cloudfront distributions."
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 resource "aws_s3_bucket_policy" "api" {
   bucket = aws_s3_bucket.this["api-docs"].id
   policy = data.aws_iam_policy_document.api.json
+}
+
+data "aws_iam_policy_document" "api" {
+  statement {
+    sid       = "AllowCloudFrontServicePrincipal"
+    effect    = "Allow"
+    actions   = ["s3:GetObject", "s3:ListBucket"]
+    resources = [aws_s3_bucket.this["api-docs"].arn, "${aws_s3_bucket.this["api-docs"].arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [module.api_cdn.aws_cloudfront_distribution_arn]
+    }
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+  }
 }
 
 module "api_cdn" {
@@ -159,7 +169,7 @@ module "api_cdn" {
       domain_name = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
 
       s3_origin_config = {
-        origin_access_identity = aws_cloudfront_origin_access_identity.api.cloudfront_access_identity_path
+        origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
       }
     }
   }
@@ -204,27 +214,29 @@ module "api_cdn" {
   }
 }
 
-resource "aws_cloudfront_origin_access_identity" "reporting" {
-  comment = "Origin Access Identity for ${aws_s3_bucket.this["reporting"].id} bucket"
+resource "aws_s3_bucket_policy" "reporting" {
+  bucket = aws_s3_bucket.this["reporting"].id
+  policy = data.aws_iam_policy_document.reporting.json
 }
 
 data "aws_iam_policy_document" "reporting" {
   statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
-    resources = [
-      "${aws_s3_bucket.this["reporting"].arn}/*",
-      aws_s3_bucket.this["reporting"].arn,
-    ]
+    sid       = "AllowCloudFrontServicePrincipal"
+    effect    = "Allow"
+    actions   = ["s3:GetObject", "s3:ListBucket"]
+    resources = [aws_s3_bucket.this["reporting"].arn, "${aws_s3_bucket.this["reporting"].arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [module.reporting_cdn.aws_cloudfront_distribution_arn]
+    }
+
     principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.reporting.iam_arn]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
   }
-}
-
-resource "aws_s3_bucket_policy" "reporting" {
-  bucket = aws_s3_bucket.this["reporting"].id
-  policy = data.aws_iam_policy_document.reporting.json
 }
 
 module "reporting_cdn" {
@@ -251,7 +263,7 @@ module "reporting_cdn" {
       domain_name = aws_s3_bucket.this["reporting"].bucket_regional_domain_name
 
       s3_origin_config = {
-        origin_access_identity = aws_cloudfront_origin_access_identity.reporting.cloudfront_access_identity_path
+        origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
       }
     }
   }
@@ -296,27 +308,29 @@ module "reporting_cdn" {
   }
 }
 
-resource "aws_cloudfront_origin_access_identity" "database_backups" {
-  comment = "Origin Access Identity for ${aws_s3_bucket.this["database-backups"].id} bucket"
+resource "aws_s3_bucket_policy" "backups" {
+  bucket = aws_s3_bucket.this["database-backups"].id
+  policy = data.aws_iam_policy_document.backups.json
 }
 
-data "aws_iam_policy_document" "database_backups" {
+data "aws_iam_policy_document" "backups" {
   statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
-    resources = [
-      "${aws_s3_bucket.this["database-backups"].arn}/*",
-      aws_s3_bucket.this["database-backups"].arn,
-    ]
+    sid       = "AllowCloudFrontServicePrincipal"
+    effect    = "Allow"
+    actions   = ["s3:GetObject", "s3:ListBucket"]
+    resources = [aws_s3_bucket.this["database-backups"].arn, "${aws_s3_bucket.this["database-backups"].arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [module.backups_cdn.aws_cloudfront_distribution_arn]
+    }
+
     principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.database_backups.iam_arn]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
   }
-}
-
-resource "aws_s3_bucket_policy" "database_backups" {
-  bucket = aws_s3_bucket.this["database-backups"].id
-  policy = data.aws_iam_policy_document.database_backups.json
 }
 
 module "backups_cdn" {
@@ -343,7 +357,7 @@ module "backups_cdn" {
       domain_name = aws_s3_bucket.this["database-backups"].bucket_regional_domain_name
 
       s3_origin_config = {
-        origin_access_identity = aws_cloudfront_origin_access_identity.database_backups.cloudfront_access_identity_path
+        origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
       }
     }
   }
