@@ -63,6 +63,7 @@ No modules.
 |------|-------------|
 | <a name="output_db_arn"></a> [db\_arn](#output\_db\_arn) | ARN of the RDS instance. |
 | <a name="output_db_endpoint"></a> [db\_endpoint](#output\_db\_endpoint) | Connection endpoint for the RDS instance. Format: `address:port`. |
+| <a name="output_db_id"></a> [db\_id](#output\_db\_id) | ID of the RDS instance. |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | ARN of the KMS Key created to encrypt database performance insights data. |
 | <a name="output_kms_key_id"></a> [kms\_key\_id](#output\_kms\_key\_id) | Globally unique ID of the KMS Key created to encrypt database performance insights data. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
