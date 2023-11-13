@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "s3_kms_key_policy" {
   }
 
   statement {
-    sid       = "Allow use of the key for CloudFront OAI"
+    sid       = "Allow use of the key for CloudFront OAC"
     effect    = "Allow"
     actions   = ["kms:Decrypt"]
     resources = ["*"]
