@@ -261,7 +261,7 @@ module "reporting_cdn" {
   }
 
   origin = {
-    api = {
+    reporting = {
       domain_name              = aws_s3_bucket.this["reporting"].bucket_regional_domain_name
       origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     }
@@ -337,7 +337,7 @@ module "backups_cdn" {
   }
 
   origin = {
-    api = {
+    dumps = {
       domain_name              = aws_s3_bucket.this["database-backups"].bucket_regional_domain_name
       origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     }
