@@ -31,10 +31,10 @@ resource "aws_route53_record" "dev_name_servers" {
   records = data.terraform_remote_state.development.outputs.hosted_zone_name_servers
 }
 
-resource "aws_route53_record" "staging_name_servers" {
+resource "aws_route53_record" "sandbox_record" {
   zone_id = aws_route53_zone.lower_env["staging"].zone_id
-  name    = "staging.${local.tariff_domain}"
-  type    = "NS"
+  name    = "sandbox.${local.tariff_domain}"
+  type    = "CNAME"
   ttl     = "30"
-  records = data.terraform_remote_state.staging.outputs.hosted_zone_name_servers
+  records = ["staging.${local.tariff_domain}"]
 }

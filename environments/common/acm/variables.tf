@@ -19,3 +19,9 @@ variable "hosted_zone_id" {
   description = "ID of the hosted zone."
   type        = string
 }
+
+variable "subject_alternative_names" {
+  description = "List of additional domains to be added to the certificate."
+  type        = list(string)
+  default     = []
+}

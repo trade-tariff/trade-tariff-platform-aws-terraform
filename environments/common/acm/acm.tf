@@ -3,7 +3,7 @@ resource "aws_acm_certificate" "acm_certificate" {
   domain_name       = var.domain_name
   validation_method = "DNS"
 
-  subject_alternative_names = ["*.${var.domain_name}"]
+  subject_alternative_names = concat(["*.${var.domain_name}"], var.subject_alternative_names)
 
   lifecycle {
     create_before_destroy = true
