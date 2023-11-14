@@ -5,6 +5,7 @@ locals {
     "duty-calculator",
     "frontend",
     "search-query-parser",
-    "signon"
+    "signon",
+    "fpo-search"
   ]
 }
