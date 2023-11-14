@@ -4,6 +4,10 @@ module "acm" {
   environment    = var.environment
   hosted_zone_id = data.aws_route53_zone.this.zone_id
 
+  subject_alternative_names = [
+    "sandbox.trade-tariff.service.gov.uk"
+  ]
+
   providers = {
     aws = aws.us_east_1
   }
