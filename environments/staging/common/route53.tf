@@ -7,6 +7,10 @@ resource "aws_route53_zone" "origin" {
   name = local.origin_domain_name
 }
 
+resource "aws_route53_zone" "sandbox" {
+  name = var.sandbox_domain_name
+}
+
 resource "aws_route53_record" "origin_ns" {
   zone_id = data.aws_route53_zone.this.zone_id
   name    = local.origin_domain_name
