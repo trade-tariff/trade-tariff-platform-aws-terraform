@@ -19,7 +19,7 @@ data "terraform_remote_state" "staging" {
 }
 
 resource "aws_route53_zone" "lower_env" {
-  for_each = toset(["dev", "staging"])
+  for_each = ["dev", "staging", "sandbox"]
   name     = "${each.key}.${local.tariff_domain}"
 }
 
@@ -31,10 +31,18 @@ resource "aws_route53_record" "dev_name_servers" {
   records = data.terraform_remote_state.development.outputs.hosted_zone_name_servers
 }
 
-resource "aws_route53_record" "sandbox_record" {
+resource "aws_route53_record" "staging_name_servers" {
   zone_id = aws_route53_zone.lower_env["staging"].zone_id
-  name    = "sandbox.${local.tariff_domain}"
-  type    = "CNAME"
+  name    = "staging.${local.tariff_domain}"
+  type    = "NS"
   ttl     = "30"
-  records = ["staging.${local.tariff_domain}"]
+  records = data.terraform_remote_state.staging.outputs.hosted_zone_name_servers
+}
+
+resource "aws_route53_record" "sandbox_name_servers" {
+  zone_id = aws_route53_zone.lower_env["sandbox"].zone_id
+  name    = "sandbox.${local.tariff_domain}"
+  type    = "NS"
+  ttl     = "30"
+  records = data.terraform_remote_state.staging.outputs.sandbox_hosted_zone_name_servers
 }
