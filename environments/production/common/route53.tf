@@ -19,7 +19,7 @@ data "terraform_remote_state" "staging" {
 }
 
 resource "aws_route53_zone" "lower_env" {
-  for_each = to_set(["dev", "staging", "sandbox"])
+  for_each = toset(["dev", "staging", "sandbox"])
   name     = "${each.key}.${local.tariff_domain}"
 }
 

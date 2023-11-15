@@ -8,8 +8,7 @@ resource "aws_route53_zone" "origin" {
 }
 
 resource "aws_route53_zone" "sandbox" {
-  name         = var.sandbox_domain_name
-  private_zone = false
+  name = var.sandbox_domain_name
 }
 
 resource "aws_route53_record" "origin_ns" {

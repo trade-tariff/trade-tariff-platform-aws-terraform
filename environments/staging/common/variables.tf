@@ -16,7 +16,6 @@ variable "sandbox_domain_name" {
   default     = "sandbox.trade-tariff.service.gov.uk"
 }
 
-
 variable "region" {
   description = "AWS Region to use. Defaults to `eu-west-2`."
   type        = string
