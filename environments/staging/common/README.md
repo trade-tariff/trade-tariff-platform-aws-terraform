@@ -153,7 +153,6 @@
 | <a name="input_signon_devise_secret_key"></a> [signon\_devise\_secret\_key](#input\_signon\_devise\_secret\_key) | Value of DEVISE\_SECRET\_KEY for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_govuk_notify_api_key"></a> [signon\_govuk\_notify\_api\_key](#input\_signon\_govuk\_notify\_api\_key) | Value of GOVUK\_NOTIFY\_API\_KEY for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_secret_key_base"></a> [signon\_secret\_key\_base](#input\_signon\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the signon app. | `string` | n/a | yes |
-| <a name="input_subject_alternative_names"></a> [subject\_alternative\_names](#input\_subject\_alternative\_names) | List of additional domains to be added to the certificate. | `list(string)` | <pre>[<br>  "sandbox.trade-tariff.service.gov.uk"<br>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br>  "Billing": "TRN.HMR11896",<br>  "Environment": "staging",<br>  "Project": "trade-tariff",<br>  "Terraform": true<br>}</pre> | no |
 | <a name="input_tariff_backend_differences_to_emails"></a> [tariff\_backend\_differences\_to\_emails](#input\_tariff\_backend\_differences\_to\_emails) | Differences report TO email addresses. | `string` | n/a | yes |
 | <a name="input_tariff_backend_oauth_id"></a> [tariff\_backend\_oauth\_id](#input\_tariff\_backend\_oauth\_id) | Value of Tariff Backend OAuth ID. | `string` | n/a | yes |

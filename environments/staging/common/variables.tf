@@ -201,9 +201,3 @@ variable "signon_derivation_key" {
   type        = string
   sensitive   = true
 }
-
-variable "subject_alternative_names" {
-  description = "List of additional domains to be added to the certificate."
-  type        = list(string)
-  default     = ["sandbox.trade-tariff.service.gov.uk"]
-}
