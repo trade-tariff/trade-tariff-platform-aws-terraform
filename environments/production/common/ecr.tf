@@ -19,6 +19,36 @@ data "aws_iam_policy_document" "ecr_policy_document" {
       "ecr:CompleteLayerUpload"
     ]
   }
+
+  statement {
+    principals {
+      type = "Service"
+      identifiers = [
+        "lambda.amazonaws.com"
+      ]
+    }
+
+    actions = [
+      "ecr:ListImages",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:PutImage",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload"
+    ]
+
+    condition {
+      test     = "StringLike"
+      variable = "aws:sourceArn"
+      values = [
+        "arn:aws:lambda:eu-west-2:${lookup(var.account_ids, "development")}:function:*",
+        "arn:aws:lambda:eu-west-2:${lookup(var.account_ids, "staging")}:function:*",
+        "arn:aws:lambda:eu-west-2:${lookup(var.account_ids, "production")}:function:*",
+      ]
+    }
+  }
 }
 
 module "ecr" {
