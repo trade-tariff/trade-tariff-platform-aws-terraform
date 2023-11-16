@@ -9,14 +9,15 @@ data "aws_iam_policy_document" "ecr_policy_document" {
       ]
     }
     actions = [
-      "ecr:ListImages",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
       "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
+      "ecr:BatchGetImage",
+      "ecr:CompleteLayerUpload",
+      "ecr:DescribeImages",
+      "ecr:GetDownloadUrlForLayer",
       "ecr:InitiateLayerUpload",
+      "ecr:ListImages",
+      "ecr:PutImage",
       "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload"
     ]
   }
 }
