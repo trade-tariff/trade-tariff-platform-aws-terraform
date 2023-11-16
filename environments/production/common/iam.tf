@@ -129,6 +129,15 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         Resource = [
           aws_kms_alias.s3_kms_alias.target_key_arn
         ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ssm:DescribeParameters",
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ],
+        Resource = [for v in aws_ssm_parameter.ecr_url : v.arn]
       }
     ]
   })
@@ -181,6 +190,7 @@ resource "aws_iam_policy" "ci_appendix5a_peristence_readwrite_policy" {
           "s3:ListBucket",
           "s3:PutObject",
         ],
+
         Resource = [
           "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}",
           "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/config/chief_cds_guidance.json"
