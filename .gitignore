@@ -47,3 +47,6 @@ tmtags
 **/.terragrunt-cache
 skip-deprovision
 **/_pycache__
+
+# Terraform
+environments/production/common/builds/
