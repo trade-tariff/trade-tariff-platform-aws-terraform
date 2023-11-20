@@ -16,11 +16,6 @@ resource "aws_kms_key" "s3" {
   enable_key_rotation     = true
 }
 
-resource "aws_kms_alias" "s3_kms_alias" {
-  name          = "alias/s3-key"
-  target_key_id = aws_kms_key.s3.key_id
-}
-
 data "aws_iam_policy_document" "s3_kms_key_policy" {
   statement {
     sid       = "Enable IAM User Permissions"
@@ -52,14 +47,23 @@ resource "aws_kms_key_policy" "s3_kms_key_policy" {
   policy = data.aws_iam_policy_document.s3_kms_key_policy.json
 }
 
+resource "aws_kms_alias" "s3_kms_alias" {
+  name          = "alias/s3-key"
+  target_key_id = aws_kms_key.s3.key_id
+}
+
 resource "aws_s3_bucket" "this" {
   for_each = local.buckets
   bucket   = each.value
 }
 
 resource "aws_s3_bucket_versioning" "this" {
-  for_each = local.buckets
-  bucket   = aws_s3_bucket.this[each.key].id
+  for_each = {
+    for k, v in local.buckets : k => v if k != "database-backups"
+  }
+
+  bucket = aws_s3_bucket.this[each.key].id
+
   versioning_configuration {
     status = "Enabled"
   }

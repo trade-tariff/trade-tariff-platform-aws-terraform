@@ -58,8 +58,12 @@ resource "aws_s3_bucket" "this" {
 }
 
 resource "aws_s3_bucket_versioning" "this" {
-  for_each = local.buckets
-  bucket   = aws_s3_bucket.this[each.key].id
+  for_each = {
+    for k, v in local.buckets : k => v if k != "database-backups"
+  }
+
+  bucket = aws_s3_bucket.this[each.key].id
+
   versioning_configuration {
     status = "Enabled"
   }
