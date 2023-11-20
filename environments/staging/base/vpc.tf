@@ -34,3 +34,10 @@ module "vpc" {
   enable_nat_gateway = true
   single_nat_gateway = true
 }
+
+resource "aws_vpc_endpoint" "s3" {
+  route_table_ids   = module.vpc.private_route_table_ids
+  service_name      = "com.amazonaws.${local.region}.s3"
+  vpc_endpoint_type = "Gateway"
+  vpc_id            = module.vpc.vpc_id
+}

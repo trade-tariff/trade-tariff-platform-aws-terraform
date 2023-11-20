@@ -17,3 +17,8 @@ output "private_subnets_cidr_blocks" {
   description = "A list of cidr_blocks of private subnets."
   value       = module.vpc.private_subnets_cidr_blocks
 }
+
+output "s3_endpoint_prefix" {
+  description = "Prefix list of S3 VPC endpoint to use with security groups."
+  value       = aws_vpc_endpoint.s3.prefix_list_id
+}
