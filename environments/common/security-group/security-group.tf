@@ -1,5 +1,8 @@
-# application load balancer Security Group
-# This is to supress tfsec erroring allow all ingress traffic to the load balancer
+data "aws_region" "current" {}
+
+data "aws_ec2_managed_prefix_list" "this" {
+  name = "com.amazonaws.${data.aws_region.current.name}.s3"
+}
 
 resource "aws_security_group" "alb_security_group" {
   name        = "trade-tariff-alb-security-group-${var.environment}"
@@ -35,7 +38,6 @@ resource "aws_security_group" "alb_security_group" {
   }
 }
 
-/* Security group for the ecs application */
 resource "aws_security_group" "ecs_security_group" {
   name        = "trade-tariff-ecs-security-group-${var.environment}"
   description = "Allow HTTP/S ingress, all egress"
@@ -58,7 +60,6 @@ resource "aws_security_group" "ecs_security_group" {
     cidr_blocks = ["10.0.0.0/16"]
   }
 
-  # We want egress out to the public internet here
   egress {
     description = "Allow All Egress"
     from_port   = 0
@@ -72,7 +73,6 @@ resource "aws_security_group" "ecs_security_group" {
   }
 }
 
-/* Security group to allow ingress from backend to RDS instance */
 resource "aws_security_group" "be_to_rds_ingress" {
   name        = "trade-tariff-be-rd-${var.environment}"
   description = "Allow Ingress from Backend to RDS Instances"
@@ -108,6 +108,14 @@ resource "aws_security_group" "be_to_rds_ingress" {
     to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = var.private_subnets
+  }
+
+  egress {
+    description     = "Egress to S3 via VPC endpoint for database backups."
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    prefix_list_ids = [data.aws_ec2_managed_prefix_list.this.id]
   }
 
   tags = {
