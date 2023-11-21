@@ -319,7 +319,7 @@ data "aws_iam_policy_document" "backups" {
 }
 
 module "backups_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.3.0"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.1"
 
   aliases         = ["dumps.${var.domain_name}"]
   create_alias    = true
@@ -357,6 +357,12 @@ module "backups_cdn" {
       max_ttl     = 0
 
       compress = true
+
+      function_association = {
+        "viewer-request" = {
+          function_arn = aws_cloudfront_function.basic_auth.arn
+        }
+      }
     },
   }
 
@@ -367,4 +373,11 @@ module "backups_cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+}
+
+resource "aws_cloudfront_function" "basic_auth" {
+  name    = "backups-basic-auth"
+  runtime = "cloudfront-js-1.0"
+  publish = true
+  code    = local.cloudfront_auth
 }
