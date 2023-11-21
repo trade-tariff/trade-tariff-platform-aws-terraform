@@ -6,6 +6,9 @@ data "aws_iam_policy_document" "ecr_policy_document" {
         "arn:aws:iam::${lookup(var.account_ids, "development")}:root",
         "arn:aws:iam::${lookup(var.account_ids, "staging")}:root",
         "arn:aws:iam::${lookup(var.account_ids, "production")}:root",
+        "arn:aws:iam::${lookup(var.account_ids, "development")}:user/serverless-lambda-ci",
+        "arn:aws:iam::${lookup(var.account_ids, "staging")}:user/serverless-lambda-ci",
+        "arn:aws:iam::${lookup(var.account_ids, "production")}:user/serverless-lambda-ci",
       ]
     }
     actions = [
