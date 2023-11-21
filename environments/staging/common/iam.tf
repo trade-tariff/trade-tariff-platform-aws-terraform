@@ -138,6 +138,32 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "ssm:GetParameters"
         ],
         Resource = [for v in aws_ssm_parameter.ecr_url : v.arn]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:DescribeImages",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:ListImages",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart",
+        ],
+        Resource = [
+          "arn:aws:ecr:*:*:repository/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "apigateway:*"
+        ],
+        Resource = [
+          "*"
+        ]
       }
     ]
   })
