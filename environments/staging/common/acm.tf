@@ -20,6 +20,13 @@ module "acm_sandbox" {
   }
 }
 
+module "acm_sandbox_london" {
+  source         = "../../common/acm/"
+  domain_name    = var.sandbox_domain_name
+  environment    = var.environment
+  hosted_zone_id = aws_route53_zone.sandbox.zone_id
+}
+
 module "acm_origin" {
   source         = "../../common/acm"
   domain_name    = "origin.${var.domain_name}"

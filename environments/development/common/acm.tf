@@ -16,7 +16,6 @@ module "acm_london" {
   hosted_zone_id = data.aws_route53_zone.this.zone_id
 }
 
-
 module "acm_origin" {
   source         = "../../common/acm"
   domain_name    = "origin.${var.domain_name}"
