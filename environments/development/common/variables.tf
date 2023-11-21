@@ -195,3 +195,9 @@ variable "signon_derivation_key" {
   type        = string
   sensitive   = true
 }
+
+variable "backups_basic_auth" {
+  description = "base64 encoded credentials for backups basic auth."
+  type        = string
+  sensitive   = true
+}

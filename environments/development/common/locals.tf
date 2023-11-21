@@ -12,6 +12,8 @@ locals {
     "search-query-parser",
     "signon",
   ]
+
+  cloudfront_auth = templatefile("../../common/cloudfront-auth.js.tpl", { base64 = var.backups_basic_auth })
 }
 
 data "aws_caller_identity" "current" {}
