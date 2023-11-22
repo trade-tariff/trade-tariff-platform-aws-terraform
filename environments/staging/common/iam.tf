@@ -164,7 +164,24 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         Resource = [
           "*"
         ]
-      }
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "acm:ListCertificates",
+        ],
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "route53:ListHostedZones",
+          "route53:ChangeResourceRecordSets",
+          "route53:GetHostedZone",
+          "route53:ListResourceRecordSets",
+        ],
+        Resource = [data.aws_route53_zone.this.arn]
+      },
     ]
   })
 }
