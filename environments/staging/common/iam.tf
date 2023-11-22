@@ -180,7 +180,7 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "route53:GetHostedZone",
           "route53:ListResourceRecordSets",
         ],
-        Resource = [data.aws_route53_zone.this.arn]
+        Resource = [aws_route53_zone.sandbox.arn]
       },
     ]
   })
