@@ -1,5 +1,5 @@
 module "cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=2a4c325"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
 
   aliases         = [var.domain_name, "signon.${var.domain_name}", "admin.${var.domain_name}"]
   create_alias    = true
@@ -72,7 +72,7 @@ module "cdn" {
 
 
 module "api_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=2a4c325"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
 
   aliases             = ["api.${var.domain_name}"]
   create_alias        = true
@@ -125,7 +125,7 @@ module "api_cdn" {
 }
 
 module "reporting_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=2a4c325"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
 
   aliases         = ["reporting.${var.domain_name}"]
   create_alias    = true
@@ -177,7 +177,7 @@ module "reporting_cdn" {
 }
 
 module "backups_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=2a4c325"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
 
   aliases         = ["dumps.${var.domain_name}"]
   create_alias    = true

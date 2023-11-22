@@ -52,7 +52,7 @@ No outputs.
 | <a name="module_admin_sentry_dsn"></a> [admin\_sentry\_dsn](#module\_admin\_sentry\_dsn) | ../../common/secret/ | n/a |
 | <a name="module_alb"></a> [alb](#module\_alb) | ../../common/application-load-balancer/ | n/a |
 | <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../common/security-group/ | n/a |
-| <a name="module_api_cdn"></a> [api\_cdn](#module\_api\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | 2a4c325 |
+| <a name="module_api_cdn"></a> [api\_cdn](#module\_api\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_backend_differences_to_emails"></a> [backend\_differences\_to\_emails](#module\_backend\_differences\_to\_emails) | ../../common/secret/ | n/a |
 | <a name="module_backend_oauth_id"></a> [backend\_oauth\_id](#module\_backend\_oauth\_id) | ../../common/secret/ | n/a |
 | <a name="module_backend_oauth_secret"></a> [backend\_oauth\_secret](#module\_backend\_oauth\_secret) | ../../common/secret/ | n/a |
@@ -65,8 +65,8 @@ No outputs.
 | <a name="module_backend_xi_sync_host"></a> [backend\_xi\_sync\_host](#module\_backend\_xi\_sync\_host) | ../../common/secret/ | n/a |
 | <a name="module_backend_xi_sync_password"></a> [backend\_xi\_sync\_password](#module\_backend\_xi\_sync\_password) | ../../common/secret/ | n/a |
 | <a name="module_backend_xi_sync_username"></a> [backend\_xi\_sync\_username](#module\_backend\_xi\_sync\_username) | ../../common/secret/ | n/a |
-| <a name="module_backups_cdn"></a> [backups\_cdn](#module\_backups\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | 2a4c325 |
-| <a name="module_cdn"></a> [cdn](#module\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | 2a4c325 |
+| <a name="module_backups_cdn"></a> [backups\_cdn](#module\_backups\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
+| <a name="module_cdn"></a> [cdn](#module\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../common/cloudwatch/ | n/a |
 | <a name="module_cloudwatch-logs-exporter"></a> [cloudwatch-logs-exporter](#module\_cloudwatch-logs-exporter) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudwatch_log_exporter | aws/cloudwatch_log_exporter-v1.0.0 |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../common/secret/ | n/a |
@@ -78,7 +78,7 @@ No outputs.
 | <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../common/rds | n/a |
 | <a name="module_postgres_admin"></a> [postgres\_admin](#module\_postgres\_admin) | ../../common/rds | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../common/elasticache-redis/ | n/a |
-| <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | 2a4c325 |
+| <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../common/ses | n/a |
 | <a name="module_signon_derivation_key"></a> [signon\_derivation\_key](#module\_signon\_derivation\_key) | ../../common/secret/ | n/a |
