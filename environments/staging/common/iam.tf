@@ -95,6 +95,7 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         Effect = "Allow",
         Action = [
           "iam:CreateRole",
+          "iam:CreateServiceLinkedRole",
           "iam:DeleteRole",
           "iam:DeleteRolePolicy",
           "iam:GetRole",
