@@ -22,11 +22,6 @@ resource "aws_cloudfront_response_headers_policy" "this" {
   name = "secure-headers"
 
   security_headers_config {
-    content_security_policy {
-      content_security_policy = "default-src 'self'"
-      override                = true
-    }
-
     strict_transport_security {
       access_control_max_age_sec = 31536000
       include_subdomains         = true
