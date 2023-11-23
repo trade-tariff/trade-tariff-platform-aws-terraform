@@ -1,3 +1,18 @@
+locals {
+  ecr_actions = [
+    "ecr:BatchCheckLayerAvailability",
+    "ecr:BatchGetImage",
+    "ecr:CompleteLayerUpload",
+    "ecr:DescribeImages",
+    "ecr:DescribeRepositories",
+    "ecr:GetDownloadUrlForLayer",
+    "ecr:InitiateLayerUpload",
+    "ecr:ListImages",
+    "ecr:PutImage",
+    "ecr:UploadLayerPart",
+  ]
+}
+
 data "aws_iam_policy_document" "ecr_policy_document" {
   statement {
     principals {
@@ -11,17 +26,8 @@ data "aws_iam_policy_document" "ecr_policy_document" {
         "arn:aws:iam::${lookup(var.account_ids, "production")}:user/serverless-lambda-ci",
       ]
     }
-    actions = [
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:BatchGetImage",
-      "ecr:CompleteLayerUpload",
-      "ecr:DescribeImages",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:InitiateLayerUpload",
-      "ecr:ListImages",
-      "ecr:PutImage",
-      "ecr:UploadLayerPart",
-    ]
+
+    actions = local.ecr_actions
   }
 
   statement {
@@ -32,16 +38,7 @@ data "aws_iam_policy_document" "ecr_policy_document" {
       ]
     }
 
-    actions = [
-      "ecr:ListImages",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload"
-    ]
+    actions = local.ecr_actions
 
     condition {
       test     = "StringLike"
