@@ -9,7 +9,9 @@ module "postgres" {
 
   deletion_protection = true
 
-  instance_type      = "db.t3.large"
+  instance_type = "db.m5.4xlarge"
+  multi_az      = true
+
   backup_window      = "22:00-23:00"
   maintenance_window = "Fri:23:00-Sat:01:00"
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
