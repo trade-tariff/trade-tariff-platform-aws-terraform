@@ -8,6 +8,7 @@ resource "aws_db_instance" "this" {
   max_allocated_storage = local.max_allocated_storage
   storage_encrypted     = true
   db_subnet_group_name  = aws_db_subnet_group.rds_private_subnet.name
+  multi_az              = var.multi_az
 
   deletion_protection     = var.deletion_protection
   backup_retention_period = var.backup_retention_period
