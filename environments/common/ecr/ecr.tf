@@ -33,18 +33,17 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
   policy = jsonencode({
     rules = [{
       rulePriority = 1
-      description  = "Expire untagged images older than 14 days"
+      description  = "Keep last 30 images."
       selection = {
-        tagStatus   = "untagged"
-        countType   = "sinceImagePushed"
-        countNumber = 14
-        countUnit   = "days"
+        countType   = "imageCountMoreThan"
+        countNumber = 30
       }
       action = {
         type = "expire"
       }
     }]
   })
+
   depends_on = [
     aws_ecr_repository.this,
   ]
