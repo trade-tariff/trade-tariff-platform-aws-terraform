@@ -70,6 +70,12 @@ variable "duty_calculator_secret_key_base" {
   sensitive   = true
 }
 
+variable "duty_calculator_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the duty calculator."
+  type        = string
+  sensitive   = true
+}
+
 variable "admin_secret_key_base" {
   description = "Value of SECRET_KEY_BASE for the admin tool."
   type        = string
