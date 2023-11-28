@@ -6,6 +6,14 @@ module "frontend_secret_key_base" {
   secret_string   = var.frontend_secret_key_base
 }
 
+module "frontend_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "frontend-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.frontend_sentry_dsn
+}
+
 module "backend_secret_key_base" {
   source          = "../../common/secret/"
   name            = "backend-secret-key-base"
@@ -20,6 +28,14 @@ module "duty_calculator_secret_key_base" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.duty_calculator_secret_key_base
+}
+
+module "duty_calculator_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "duty-calculator-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.duty_calculator_sentry_dsn
 }
 
 module "admin_secret_key_base" {
@@ -149,4 +165,12 @@ module "backend_oauth_secret" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_oauth_secret
+}
+
+module "search_query_parser_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "search-query-parser-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.search_query_parser_sentry_dsn
 }

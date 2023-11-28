@@ -58,8 +58,20 @@ variable "frontend_secret_key_base" {
   sensitive   = true
 }
 
+variable "frontend_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the frontend."
+  type        = string
+  sensitive   = true
+}
+
 variable "duty_calculator_secret_key_base" {
   description = "Value of SECRET_KEY_BASE for the duty calculator."
+  type        = string
+  sensitive   = true
+}
+
+variable "duty_calculator_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the duty calculator."
   type        = string
   sensitive   = true
 }
@@ -156,6 +168,12 @@ variable "tariff_backend_oauth_id" {
 
 variable "tariff_backend_oauth_secret" {
   description = "Value of Tariff Backend OAuth secret."
+  type        = string
+  sensitive   = true
+}
+
+variable "search_query_parser_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the search query parser."
   type        = string
   sensitive   = true
 }
