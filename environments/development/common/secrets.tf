@@ -6,6 +6,14 @@ module "frontend_secret_key_base" {
   secret_string   = var.frontend_secret_key_base
 }
 
+module "frontend_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "frontend-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.frontend_sentry_dsn
+}
+
 module "backend_secret_key_base" {
   source          = "../../common/secret/"
   name            = "backend-secret-key-base"

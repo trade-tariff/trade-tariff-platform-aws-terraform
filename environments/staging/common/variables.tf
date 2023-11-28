@@ -64,6 +64,12 @@ variable "frontend_secret_key_base" {
   sensitive   = true
 }
 
+variable "frontend_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the frontend."
+  type        = string
+  sensitive   = true
+}
+
 variable "duty_calculator_secret_key_base" {
   description = "Value of SECRET_KEY_BASE for the duty calculator."
   type        = string
