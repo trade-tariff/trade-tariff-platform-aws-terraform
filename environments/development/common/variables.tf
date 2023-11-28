@@ -196,6 +196,12 @@ variable "signon_derivation_key" {
   sensitive   = true
 }
 
+variable "search_query_parser_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the search query parser."
+  type        = string
+  sensitive   = true
+}
+
 variable "backups_basic_auth" {
   description = "base64 encoded credentials for backups basic auth."
   type        = string

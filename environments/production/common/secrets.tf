@@ -150,3 +150,11 @@ module "backend_oauth_secret" {
   recovery_window = 7
   secret_string   = var.tariff_backend_oauth_secret
 }
+
+module "search_query_parser_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "search-query-parser-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.search_query_parser_sentry_dsn
+}
