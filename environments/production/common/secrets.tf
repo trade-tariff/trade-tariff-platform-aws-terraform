@@ -22,6 +22,14 @@ module "backend_secret_key_base" {
   secret_string   = var.backend_secret_key_base
 }
 
+module "slack_web_hook_url" {
+  source          = "../../common/secret/"
+  name            = "slack-web-hook-url"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.slack_web_hook_url
+}
+
 module "duty_calculator_secret_key_base" {
   source          = "../../common/secret/"
   name            = "duty-calculator-secret-key-base"
