@@ -9,8 +9,7 @@ module "postgres" {
 
   deletion_protection = false # while configuring
 
-  # smallest that supports encryption at rest and postgres 13.11
-  instance_type      = "db.t3.micro"
+  instance_type      = "db.t3.medium"
   backup_window      = "22:00-23:00"
   maintenance_window = "Fri:23:00-Sat:01:00"
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
