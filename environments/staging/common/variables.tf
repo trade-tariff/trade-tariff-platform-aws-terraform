@@ -58,6 +58,12 @@ variable "backend_secret_key_base" {
   sensitive   = true
 }
 
+variable "slack_web_hook_url" {
+  description = "Value of SLACK_WEB_HOOK_URL for the backend."
+  type        = string
+  sensitive   = true
+}
+
 variable "frontend_secret_key_base" {
   description = "Value of SECRET_KEY_BASE for the frontend."
   type        = string
