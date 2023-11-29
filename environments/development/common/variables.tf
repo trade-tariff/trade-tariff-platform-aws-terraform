@@ -184,6 +184,18 @@ variable "tariff_backend_oauth_secret" {
   sensitive   = true
 }
 
+variable "tariff_backend_xe_api_username" {
+  description = "Value of XE_API_USERNAME for the tariff backend."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_xe_api_password" {
+  description = "Value of XE_API_PASSWORD for the tariff backend."
+  type        = string
+  sensitive   = true
+}
+
 variable "signon_devise_pepper" {
   description = "Value of DEVISE_PEPPER for the signon app."
   type        = string

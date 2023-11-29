@@ -40,6 +40,8 @@
 | <a name="module_backend_uk_sync_host"></a> [backend\_uk\_sync\_host](#module\_backend\_uk\_sync\_host) | ../../common/secret/ | n/a |
 | <a name="module_backend_uk_sync_password"></a> [backend\_uk\_sync\_password](#module\_backend\_uk\_sync\_password) | ../../common/secret/ | n/a |
 | <a name="module_backend_uk_sync_username"></a> [backend\_uk\_sync\_username](#module\_backend\_uk\_sync\_username) | ../../common/secret/ | n/a |
+| <a name="module_backend_xe_api_password"></a> [backend\_xe\_api\_password](#module\_backend\_xe\_api\_password) | ../../common/secret/ | n/a |
+| <a name="module_backend_xe_api_username"></a> [backend\_xe\_api\_username](#module\_backend\_xe\_api\_username) | ../../common/secret/ | n/a |
 | <a name="module_backend_xi_sync_host"></a> [backend\_xi\_sync\_host](#module\_backend\_xi\_sync\_host) | ../../common/secret/ | n/a |
 | <a name="module_backend_xi_sync_password"></a> [backend\_xi\_sync\_password](#module\_backend\_xi\_sync\_password) | ../../common/secret/ | n/a |
 | <a name="module_backend_xi_sync_username"></a> [backend\_xi\_sync\_username](#module\_backend\_xi\_sync\_username) | ../../common/secret/ | n/a |
@@ -174,6 +176,8 @@
 | <a name="input_tariff_backend_uk_sync_host"></a> [tariff\_backend\_uk\_sync\_host](#input\_tariff\_backend\_uk\_sync\_host) | Value of Tariff Sync host. | `string` | n/a | yes |
 | <a name="input_tariff_backend_uk_sync_password"></a> [tariff\_backend\_uk\_sync\_password](#input\_tariff\_backend\_uk\_sync\_password) | Value of Tariff Sync password. | `string` | n/a | yes |
 | <a name="input_tariff_backend_uk_sync_username"></a> [tariff\_backend\_uk\_sync\_username](#input\_tariff\_backend\_uk\_sync\_username) | Value of Tariff Sync username. | `string` | n/a | yes |
+| <a name="input_tariff_backend_xe_api_password"></a> [tariff\_backend\_xe\_api\_password](#input\_tariff\_backend\_xe\_api\_password) | Value of XE\_API\_PASSWORD for the tariff backend. | `string` | n/a | yes |
+| <a name="input_tariff_backend_xe_api_username"></a> [tariff\_backend\_xe\_api\_username](#input\_tariff\_backend\_xe\_api\_username) | Value of XE\_API\_USERNAME for the tariff backend. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_host"></a> [tariff\_backend\_xi\_sync\_host](#input\_tariff\_backend\_xi\_sync\_host) | Value of Tariff Sync host. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_password"></a> [tariff\_backend\_xi\_sync\_password](#input\_tariff\_backend\_xi\_sync\_password) | Value of Tariff Sync password. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_username"></a> [tariff\_backend\_xi\_sync\_username](#input\_tariff\_backend\_xi\_sync\_username) | Value of Tariff Sync username. | `string` | n/a | yes |
