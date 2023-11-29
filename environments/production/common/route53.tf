@@ -43,6 +43,7 @@ import {
   to = aws_route53_record.staging_name_servers
   id = "Z0422582XJUTPNE8TYOI_staging.trade-tariff.service.gov.uk_NS"
 }
+
 resource "aws_route53_record" "sandbox_name_servers" {
   zone_id = data.aws_route53_zone.this.zone_id
   name    = "sandbox.${local.tariff_domain}"
@@ -62,4 +63,9 @@ resource "aws_route53_record" "google_site_verification" {
   type    = "TXT"
   ttl     = 30
   records = ["google-site-verification=cX_NM0eTiZv7isZsA-FsTMpPahArshEhyPNOKUG4Nxk"]
+}
+
+import {
+  to = aws_route53_record.google_site_verification
+  id = "Z0422582XJUTPNE8TYOI_.trade-tariff.service.gov.uk_TXT"
 }
