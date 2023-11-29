@@ -175,6 +175,22 @@ module "backend_oauth_secret" {
   secret_string   = var.tariff_backend_oauth_secret
 }
 
+module "backend_xe_api_username" {
+  source          = "../../common/secret/"
+  name            = "backend-xe-api-username"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_xe_api_username
+}
+
+module "backend_xe_api_password" {
+  source          = "../../common/secret/"
+  name            = "backend-xe-api-password"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_xe_api_password
+}
+
 module "search_query_parser_sentry_dsn" {
   source          = "../../common/secret/"
   name            = "search-query-parser-sentry-dsn"

@@ -178,6 +178,18 @@ variable "tariff_backend_oauth_secret" {
   sensitive   = true
 }
 
+variable "tariff_backend_xe_api_username" {
+  description = "Value of XE_API_USERNAME for the tariff backend."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_xe_api_password" {
+  description = "Value of XE_API_PASSWORD for the tariff backend."
+  type        = string
+  sensitive   = true
+}
+
 variable "search_query_parser_sentry_dsn" {
   description = "Value of SENTRY_DSN for the search query parser."
   type        = string
