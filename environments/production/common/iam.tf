@@ -260,11 +260,11 @@ resource "aws_iam_policy" "ci_appendix5a_peristence_readwrite_policy" {
   })
 }
 
-resource "aws_iam_user" "cds_dowloader_file_ci" {
+resource "aws_iam_user" "cds_downloader_file_ci" {
   name = "cds-downloader-ci"
 }
 
-resource "aws_iam_policy" "ci_cds_dowloader_file_readwrite_policy" {
+resource "aws_iam_policy" "ci_cds_downloader_file_policy" {
   name        = "ci-cds-downloader-policy"
   description = "Policy for CircleCI context to enable read/write access to cds changes files"
 
@@ -295,7 +295,20 @@ resource "aws_iam_policy" "ci_cds_dowloader_file_readwrite_policy" {
         Resource = [
           aws_kms_alias.s3_kms_alias.target_key_arn
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ]
+        Resource = ["*"]
       }
     ]
   })
+}
+
+resource "aws_iam_user_policy_attachment" "cds_downloader_file_ci_attachment" {
+  user       = aws_iam_user.cds_downloader_file_ci.name
+  policy_arn = aws_iam_policy.ci_cds_downloader_file_policy.arn
 }
