@@ -14,13 +14,7 @@ resource "aws_cloudfront_cache_policy" "cache_api" {
     }
 
     headers_config {
-      header_behavior = "whitelist"
-      headers {
-        items = [
-          "if-modified-since",
-          "if-none-match",
-        ]
-      }
+      header_behavior = "none"
     }
 
     query_strings_config {
