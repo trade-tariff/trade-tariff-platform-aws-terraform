@@ -71,8 +71,8 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
 
       min_ttl     = 1
-      default_ttl = 180
-      max_ttl     = 180
+      default_ttl = 1800
+      max_ttl     = 1800
 
       compress = true
 

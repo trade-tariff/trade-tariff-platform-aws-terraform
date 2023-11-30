@@ -2,6 +2,33 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
 
+resource "aws_cloudfront_cache_policy" "cache_api" {
+  name        = "cache-apiv2"
+  default_ttl = 1800
+  max_ttl     = 1800
+  min_ttl     = 1
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config {
+      cookie_behavior = "none"
+    }
+
+    headers_config {
+      header_behavior = "whitelist"
+      headers {
+        items = [
+          "if-modified-since",
+          "if-none-match",
+        ]
+      }
+    }
+
+    query_strings_config {
+      query_string_behavior = "all"
+    }
+  }
+}
+
 resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   name    = "Forward-All-QSA-${var.environment}"
   comment = "Forward all QSA (managed by Terraform)"

@@ -4,8 +4,8 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
 
 resource "aws_cloudfront_cache_policy" "cache_api" {
   name        = "cache-apiv2"
-  default_ttl = 180
-  max_ttl     = 180
+  default_ttl = 1800
+  max_ttl     = 1800
   min_ttl     = 1
 
   parameters_in_cache_key_and_forwarded_to_origin {
