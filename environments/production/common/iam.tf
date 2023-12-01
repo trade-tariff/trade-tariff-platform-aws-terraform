@@ -259,3 +259,56 @@ resource "aws_iam_policy" "ci_appendix5a_peristence_readwrite_policy" {
     ]
   })
 }
+
+resource "aws_iam_user" "cds_downloader_file_ci" {
+  name = "cds-downloader-ci"
+}
+
+resource "aws_iam_policy" "ci_cds_downloader_file_policy" {
+  name        = "ci-cds-downloader-policy"
+  description = "Policy for CircleCI context to enable read/write access to cds changes files"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["reporting"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["reporting"].id}/changes/uk/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ]
+        Resource = ["*"]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_user_policy_attachment" "cds_downloader_file_ci_attachment" {
+  user       = aws_iam_user.cds_downloader_file_ci.name
+  policy_arn = aws_iam_policy.ci_cds_downloader_file_policy.arn
+}

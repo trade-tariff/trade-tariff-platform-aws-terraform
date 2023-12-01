@@ -58,7 +58,39 @@ module "cdn" {
         "GET",
         "HEAD"
       ]
-    },
+    }
+
+    api = {
+      target_origin_id       = "frontend"
+      viewer_protocol_policy = "redirect-to-https"
+
+      path_pattern = "/api/v2/*"
+
+      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+
+      min_ttl     = 1
+      default_ttl = 1800
+      max_ttl     = 1800
+
+      compress = true
+
+      allowed_methods = [
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "PUT",
+        "POST",
+        "PATCH",
+        "DELETE"
+      ]
+
+      cached_methods = [
+        "GET",
+        "HEAD"
+      ]
+    }
   }
 
   viewer_certificate = {
