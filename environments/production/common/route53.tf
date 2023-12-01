@@ -69,3 +69,8 @@ import {
   to = aws_route53_record.google_site_verification
   id = "Z0422582XJUTPNE8TYOI_trade-tariff.service.gov.uk_TXT"
 }
+
+import {
+  to = module.cdn.aws_route53_record.alias_record[0]
+  id = "Z0422582XJUTPNE8TYOI_trade-tariff.service.gov.uk_A"
+}
