@@ -67,5 +67,5 @@ resource "aws_route53_record" "google_site_verification" {
 
 import {
   to = aws_route53_record.google_site_verification
-  id = "Z0422582XJUTPNE8TYOI_.trade-tariff.service.gov.uk_TXT"
+  id = "Z0422582XJUTPNE8TYOI_trade-tariff.service.gov.uk_TXT"
 }
