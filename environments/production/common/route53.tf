@@ -18,31 +18,59 @@ data "terraform_remote_state" "staging" {
   }
 }
 
-resource "aws_route53_zone" "lower_env" {
-  for_each = toset(["dev", "staging", "sandbox"])
-  name     = "${each.key}.${local.tariff_domain}"
-}
-
 resource "aws_route53_record" "dev_name_servers" {
-  zone_id = aws_route53_zone.lower_env["dev"].zone_id
-  name    = "dev.${local.tariff_domain}"
+  zone_id = data.aws_route53_zone.this.zone_id
+  name    = "dev.${var.domain_name}"
   type    = "NS"
   ttl     = "30"
   records = data.terraform_remote_state.development.outputs.hosted_zone_name_servers
 }
 
+import {
+  to = aws_route53_record.dev_name_servers
+  id = "Z0422582XJUTPNE8TYOI_dev.trade-tariff.service.gov.uk_NS"
+}
+
 resource "aws_route53_record" "staging_name_servers" {
-  zone_id = aws_route53_zone.lower_env["staging"].zone_id
-  name    = "staging.${local.tariff_domain}"
+  zone_id = data.aws_route53_zone.this.zone_id
+  name    = "staging.${var.domain_name}"
   type    = "NS"
   ttl     = "30"
   records = data.terraform_remote_state.staging.outputs.hosted_zone_name_servers
 }
 
+import {
+  to = aws_route53_record.staging_name_servers
+  id = "Z0422582XJUTPNE8TYOI_staging.trade-tariff.service.gov.uk_NS"
+}
+
 resource "aws_route53_record" "sandbox_name_servers" {
-  zone_id = aws_route53_zone.lower_env["sandbox"].zone_id
-  name    = "sandbox.${local.tariff_domain}"
+  zone_id = data.aws_route53_zone.this.zone_id
+  name    = "sandbox.${var.domain_name}"
   type    = "NS"
   ttl     = "30"
   records = data.terraform_remote_state.staging.outputs.sandbox_hosted_zone_name_servers
+}
+
+import {
+  to = aws_route53_record.sandbox_name_servers
+  id = "Z0422582XJUTPNE8TYOI_sandbox.trade-tariff.service.gov.uk_NS"
+}
+
+resource "aws_route53_record" "google_site_verification" {
+  zone_id = data.aws_route53_zone.this.zone_id
+  name    = var.domain_name
+  type    = "TXT"
+  ttl     = 30
+  records = ["google-site-verification=cX_NM0eTiZv7isZsA-FsTMpPahArshEhyPNOKUG4Nxk"]
+}
+
+import {
+  to = aws_route53_record.google_site_verification
+  id = "Z0422582XJUTPNE8TYOI_trade-tariff.service.gov.uk_TXT"
+}
+
+import {
+  to = module.cdn.aws_route53_record.alias_record[0]
+  id = "Z0422582XJUTPNE8TYOI_trade-tariff.service.gov.uk_A"
 }
