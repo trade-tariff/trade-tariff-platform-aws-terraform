@@ -26,22 +26,12 @@ resource "aws_route53_record" "dev_name_servers" {
   records = data.terraform_remote_state.development.outputs.hosted_zone_name_servers
 }
 
-import {
-  to = aws_route53_record.dev_name_servers
-  id = "Z0422582XJUTPNE8TYOI_dev.trade-tariff.service.gov.uk_NS"
-}
-
 resource "aws_route53_record" "staging_name_servers" {
   zone_id = data.aws_route53_zone.this.zone_id
   name    = "staging.${var.domain_name}"
   type    = "NS"
   ttl     = "30"
   records = data.terraform_remote_state.staging.outputs.hosted_zone_name_servers
-}
-
-import {
-  to = aws_route53_record.staging_name_servers
-  id = "Z0422582XJUTPNE8TYOI_staging.trade-tariff.service.gov.uk_NS"
 }
 
 resource "aws_route53_record" "sandbox_name_servers" {
@@ -52,25 +42,10 @@ resource "aws_route53_record" "sandbox_name_servers" {
   records = data.terraform_remote_state.staging.outputs.sandbox_hosted_zone_name_servers
 }
 
-import {
-  to = aws_route53_record.sandbox_name_servers
-  id = "Z0422582XJUTPNE8TYOI_sandbox.trade-tariff.service.gov.uk_NS"
-}
-
 resource "aws_route53_record" "google_site_verification" {
   zone_id = data.aws_route53_zone.this.zone_id
   name    = var.domain_name
   type    = "TXT"
   ttl     = 30
   records = ["google-site-verification=cX_NM0eTiZv7isZsA-FsTMpPahArshEhyPNOKUG4Nxk"]
-}
-
-import {
-  to = aws_route53_record.google_site_verification
-  id = "Z0422582XJUTPNE8TYOI_trade-tariff.service.gov.uk_TXT"
-}
-
-import {
-  to = module.cdn.aws_route53_record.alias_record[0]
-  id = "Z0422582XJUTPNE8TYOI_trade-tariff.service.gov.uk_A"
 }
