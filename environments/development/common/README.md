@@ -35,7 +35,7 @@ No outputs.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.10.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.29.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -93,7 +93,7 @@ No outputs.
 | <a name="module_signon_govuk_notify_api_key"></a> [signon\_govuk\_notify\_api\_key](#module\_signon\_govuk\_notify\_api\_key) | ../../common/secret/ | n/a |
 | <a name="module_signon_secret_key_base"></a> [signon\_secret\_key\_base](#module\_signon\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_slack_web_hook_url"></a> [slack\_web\_hook\_url](#module\_slack\_web\_hook\_url) | ../../common/secret/ | n/a |
-| <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.2.1 |
+| <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.2.2 |
 
 ## Resources
 
