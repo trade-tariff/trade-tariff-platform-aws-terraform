@@ -65,7 +65,7 @@
 | <a name="module_search_query_parser_sentry_dsn"></a> [search\_query\_parser\_sentry\_dsn](#module\_search\_query\_parser\_sentry\_dsn) | ../../common/secret/ | n/a |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../common/ses | n/a |
 | <a name="module_slack_web_hook_url"></a> [slack\_web\_hook\_url](#module\_slack\_web\_hook\_url) | ../../common/secret/ | n/a |
-| <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.2.1 |
+| <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.2.2 |
 
 ## Resources
 
