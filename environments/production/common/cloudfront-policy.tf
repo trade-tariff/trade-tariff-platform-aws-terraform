@@ -55,6 +55,26 @@ resource "aws_cloudfront_response_headers_policy" "this" {
       protection = false
     }
   }
+
+  cors_config {
+    access_control_allow_origins {
+      items = ["*"]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD", "POST", "OPTIONS"]
+    }
+
+    access_control_max_age_sec = 7200
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+    access_control_allow_credentials = false
+
+    origin_override = false
+  }
 }
 
 resource "aws_cloudfront_origin_request_policy" "s3" {
