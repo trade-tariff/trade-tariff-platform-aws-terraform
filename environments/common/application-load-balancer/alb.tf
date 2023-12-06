@@ -31,7 +31,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 6
-    protocol            = "HTTPS"
+    protocol            = "HTTP"
     matcher             = "200"
   }
 }
