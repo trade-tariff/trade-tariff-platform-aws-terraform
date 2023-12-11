@@ -382,6 +382,7 @@ resource "aws_iam_policy" "release_policy" {
         "ecr:CompleteLayerUpload",
         "ecr:DescribeImages",
         "ecr:DescribeRepositories",
+        "ecr:GetAuthorizationToken",
         "ecr:GetDownloadUrlForLayer",
         "ecr:InitiateLayerUpload",
         "ecr:ListImages",
