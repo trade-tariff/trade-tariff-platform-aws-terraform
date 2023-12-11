@@ -388,7 +388,7 @@ resource "aws_iam_policy" "release_policy" {
         "ecr:PutImage",
         "ecr:UploadLayerPart",
       ]
-      Resource = ["arn:as:ecr:${var.region}:${local.account_id}:repository/*"]
+      Resource = ["arn:aws:ecr:${var.region}:${local.account_id}:repository/*"]
     }]
   })
 }
