@@ -365,3 +365,35 @@ resource "aws_iam_user_policy_attachment" "cds_downloader_file_ci_attachment" {
   user       = aws_iam_user.cds_downloader_file_ci.name
   policy_arn = aws_iam_policy.ci_cds_downloader_file_policy.arn
 }
+
+resource "aws_iam_user" "releases_user" {
+  name = "tariff-releases"
+}
+
+resource "aws_iam_policy" "release_policy" {
+  name = "tariff-releases-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:CompleteLayerUpload",
+        "ecr:DescribeImages",
+        "ecr:DescribeRepositories",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:InitiateLayerUpload",
+        "ecr:ListImages",
+        "ecr:PutImage",
+        "ecr:UploadLayerPart",
+      ]
+      Resource = ["arn:as:ecr:${var.region}:${local.account_id}:repository/*"]
+    }]
+  })
+}
+
+resource "aws_iam_user_policy_attachment" "release_policy_attachment" {
+  user       = aws_iam_user.releases_user.name
+  policy_arn = aws_iam_policy.release_policy.arn
+}
