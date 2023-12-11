@@ -1,13 +1,12 @@
-# .pre-commit-config.yaml
-default_stages: [commit]
+---
 repos:
   - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.22
+    rev: v0.1.23
     hooks:
       - id: terragrunt-hclfmt
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.82.0
+    rev: v1.83.6
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
@@ -20,7 +19,7 @@ repos:
           - --hook-config=--create-file-if-not-exist=true
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
