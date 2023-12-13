@@ -22,3 +22,8 @@ output "kms_key_id" {
   description = "Globally unique ID of the KMS Key created to encrypt database performance insights data."
   value       = aws_kms_key.this.key_id
 }
+
+output "userless_connection_string" {
+  description = "A userless connection string (just the host and options) to use downstream."
+  value       = local.db_host_and_opts
+}
