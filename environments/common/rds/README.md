@@ -67,4 +67,5 @@ No modules.
 | <a name="output_db_id"></a> [db\_id](#output\_db\_id) | ID of the RDS instance. |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | ARN of the KMS Key created to encrypt database performance insights data. |
 | <a name="output_kms_key_id"></a> [kms\_key\_id](#output\_kms\_key\_id) | Globally unique ID of the KMS Key created to encrypt database performance insights data. |
+| <a name="output_userless_connection_string"></a> [userless\_connection\_string](#output\_userless\_connection\_string) | A userless connection string (just the host and options) to use downstream. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
