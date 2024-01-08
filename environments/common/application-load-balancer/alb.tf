@@ -59,19 +59,18 @@ resource "aws_lb_listener" "trade_tariff_listeners" {
   certificate_arn   = var.certificate_arn
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["frontend"].arn
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Access denied"
+      status_code  = "403"
+    }
   }
 }
 
 resource "aws_lb_listener_rule" "this" {
-  # exclude frontend from rules as it's a default
-  # ugly horrible for_each i am sorry
-  for_each = {
-    for k, v in local.services : k => v
-    if k != "frontend"
-  }
-
+  for_each     = local.services
   listener_arn = aws_lb_listener.trade_tariff_listeners.arn
 
   action {
@@ -94,6 +93,13 @@ resource "aws_lb_listener_rule" "this" {
       path_pattern {
         values = each.value.paths
       }
+    }
+  }
+
+  condition {
+    http_header {
+      http_header_name = var.custom_header.name
+      values           = [var.custom_header.value]
     }
   }
 }

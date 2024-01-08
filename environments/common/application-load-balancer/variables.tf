@@ -51,3 +51,11 @@ variable "vpc_id" {
   description = "ID of the VPC to place the load balancer into."
   type        = string
 }
+
+variable "custom_header" {
+  description = "Custom header required in all requests to the load balancer."
+  type = object({
+    name  = string
+    value = string
+  })
+}
