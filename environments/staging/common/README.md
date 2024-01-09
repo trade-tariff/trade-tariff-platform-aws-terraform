@@ -13,8 +13,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.13.1 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.5.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.31.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
