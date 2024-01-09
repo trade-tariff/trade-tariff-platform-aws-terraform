@@ -5,7 +5,7 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
 resource "random_password" "origin_header" {
   count   = 2
   length  = 16
-  special = true
+  special = false
 }
 
 resource "aws_cloudfront_cache_policy" "cache_api" {
