@@ -25,13 +25,12 @@ module "postgres" {
   ]
 }
 
-
 module "read_only_postgres_connection_string" {
   source          = "../../common/secret/"
   name            = "postgres-read-only"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = "postgres://tariff_read@${module.postgres.userless_connection_string}"
+  secret_string   = "postgres://tariff_read:tariff@${module.postgres.userless_connection_string}"
 }
 
 # Admin Postgres
