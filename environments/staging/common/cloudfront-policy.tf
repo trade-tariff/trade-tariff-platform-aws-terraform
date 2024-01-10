@@ -2,6 +2,12 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
 
+resource "random_password" "origin_header" {
+  count   = 2
+  length  = 16
+  special = false
+}
+
 resource "aws_cloudfront_cache_policy" "cache_api" {
   name        = "cache-apiv2"
   default_ttl = 1800
@@ -37,7 +43,6 @@ resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   query_strings_config {
     query_string_behavior = "all"
   }
-
 }
 
 resource "aws_cloudfront_response_headers_policy" "this" {
@@ -69,7 +74,7 @@ resource "aws_cloudfront_response_headers_policy" "this" {
     access_control_max_age_sec = 7200
 
     access_control_allow_headers {
-      items = ["X-Requested-With"]
+      items = ["*"]
     }
 
     access_control_allow_credentials = false

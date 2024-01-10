@@ -26,6 +26,11 @@ module "cdn" {
         origin_protocol_policy = "https-only"
         origin_ssl_protocols   = ["TLSv1.2"]
       }
+
+      custom_header = [{
+        name  = random_password.origin_header[0].result
+        value = random_password.origin_header[1].result
+      }]
     }
   }
 

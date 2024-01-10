@@ -59,6 +59,7 @@ No modules.
 | <a name="input_alb_security_group_id"></a> [alb\_security\_group\_id](#input\_alb\_security\_group\_id) | Application load balancer security group ID. | `string` | n/a | yes |
 | <a name="input_application_port"></a> [application\_port](#input\_application\_port) | Port the application exposes. | `string` | `8080` | no |
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | ARN of the default SSL server certificate. | `string` | n/a | yes |
+| <a name="input_custom_header"></a> [custom\_header](#input\_custom\_header) | Custom header required in all requests to the load balancer. | <pre>object({<br>    name  = string<br>    value = string<br>  })</pre> | n/a | yes |
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | If true, deletion of the load balancer will be disabled via the AWS API. | `bool` | `true` | no |
 | <a name="input_enable_http2"></a> [enable\_http2](#input\_enable\_http2) | Indicates whether HTTP/2 is enabled in application load balancers | `bool` | `true` | no |
 | <a name="input_idle_timeout"></a> [idle\_timeout](#input\_idle\_timeout) | The time in seconds that the connection is allowed to be idle. | `string` | `60` | no |

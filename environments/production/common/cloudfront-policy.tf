@@ -2,6 +2,12 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
 
+resource "random_password" "origin_header" {
+  count   = 2
+  length  = 16
+  special = false
+}
+
 resource "aws_cloudfront_cache_policy" "cache_api" {
   name        = "cache-apiv2"
   default_ttl = 1800
