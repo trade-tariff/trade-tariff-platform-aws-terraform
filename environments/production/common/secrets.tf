@@ -102,6 +102,14 @@ module "backend_differences_to_emails" {
   secret_string   = var.tariff_backend_differences_to_emails
 }
 
+module "backend_green_lanes_api_tokens" {
+  source          = "../../common/secret/"
+  name            = "backend-green-lanes-api-tokens"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_green_lanes_api_tokens
+}
+
 module "backend_sync_email" {
   source          = "../../common/secret/"
   name            = "backend-sync-email"
