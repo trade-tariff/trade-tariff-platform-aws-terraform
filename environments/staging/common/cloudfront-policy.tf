@@ -2,6 +2,10 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
 
+data "aws_cloudfront_cache_policy" "caching_optimised" {
+  name = "Managed-CachingOptimized"
+}
+
 resource "random_password" "origin_header" {
   count   = 2
   length  = 16
