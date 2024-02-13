@@ -5,7 +5,7 @@ module "postgres" {
   environment    = var.environment
   name           = "TradeTariffPostgres${title(var.environment)}"
   engine         = "postgres"
-  engine_version = "13.11"
+  engine_version = "13.13"
 
   deletion_protection = true
 
@@ -43,7 +43,7 @@ module "postgres_admin" {
   environment    = var.environment
   name           = "PostgresAdmin"
   engine         = "postgres"
-  engine_version = "13.11"
+  engine_version = "13.13"
 
   deletion_protection = true
 
