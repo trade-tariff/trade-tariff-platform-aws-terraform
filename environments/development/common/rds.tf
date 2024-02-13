@@ -44,7 +44,7 @@ module "postgres_admin" {
 
   deletion_protection = false # while configuring
 
-  # smallest that supports encryption at rest and postgres 13.11
+  # smallest that supports encryption at rest and postgres 13.13
   instance_type      = "db.t3.micro"
   backup_window      = "22:00-23:00"
   maintenance_window = "Fri:23:00-Sat:01:00"
