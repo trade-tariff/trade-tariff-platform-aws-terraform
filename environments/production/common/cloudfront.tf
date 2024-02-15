@@ -71,19 +71,19 @@ module "cdn" {
       ]
     }
 
-    api = {
+    green_lanes = {
       target_origin_id       = "frontend"
       viewer_protocol_policy = "redirect-to-https"
 
-      path_pattern = "/api/v2/*"
+      path_pattern = "/xi/api/v2/green_lanes/*"
 
-      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
 
-      min_ttl     = 1
-      default_ttl = 1800
-      max_ttl     = 1800
+      min_ttl     = 0
+      default_ttl = 0
+      max_ttl     = 0
 
       compress = true
 
@@ -103,19 +103,19 @@ module "cdn" {
       ]
     }
 
-    green_lanes = {
+    api = {
       target_origin_id       = "frontend"
       viewer_protocol_policy = "redirect-to-https"
 
-      path_pattern = "/xi/api/v2/green_lanes/*"
+      path_pattern = "/api/v2/*"
 
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
 
-      min_ttl     = 0
-      default_ttl = 0
-      max_ttl     = 0
+      min_ttl     = 1
+      default_ttl = 1800
+      max_ttl     = 1800
 
       compress = true
 
