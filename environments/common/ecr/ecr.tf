@@ -9,7 +9,7 @@ resource "aws_kms_alias" "this" {
 }
 
 resource "aws_ecr_repository" "this" {
-  for_each             = toset(local.applications)
+  for_each             = local.applications
   name                 = "tariff-${each.key}-${var.environment}"
   image_tag_mutability = "MUTABLE"
   force_delete         = false
@@ -26,23 +26,43 @@ resource "aws_ecr_repository" "this" {
 }
 
 resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
-  for_each = toset(local.applications)
+  for_each = {
+    for k, v in local.applications : k => v
+    if v.lifecycle_policy
+  }
 
   repository = "tariff-${each.key}-${var.environment}"
 
   policy = jsonencode({
-    rules = [{
-      rulePriority = 1
-      description  = "Keep last 30 tagged images."
-      selection = {
-        tagStatus   = "any"
-        countType   = "imageCountMoreThan"
-        countNumber = 30
+    rules = [
+      {
+        rulePriority = 1
+        description  = "Keep 6 months of production images."
+        selection = {
+          tagStatus     = "tagged"
+          tagPrefixList = ["release"]
+          countType     = "sinceImagePushed"
+          countUnit     = "days"
+          countNumber   = 180
+        }
+        action = {
+          type = "expire"
+        }
+      },
+      {
+        rulePriority = 2
+        description  = "Keep 1 month of development images."
+        selection = {
+          tagStatus   = "any"
+          countType   = "sinceImagePushed"
+          countUnit   = "days"
+          countNumber = 30
+        }
+        action = {
+          type = "expire"
+        }
       }
-      action = {
-        type = "expire"
-      }
-    }]
+    ]
   })
 
   depends_on = [
@@ -53,6 +73,6 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
 output "repository_urls" {
   description = "Map of ECR repository URLs, sorted by service."
   value = {
-    for k in toset(local.applications) : k => aws_ecr_repository.this[k].repository_url
+    for k, v in local.applications : k => aws_ecr_repository.this[k].repository_url
   }
 }
