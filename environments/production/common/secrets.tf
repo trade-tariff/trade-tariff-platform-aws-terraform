@@ -110,6 +110,14 @@ module "backend_green_lanes_api_tokens" {
   secret_string   = var.tariff_backend_green_lanes_api_tokens
 }
 
+module "frontend_green_lanes_api_token" {
+  source          = "../../common/secret/"
+  name            = "frontend-green-lanes-api-token"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_frontend_green_lanes_api_token
+}
+
 module "backend_sync_email" {
   source          = "../../common/secret/"
   name            = "backend-sync-email"

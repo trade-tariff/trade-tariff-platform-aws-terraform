@@ -124,6 +124,12 @@ variable "tariff_backend_green_lanes_api_tokens" {
   sensitive   = true
 }
 
+variable "tariff_frontend_green_lanes_api_token" {
+  description = "Value of GREEN_LANES_API_TOKEN for the tariff frontend access green lanes api."
+  type        = string
+  sensitive   = true
+}
+
 variable "tariff_backend_sync_email" {
   description = "Value of Tariff Sync email."
   type        = string
