@@ -74,10 +74,10 @@ resource "aws_cloudfront_response_headers_policy" "this" {
     access_control_max_age_sec = 7200
 
     access_control_allow_headers {
-      items = ["*"]
+      items = ["Authorization"]
     }
 
-    access_control_allow_credentials = false
+    access_control_allow_credentials = true
 
     origin_override = false
   }
