@@ -10,6 +10,18 @@ locals {
       healthcheck_path = "/healthcheck/live"
     }
 
+    hub_backend = {
+      host             = ["hub.*"]
+      paths            = ["/api/healthcheck"]
+      healthcheck_path = "/api/healthcheckz"
+    }
+
+    hub_frontend = {
+      host             = ["hub.*"]
+      paths            = ["/*"]
+      healthcheck_path = "/healthcheckz"
+    }
+
     backend_uk = {
       paths            = ["/uk/api/beta/*"]
       healthcheck_path = "/healthcheckz"
