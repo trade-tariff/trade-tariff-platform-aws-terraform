@@ -15,6 +15,12 @@ locals {
     "fpo-search" = {
       lifecycle_policy = false
     },
+    "fpo-developer-hub-backend" = {
+      lifecycle_policy = true
+    }
+    "fpo-developer-hub-frontend" = {
+      lifecycle_policy = true
+    }
     "frontend" = {
       lifecycle_policy = true
     },
