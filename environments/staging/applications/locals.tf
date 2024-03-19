@@ -4,6 +4,8 @@ locals {
     "admin",
     "backend",
     "duty-calculator",
+    "fpo-developer-hub-backend",
+    "fpo-developer-hub-frontend",
     "frontend",
     "search-query-parser",
     "signon"

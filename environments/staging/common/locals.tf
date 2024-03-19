@@ -7,6 +7,8 @@ locals {
     "backend",
     "database-backups",
     "duty-calculator",
+    "fpo-developer-hub-backend",
+    "fpo-developer-hub-frontend",
     "fpo-search",
     "frontend",
     "search-query-parser",
