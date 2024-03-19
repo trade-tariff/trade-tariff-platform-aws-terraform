@@ -1,7 +1,13 @@
 module "cdn" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
 
-  aliases         = [var.domain_name, "signon.${var.domain_name}", "admin.${var.domain_name}"]
+  aliases = [
+    var.domain_name,
+    "signon.${var.domain_name}",
+    "admin.${var.domain_name}",
+    "hub.${var.domain_name}",
+  ]
+
   create_alias    = true
   route53_zone_id = data.aws_route53_zone.this.id
   comment         = "${title(var.environment)} CDN"
