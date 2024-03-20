@@ -27,31 +27,6 @@ resource "aws_dynamodb_table" "customer_api_keys" {
     type = "S"
   }
 
-  attribute {
-    name = "Secret"
-    type = "S"
-  }
-
-  attribute {
-    name = "Description"
-    type = "S"
-  }
-
-  attribute {
-    name = "Enabled"
-    type = "B"
-  }
-
-  attribute {
-    name = "CreatedAt"
-    type = "S"
-  }
-
-  attribute {
-    name = "UpdatedAt"
-    type = "S"
-  }
-
   tags = {
     customer = "fpo"
   }
