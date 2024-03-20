@@ -39,7 +39,7 @@ resource "aws_dynamodb_table" "customer_api_keys" {
 
   attribute {
     name = "Enabled"
-    type = "BOOL"
+    type = "B"
   }
 
   attribute {
