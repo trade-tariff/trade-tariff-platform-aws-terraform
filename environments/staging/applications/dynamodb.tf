@@ -51,4 +51,8 @@ resource "aws_dynamodb_table" "customer_api_keys" {
     name = "UpdatedAt"
     type = "S"
   }
+
+  tags = {
+    customer = "fpo"
+  }
 }
