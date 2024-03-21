@@ -5,6 +5,7 @@ module "cognito" {
   domain                 = "auth.${var.domain_name}"
   domain_certificate_arn = module.acm.validated_certificate_arn
 
+  client_name = "fpo-client"
 }
 
 resource "aws_route53_record" "cognito_custom_domain" {
