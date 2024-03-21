@@ -10,3 +10,24 @@ resource "aws_dynamodb_table" "lock" {
     type = "S"
   }
 }
+
+resource "aws_dynamodb_table" "customer_api_keys" {
+  name         = "CustomerApiKeys"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "CustomerApiKeyId" # Unique identifier for the API key
+  range_key    = "CustomerId"       # Localized in dynamodb for each SCP customer that logs in
+
+  attribute {
+    name = "CustomerApiKeyId"
+    type = "S"
+  }
+
+  attribute {
+    name = "CustomerId"
+    type = "S"
+  }
+
+  tags = {
+    customer = "fpo"
+  }
+}
