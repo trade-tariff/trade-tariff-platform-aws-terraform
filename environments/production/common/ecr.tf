@@ -18,12 +18,12 @@ data "aws_iam_policy_document" "ecr_policy_document" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${lookup(var.account_ids, "development")}:root",
-        "arn:aws:iam::${lookup(var.account_ids, "staging")}:root",
-        "arn:aws:iam::${lookup(var.account_ids, "production")}:root",
-        "arn:aws:iam::${lookup(var.account_ids, "development")}:user/serverless-lambda-ci",
-        "arn:aws:iam::${lookup(var.account_ids, "staging")}:user/serverless-lambda-ci",
-        "arn:aws:iam::${lookup(var.account_ids, "production")}:user/serverless-lambda-ci",
+        "arn:aws:iam::${var.account_ids["development"]}:root",
+        "arn:aws:iam::${var.account_ids["staging"]}:root",
+        "arn:aws:iam::${var.account_ids["production"]}:root",
+        "arn:aws:iam::${var.account_ids["development"]}:user/serverless-lambda-ci",
+        "arn:aws:iam::${var.account_ids["staging"]}:user/serverless-lambda-ci",
+        "arn:aws:iam::${var.account_ids["production"]}:user/serverless-lambda-ci",
       ]
     }
 
@@ -44,9 +44,9 @@ data "aws_iam_policy_document" "ecr_policy_document" {
       test     = "StringLike"
       variable = "aws:sourceArn"
       values = [
-        "arn:aws:lambda:eu-west-2:${lookup(var.account_ids, "development")}:function:*",
-        "arn:aws:lambda:eu-west-2:${lookup(var.account_ids, "staging")}:function:*",
-        "arn:aws:lambda:eu-west-2:${lookup(var.account_ids, "production")}:function:*",
+        "arn:aws:lambda:eu-west-2:${var.account_ids["development"]}:function:*",
+        "arn:aws:lambda:eu-west-2:${var.account_ids["staging"]}:function:*",
+        "arn:aws:lambda:eu-west-2:${var.account_ids["production"]}:function:*",
       ]
     }
   }
