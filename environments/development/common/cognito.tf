@@ -34,7 +34,7 @@ resource "aws_route53_record" "cognito_custom_domain" {
 }
 
 resource "aws_ssm_parameter" "cognito_public_keys" {
-  name        = "/COGNITO_PUBLIC_KEYS_URL"
+  name        = "/${var.environment}/COGNITO_PUBLIC_KEYS_URL"
   description = "Cognito public keys URL."
   type        = "SecureString"
   value       = module.dev_hub_cognito.user_pool_public_keys_url
