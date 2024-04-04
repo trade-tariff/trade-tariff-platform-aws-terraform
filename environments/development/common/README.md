@@ -75,6 +75,8 @@ No outputs.
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../common/cloudwatch/ | n/a |
 | <a name="module_cloudwatch-logs-exporter"></a> [cloudwatch-logs-exporter](#module\_cloudwatch-logs-exporter) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudwatch_log_exporter | aws/cloudwatch_log_exporter-v1.0.0 |
 | <a name="module_cognito_client_secret"></a> [cognito\_client\_secret](#module\_cognito\_client\_secret) | ../../common/secret/ | n/a |
+| <a name="module_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#module\_dev\_hub\_backend\_encryption\_key) | ../../common/secret/ | n/a |
+| <a name="module_dev_hub_backend_usage_plan_id"></a> [dev\_hub\_backend\_usage\_plan\_id](#module\_dev\_hub\_backend\_usage\_plan\_id) | ../../common/secret/ | n/a |
 | <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_duty_calculator_sentry_dsn"></a> [duty\_calculator\_sentry\_dsn](#module\_duty\_calculator\_sentry\_dsn) | ../../common/secret/ | n/a |
@@ -182,6 +184,8 @@ No outputs.
 | <a name="input_admin_sentry_dsn"></a> [admin\_sentry\_dsn](#input\_admin\_sentry\_dsn) | Value of Sentry DSN for the admin tool. | `string` | n/a | yes |
 | <a name="input_backend_secret_key_base"></a> [backend\_secret\_key\_base](#input\_backend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the backend. | `string` | n/a | yes |
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
+| <a name="input_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#input\_dev\_hub\_backend\_encryption\_key) | Value of ENCRYPTION\_KEY for the dev hub backend. | `string` | n/a | yes |
+| <a name="input_dev_hub_backend_usage_plan_id"></a> [dev\_hub\_backend\_usage\_plan\_id](#input\_dev\_hub\_backend\_usage\_plan\_id) | Value of USAGE\_PLAN\_ID for the dev hub backend. | `string` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name of the service. | `string` | `"dev.trade-tariff.service.gov.uk"` | no |
 | <a name="input_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#input\_duty\_calculator\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the duty calculator. | `string` | n/a | yes |
 | <a name="input_duty_calculator_sentry_dsn"></a> [duty\_calculator\_sentry\_dsn](#input\_duty\_calculator\_sentry\_dsn) | Value of SENTRY\_DSN for the duty calculator. | `string` | n/a | yes |

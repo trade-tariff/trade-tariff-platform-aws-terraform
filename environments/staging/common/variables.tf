@@ -244,6 +244,18 @@ variable "search_query_parser_sentry_dsn" {
   sensitive   = true
 }
 
+variable "dev_hub_backend_encryption_key" {
+  description = "Value of ENCRYPTION_KEY for the dev hub backend."
+  type        = string
+  sensitive   = true
+}
+
+variable "dev_hub_backend_usage_plan_id" {
+  description = "Value of USAGE_PLAN_ID for the dev hub backend."
+  type        = string
+  sensitive   = true
+}
+
 variable "backups_basic_auth" {
   description = "base64 encoded credentials for backups basic auth."
   type        = string
