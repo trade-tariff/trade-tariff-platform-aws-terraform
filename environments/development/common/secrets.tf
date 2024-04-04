@@ -253,3 +253,19 @@ module "search_query_parser_sentry_dsn" {
   recovery_window = 7
   secret_string   = var.search_query_parser_sentry_dsn
 }
+
+module "dev_hub_backend_encryption_key" {
+  source          = "../../common/secret/"
+  name            = "dev-hub-backend-encryption-key"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_backend_encryption_key
+}
+
+module "dev_hub_backend_usage_plan_id" {
+  source          = "../../common/secret/"
+  name            = "dev-hub-backend-usage-plan-id"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_backend_usage_plan_id
+}
