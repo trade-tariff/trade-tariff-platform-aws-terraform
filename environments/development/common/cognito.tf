@@ -5,13 +5,13 @@ module "cognito" {
   domain                 = "auth.${var.domain_name}"
   domain_certificate_arn = module.acm.validated_certificate_arn
 
-  client_name               = "fpo-client"
+  client_name               = "hub-frontend-client"
   client_generate_secret    = true
   client_oauth_grant_types  = ["client_credentials"]
   client_oauth_flow_allowed = true
 
-  resource_server_name       = "fpo"
-  resource_server_identifier = "fpo-server"
+  resource_server_name       = "hub-backend"
+  resource_server_identifier = "hub-backend-server"
 
   resource_server_scopes = [
     {
