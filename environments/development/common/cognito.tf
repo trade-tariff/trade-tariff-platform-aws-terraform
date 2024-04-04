@@ -1,4 +1,4 @@
-module "cognito" {
+module "dev_hub_cognito" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito?ref=aws/cognito-v1.1.1"
 
   pool_name              = "fpo-user-pool"
@@ -28,8 +28,8 @@ resource "aws_route53_record" "cognito_custom_domain" {
 
   alias {
     evaluate_target_health = false
-    name                   = module.cognito.cloudfront_distribution_arn
-    zone_id                = module.cognito.cloudfront_distribution_zone_id
+    name                   = module.dev_hub_cognito.cloudfront_distribution_arn
+    zone_id                = module.dev_hub_cognito.cloudfront_distribution_zone_id
   }
 }
 
@@ -37,7 +37,7 @@ resource "aws_ssm_parameter" "cognito_public_keys" {
   name        = "/COGNITO_PUBLIC_KEYS_URL"
   description = "Cognito public keys URL."
   type        = "SecureString"
-  value       = module.cognito.user_pool_public_keys_url
+  value       = module.dev_hub_cognito.user_pool_public_keys_url
 }
 
 module "cognito_client_secret" {
@@ -45,5 +45,5 @@ module "cognito_client_secret" {
   name            = "cognito-fpo-client-secret"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = module.cognito.client_secret
+  secret_string   = module.dev_hub_cognito.client_secret
 }

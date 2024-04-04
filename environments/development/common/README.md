@@ -74,8 +74,8 @@ No outputs.
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../common/cloudwatch/ | n/a |
 | <a name="module_cloudwatch-logs-exporter"></a> [cloudwatch-logs-exporter](#module\_cloudwatch-logs-exporter) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudwatch_log_exporter | aws/cloudwatch_log_exporter-v1.0.0 |
-| <a name="module_cognito"></a> [cognito](#module\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
 | <a name="module_cognito_client_secret"></a> [cognito\_client\_secret](#module\_cognito\_client\_secret) | ../../common/secret/ | n/a |
+| <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_duty_calculator_sentry_dsn"></a> [duty\_calculator\_sentry\_dsn](#module\_duty\_calculator\_sentry\_dsn) | ../../common/secret/ | n/a |
 | <a name="module_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#module\_frontend\_secret\_key\_base) | ../../common/secret/ | n/a |
