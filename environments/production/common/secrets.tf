@@ -222,3 +222,19 @@ module "dev_hub_backend_usage_plan_id" {
   recovery_window = 7
   secret_string   = var.dev_hub_backend_usage_plan_id
 }
+
+module "dev_hub_backend_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "dev-hub-backend-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_backend_sentry_dsn
+}
+
+module "dev_hub_frontend_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "dev-hub-frontend-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_frontend_sentry_dsn
+}
