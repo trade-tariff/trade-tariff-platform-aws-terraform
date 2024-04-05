@@ -214,6 +214,18 @@ variable "dev_hub_backend_usage_plan_id" {
   sensitive   = true
 }
 
+variable "dev_hub_backend_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the dev hub backend."
+  type        = string
+  sensitive   = true
+}
+
+variable "dev_hub_frontend_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the dev hub frontend."
+  type        = string
+  sensitive   = true
+}
+
 variable "backups_basic_auth" {
   description = "base64 encoded credentials for backups basic auth."
   type        = string
