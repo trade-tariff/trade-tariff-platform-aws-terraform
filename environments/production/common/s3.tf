@@ -1,5 +1,6 @@
 locals {
   buckets = {
+    tech-docs         = "trade-tariff-tech-docs-${local.account_id}"
     api-docs          = "trade-tariff-api-docs-${local.account_id}"
     database-backups  = "trade-tariff-database-backups-${local.account_id}"
     lambda-deployment = "trade-tariff-lambda-deployment-${local.account_id}"
