@@ -319,10 +319,11 @@ resource "aws_cloudfront_function" "basic_auth" {
 module "tech_docs_cdn" {
   source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
 
-  aliases         = ["docs.${var.domain_name}"]
-  create_alias    = true
-  route53_zone_id = data.aws_route53_zone.this.id
-  comment         = "${title(var.environment)} Tech Docs CDN"
+  aliases             = ["docs.${var.domain_name}"]
+  create_alias        = true
+  route53_zone_id     = data.aws_route53_zone.this.id
+  comment             = "${title(var.environment)} Tech Docs CDN"
+  default_root_object = "index.html"
 
   enabled         = true
   is_ipv6_enabled = true
@@ -334,8 +335,6 @@ module "tech_docs_cdn" {
     bucket = module.logs.s3_bucket_bucket_domain_name
     prefix = "cloudfront/${var.environment}"
   }
-
-  default_root_object = "index.html"
 
   origin = {
     docs = {
@@ -349,7 +348,7 @@ module "tech_docs_cdn" {
       target_origin_id       = "docs"
       viewer_protocol_policy = "redirect-to-https"
 
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      cache_policy_id            = aws_cloudfront_cache_policy.s3.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
 
