@@ -348,7 +348,7 @@ module "tech_docs_cdn" {
       target_origin_id       = "docs"
       viewer_protocol_policy = "redirect-to-https"
 
-      cache_policy_id            = aws_cloudfront_cache_policy.s3.id
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
 
