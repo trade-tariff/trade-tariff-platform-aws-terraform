@@ -34,14 +34,6 @@ resource "aws_route53_record" "staging_name_servers" {
   records = data.terraform_remote_state.staging.outputs.hosted_zone_name_servers
 }
 
-resource "aws_route53_record" "sandbox_name_servers" {
-  zone_id = data.aws_route53_zone.this.zone_id
-  name    = "sandbox.${var.domain_name}"
-  type    = "NS"
-  ttl     = "30"
-  records = data.terraform_remote_state.staging.outputs.sandbox_hosted_zone_name_servers
-}
-
 resource "aws_route53_record" "google_site_verification" {
   zone_id = data.aws_route53_zone.this.zone_id
   name    = var.domain_name

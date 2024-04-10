@@ -10,12 +10,6 @@ variable "domain_name" {
   default     = "staging.trade-tariff.service.gov.uk"
 }
 
-variable "sandbox_domain_name" {
-  description = "Sandbox domain name of the service."
-  type        = string
-  default     = "sandbox.trade-tariff.service.gov.uk"
-}
-
 variable "region" {
   description = "AWS Region to use. Defaults to `eu-west-2`."
   type        = string

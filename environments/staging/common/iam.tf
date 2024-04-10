@@ -187,7 +187,7 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         Action = [
           "route53:ChangeResourceRecordSets",
         ],
-        Resource = [aws_route53_zone.sandbox.arn]
+        Resource = [data.aws_route53_zone.this.arn]
       },
     ]
   })
