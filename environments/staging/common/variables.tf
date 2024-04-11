@@ -10,12 +10,6 @@ variable "domain_name" {
   default     = "staging.trade-tariff.service.gov.uk"
 }
 
-variable "sandbox_domain_name" {
-  description = "Sandbox domain name of the service."
-  type        = string
-  default     = "sandbox.trade-tariff.service.gov.uk"
-}
-
 variable "region" {
   description = "AWS Region to use. Defaults to `eu-west-2`."
   type        = string
@@ -252,6 +246,18 @@ variable "dev_hub_backend_encryption_key" {
 
 variable "dev_hub_backend_usage_plan_id" {
   description = "Value of USAGE_PLAN_ID for the dev hub backend."
+  type        = string
+  sensitive   = true
+}
+
+variable "dev_hub_backend_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the dev hub backend."
+  type        = string
+  sensitive   = true
+}
+
+variable "dev_hub_frontend_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the dev hub frontend."
   type        = string
   sensitive   = true
 }

@@ -405,3 +405,48 @@ resource "aws_iam_user_policy_attachment" "release_policy_attachment" {
   user       = aws_iam_user.releases_user.name
   policy_arn = aws_iam_policy.release_policy.arn
 }
+
+resource "aws_iam_user" "tech_docs_ci" {
+  name = "tech-docs-ci"
+}
+
+resource "aws_iam_user_policy_attachment" "tech_docs_ci_attachment" {
+  user       = aws_iam_user.tech_docs_ci.name
+  policy_arn = aws_iam_policy.ci_tech_docs_peristence_readwrite_policy.arn
+}
+
+resource "aws_iam_policy" "ci_tech_docs_peristence_readwrite_policy" {
+  name        = "ci-tech-docs-persistence-readwrite-policy"
+  description = "Policy for CircleCI context to enable read/write access to Tech Docs bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["tech-docs"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["tech-docs"].id}/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn
+        ]
+      }
+    ]
+  })
+}

@@ -315,3 +315,61 @@ resource "aws_cloudfront_function" "basic_auth" {
   publish = true
   code    = local.cloudfront_auth
 }
+
+module "tech_docs_cdn" {
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
+
+  aliases             = ["docs.${var.domain_name}"]
+  create_alias        = true
+  route53_zone_id     = data.aws_route53_zone.this.id
+  comment             = "${title(var.environment)} Tech Docs CDN"
+  default_root_object = "index.html"
+
+  enabled         = true
+  is_ipv6_enabled = true
+  price_class     = "PriceClass_100"
+
+  logging_config = {
+    bucket = module.logs.s3_bucket_bucket_domain_name
+    prefix = "cloudfront/${var.environment}"
+  }
+
+  origin = {
+    docs = {
+      domain_name              = aws_s3_bucket.this["tech-docs"].bucket_regional_domain_name
+      origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
+    }
+  }
+
+  cache_behavior = {
+    default = {
+      target_origin_id       = "docs"
+      viewer_protocol_policy = "redirect-to-https"
+
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+
+      min_ttl     = 0
+      default_ttl = 0
+      max_ttl     = 0
+
+      compress = true
+
+      # TODO: When we're ready to enable basic auth for tech docs, uncomment this block
+      # function_association = {
+      #   "viewer-request" = {
+      #     function_arn = aws_cloudfront_function.basic_auth.arn
+      #   }
+      # }
+    },
+  }
+
+  viewer_certificate = {
+    ssl_support_method  = "sni-only"
+    acm_certificate_arn = module.acm.validated_certificate_arn
+    depends_on = [
+      module.acm.validated_certificate_arn
+    ]
+  }
+}

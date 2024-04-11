@@ -22,9 +22,8 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_acm"></a> [acm](#module\_acm) | ../../common/acm/ | n/a |
+| <a name="module_acm_london"></a> [acm\_london](#module\_acm\_london) | ../../common/acm/ | n/a |
 | <a name="module_acm_origin"></a> [acm\_origin](#module\_acm\_origin) | ../../common/acm | n/a |
-| <a name="module_acm_sandbox"></a> [acm\_sandbox](#module\_acm\_sandbox) | ../../common/acm/ | n/a |
-| <a name="module_acm_sandbox_london"></a> [acm\_sandbox\_london](#module\_acm\_sandbox\_london) | ../../common/acm/ | n/a |
 | <a name="module_admin_bearer_token"></a> [admin\_bearer\_token](#module\_admin\_bearer\_token) | ../../common/secret/ | n/a |
 | <a name="module_admin_oauth_id"></a> [admin\_oauth\_id](#module\_admin\_oauth\_id) | ../../common/secret/ | n/a |
 | <a name="module_admin_oauth_secret"></a> [admin\_oauth\_secret](#module\_admin\_oauth\_secret) | ../../common/secret/ | n/a |
@@ -54,8 +53,10 @@
 | <a name="module_cloudwatch-logs-exporter"></a> [cloudwatch-logs-exporter](#module\_cloudwatch-logs-exporter) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudwatch_log_exporter | aws/cloudwatch_log_exporter-v1.0.0 |
 | <a name="module_cognito_client_secret"></a> [cognito\_client\_secret](#module\_cognito\_client\_secret) | ../../common/secret/ | n/a |
 | <a name="module_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#module\_dev\_hub\_backend\_encryption\_key) | ../../common/secret/ | n/a |
+| <a name="module_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#module\_dev\_hub\_backend\_sentry\_dsn) | ../../common/secret/ | n/a |
 | <a name="module_dev_hub_backend_usage_plan_id"></a> [dev\_hub\_backend\_usage\_plan\_id](#module\_dev\_hub\_backend\_usage\_plan\_id) | ../../common/secret/ | n/a |
 | <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
+| <a name="module_dev_hub_frontend_sentry_dsn"></a> [dev\_hub\_frontend\_sentry\_dsn](#module\_dev\_hub\_frontend\_sentry\_dsn) | ../../common/secret/ | n/a |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_duty_calculator_sentry_dsn"></a> [duty\_calculator\_sentry\_dsn](#module\_duty\_calculator\_sentry\_dsn) | ../../common/secret/ | n/a |
 | <a name="module_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#module\_frontend\_secret\_key\_base) | ../../common/secret/ | n/a |
@@ -79,6 +80,7 @@
 | <a name="module_signon_govuk_notify_api_key"></a> [signon\_govuk\_notify\_api\_key](#module\_signon\_govuk\_notify\_api\_key) | ../../common/secret/ | n/a |
 | <a name="module_signon_secret_key_base"></a> [signon\_secret\_key\_base](#module\_signon\_secret\_key\_base) | ../../common/secret/ | n/a |
 | <a name="module_slack_web_hook_url"></a> [slack\_web\_hook\_url](#module\_slack\_web\_hook\_url) | ../../common/secret/ | n/a |
+| <a name="module_tech_docs_cdn"></a> [tech\_docs\_cdn](#module\_tech\_docs\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.2.3 |
 
 ## Resources
@@ -98,6 +100,7 @@
 | [aws_iam_policy.ci_appendix5a_peristence_readwrite_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ci_lambda_deployment_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ci_reporting_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.ci_tech_docs_peristence_readwrite_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.opensearch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.breakglass](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.breakglass_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -105,10 +108,12 @@
 | [aws_iam_user.opensearch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user) | resource |
 | [aws_iam_user.reporting_ci](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user) | resource |
 | [aws_iam_user.serverless_lambda_ci](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user) | resource |
+| [aws_iam_user.tech_docs_ci](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user) | resource |
 | [aws_iam_user_policy_attachment.appendix5a_ci_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment) | resource |
 | [aws_iam_user_policy_attachment.opensearch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment) | resource |
 | [aws_iam_user_policy_attachment.reporting_ci_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment) | resource |
 | [aws_iam_user_policy_attachment.serverless_lambda_ci_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment) | resource |
+| [aws_iam_user_policy_attachment.tech_docs_ci_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment) | resource |
 | [aws_kms_alias.logs_bucket_kms_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_alias.opensearch_kms_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_alias.s3_kms_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
@@ -124,11 +129,11 @@
 | [aws_route53_record.origin_root](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.origin_wildcard](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_zone.origin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
-| [aws_route53_zone.sandbox](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
 | [aws_s3_bucket.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_policy.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_policy.backups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_policy.reporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
+| [aws_s3_bucket_policy.tech_docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_public_access_block.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_bucket_versioning.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
@@ -148,6 +153,7 @@
 | [aws_iam_policy_document.opensearch_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.reporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3_kms_key_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.tech_docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_route53_zone.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 | [terraform_remote_state.base](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
@@ -164,7 +170,9 @@
 | <a name="input_backend_secret_key_base"></a> [backend\_secret\_key\_base](#input\_backend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the backend. | `string` | n/a | yes |
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#input\_dev\_hub\_backend\_encryption\_key) | Value of ENCRYPTION\_KEY for the dev hub backend. | `string` | n/a | yes |
+| <a name="input_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#input\_dev\_hub\_backend\_sentry\_dsn) | Value of SENTRY\_DSN for the dev hub backend. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_usage_plan_id"></a> [dev\_hub\_backend\_usage\_plan\_id](#input\_dev\_hub\_backend\_usage\_plan\_id) | Value of USAGE\_PLAN\_ID for the dev hub backend. | `string` | n/a | yes |
+| <a name="input_dev_hub_frontend_sentry_dsn"></a> [dev\_hub\_frontend\_sentry\_dsn](#input\_dev\_hub\_frontend\_sentry\_dsn) | Value of SENTRY\_DSN for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name of the service. | `string` | `"staging.trade-tariff.service.gov.uk"` | no |
 | <a name="input_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#input\_duty\_calculator\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the duty calculator. | `string` | n/a | yes |
 | <a name="input_duty_calculator_sentry_dsn"></a> [duty\_calculator\_sentry\_dsn](#input\_duty\_calculator\_sentry\_dsn) | Value of SENTRY\_DSN for the duty calculator. | `string` | n/a | yes |
@@ -172,7 +180,6 @@
 | <a name="input_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#input\_frontend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the frontend. | `string` | n/a | yes |
 | <a name="input_frontend_sentry_dsn"></a> [frontend\_sentry\_dsn](#input\_frontend\_sentry\_dsn) | Value of SENTRY\_DSN for the frontend. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
-| <a name="input_sandbox_domain_name"></a> [sandbox\_domain\_name](#input\_sandbox\_domain\_name) | Sandbox domain name of the service. | `string` | `"sandbox.trade-tariff.service.gov.uk"` | no |
 | <a name="input_search_query_parser_sentry_dsn"></a> [search\_query\_parser\_sentry\_dsn](#input\_search\_query\_parser\_sentry\_dsn) | Value of SENTRY\_DSN for the search query parser. | `string` | n/a | yes |
 | <a name="input_signon_derivation_key"></a> [signon\_derivation\_key](#input\_signon\_derivation\_key) | Value of ACTIVE\_RECORD\_ENCRYPTION\_PRIMARY\_KEY for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_derivation_salt"></a> [signon\_derivation\_salt](#input\_signon\_derivation\_salt) | Value of ACTIVE\_RECORD\_ENCRYPTION\_KEY\_DERIVATION\_SALT for the signon app. | `string` | n/a | yes |
@@ -203,5 +210,4 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_hosted_zone_name_servers"></a> [hosted\_zone\_name\_servers](#output\_hosted\_zone\_name\_servers) | Name servers. |
-| <a name="output_sandbox_hosted_zone_name_servers"></a> [sandbox\_hosted\_zone\_name\_servers](#output\_sandbox\_hosted\_zone\_name\_servers) | Sandbox Name servers. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

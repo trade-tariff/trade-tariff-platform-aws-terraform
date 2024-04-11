@@ -208,3 +208,28 @@ data "aws_iam_policy_document" "backups" {
     }
   }
 }
+
+resource "aws_s3_bucket_policy" "tech_docs" {
+  bucket = aws_s3_bucket.this["tech-docs"].id
+  policy = data.aws_iam_policy_document.tech_docs.json
+}
+
+data "aws_iam_policy_document" "tech_docs" {
+  statement {
+    sid       = "AllowCloudFrontServicePrincipal"
+    effect    = "Allow"
+    actions   = ["s3:GetObject", "s3:ListBucket"]
+    resources = [aws_s3_bucket.this["tech-docs"].arn, "${aws_s3_bucket.this["tech-docs"].arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [module.tech_docs_cdn.aws_cloudfront_distribution_arn]
+    }
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+  }
+}
