@@ -238,3 +238,11 @@ module "dev_hub_frontend_sentry_dsn" {
   recovery_window = 7
   secret_string   = var.dev_hub_frontend_sentry_dsn
 }
+
+module "fpo_search_sentry_dsn" {
+  source          = "../../common/secret/"
+  name            = "fpo-search-sentry-dsn"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.fpo_search_sentry_dsn
+}
