@@ -262,6 +262,12 @@ variable "dev_hub_frontend_sentry_dsn" {
   sensitive   = true
 }
 
+variable "fpo_search_sentry_dsn" {
+  description = "Value of SENTRY_DSN for the FPO search lambda."
+  type        = string
+  sensitive   = true
+}
+
 variable "backups_basic_auth" {
   description = "base64 encoded credentials for backups basic auth."
   type        = string
