@@ -128,7 +128,25 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "kms:Decrypt"
         ],
         Resource = [
-          aws_kms_alias.s3_kms_alias.target_key_arn
+          aws_kms_alias.s3_kms_alias.target_key_arn,
+          aws_kms_alias.secretsmanager_kms_alias.target_key_arn,
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:ListSecrets",
+          "secretsmanager:ListSecretVersionIds",
+        ],
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ],
+        Resource = [
+          module.fpo_search_sentry_dsn.secret_arn,
         ]
       },
       {
