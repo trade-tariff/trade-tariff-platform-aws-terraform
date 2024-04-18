@@ -101,10 +101,10 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   evaluation_periods  = "2"
   metric_name         = "TargetResponseTime"
   namespace           = "AWS/ApplicationELB"
-  period              = "60"
+  period              = "300"
   statistic           = "Average"
   unit                = "Seconds"
-  threshold           = 0.2
+  threshold           = 0.6
   alarm_description   = "Long response times"
   treat_missing_data  = "missing"
 
