@@ -110,9 +110,21 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         Effect = "Allow",
         Action = [
           "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DeleteLogGroup",
           "logs:TagResource",
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "cloudwatch:PutMetricAlarm",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:DeleteAlarms"
         ],
         Resource = "*"
       },
