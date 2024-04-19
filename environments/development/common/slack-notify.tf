@@ -6,7 +6,7 @@ module "notify_slack" {
   lambda_function_name = "notify_slack_${var.environment}"
   sns_topic_name       = "slack-topic"
 
-  slack_webhook_url = module.slack_notify_lambda_slack_webhook_url.secret_string
+  slack_webhook_url = var.slack_notify_lambda_slack_webhook_url
   slack_channel     = "trade-tariff-cloudwatch-alarms"
   slack_username    = "@here"
 
