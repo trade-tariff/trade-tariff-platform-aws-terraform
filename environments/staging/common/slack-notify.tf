@@ -27,8 +27,8 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   alarm_description   = "Too many HTTP 5xx errors"
   treat_missing_data  = "missing"
 
-  alarm_actions = [module.notify_slack[var.environment].slack_topic_arn]
-  ok_actions    = [module.notify_slack[var.environment].slack_topic_arn]
+  alarm_actions = [module.notify_slack.slack_topic_arn]
+  ok_actions    = [module.notify_slack.slack_topic_arn]
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -48,8 +48,8 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   alarm_description   = "Long response times"
   treat_missing_data  = "missing"
 
-  alarm_actions = [module.notify_slack[var.environment].slack_topic_arn]
-  ok_actions    = [module.notify_slack[var.environment].slack_topic_arn]
+  alarm_actions = [module.notify_slack.slack_topic_arn]
+  ok_actions    = [module.notify_slack.slack_topic_arn]
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
