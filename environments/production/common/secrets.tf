@@ -246,3 +246,11 @@ module "fpo_search_sentry_dsn" {
   recovery_window = 7
   secret_string   = var.fpo_search_sentry_dsn
 }
+
+module "slack_notify_lambda_slack_webhook_url" {
+  source          = "../../common/secret/"
+  name            = "slack-notify-lambda-slack-webhook-url"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.slack_notify_lambda_slack_webhook_url
+}
