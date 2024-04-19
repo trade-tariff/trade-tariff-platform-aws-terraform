@@ -273,3 +273,9 @@ variable "backups_basic_auth" {
   type        = string
   sensitive   = true
 }
+
+variable "slack_notify_lambda_slack_webhook_url" {
+  description = "Value of SLACK_WEB_HOOK_URL for the slack notify lambda."
+  type        = string
+  sensitive   = true
+}
