@@ -24,8 +24,8 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   statistic           = "Average"
   unit                = "Count"
   threshold           = 10
-  alarm_description   = "Too many HTTP 5xx errors"
-  treat_missing_data  = "missing"
+  alarm_description   = "Too many HTTP 5xx errors in ${var.environment} environment"
+  treat_missing_data  = "notBreaching"
 
   alarm_actions = [module.notify_slack.slack_topic_arn]
   ok_actions    = [module.notify_slack.slack_topic_arn]
@@ -45,8 +45,8 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   statistic           = "Average"
   unit                = "Seconds"
   threshold           = 0.6
-  alarm_description   = "Long response times"
-  treat_missing_data  = "missing"
+  alarm_description   = "Long response times in ${var.environment} environment"
+  treat_missing_data  = "notBreaching"
 
   alarm_actions = [module.notify_slack.slack_topic_arn]
   ok_actions    = [module.notify_slack.slack_topic_arn]
