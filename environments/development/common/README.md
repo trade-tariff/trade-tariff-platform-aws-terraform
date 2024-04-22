@@ -74,6 +74,7 @@ No outputs.
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../common/cloudwatch/ | n/a |
 | <a name="module_cloudwatch-logs-exporter"></a> [cloudwatch-logs-exporter](#module\_cloudwatch-logs-exporter) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudwatch_log_exporter | aws/cloudwatch_log_exporter-v1.0.0 |
+| <a name="module_cognito_client_id"></a> [cognito\_client\_id](#module\_cognito\_client\_id) | ../../common/secret/ | n/a |
 | <a name="module_cognito_client_secret"></a> [cognito\_client\_secret](#module\_cognito\_client\_secret) | ../../common/secret/ | n/a |
 | <a name="module_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#module\_dev\_hub\_backend\_encryption\_key) | ../../common/secret/ | n/a |
 | <a name="module_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#module\_dev\_hub\_backend\_sentry\_dsn) | ../../common/secret/ | n/a |
