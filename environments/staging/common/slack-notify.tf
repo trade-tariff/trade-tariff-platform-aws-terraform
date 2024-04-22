@@ -44,7 +44,7 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   period              = "300"
   statistic           = "Average"
   unit                = "Seconds"
-  threshold           = 0.6
+  threshold           = 1.5
   alarm_description   = "Long response times in ${var.environment} environment"
   treat_missing_data  = "notBreaching"
 
