@@ -40,6 +40,14 @@ resource "aws_ssm_parameter" "cognito_public_keys" {
   value       = module.dev_hub_cognito.user_pool_public_keys_url
 }
 
+module "cognito_client_id" {
+  source          = "../../common/secret/"
+  name            = "cognito-fpo-client-id"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = module.dev_hub_cognito.client_id
+}
+
 module "cognito_client_secret" {
   source          = "../../common/secret/"
   name            = "cognito-fpo-client-secret"
