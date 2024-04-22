@@ -219,6 +219,16 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         ],
         Resource = [data.aws_route53_zone.this.arn]
       },
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeRouteTables"
+        ],
+        Resource = ["*"]
+      }
     ]
   })
 }
