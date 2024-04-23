@@ -102,7 +102,9 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "iam:GetRolePolicy",
           "iam:PassRole",
           "iam:PutRolePolicy",
-          "iam:TagRole"
+          "iam:TagRole",
+          "iam:AttachRolePolicy",
+          "iam:DetachRolePolicy",
         ],
         Resource = "*"
       },
