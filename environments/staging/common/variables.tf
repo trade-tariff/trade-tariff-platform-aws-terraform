@@ -39,7 +39,7 @@ variable "tags" {
 variable "waf_rpm_limit" {
   description = "Request per minute limit for the WAF."
   type        = number
-  default     = 500
+  default     = 5000
 }
 
 #
