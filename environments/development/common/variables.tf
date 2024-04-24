@@ -37,7 +37,7 @@ variable "tags" {
 }
 
 variable "waf_rpm_limit" {
-  description = "Request per minute limit for the WAF."
+  description = "Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. "
   type        = number
   default     = 2000
 }
