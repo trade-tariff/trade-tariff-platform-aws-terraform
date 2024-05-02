@@ -381,3 +381,7 @@ resource "aws_iam_policy" "ci_status_checks_persistence_readwrite_policy" {
     ]
   })
 }
+
+resource "aws_iam_user" "fpo_models_ci" {
+  name = "fpo-models-ci"
+}
