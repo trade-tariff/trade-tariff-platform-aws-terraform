@@ -92,6 +92,14 @@ jobs:
             cd environments/<< parameters.environment >>/common
             terragrunt run-all apply --terragrunt-non-interactive
 
+      - run:
+          name: Terraform apply extra regions
+          command: |
+            if [ -d environments/<< parameters.environment >>/extra_regions ]; then
+              cd environments/<< parameters.environment >>/extra_regions
+              terragrunt run-all apply --terragrunt-non-interactive
+            fi
+
 workflows:
   version: 2
   deploy-to-development:
