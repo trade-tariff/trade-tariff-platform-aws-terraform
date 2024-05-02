@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "ecr_policy_document" {
 }
 
 module "ecr" {
-  source      = "../../common/ecr/"
+  source      = "../../../modules/common/ecr/"
   tags        = var.tags
   environment = var.environment
 }
