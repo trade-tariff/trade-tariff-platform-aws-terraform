@@ -391,3 +391,42 @@ resource "aws_iam_policy" "ci_status_checks_persistence_readwrite_policy" {
     ]
   })
 }
+
+resource "aws_iam_user" "fpo_models_ci" {
+  name = "fpo-models-ci"
+}
+
+resource "aws_iam_user_policy_attachment" "fpo_models_ci_attachment" {
+  user       = aws_iam_user.fpo_models_ci.name
+  policy_arn = aws_iam_policy.ci_fpo_models_secrets_policy.arn
+}
+
+resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
+  name        = "ci-fpo-models-secrets-policy"
+  description = "Policy for CircleCI context to enable read access to FPO models secrets"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ],
+        Resource = [
+          module.fpo_search_training_pem.secret_arn,
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_key.secretsmanager_kms_key.arn
+        ]
+      }
+    ]
+  })
+}

@@ -294,6 +294,14 @@ module "fpo_search_sentry_dsn" {
   secret_string   = var.fpo_search_sentry_dsn
 }
 
+module "fpo_search_training_pem" {
+  source          = "../../common/secret/"
+  name            = "fpo-search-training-pem"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.fpo_search_training_pem
+}
+
 module "slack_notify_lambda_slack_webhook_url" {
   source          = "../../common/secret/"
   name            = "slack-notify-lambda-slack-webhook-url"

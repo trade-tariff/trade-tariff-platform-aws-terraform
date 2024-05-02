@@ -268,6 +268,12 @@ variable "fpo_search_sentry_dsn" {
   sensitive   = true
 }
 
+variable "fpo_search_training_pem" {
+  description = "Private ed25519 ssh pem used to generate training model artifacts in EC2. This is development, only."
+  type        = string
+  sensitive   = true
+}
+
 variable "backups_basic_auth" {
   description = "base64 encoded credentials for backups basic auth."
   type        = string
