@@ -95,8 +95,8 @@ jobs:
       - run:
           name: Terraform apply extra regions
           command: |
-            if [ -d environments/<< parameters.environment >>/extra_regions ]; then
-              cd environments/<< parameters.environment >>/extra_regions
+            if [ -d environments/<< parameters.environment >>/extra-regions ]; then
+              cd environments/<< parameters.environment >>/extra-regions
               terragrunt run-all apply --terragrunt-non-interactive
             fi
 

@@ -1,5 +1,5 @@
 resource "aws_security_group" "this" {
-  name        = "trade-tariff-fpo-sg"
+  name        = "allow-ssh"
   description = "Allow inbound SSH traffic"
   vpc_id      = module.vpc.vpc_id
 }

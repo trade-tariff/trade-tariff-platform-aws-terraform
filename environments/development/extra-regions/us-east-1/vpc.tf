@@ -1,5 +1,3 @@
-data "aws_region" "current" {}
-
 module "vpc" {
   source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v5.1.2"
 
