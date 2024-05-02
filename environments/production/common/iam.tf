@@ -534,7 +534,7 @@ resource "aws_iam_user" "fpo_models_ci" {
 resource "aws_s3_bucket_policy" "fpo_model_access" {
   bucket = aws_s3_bucket.this["models"].id
 
-  policy = data.aws_iam_policy_document.fpo_model_derivations.json
+  policy = data.aws_iam_policy_document.fpo_model_access.json
 }
 
 data "aws_iam_policy_document" "fpo_model_access" {
