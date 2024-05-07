@@ -375,7 +375,23 @@ resource "aws_iam_policy" "ci_status_checks_persistence_readwrite_policy" {
           "kms:Decrypt"
         ],
         Resource = [
-          aws_kms_alias.s3_kms_alias.target_key_arn
+          aws_kms_alias.s3_kms_alias.target_key_arn,
+          # Production S3 KMS key
+          "arn:aws:kms:eu-west-2:382373577178:key/7fc9fd19-e970-4877-9b56-3869a02c7b85"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+        Resource = [
+          "arn:aws:s3:::trade-tariff-models-382373577178",
+          "arn:aws:s3:::trade-tariff-models-382373577178/*"
         ]
       }
     ]

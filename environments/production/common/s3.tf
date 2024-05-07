@@ -32,6 +32,23 @@ data "aws_iam_policy_document" "s3_kms_key_policy" {
   }
 
   statement {
+    sid       = "Enable Cross Account User Permissions"
+    effect    = "Allow"
+    actions   = [
+      "kms:GenerateDataKey",
+      "kms:Decrypt",
+    ]
+    resources = ["*"]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:user/fpo-models-ci"
+      ]
+    }
+  }
+
+  statement {
     sid       = "Allow use of the key for CloudFront OAC"
     effect    = "Allow"
     actions   = ["kms:Decrypt"]
