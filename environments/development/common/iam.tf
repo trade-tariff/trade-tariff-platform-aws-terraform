@@ -444,6 +444,17 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
       {
         Effect = "Allow",
         Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          # Production S3 KMS key
+          "arn:aws:kms:eu-west-2:382373577178:key/7fc9fd19-e970-4877-9b56-3869a02c7b85"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
           "ec2:RunInstances",
           "ec2:DescribeInstances",
           "ec2:TerminateInstances",
@@ -455,8 +466,7 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
           "ec2:CreateTags"
         ],
         Resource = ["*"]
-      }
-
+      },
     ]
   })
 }
