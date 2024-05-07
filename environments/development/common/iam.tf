@@ -426,6 +426,20 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
         Resource = [
           aws_kms_key.secretsmanager_kms_key.arn
         ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+        Resource = [
+          "arn:aws:s3:::trade-tariff-models-382373577178",
+          "arn:aws:s3:::trade-tariff-models-382373577178/*"
+        ]
       }
     ]
   })
