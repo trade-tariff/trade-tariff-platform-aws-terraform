@@ -452,6 +452,7 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
           "ec2:DescribeSecurityGroups",
           "ec2:WaitInstanceRunning",
           "ec2:DescribeInstanceStatus",
+          "ec2:CreateTags"
         ],
         Resource = ["*"]
       }
