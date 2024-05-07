@@ -440,7 +440,22 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
           "arn:aws:s3:::trade-tariff-models-382373577178",
           "arn:aws:s3:::trade-tariff-models-382373577178/*"
         ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:RunInstances",
+          "ec2:DescribeInstances",
+          "ec2:TerminateInstances",
+          "ec2:DescribeImages",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups",
+          "ec2:WaitInstanceRunning",
+          "ec2:DescribeInstanceStatus",
+        ],
+        Resource = ["*"]
       }
+
     ]
   })
 }
