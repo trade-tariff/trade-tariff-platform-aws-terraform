@@ -69,7 +69,7 @@ resource "aws_dynamodb_table" "organisations" {
     name = "OrganisationId"
     type = "S"
   }
-  
+
   attribute {
     name = "ScpGroupId"
     type = "S"
