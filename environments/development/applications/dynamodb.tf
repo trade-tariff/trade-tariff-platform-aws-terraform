@@ -15,7 +15,7 @@ resource "aws_dynamodb_table" "customer_api_keys" {
   name         = "CustomerApiKeys"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "CustomerApiKeyId"
-  range_key    = "FpoId"
+  range_key    = "OrganisationId"
 
   point_in_time_recovery {
     enabled = true
@@ -27,7 +27,7 @@ resource "aws_dynamodb_table" "customer_api_keys" {
   }
 
   attribute {
-    name = "FpoId"
+    name = "OrganisationId"
     type = "S"
   }
 
@@ -47,6 +47,31 @@ resource "aws_dynamodb_table" "users" {
 
   attribute {
     name = "UserId"
+    type = "S"
+  }
+
+  tags = {
+    customer = "fpo"
+  }
+}
+
+resource "aws_dynamodb_table" "organisations" {
+  name         = "Organisations"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "OrganisationId"
+  range_key    = "ScpGroupId"
+
+  point_in_time_recovery {
+    enabled = true
+  }
+
+  attribute {
+    name = "OrganisationId"
+    type = "S"
+  }
+
+  attribute {
+    name = "ScpGroupId"
     type = "S"
   }
 
