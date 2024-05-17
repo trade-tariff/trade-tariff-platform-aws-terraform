@@ -402,6 +402,11 @@ resource "aws_iam_user" "fpo_models_ci" {
   name = "fpo-models-ci"
 }
 
+resource "aws_iam_user_policy_attachment" "fpo_models_ci_attachment" {
+  user       = aws_iam_user.fpo_models_ci.name
+  policy_arn = aws_iam_policy.ci_fpo_models_policy.arn
+}
+
 resource "aws_iam_policy" "ci_fpo_models_policy" {
   name        = "ci-fpo-models-policy"
   description = "Policy for CircleCI context to enable read access to FPO models bucket"
