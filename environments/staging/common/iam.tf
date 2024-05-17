@@ -420,6 +420,7 @@ resource "aws_iam_policy" "ci_fpo_models_policy" {
           "s3:GetBucketLocation",
           "s3:GetObject",
           "s3:ListBucket",
+          "s3:PutObject",
         ],
         Resource = [
           "arn:aws:s3:::trade-tariff-models-382373577178",
