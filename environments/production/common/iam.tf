@@ -531,6 +531,44 @@ resource "aws_iam_user" "fpo_models_ci" {
   name = "fpo-models-ci"
 }
 
+resource "aws_iam_user_policy_attachment" "fpo_models_ci_attachment" {
+  user       = aws_iam_user.fpo_models_ci.name
+  policy_arn = aws_iam_policy.ci_fpo_models_policy.arn
+}
+
+resource "aws_iam_policy" "ci_fpo_models_policy" {
+  name        = "ci-fpo-models-policy"
+  description = "Policy for CircleCI context to enable read access to FPO models bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+        ],
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["models"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["models"].id}/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn
+        ]
+      },
+    ]
+  })
+}
+
 resource "aws_s3_bucket_policy" "fpo_model_access" {
   bucket = aws_s3_bucket.this["models"].id
 

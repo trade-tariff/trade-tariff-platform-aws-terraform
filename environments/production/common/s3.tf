@@ -32,9 +32,9 @@ data "aws_iam_policy_document" "s3_kms_key_policy" {
   }
 
   statement {
-    sid       = "Enable Cross Account User Permissions"
-    effect    = "Allow"
-    actions   = [
+    sid    = "Enable Cross Account User Permissions"
+    effect = "Allow"
+    actions = [
       "kms:GenerateDataKey",
       "kms:Decrypt",
     ]

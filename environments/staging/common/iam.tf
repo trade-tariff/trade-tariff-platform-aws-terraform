@@ -401,3 +401,42 @@ resource "aws_iam_policy" "ci_status_checks_persistence_readwrite_policy" {
 resource "aws_iam_user" "fpo_models_ci" {
   name = "fpo-models-ci"
 }
+
+resource "aws_iam_user_policy_attachment" "fpo_models_ci_attachment" {
+  user       = aws_iam_user.fpo_models_ci.name
+  policy_arn = aws_iam_policy.ci_fpo_models_policy.arn
+}
+
+resource "aws_iam_policy" "ci_fpo_models_policy" {
+  name        = "ci-fpo-models-policy"
+  description = "Policy for CircleCI context to enable read access to FPO models bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+        ],
+        Resource = [
+          "arn:aws:s3:::trade-tariff-models-382373577178",
+          "arn:aws:s3:::trade-tariff-models-382373577178/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          # Production S3 KMS key
+          "arn:aws:kms:eu-west-2:382373577178:key/7fc9fd19-e970-4877-9b56-3869a02c7b85"
+        ]
+      },
+    ]
+  })
+}
