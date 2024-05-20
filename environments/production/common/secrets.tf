@@ -215,14 +215,6 @@ module "dev_hub_backend_encryption_key" {
   secret_string   = var.dev_hub_backend_encryption_key
 }
 
-module "dev_hub_backend_usage_plan_id" {
-  source          = "../../../modules/common/secret/"
-  name            = "dev-hub-backend-usage-plan-id"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.dev_hub_backend_usage_plan_id
-}
-
 module "dev_hub_backend_sentry_dsn" {
   source          = "../../../modules/common/secret/"
   name            = "dev-hub-backend-sentry-dsn"
