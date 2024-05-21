@@ -29,6 +29,19 @@ locals {
     },
     "signon" = {
       lifecycle_policy = true
+      rules_override = [{
+        rulePriority = 1
+        description  = "Keep 6 months of images."
+        selection = {
+          tagStatus   = "tagged"
+          countType   = "sinceImagePushed"
+          countUnit   = "days"
+          countNumber = 180
+        }
+        action = {
+          type = "expire"
+        }
+      }]
     }
   }
 }

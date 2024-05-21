@@ -33,7 +33,7 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
 
   repository = "tariff-${each.key}-${var.environment}"
 
-  policy = jsonencode({
+  policy = each.value.rules_override != null ? jsonencode(each.value.rules_override) : jsonencode({
     rules = [
       {
         rulePriority = 1
