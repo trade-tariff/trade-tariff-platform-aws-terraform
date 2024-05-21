@@ -50,6 +50,12 @@ locals {
       priority         = 18
     }
 
+    frontend_beta = {
+      host             = ["beta.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 19
+    }
+
     frontend = {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
