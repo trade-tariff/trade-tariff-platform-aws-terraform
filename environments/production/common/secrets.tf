@@ -231,6 +231,22 @@ module "dev_hub_frontend_sentry_dsn" {
   secret_string   = var.dev_hub_frontend_sentry_dsn
 }
 
+module "dev_hub_frontend_scp_open_id_client_id" {
+  source          = "../../../modules/common/secret/"
+  name            = "dev-hub-frontend-scp-open-id-client-id"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_frontend_scp_open_id_client_id
+}
+
+module "dev_hub_frontend_scp_open_id_secret" {
+  source          = "../../../modules/common/secret/"
+  name            = "dev-hub-frontend-scp-open-id-secret"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_frontend_scp_open_id_secret
+}
+
 module "fpo_search_sentry_dsn" {
   source          = "../../../modules/common/secret/"
   name            = "fpo-search-sentry-dsn"
