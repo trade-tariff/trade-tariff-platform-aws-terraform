@@ -262,6 +262,18 @@ variable "dev_hub_frontend_sentry_dsn" {
   sensitive   = true
 }
 
+variable "dev_hub_frontend_scp_open_id_client_id" {
+  description = "Value of SCP_OPEN_ID_CLIENT_ID for the dev hub frontend."
+  type        = string
+  sensitive   = true
+}
+
+variable "dev_hub_frontend_scp_open_id_secret" {
+  description = "Value of SCP_OPEN_ID_SECRET for the dev hub frontend."
+  type        = string
+  sensitive   = true
+}
+
 variable "fpo_search_sentry_dsn" {
   description = "Value of SENTRY_DSN for the FPO search lambda."
   type        = string
