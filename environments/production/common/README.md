@@ -58,6 +58,7 @@
 | <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
 | <a name="module_dev_hub_frontend_scp_open_id_client_id"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_id](#module\_dev\_hub\_frontend\_scp\_open\_id\_client\_id) | ../../../modules/common/secret/ | n/a |
 | <a name="module_dev_hub_frontend_scp_open_id_client_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_secret](#module\_dev\_hub\_frontend\_scp\_open\_id\_client\_secret) | ../../../modules/common/secret/ | n/a |
+| <a name="input_dev_hub_frontend_feedback_url"></a> [dev\_hub\_frontend\_feedback\_url](#input\_dev\_hub\_frontend\_feedback\_url) | Value of FEEDBACK\_URL for the dev hub frontend. | `string` | n/a | yes |
 | <a name="module_dev_hub_frontend_scp_open_id_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_secret](#module\_dev\_hub\_frontend\_scp\_open\_id\_secret) | ../../../modules/common/secret/ | n/a |
 | <a name="module_dev_hub_frontend_sentry_dsn"></a> [dev\_hub\_frontend\_sentry\_dsn](#module\_dev\_hub\_frontend\_sentry\_dsn) | ../../../modules/common/secret/ | n/a |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../../modules/common/secret/ | n/a |

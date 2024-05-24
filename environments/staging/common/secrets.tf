@@ -302,6 +302,14 @@ module "dev_hub_frontend_scp_open_id_secret" {
   secret_string   = var.dev_hub_frontend_scp_open_id_secret
 }
 
+module "dev_hub_frontend_feedback_url" {
+  source          = "../../../modules/common/secret/"
+  name            = "dev-hub-frontend-feedback-url"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_frontend_feedback_url
+}
+
 module "fpo_search_sentry_dsn" {
   source          = "../../../modules/common/secret/"
   name            = "fpo-search-sentry-dsn"

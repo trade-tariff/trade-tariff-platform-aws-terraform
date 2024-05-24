@@ -238,6 +238,12 @@ variable "dev_hub_frontend_scp_open_id_client_secret" {
   sensitive   = true
 }
 
+variable "dev_hub_frontend_feedback_url" {
+  description = "Value of FEEDBACK_URL for the dev hub frontend."
+  type        = string
+  sensitive   = true
+}
+
 variable "dev_hub_frontend_scp_open_id_secret" {
   description = "Value of SCP_OPEN_ID_SECRET for the dev hub frontend."
   type        = string

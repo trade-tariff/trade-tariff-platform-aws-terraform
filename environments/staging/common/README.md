@@ -192,6 +192,7 @@
 | <a name="input_dev_hub_frontend_scp_open_id_client_id"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_id](#input\_dev\_hub\_frontend\_scp\_open\_id\_client\_id) | Value of SCP\_OPEN\_ID\_CLIENT\_ID for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_scp_open_id_client_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_secret](#input\_dev\_hub\_frontend\_scp\_open\_id\_client\_secret) | Value of SCP\_OPEN\_ID\_CLIENT\_SECRET for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_scp_open_id_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_secret](#input\_dev\_hub\_frontend\_scp\_open\_id\_secret) | Value of SCP\_OPEN\_ID\_SECRET for the dev hub frontend. | `string` | n/a | yes |
+| <a name="input_dev_hub_frontend_feedback_url"></a> [dev\_hub\_frontend\_feedback\_url](#input\_dev\_hub\_frontend\_feedback\_url) | Value of FEEDBACK\_URL for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_sentry_dsn"></a> [dev\_hub\_frontend\_sentry\_dsn](#input\_dev\_hub\_frontend\_sentry\_dsn) | Value of SENTRY\_DSN for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name of the service. | `string` | `"staging.trade-tariff.service.gov.uk"` | no |
 | <a name="input_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#input\_duty\_calculator\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the duty calculator. | `string` | n/a | yes |
