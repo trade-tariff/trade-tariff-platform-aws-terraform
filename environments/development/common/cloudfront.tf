@@ -3,9 +3,10 @@ module "cdn" {
 
   aliases = [
     var.domain_name,
-    "signon.${var.domain_name}",
     "admin.${var.domain_name}",
-    "hub.${var.domain_name}"
+    "beta.${var.domain_name}",
+    "hub.${var.domain_name}",
+    "signon.${var.domain_name}",
   ]
 
   create_alias    = true
