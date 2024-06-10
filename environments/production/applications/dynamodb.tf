@@ -79,3 +79,18 @@ resource "aws_dynamodb_table" "organisations" {
     customer = "fpo"
   }
 }
+
+resource "aws_dynamodb_table" "audit" {
+  name         = "AuditLog"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LogId"
+
+  point_in_time_recovery {
+    enabled = true
+  }
+
+  attribute {
+    name = "LogId"
+    type = "S"
+  }
+}
