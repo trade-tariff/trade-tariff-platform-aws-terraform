@@ -13,7 +13,7 @@ only-main: &only-main
 executors:
   default:
     docker:
-      - image: 382373577178.dkr.ecr.eu-west-2.amazonaws.com/tariff-terraform-1.5.5-python3-production:latest
+      - image: 382373577178.dkr.ecr.eu-west-2.amazonaws.com/tariff-terraform-production:latest
         aws_auth:
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
