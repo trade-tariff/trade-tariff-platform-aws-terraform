@@ -17,7 +17,7 @@ module "notify_slack" {
 resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   for_each = module.alb.target_groups
 
-  alarm_name          = "High-5xx-errors-${each.key}"
+  alarm_name          = "High-5xx-errors-${each.value.name}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "HTTPCode_Target_5XX_Count"
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
 resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   for_each = module.alb.target_groups
 
-  alarm_name          = "Long-response-times-${each.key}"
+  alarm_name          = "Long-response-times-${each.value.name}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "TargetResponseTime"

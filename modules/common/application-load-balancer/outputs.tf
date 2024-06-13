@@ -15,11 +15,11 @@ output "arn_suffix" {
 
 output "target_groups" {
   description = "List of target groups."
-  value = [
+  value = {
     for tg in aws_lb_target_group.trade_tariff_target_groups :
-    {
+    tg.name => {
       name = tg.name,
       arn  = tg.arn
     }
-  ]
+  }
 }
