@@ -12,3 +12,14 @@ output "arn_suffix" {
   description = "arn_suffix of the load balancer."
   value       = aws_lb.application_load_balancer.arn_suffix
 }
+
+output "target_groups" {
+  description = "List of target groups."
+  value = [
+    for tg in aws_lb_target_group.trade_tariff_target_groups :
+    {
+      name = tg.name,
+      arn  = tg.arn
+    }
+  ]
+}
