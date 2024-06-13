@@ -29,6 +29,9 @@ locals {
     },
     "signon" = {
       lifecycle_policy = true
-    }
+    },
+    "terraform" = {
+      lifecycle_policy = false
+    },
   }
 }
