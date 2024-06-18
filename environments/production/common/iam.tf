@@ -594,10 +594,14 @@ data "aws_iam_policy_document" "fpo_model_access" {
 
     principals {
       type = "AWS"
-      identifiers = concat(
-        [for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:user/fpo-models-ci"],
-        [for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:role/fpo-model-garbage-collection-*"]
-      )
+      identifiers = [
+        "arn:aws:iam::844815912454:role/fpo-model-garbage-collection-development-eu-west-2-lambdaRole",
+        "arn:aws:iam::844815912454:user/fpo-models-ci",
+        "arn:aws:iam::451934005581:role/fpo-model-garbage-collection-staging-eu-west-2-lambdaRole",
+        "arn:aws:iam::451934005581:user/fpo-models-ci",
+        "arn:aws:iam::382373577178:role/fpo-model-garbage-collection-production-eu-west-2-lambdaRole",
+        "arn:aws:iam::382373577178:user/fpo-models-ci"
+      ]
     }
   }
 }
