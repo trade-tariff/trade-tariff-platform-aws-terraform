@@ -594,9 +594,10 @@ data "aws_iam_policy_document" "fpo_model_access" {
 
     principals {
       type = "AWS"
-      identifiers = [
-        for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:user/fpo-models-ci"
-      ]
+      identifiers = concat(
+        [for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:user/fpo-models-ci"],
+        [for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:role/fpo-model-garbage-collection-*"]
+      )
     }
   }
 }
