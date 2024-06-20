@@ -270,3 +270,19 @@ module "slack_notify_lambda_slack_webhook_url" {
   recovery_window = 7
   secret_string   = var.slack_notify_lambda_slack_webhook_url
 }
+
+module "dev_hub_frontend_govuk_notify_api_key" {
+  source          = "../../../modules/common/secret/"
+  name            = "dev-hub-frontend-govuk-notify-api-key"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_frontend_govuk_notify_api_key
+}
+
+module "dev_hub_frontend_application_support_email" {
+  source          = "../../../modules/common/secret/"
+  name            = "dev-hub-frontend-application-support-email"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_frontend_application_support_email
+}
