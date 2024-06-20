@@ -56,6 +56,8 @@
 | <a name="module_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#module\_dev\_hub\_backend\_encryption\_key) | ../../../modules/common/secret/ | n/a |
 | <a name="module_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#module\_dev\_hub\_backend\_sentry\_dsn) | ../../../modules/common/secret/ | n/a |
 | <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
+| <a name="module_dev_hub_frontend_application_support_email"></a> [dev\_hub\_frontend\_application\_support\_email](#module\_dev\_hub\_frontend\_application\_support\_email) | ../../../modules/common/secret/ | n/a |
+| <a name="module_dev_hub_frontend_govuk_notify_api_key"></a> [dev\_hub\_frontend\_govuk\_notify\_api\_key](#module\_dev\_hub\_frontend\_govuk\_notify\_api\_key) | ../../../modules/common/secret/ | n/a |
 | <a name="module_dev_hub_frontend_scp_open_id_client_id"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_id](#module\_dev\_hub\_frontend\_scp\_open\_id\_client\_id) | ../../../modules/common/secret/ | n/a |
 | <a name="module_dev_hub_frontend_scp_open_id_client_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_secret](#module\_dev\_hub\_frontend\_scp\_open\_id\_client\_secret) | ../../../modules/common/secret/ | n/a |
 | <a name="module_dev_hub_frontend_scp_open_id_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_secret](#module\_dev\_hub\_frontend\_scp\_open\_id\_secret) | ../../../modules/common/secret/ | n/a |
@@ -189,6 +191,8 @@
 | <a name="input_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#input\_dev\_hub\_backend\_encryption\_key) | Value of ENCRYPTION\_KEY for the dev hub backend. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#input\_dev\_hub\_backend\_sentry\_dsn) | Value of SENTRY\_DSN for the dev hub backend. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_usage_plan_id"></a> [dev\_hub\_backend\_usage\_plan\_id](#input\_dev\_hub\_backend\_usage\_plan\_id) | Value of USAGE\_PLAN\_ID for the dev hub backend. | `string` | n/a | yes |
+| <a name="input_dev_hub_frontend_application_support_email"></a> [dev\_hub\_frontend\_application\_support\_email](#input\_dev\_hub\_frontend\_application\_support\_email) | Value of APPLICATION\_SUPPORT\_EMAIL for the dev hub frontend. | `string` | n/a | yes |
+| <a name="input_dev_hub_frontend_govuk_notify_api_key"></a> [dev\_hub\_frontend\_govuk\_notify\_api\_key](#input\_dev\_hub\_frontend\_govuk\_notify\_api\_key) | Value of GOVUK\_NOTIFY\_API\_KEY for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_scp_open_id_client_id"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_id](#input\_dev\_hub\_frontend\_scp\_open\_id\_client\_id) | Value of SCP\_OPEN\_ID\_CLIENT\_ID for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_scp_open_id_client_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_secret](#input\_dev\_hub\_frontend\_scp\_open\_id\_client\_secret) | Value of SCP\_OPEN\_ID\_CLIENT\_SECRET for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_scp_open_id_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_secret](#input\_dev\_hub\_frontend\_scp\_open\_id\_secret) | Value of SCP\_OPEN\_ID\_SECRET for the dev hub frontend. | `string` | n/a | yes |

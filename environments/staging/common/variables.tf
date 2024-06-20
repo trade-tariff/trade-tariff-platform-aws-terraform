@@ -297,3 +297,15 @@ variable "slack_notify_lambda_slack_webhook_url" {
   type        = string
   sensitive   = true
 }
+
+variable "dev_hub_frontend_govuk_notify_api_key" {
+  description = "Value of GOVUK_NOTIFY_API_KEY for the dev hub frontend."
+  type        = string
+  sensitive   = true
+}
+
+variable "dev_hub_frontend_application_support_email" {
+  description = "Value of APPLICATION_SUPPORT_EMAIL for the dev hub frontend."
+  type        = string
+  sensitive   = true
+}
