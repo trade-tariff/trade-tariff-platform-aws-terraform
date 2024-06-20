@@ -59,7 +59,6 @@ resource "aws_dynamodb_table" "organisations" {
   name         = "Organisations"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "OrganisationId"
-  range_key    = "ScpGroupId"
 
   point_in_time_recovery {
     enabled = true
@@ -67,11 +66,6 @@ resource "aws_dynamodb_table" "organisations" {
 
   attribute {
     name = "OrganisationId"
-    type = "S"
-  }
-
-  attribute {
-    name = "ScpGroupId"
     type = "S"
   }
 
