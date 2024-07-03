@@ -9,6 +9,9 @@ locals {
     "database-backups" = {
       lifecycle_policy = false
     },
+    "database-replication" = {
+      lifecycle_policy = false
+    },
     "duty-calculator" = {
       lifecycle_policy = true
     },
