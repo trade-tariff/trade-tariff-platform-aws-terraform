@@ -341,3 +341,11 @@ module "dev_hub_frontend_application_support_email" {
   recovery_window = 7
   secret_string   = var.dev_hub_frontend_application_support_email
 }
+
+module "dev_hub_frontend_cookie_signing_secret" {
+  source          = "../../../modules/common/secret/"
+  name            = "dev-hub-frontend-cookie-signing-secret"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_frontend_cookie_signing_secret
+}
