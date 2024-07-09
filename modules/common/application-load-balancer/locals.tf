@@ -3,27 +3,33 @@ locals {
     admin = {
       host             = ["admin.*"]
       healthcheck_path = "/healthcheckz"
-      priority         = 11
+      priority         = 1
     }
 
     signon = {
       host             = ["signon.*"]
       healthcheck_path = "/healthcheck/live"
-      priority         = 12
+      priority         = 2
     }
 
     hub_backend = {
       host             = ["hub.*"]
       paths            = ["/api/healthcheck"]
       healthcheck_path = "/api/healthcheckz"
-      priority         = 13
+      priority         = 3
     }
 
     hub_frontend = {
       host             = ["hub.*"]
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
-      priority         = 14
+      priority         = 4
+    }
+
+    tea = {
+      host             = ["tea.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 5
     }
 
     backend_uk = {
