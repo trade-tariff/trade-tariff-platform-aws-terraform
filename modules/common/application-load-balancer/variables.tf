@@ -8,6 +8,7 @@ variable "application_port" {
   type        = string
   default     = 8080
 }
+
 variable "listening_port" {
   description = "Port on which the load balancer listens to."
   type        = string
