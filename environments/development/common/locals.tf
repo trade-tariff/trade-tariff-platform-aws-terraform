@@ -14,6 +14,7 @@ locals {
     "frontend",
     "search-query-parser",
     "signon",
+    "tea"
   ]
 
   cloudfront_auth = templatefile("../../../modules/common/cloudfront-auth.js.tpl", { base64 = var.backups_basic_auth })

@@ -36,5 +36,8 @@ locals {
     "terraform" = {
       lifecycle_policy = false
     },
+    "tea" = {
+      lifecycle_policy = true
+    },
   }
 }
