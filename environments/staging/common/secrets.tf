@@ -246,14 +246,6 @@ module "signon_derivation_key" {
   secret_string   = var.signon_derivation_key
 }
 
-module "search_query_parser_sentry_dsn" {
-  source          = "../../../modules/common/secret/"
-  name            = "search-query-parser-sentry-dsn"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.search_query_parser_sentry_dsn
-}
-
 module "dev_hub_backend_encryption_key" {
   source          = "../../../modules/common/secret/"
   name            = "dev-hub-backend-encryption-key"
