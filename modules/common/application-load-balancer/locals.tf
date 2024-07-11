@@ -32,28 +32,10 @@ locals {
       priority         = 5
     }
 
-    backend_uk = {
-      paths            = ["/uk/api/beta/*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 15
-    }
-
-    backend_xi = {
-      paths            = ["/xi/api/beta/*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 16
-    }
-
     duty_calculator = {
       paths            = ["/duty-calculator/*"]
       healthcheck_path = "/healthcheckz"
       priority         = 17
-    }
-
-    search_query_parser = {
-      paths            = ["/api/search/*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 18
     }
 
     frontend_beta = {
