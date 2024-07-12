@@ -79,7 +79,6 @@
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/common/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
-| <a name="module_search_query_parser_sentry_dsn"></a> [search\_query\_parser\_sentry\_dsn](#module\_search\_query\_parser\_sentry\_dsn) | ../../../modules/common/secret/ | n/a |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../../modules/common/ses | n/a |
 | <a name="module_slack_notify_lambda_slack_webhook_url"></a> [slack\_notify\_lambda\_slack\_webhook\_url](#module\_slack\_notify\_lambda\_slack\_webhook\_url) | ../../../modules/common/secret/ | n/a |
 | <a name="module_slack_web_hook_url"></a> [slack\_web\_hook\_url](#module\_slack\_web\_hook\_url) | ../../../modules/common/secret/ | n/a |

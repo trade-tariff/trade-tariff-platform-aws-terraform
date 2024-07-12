@@ -27,9 +27,6 @@ locals {
     "frontend" = {
       lifecycle_policy = true
     },
-    "search-query-parser" = {
-      lifecycle_policy = true
-    },
     "signon" = {
       lifecycle_policy = true
     },

@@ -9,7 +9,6 @@ locals {
     "fpo-developer-hub-frontend",
     "fpo-search",
     "frontend",
-    "search-query-parser",
     "signon",
     "terraform-1.5.5-python3",
   ]
