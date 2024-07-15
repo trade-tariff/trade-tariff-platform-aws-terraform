@@ -10,6 +10,6 @@ locals {
     "fpo-search",
     "frontend",
     "signon",
-    "terraform-1.5.5-python3",
+    "tea"
   ]
 }
