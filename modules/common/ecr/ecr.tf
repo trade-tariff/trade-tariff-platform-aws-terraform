@@ -42,7 +42,7 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
           tagStatus     = "tagged"
           tagPrefixList = ["release"]
           countType     = "imageCountMoreThan"
-          countNumber   = v.production_images_to_keep
+          countNumber   = each.value.production_images_to_keep
         }
         action = {
           type = "expire"
@@ -54,7 +54,7 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
         selection = {
           tagStatus   = "any"
           countType   = "imageCountMoreThan"
-          countNumber = v.development_images_to_keep
+          countNumber = each.value.development_images_to_keep
         }
         action = {
           type = "expire"
