@@ -37,13 +37,12 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
     rules = [
       {
         rulePriority = 1
-        description  = "Keep 6 months of production images."
+        description  = "Keep last ${each.value.production_images_to_keep} production images."
         selection = {
           tagStatus     = "tagged"
           tagPrefixList = ["release"]
-          countType     = "sinceImagePushed"
-          countUnit     = "days"
-          countNumber   = 180
+          countType     = "imageCountMoreThan"
+          countNumber   = v.production_images_to_keep
         }
         action = {
           type = "expire"
@@ -51,12 +50,11 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
       },
       {
         rulePriority = 2
-        description  = "Keep 1 month of development images."
+        description  = "Keep last ${each.value.development_images_to_keep} development images."
         selection = {
           tagStatus   = "any"
-          countType   = "sinceImagePushed"
-          countUnit   = "days"
-          countNumber = 30
+          countType   = "imageCountMoreThan"
+          countNumber = v.development_images_to_keep
         }
         action = {
           type = "expire"
