@@ -12,7 +12,7 @@ variable "allocated_storage" {
 variable "max_allocated_storage" {
   description = "Maximum allocated storage for the instance. Defaults to `null` (no autoscaling)."
   type        = number
-  default     = null
+  default     = 1 # implicitly this is less than allocated_storage so autoscaling is disabled
 }
 
 variable "instance_type" {
