@@ -66,7 +66,7 @@ variable "services" {
   type = map(
     object({
       healthcheck_path = string
-      hosts            = optional(string)
+      hosts            = optional(list(string))
       paths            = optional(list(string))
       priority         = number
     })
