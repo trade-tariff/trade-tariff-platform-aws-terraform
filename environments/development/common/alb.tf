@@ -10,4 +10,56 @@ module "alb" {
     name  = random_password.origin_header[0].result
     value = random_password.origin_header[1].result
   }
+
+  services = {
+    admin = {
+      hosts            = ["admin.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 1
+    }
+
+    signon = {
+      hosts            = ["signon.*"]
+      healthcheck_path = "/healthcheck/live"
+      priority         = 2
+    }
+
+    hub_backend = {
+      hosts            = ["hub.*"]
+      paths            = ["/api/healthcheck"]
+      healthcheck_path = "/api/healthcheckz"
+      priority         = 3
+    }
+
+    hub_frontend = {
+      hosts            = ["hub.*"]
+      paths            = ["/*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 4
+    }
+
+    tea = {
+      hosts            = ["tea.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 5
+    }
+
+    duty_calculator = {
+      paths            = ["/duty-calculator/*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 17
+    }
+
+    frontend_beta = {
+      hosts            = ["beta.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 19
+    }
+
+    frontend = {
+      paths            = ["/*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 99 # Most generic rule for frontend should match last
+    }
+  }
 }

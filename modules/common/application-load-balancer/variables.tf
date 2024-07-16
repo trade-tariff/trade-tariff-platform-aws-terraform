@@ -60,3 +60,15 @@ variable "custom_header" {
     value = string
   })
 }
+
+variable "services" {
+  description = "Map of services to make ALB target groups and listener rules for."
+  type = map(
+    object({
+      healthcheck_path = string
+      hosts            = optional(list(string))
+      paths            = optional(list(string))
+      priority         = number
+    })
+  )
+}
