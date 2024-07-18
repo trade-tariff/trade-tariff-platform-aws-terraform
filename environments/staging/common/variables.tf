@@ -315,3 +315,9 @@ variable "dev_hub_frontend_cookie_signing_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "dev_hub_frontend_csrf_signing_secret" {
+   description = "Value of CSRF_SIGNING_SECRET for the dev hub frontend."
+   type        = string
+   sensitive   = true
+ }
