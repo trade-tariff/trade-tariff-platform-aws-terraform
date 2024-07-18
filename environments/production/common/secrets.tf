@@ -286,3 +286,11 @@ module "dev_hub_frontend_cookie_signing_secret" {
   recovery_window = 7
   secret_string   = var.dev_hub_frontend_cookie_signing_secret
 }
+
+module "dev_hub_frontend_csrf_signing_secret" {
+  source          = "../../../modules/common/secret/"
+  name            = "dev-hub-frontend-csrf-signing-secret"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.dev_hub_frontend_csrf_signing_secret
+}
