@@ -285,3 +285,9 @@ variable "dev_hub_frontend_csrf_signing_secret" {
    type        = string
    sensitive   = true
  }
+
+variable "tariff_commodi_tea_db_secret" {
+  description = "Value of TARIFF_COMMODI_TEA_SECRET for the trade tariff commodi-tea database."
+  type        = string
+  sensitive   = true
+}
