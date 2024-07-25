@@ -25,6 +25,10 @@ module "postgres" {
   depends_on = [
     module.alb-security-group
   ]
+
+  tags = {
+    Name = "TradeTariffPostgres${title(var.environment)}"
+  }
 }
 
 
@@ -61,4 +65,40 @@ module "postgres_admin" {
   depends_on = [
     module.alb-security-group
   ]
+
+  tags = {
+    Name = "PostgresAdmin"
+  }
+}
+
+module "postgres_commodi_tea" {
+  source = "../../../modules/common/rds"
+
+  environment    = var.environment
+  name           = "PostgresCommodiTea"
+  engine         = "postgres"
+  engine_version = "16.3"
+
+  deletion_protection = false
+  multi_az            = false
+
+  instance_type           = "db.t3.micro"
+  backup_window           = "22:00-23:00"
+  maintenance_window      = "Fri:23:00-Sat:01:00"
+  backup_retention_period = 7
+  private_subnet_ids      = data.terraform_remote_state.base.outputs.private_subnet_ids
+
+  allocated_storage  = 10
+  security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
+
+  secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
+
+  depends_on = [
+    module.alb-security-group
+  ]
+
+  tags = {
+    Name     = "PostgresCommodiTea"
+    customer = "fpo"
+  }
 }
