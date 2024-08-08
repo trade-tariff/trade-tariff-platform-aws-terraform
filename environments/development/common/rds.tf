@@ -121,8 +121,20 @@ module "postgres_commodi_tea" {
     module.alb-security-group
   ]
 
+  parameter_group_name = aws_db_parameter_group.tea.name
+
   tags = {
     Name     = "PostgresCommodiTea"
     customer = "fpo"
+  }
+}
+
+resource "aws_db_parameter_group" "tea" {
+  name   = "postgres16-with-md5-password-encryption"
+  family = "postgres16"
+
+  parameter {
+    name  = "password_encryption"
+    value = "md5"
   }
 }
