@@ -32,6 +32,8 @@ resource "aws_db_instance" "this" {
 
   vpc_security_group_ids = var.security_group_ids
 
+  parameter_group_name = var.parameter_group_name
+
   tags = local.tags
 }
 
