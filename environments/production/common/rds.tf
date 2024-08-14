@@ -22,6 +22,8 @@ module "postgres" {
 
   secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
 
+  parameter_group_name = "default.postgres13"
+
   depends_on = [
     module.alb-security-group
   ]
@@ -62,6 +64,8 @@ module "postgres_admin" {
 
   secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
 
+  parameter_group_name = "default.postgres13"
+
   depends_on = [
     module.alb-security-group
   ]
@@ -93,6 +97,8 @@ module "postgres_commodi_tea" {
 
   secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
 
+  parameter_group_name = "default.postgres16"
+
   depends_on = [
     module.alb-security-group
   ]
@@ -102,3 +108,20 @@ module "postgres_commodi_tea" {
     customer = "fpo"
   }
 }
+
+# resource "aws_db_parameter_group" "tea" {
+#   name        = "postgres16-with-md5-password-encryption"
+#   family      = "postgres16"
+#   description = "Managed by Terraform"
+
+#   parameter {
+#     name         = "password_encryption"
+#     value        = "md5"
+#     apply_method = "immediate"
+#   }
+
+#   tags = {
+#     Name     = "PostgresCommodiTea Parameter Group"
+#     customer = "fpo"
+#   }
+# }

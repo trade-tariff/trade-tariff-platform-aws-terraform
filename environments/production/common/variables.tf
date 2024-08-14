@@ -42,6 +42,12 @@ variable "waf_rpm_limit" {
   default     = 5000
 }
 
+variable "subject_alternative_names" {
+  description = "List of additional domains to be added to the certificate."
+  type        = list(string)
+  default     = ["auth.tea.trade-tariff.service.gov.uk"]
+}
+
 #
 # super secret stuff
 #
