@@ -90,3 +90,8 @@ variable "multi_az" {
   type        = bool
   default     = false
 }
+
+variable "parameter_group_name" {
+  description = "Name of the parameter group to use for the RDS instance."
+  type        = string
+}

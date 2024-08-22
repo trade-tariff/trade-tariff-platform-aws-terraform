@@ -1,8 +1,9 @@
 module "acm" {
-  source         = "../../../modules/common/acm/"
-  domain_name    = var.domain_name
-  environment    = var.environment
-  hosted_zone_id = data.aws_route53_zone.this.zone_id
+  source                    = "../../../modules/common/acm/"
+  domain_name               = var.domain_name
+  environment               = var.environment
+  hosted_zone_id            = data.aws_route53_zone.this.zone_id
+  subject_alternative_names = var.subject_alternative_names
 
   providers = {
     aws = aws.us_east_1
