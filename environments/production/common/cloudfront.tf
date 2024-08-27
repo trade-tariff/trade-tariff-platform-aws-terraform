@@ -74,38 +74,6 @@ module "cdn" {
       ]
     }
 
-    green_lanes = {
-      target_origin_id       = "frontend"
-      viewer_protocol_policy = "redirect-to-https"
-
-      path_pattern = "/xi/api/v2/green_lanes/*"
-
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 0
-      default_ttl = 0
-      max_ttl     = 0
-
-      compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-        "OPTIONS",
-        "PUT",
-        "POST",
-        "PATCH",
-        "DELETE"
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
-    }
-
     api = {
       target_origin_id       = "frontend"
       viewer_protocol_policy = "redirect-to-https"
