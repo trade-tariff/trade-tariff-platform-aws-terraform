@@ -16,7 +16,7 @@ locals {
     "tea"
   ]
 
-  cloudfront_auth = templatefile("../../../modules/common/cloudfront-auth.js.tpl", { base64 = var.backups_basic_auth })
+  cloudfront_auth = templatefile("../../../modules/cloudfront-auth.js.tpl", { base64 = var.backups_basic_auth })
 }
 
 data "aws_caller_identity" "current" {}

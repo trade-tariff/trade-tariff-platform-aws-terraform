@@ -27,7 +27,7 @@ resource "aws_cloudwatch_log_group" "redis_engine_lg" {
 
 ### Multi node redis with cluster mode disabled (one primary and two replica nodes spread across all 3 availability zones)
 module "redis" {
-  source   = "../../../modules/common/elasticache-redis/"
+  source   = "../../../modules/elasticache-redis/"
   for_each = local.redis
 
   replication_group_id        = "redis-${each.key}-${var.environment}"

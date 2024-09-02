@@ -1,5 +1,5 @@
 module "acm" {
-  source                    = "../../../modules/common/acm/"
+  source                    = "../../../modules/acm/"
   domain_name               = var.domain_name
   environment               = var.environment
   hosted_zone_id            = data.aws_route53_zone.this.zone_id
@@ -11,14 +11,14 @@ module "acm" {
 }
 
 module "acm_london" {
-  source         = "../../../modules/common/acm/"
+  source         = "../../../modules/acm/"
   domain_name    = var.domain_name
   environment    = var.environment
   hosted_zone_id = data.aws_route53_zone.this.zone_id
 }
 
 module "acm_origin" {
-  source         = "../../../modules/common/acm"
+  source         = "../../../modules/acm"
   domain_name    = "origin.${var.domain_name}"
   environment    = var.environment
   hosted_zone_id = aws_route53_zone.origin.zone_id
