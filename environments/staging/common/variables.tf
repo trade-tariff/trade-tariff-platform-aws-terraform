@@ -42,12 +42,6 @@ variable "waf_rpm_limit" {
   default     = 5000
 }
 
-variable "subject_alternative_names" {
-  description = "List of additional domains to be added to the certificate."
-  type        = list(string)
-  default     = ["auth.tea.staging.trade-tariff.service.gov.uk"]
-}
-
 #
 # super secret stuff
 #
@@ -238,20 +232,8 @@ variable "signon_derivation_key" {
   sensitive   = true
 }
 
-variable "search_query_parser_sentry_dsn" {
-  description = "Value of SENTRY_DSN for the search query parser."
-  type        = string
-  sensitive   = true
-}
-
 variable "dev_hub_backend_encryption_key" {
   description = "Value of ENCRYPTION_KEY for the dev hub backend."
-  type        = string
-  sensitive   = true
-}
-
-variable "dev_hub_backend_usage_plan_id" {
-  description = "Value of USAGE_PLAN_ID for the dev hub backend."
   type        = string
   sensitive   = true
 }

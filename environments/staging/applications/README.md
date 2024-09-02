@@ -1,6 +1,6 @@
 # applications
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -49,4 +49,4 @@
 | <a name="output_private_dns_namespace_arn"></a> [private\_dns\_namespace\_arn](#output\_private\_dns\_namespace\_arn) | ARN of the private DNS namespace. |
 | <a name="output_private_dns_namespace_hosted_zone_id"></a> [private\_dns\_namespace\_hosted\_zone\_id](#output\_private\_dns\_namespace\_hosted\_zone\_id) | ID of the Route 53 zone for the private DNS namespace. |
 | <a name="output_private_dns_namespace_id"></a> [private\_dns\_namespace\_id](#output\_private\_dns\_namespace\_id) | ID of the private DNS namespace. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

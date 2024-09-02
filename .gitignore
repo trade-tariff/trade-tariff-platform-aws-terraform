@@ -6,6 +6,7 @@ terraform.tfstate
 backend.tf
 environments/production/common/builds/
 /.terraform.lock.hcl
+modules/**/.terraform.lock.hcl
 
 # vim
 [._]*.s[a-v][a-z]

@@ -10,9 +10,8 @@ variable "validation_timeout" {
 }
 
 variable "domain_name" {
-  description = "Name of the test domain"
+  description = "Domain name to create certificate for."
   type        = string
-  default     = "transformtrade.co.uk"
 }
 
 variable "hosted_zone_id" {

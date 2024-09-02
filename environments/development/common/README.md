@@ -23,7 +23,7 @@ No inputs.
 ## Outputs
 
 No outputs.
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -222,7 +222,6 @@ No outputs.
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#input\_dev\_hub\_backend\_encryption\_key) | Value of ENCRYPTION\_KEY for the dev hub backend. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#input\_dev\_hub\_backend\_sentry\_dsn) | Value of SENTRY\_DSN for the dev hub backend. | `string` | n/a | yes |
-| <a name="input_dev_hub_backend_usage_plan_id"></a> [dev\_hub\_backend\_usage\_plan\_id](#input\_dev\_hub\_backend\_usage\_plan\_id) | Value of USAGE\_PLAN\_ID for the dev hub backend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_application_support_email"></a> [dev\_hub\_frontend\_application\_support\_email](#input\_dev\_hub\_frontend\_application\_support\_email) | Value of APPLICATION\_SUPPORT\_EMAIL for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_cookie_signing_secret"></a> [dev\_hub\_frontend\_cookie\_signing\_secret](#input\_dev\_hub\_frontend\_cookie\_signing\_secret) | Value of COOKIE\_SIGNING\_SECRET for the dev hub frontend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_csrf_signing_secret"></a> [dev\_hub\_frontend\_csrf\_signing\_secret](#input\_dev\_hub\_frontend\_csrf\_signing\_secret) | Value of CSRF\_SIGNING\_SECRET for the dev hub frontend. | `string` | n/a | yes |
@@ -240,7 +239,6 @@ No outputs.
 | <a name="input_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#input\_frontend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the frontend. | `string` | n/a | yes |
 | <a name="input_frontend_sentry_dsn"></a> [frontend\_sentry\_dsn](#input\_frontend\_sentry\_dsn) | Value of SENTRY\_DSN for the frontend. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
-| <a name="input_search_query_parser_sentry_dsn"></a> [search\_query\_parser\_sentry\_dsn](#input\_search\_query\_parser\_sentry\_dsn) | Value of SENTRY\_DSN for the search query parser. | `string` | n/a | yes |
 | <a name="input_signon_derivation_key"></a> [signon\_derivation\_key](#input\_signon\_derivation\_key) | Value of ACTIVE\_RECORD\_ENCRYPTION\_PRIMARY\_KEY for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_derivation_salt"></a> [signon\_derivation\_salt](#input\_signon\_derivation\_salt) | Value of ACTIVE\_RECORD\_ENCRYPTION\_KEY\_DERIVATION\_SALT for the signon app. | `string` | n/a | yes |
 | <a name="input_signon_devise_pepper"></a> [signon\_devise\_pepper](#input\_signon\_devise\_pepper) | Value of DEVISE\_PEPPER for the signon app. | `string` | n/a | yes |
@@ -249,7 +247,6 @@ No outputs.
 | <a name="input_signon_secret_key_base"></a> [signon\_secret\_key\_base](#input\_signon\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the signon app. | `string` | n/a | yes |
 | <a name="input_slack_notify_lambda_slack_webhook_url"></a> [slack\_notify\_lambda\_slack\_webhook\_url](#input\_slack\_notify\_lambda\_slack\_webhook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the slack notify lambda. | `string` | n/a | yes |
 | <a name="input_slack_web_hook_url"></a> [slack\_web\_hook\_url](#input\_slack\_web\_hook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the backend. | `string` | n/a | yes |
-| <a name="input_subject_alternative_names"></a> [subject\_alternative\_names](#input\_subject\_alternative\_names) | List of additional domains to be added to the certificate. | `list(string)` | <pre>[<br>  "auth.tea.dev.trade-tariff.service.gov.uk"<br>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br>  "Billing": "TRN.HMR11896",<br>  "Environment": "development",<br>  "Project": "trade-tariff",<br>  "Terraform": true<br>}</pre> | no |
 | <a name="input_tariff_backend_differences_to_emails"></a> [tariff\_backend\_differences\_to\_emails](#input\_tariff\_backend\_differences\_to\_emails) | Differences report TO email addresses. | `string` | n/a | yes |
 | <a name="input_tariff_backend_green_lanes_api_tokens"></a> [tariff\_backend\_green\_lanes\_api\_tokens](#input\_tariff\_backend\_green\_lanes\_api\_tokens) | Value of GREEN\_LANES\_API\_TOKENS for the tariff backend. | `string` | n/a | yes |
@@ -272,4 +269,4 @@ No outputs.
 | Name | Description |
 |------|-------------|
 | <a name="output_hosted_zone_name_servers"></a> [hosted\_zone\_name\_servers](#output\_hosted\_zone\_name\_servers) | Name servers. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
