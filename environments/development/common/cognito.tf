@@ -68,10 +68,12 @@ module "commodi_tea_cognito" {
 
   client_oauth_flow_allowed = true
   allow_user_registration   = true
-  alias_attributes          = ["email", "preferred_username"]
+  username_attributes       = ["email"]
+  auto_verified_attributes  = ["email"]
   client_oauth_grant_types  = ["code", "implicit"]
   client_oauth_scopes       = ["openid", "email", "profile"]
   client_callback_urls      = ["https://tea.${var.domain_name}"]
+  client_identity_providers = ["COGNITO"]
   client_auth_flows = [
     "ALLOW_CUSTOM_AUTH",
     "ALLOW_USER_SRP_AUTH",
