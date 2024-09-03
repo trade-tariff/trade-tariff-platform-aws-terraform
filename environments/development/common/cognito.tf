@@ -41,7 +41,7 @@ resource "aws_ssm_parameter" "cognito_public_keys" {
 }
 
 module "cognito_client_id" {
-  source          = "../../../modules/common/secret/"
+  source          = "../../../modules/secret/"
   name            = "cognito-fpo-client-id"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
@@ -49,7 +49,7 @@ module "cognito_client_id" {
 }
 
 module "cognito_client_secret" {
-  source          = "../../../modules/common/secret/"
+  source          = "../../../modules/secret/"
   name            = "cognito-fpo-client-secret"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
@@ -99,7 +99,7 @@ resource "aws_ssm_parameter" "tea_cognito_public_keys" {
 }
 
 module "tea_cognito_client_id" {
-  source          = "../../../modules/common/secret/"
+  source          = "../../../modules/secret/"
   name            = "tea-cognito-client-id"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
@@ -107,7 +107,7 @@ module "tea_cognito_client_id" {
 }
 
 module "tea_cognito_client_secret" {
-  source          = "../../../modules/common/secret/"
+  source          = "../../../modules/secret/"
   name            = "tea-cognito-client-secret"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7

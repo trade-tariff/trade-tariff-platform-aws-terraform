@@ -1,5 +1,5 @@
 module "alb" {
-  source                = "../../../modules/common/application-load-balancer/"
+  source                = "../../../modules/application-load-balancer/"
   alb_name              = "trade-tariff-alb-${var.environment}"
   alb_security_group_id = module.alb-security-group.alb_security_group_id
   certificate_arn       = module.acm_origin.validated_certificate_arn

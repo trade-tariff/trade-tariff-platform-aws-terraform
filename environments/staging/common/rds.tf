@@ -1,6 +1,6 @@
 # Backend Postgres
 module "postgres" {
-  source = "../../../modules/common/rds"
+  source = "../../../modules/rds"
 
   environment    = var.environment
   name           = "TradeTariffPostgres${title(var.environment)}"
@@ -32,7 +32,7 @@ module "postgres" {
 }
 
 module "read_only_postgres_connection_string" {
-  source          = "../../../modules/common/secret/"
+  source          = "../../../modules/secret/"
   name            = "postgres-read-only"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
@@ -41,7 +41,7 @@ module "read_only_postgres_connection_string" {
 
 # Admin Postgres
 module "postgres_admin" {
-  source = "../../../modules/common/rds"
+  source = "../../../modules/rds"
 
   environment    = var.environment
   name           = "PostgresAdmin"
@@ -74,7 +74,7 @@ module "postgres_admin" {
 
 # Signon MySQL
 module "mysql" {
-  source = "../../../modules/common/rds"
+  source = "../../../modules/rds"
 
   environment    = var.environment
   name           = "TradeTariffMySQL${title(var.environment)}"
@@ -106,7 +106,7 @@ module "mysql" {
 }
 
 module "postgres_commodi_tea" {
-  source = "../../../modules/common/rds"
+  source = "../../../modules/rds"
 
   environment    = var.environment
   name           = "PostgresCommodiTea"

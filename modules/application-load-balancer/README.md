@@ -10,7 +10,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_dynamodb"></a> [dynamodb](#module\_dynamodb) | ../../common/dynamodb | n/a |
+| <a name="module_dynamodb"></a> [dynamodb](#module\_dynamodb) | ../../dynamodb | n/a |
 
 ## Resources
 
