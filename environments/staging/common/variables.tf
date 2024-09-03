@@ -309,3 +309,9 @@ variable "dev_hub_frontend_csrf_signing_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "commodi_tea_cookie_signing_secret" {
+  description = "Value of COOKIE_SIGNING_SECRET for the Commodi tea."
+  type        = string
+  sensitive   = true
+}

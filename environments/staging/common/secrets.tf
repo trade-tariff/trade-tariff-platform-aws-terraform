@@ -341,3 +341,11 @@ module "dev_hub_frontend_csrf_signing_secret" {
   recovery_window = 7
   secret_string   = var.dev_hub_frontend_csrf_signing_secret
 }
+
+module "commodi_tea_cookie_signing_secret" {
+  source          = "../../../modules/secret/"
+  name            = "commodi-tea-cookie-signing-secret"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.commodi_tea_cookie_signing_secret
+}
