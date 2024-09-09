@@ -72,7 +72,12 @@ module "commodi_tea_cognito" {
   auto_verified_attributes  = ["email"]
   client_oauth_grant_types  = ["code", "implicit"]
   client_oauth_scopes       = ["openid", "email", "profile"]
-  client_callback_urls      = ["https://tea.${var.domain_name}"]
+  client_callback_urls = [
+    "https://tea.${var.domain_name}",
+    "https://tea.${var.domain_name}/auth/redirect",
+    "http://localhost:5003",
+    "http://localhost:5003/auth/redirect",
+  ]
   client_identity_providers = ["COGNITO"]
   client_auth_flows = [
     "ALLOW_CUSTOM_AUTH",
@@ -114,4 +119,18 @@ module "tea_cognito_client_secret" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = module.commodi_tea_cognito.client_secret
+}
+
+module "tea_cognito_secret" {
+  source          = "../../../modules/secret/"
+  name            = "tea-cognito-secret"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = random_password.tea_cognito_secret.result
+}
+
+resource "random_password" "tea_cognito_secret" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
 }
