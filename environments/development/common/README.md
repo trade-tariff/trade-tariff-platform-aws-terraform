@@ -119,6 +119,7 @@ No outputs.
 | <a name="module_status_checks_cdn"></a> [status\_checks\_cdn](#module\_status\_checks\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_tea_cognito_client_id"></a> [tea\_cognito\_client\_id](#module\_tea\_cognito\_client\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_tea_cognito_client_secret"></a> [tea\_cognito\_client\_secret](#module\_tea\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
+| <a name="module_tea_cognito_secret"></a> [tea\_cognito\_secret](#module\_tea\_cognito\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_tech_docs_cdn"></a> [tech\_docs\_cdn](#module\_tech\_docs\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.2.3 |
 
@@ -194,6 +195,7 @@ No outputs.
 | [aws_ssm_parameter.ecr_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.tea_cognito_public_keys](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_password.origin_header](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs/resources/password) | resource |
+| [random_password.tea_cognito_secret](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs/resources/password) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_cloudfront_cache_policy.caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_iam_policy_document.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
