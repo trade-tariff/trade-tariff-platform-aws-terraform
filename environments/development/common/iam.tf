@@ -463,6 +463,7 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
           "ec2:DescribeInstanceStatus",
           "ec2:DescribeInstanceTypeOfferings",
           "ec2:DescribeInstances",
+          "ec2:DescribeKeyPairs",
           "ec2:DescribeRegions",
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeSubnets",
