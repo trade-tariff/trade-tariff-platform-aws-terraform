@@ -66,6 +66,7 @@
 | <a name="module_dev_hub_frontend_scp_open_id_client_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_secret](#module\_dev\_hub\_frontend\_scp\_open\_id\_client\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_scp_open_id_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_secret](#module\_dev\_hub\_frontend\_scp\_open\_id\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_sentry_dsn"></a> [dev\_hub\_frontend\_sentry\_dsn](#module\_dev\_hub\_frontend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
+| <a name="module_download_cds_files_to_emails_secret"></a> [download\_cds\_files\_to\_emails\_secret](#module\_download\_cds\_files\_to\_emails\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../../modules/secret/ | n/a |
 | <a name="module_duty_calculator_sentry_dsn"></a> [duty\_calculator\_sentry\_dsn](#module\_duty\_calculator\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../../modules/ecr/ | n/a |
@@ -89,6 +90,7 @@
 | <a name="module_status_checks_cdn"></a> [status\_checks\_cdn](#module\_status\_checks\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_tea_cognito_client_id"></a> [tea\_cognito\_client\_id](#module\_tea\_cognito\_client\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_tea_cognito_client_secret"></a> [tea\_cognito\_client\_secret](#module\_tea\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
+| <a name="module_tea_cognito_secret"></a> [tea\_cognito\_secret](#module\_tea\_cognito\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_tech_docs_cdn"></a> [tech\_docs\_cdn](#module\_tech\_docs\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.2.3 |
 
@@ -178,6 +180,7 @@
 | [aws_ssm_parameter.ecr_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.tea_cognito_public_keys](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_password.origin_header](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs/resources/password) | resource |
+| [random_password.tea_cognito_secret](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs/resources/password) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_cloudfront_cache_policy.caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_iam_policy_document.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -208,7 +211,7 @@
 | <a name="input_admin_sentry_dsn"></a> [admin\_sentry\_dsn](#input\_admin\_sentry\_dsn) | Value of Sentry DSN for the admin tool. | `string` | n/a | yes |
 | <a name="input_backend_secret_key_base"></a> [backend\_secret\_key\_base](#input\_backend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the backend. | `string` | n/a | yes |
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
-| <a name="input_commmodi_tea_cookie_signing_secret"></a> [commmodi\_tea\_cookie\_signing\_secret](#input\_commmodi\_tea\_cookie\_signing\_secret) | Value of COOKIE\_SIGNING\_SECRET for the Commodi tea. | `string` | n/a | yes |
+| <a name="input_commodi_tea_cookie_signing_secret"></a> [commodi\_tea\_cookie\_signing\_secret](#input\_commodi\_tea\_cookie\_signing\_secret) | Value of COOKIE\_SIGNING\_SECRET for the Commodi tea. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#input\_dev\_hub\_backend\_encryption\_key) | Value of ENCRYPTION\_KEY for the dev hub backend. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#input\_dev\_hub\_backend\_sentry\_dsn) | Value of SENTRY\_DSN for the dev hub backend. | `string` | n/a | yes |
 | <a name="input_dev_hub_frontend_application_support_email"></a> [dev\_hub\_frontend\_application\_support\_email](#input\_dev\_hub\_frontend\_application\_support\_email) | Value of APPLICATION\_SUPPORT\_EMAIL for the dev hub frontend. | `string` | n/a | yes |

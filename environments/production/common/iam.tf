@@ -378,7 +378,8 @@ resource "aws_iam_policy" "ci_cds_downloader_file_policy" {
           "kms:Decrypt"
         ],
         Resource = [
-          aws_kms_alias.s3_kms_alias.target_key_arn
+          aws_kms_alias.s3_kms_alias.target_key_arn,
+          aws_kms_key.secretsmanager_kms_key.arn
         ]
       },
       {
@@ -388,6 +389,16 @@ resource "aws_iam_policy" "ci_cds_downloader_file_policy" {
           "ses:SendRawEmail"
         ]
         Resource = ["*"]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:ListSecretVersionIds"
+        ],
+        Resource = [module.download_cds_files_to_emails_secret.secret_arn]
       }
     ]
   })
