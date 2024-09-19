@@ -63,22 +63,56 @@ module "commodi_tea_cognito" {
   domain                 = "auth.tea.${var.domain_name}"
   domain_certificate_arn = module.acm.validated_certificate_arn
 
+  allow_user_registration  = true
+  username_attributes      = ["email"]
+  auto_verified_attributes = ["email"]
+
+  schemata = [
+    {
+      name      = "email"
+      required  = true
+      data_type = "String"
+    },
+    {
+      name      = "name"
+      required  = true
+      data_type = "String"
+    },
+    {
+      name      = "family_name"
+      required  = true
+      data_type = "String"
+    },
+  ]
+
   client_name            = "tea-client"
   client_generate_secret = true
 
   client_oauth_flow_allowed = true
-  allow_user_registration   = true
-  username_attributes       = ["email"]
-  auto_verified_attributes  = ["email"]
-  client_oauth_grant_types  = ["code", "implicit"]
-  client_oauth_scopes       = ["openid", "email", "profile"]
+  client_oauth_grant_types = [
+    "code",
+    "implicit"
+  ]
+
+  client_oauth_scopes = [
+    "openid",
+    "email",
+    "profile"
+  ]
+
   client_callback_urls = [
     "https://tea.${var.domain_name}",
     "https://tea.${var.domain_name}/auth/redirect",
     "http://localhost:5003",
     "http://localhost:5003/auth/redirect",
   ]
+
+  client_logout_urls = [
+    "https://auth.tea.${var.domain_name}/logout",
+  ]
+
   client_identity_providers = ["COGNITO"]
+
   client_auth_flows = [
     "ALLOW_CUSTOM_AUTH",
     "ALLOW_USER_SRP_AUTH",
