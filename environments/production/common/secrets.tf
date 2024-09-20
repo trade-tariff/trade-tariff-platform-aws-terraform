@@ -308,5 +308,4 @@ module "download_cds_files_to_emails_secret" {
   name            = "download-cds-files-to-emails-secret"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = ""
 }

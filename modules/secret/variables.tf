@@ -2,7 +2,7 @@ variable "secret_string" {
   description = "Value of the secret. Pass null to not populate a version"
   type        = string
   sensitive   = true
-  default     = null
+  default     = ""
 }
 
 variable "name" {
