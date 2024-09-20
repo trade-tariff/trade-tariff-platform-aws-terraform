@@ -1,7 +1,13 @@
+# variable "secret_string" {
+#   description = "Value of the secret. Pass null to not populate a version"
+#   type        = string
+#   sensitive   = true
+#   default     = null
+# }
+
 variable "secret_string" {
   description = "Value of the secret. Pass null to not populate a version"
-  type        = string
-  sensitive   = true
+  type        = list(string)
   default     = null
 }
 
