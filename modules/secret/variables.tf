@@ -7,7 +7,7 @@
 
 variable "secret_string" {
   description = "Value of the secret. Pass null to not populate a version"
-  type        = list(string)
+  type        = string
   default     = null
 }
 
