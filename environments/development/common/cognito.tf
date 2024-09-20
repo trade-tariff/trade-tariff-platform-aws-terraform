@@ -107,9 +107,9 @@ module "commodi_tea_cognito" {
     "http://localhost:5003/auth/redirect",
   ]
 
-  client_logout_urls = [
-    "https://auth.tea.${var.domain_name}/logout",
-  ]
+  # client_logout_urls = [
+  #   "https://auth.tea.${var.domain_name}/logout",
+  # ]
 
   client_identity_providers = ["COGNITO"]
 
