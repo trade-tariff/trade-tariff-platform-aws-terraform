@@ -11,7 +11,7 @@ resource "aws_secretsmanager_secret" "this" {
 # }
 
 resource "aws_secretsmanager_secret_version" "this" {
-  for_each      = var.secret_string != null ? tomap([var.secret_string]) : {}
+  count         = var.create_version ? 1 : 0
   secret_id     = aws_secretsmanager_secret.this.id
-  secret_string = sensitive(each.value)
+  secret_string = var.secret_string
 }
