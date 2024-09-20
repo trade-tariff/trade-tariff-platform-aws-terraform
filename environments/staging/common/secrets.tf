@@ -349,11 +349,3 @@ module "commodi_tea_cookie_signing_secret" {
   recovery_window = 7
   secret_string   = var.commodi_tea_cookie_signing_secret
 }
-
-module "test_secret" {
-  source          = "../../../modules/secret/"
-  name            = "test-secret"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 0
-  create_version  = false
-}

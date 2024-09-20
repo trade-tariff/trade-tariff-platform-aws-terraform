@@ -5,11 +5,6 @@ variable "secret_string" {
   default     = null
 }
 
-variable "create_version" {
-  type    = bool
-  default = true
-}
-
 variable "name" {
   description = "Name of the secret."
   type        = string
