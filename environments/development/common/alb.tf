@@ -78,13 +78,13 @@ module "alb_preview" {
   }
 
   services = {
-    signon = {
+    signon_preview = {
       hosts            = ["signon.*"]
       healthcheck_path = "/healthcheck/live"
       priority         = 20
     }
 
-    hub_backend = {
+    hub_backend_preview = {
       hosts            = ["hub.*"]
       paths            = ["/api/healthcheck"]
       healthcheck_path = "/api/healthcheckz"
