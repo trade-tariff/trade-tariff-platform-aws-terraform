@@ -507,9 +507,9 @@ module "preview_cdn" {
 
   viewer_certificate = {
     ssl_support_method  = "sni-only"
-    acm_certificate_arn = module.acm.validated_certificate_arn
+    acm_certificate_arn = module.acm_preview.validated_certificate_arn
     depends_on = [
-      module.acm.validated_certificate_arn
+      module.acm_preview.validated_certificate_arn
     ]
   }
 }
