@@ -396,3 +396,120 @@ module "status_checks_cdn" {
     ]
   }
 }
+
+module "preview_cdn" {
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
+
+  aliases = [
+    "preview.${var.domain_name}",
+    "admin.preview.${var.domain_name}",
+    "beta.preview.${var.domain_name}",
+    "hub.preview.${var.domain_name}",
+    "signon.preview.${var.domain_name}",
+    "tea.preview.${var.domain_name}",
+  ]
+
+  create_alias    = true
+  route53_zone_id = data.aws_route53_zone.this.id
+  comment         = "${title(var.environment)} CDN"
+
+  enabled         = true
+  is_ipv6_enabled = true
+  price_class     = "PriceClass_100"
+
+  web_acl_id = module.waf.web_acl_id
+
+  logging_config = {
+    bucket = module.logs.s3_bucket_bucket_domain_name
+    prefix = "cloudfront/${var.environment}"
+  }
+
+  origin = {
+    frontend = {
+      domain_name = local.origin_domain_name
+      custom_origin_config = {
+        http_port              = 80
+        https_port             = 443
+        origin_protocol_policy = "https-only"
+        origin_ssl_protocols   = ["TLSv1.2"]
+      }
+
+      custom_header = [{
+        name  = random_password.origin_header[0].result
+        value = random_password.origin_header[1].result
+      }]
+    }
+  }
+
+  cache_behavior = {
+    default = {
+      target_origin_id       = "frontend"
+      viewer_protocol_policy = "redirect-to-https"
+
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+
+      min_ttl     = 0
+      default_ttl = 0
+      max_ttl     = 0
+
+      compress = true
+
+      allowed_methods = [
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "PUT",
+        "POST",
+        "PATCH",
+        "DELETE"
+      ]
+
+      cached_methods = [
+        "GET",
+        "HEAD"
+      ]
+    }
+
+    api = {
+      target_origin_id       = "frontend"
+      viewer_protocol_policy = "redirect-to-https"
+
+      path_pattern = "/api/v2/*"
+
+      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+
+      min_ttl     = 1
+      default_ttl = 1800
+      max_ttl     = 1800
+
+      compress = true
+
+      allowed_methods = [
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "PUT",
+        "POST",
+        "PATCH",
+        "DELETE"
+      ]
+
+      cached_methods = [
+        "GET",
+        "HEAD"
+      ]
+    }
+  }
+
+  viewer_certificate = {
+    ssl_support_method  = "sni-only"
+    acm_certificate_arn = module.acm.validated_certificate_arn
+    depends_on = [
+      module.acm.validated_certificate_arn
+    ]
+  }
+}

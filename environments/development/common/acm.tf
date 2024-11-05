@@ -23,3 +23,10 @@ module "acm_origin" {
   environment    = var.environment
   hosted_zone_id = aws_route53_zone.origin.zone_id
 }
+
+module "acm_preview" {
+  source         = "../../../modules/acm"
+  domain_name    = "preview.${var.domain_name}"
+  environment    = var.environment
+  hosted_zone_id = aws_route53_zone.origin.zone_id
+}
