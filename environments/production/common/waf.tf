@@ -33,13 +33,22 @@ resource "aws_wafv2_web_acl_logging_configuration" "waf_logs" {
 
   logging_filter {
     default_behavior = "DROP"
+
     filter {
       behavior = "KEEP"
+
       condition {
         action_condition {
           action = "BLOCK"
         }
       }
+
+      condition {
+        action_condition {
+          action = "COUNT"
+        }
+      }
+
       requirement = "MEETS_ANY"
     }
   }
