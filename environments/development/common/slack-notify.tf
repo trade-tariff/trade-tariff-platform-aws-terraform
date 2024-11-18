@@ -7,8 +7,8 @@ module "notify_slack" {
   sns_topic_name       = "slack-topic"
 
   slack_webhook_url = var.slack_notify_lambda_slack_webhook_url
-  slack_channel     = "trade-tariff-cloudwatch-alarms"
-  slack_username    = "@here"
+  slack_channel     = "non-production-alerts"
+  slack_username    = "AWS"
 
   lambda_description = "Lambda function which sends notifications to Slack"
   log_events         = true
