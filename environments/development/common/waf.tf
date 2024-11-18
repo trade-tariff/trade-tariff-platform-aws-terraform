@@ -20,11 +20,14 @@ module "waf" {
 }
 
 resource "aws_cloudwatch_log_group" "waf_logs" {
-  provider = aws.us_east_1
-  name     = "aws-waf-logs-tariff-${var.environment}"
+  provider          = aws.us_east_1
+  name              = "aws-waf-logs-tariff-${var.environment}"
+  retention_in_days = 30
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "waf_logs" {
+  provider = aws.us_east_1
+
   log_destination_configs = [aws_cloudwatch_log_group.waf_logs.arn]
   resource_arn            = module.waf.web_acl_id
 
