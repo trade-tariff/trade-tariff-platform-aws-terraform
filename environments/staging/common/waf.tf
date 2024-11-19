@@ -34,18 +34,34 @@ resource "aws_wafv2_web_acl_logging_configuration" "waf_logs" {
   logging_filter {
     default_behavior = "DROP"
 
+    # to remove noise in log group, since we are not blocking for no user agent
+    # header and instead COUNTing, drop all NoUserAgent_Header logs where rule
+    # action is COUNT.
+
     filter {
-      behavior = "KEEP"
+      behavior = "DROP"
 
       condition {
-        action_condition {
-          action = "BLOCK"
+        label_name_condition {
+          label_name = "awswaf:managed:aws:core-rule-set:NoUserAgent_Header"
         }
       }
 
       condition {
         action_condition {
           action = "COUNT"
+        }
+      }
+
+      requirement = "MEETS_ALL"
+    }
+
+    filter {
+      behavior = "KEEP"
+
+      condition {
+        action_condition {
+          action = "BLOCK"
         }
       }
 
