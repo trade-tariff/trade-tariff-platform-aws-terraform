@@ -209,7 +209,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br>  "development": "844815912454",<br>  "production": "382373577178",<br>  "staging": "451934005581"<br>}</pre> | no |
+| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br/>  "development": "844815912454",<br/>  "production": "382373577178",<br/>  "staging": "451934005581"<br/>}</pre> | no |
 | <a name="input_admin_bearer_token"></a> [admin\_bearer\_token](#input\_admin\_bearer\_token) | Value of BEARER\_TOKEN for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_id"></a> [admin\_oauth\_id](#input\_admin\_oauth\_id) | Value of TARIFF\_ADMIN\_OAUTH\_ID for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_secret"></a> [admin\_oauth\_secret](#input\_admin\_oauth\_secret) | Value of TARIFF\_ADMIN\_OAUTH\_SECRET for the admin tool. | `string` | n/a | yes |
@@ -238,7 +238,7 @@
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_slack_notify_lambda_slack_webhook_url"></a> [slack\_notify\_lambda\_slack\_webhook\_url](#input\_slack\_notify\_lambda\_slack\_webhook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the slack notify lambda. | `string` | n/a | yes |
 | <a name="input_slack_web_hook_url"></a> [slack\_web\_hook\_url](#input\_slack\_web\_hook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the backend. | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br>  "Billing": "TRN.HMR11896",<br>  "Environment": "production",<br>  "Project": "trade-tariff",<br>  "Terraform": true<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | <pre>{<br/>  "Billing": "TRN.HMR11896",<br/>  "Environment": "production",<br/>  "Project": "trade-tariff",<br/>  "Terraform": true<br/>}</pre> | no |
 | <a name="input_tariff_backend_differences_to_emails"></a> [tariff\_backend\_differences\_to\_emails](#input\_tariff\_backend\_differences\_to\_emails) | Differences report TO email addresses. | `string` | n/a | yes |
 | <a name="input_tariff_backend_green_lanes_api_tokens"></a> [tariff\_backend\_green\_lanes\_api\_tokens](#input\_tariff\_backend\_green\_lanes\_api\_tokens) | Value of GREEN\_LANES\_API\_TOKENS for the tariff backend. | `string` | n/a | yes |
 | <a name="input_tariff_backend_oauth_id"></a> [tariff\_backend\_oauth\_id](#input\_tariff\_backend\_oauth\_id) | Value of Tariff Backend OAuth ID. | `string` | n/a | yes |
