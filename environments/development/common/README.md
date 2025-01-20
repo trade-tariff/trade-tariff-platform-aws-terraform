@@ -58,6 +58,7 @@ No outputs.
 | <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../../modules/security-group/ | n/a |
 | <a name="module_alb_preview"></a> [alb\_preview](#module\_alb\_preview) | ../../../modules/application-load-balancer/ | n/a |
 | <a name="module_api_cdn"></a> [api\_cdn](#module\_api\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
+| <a name="module_aurora_test"></a> [aurora\_test](#module\_aurora\_test) | ../../../modules/rds_cluster | n/a |
 | <a name="module_backend_differences_to_emails"></a> [backend\_differences\_to\_emails](#module\_backend\_differences\_to\_emails) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_green_lanes_api_tokens"></a> [backend\_green\_lanes\_api\_tokens](#module\_backend\_green\_lanes\_api\_tokens) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_oauth_id"></a> [backend\_oauth\_id](#module\_backend\_oauth\_id) | ../../../modules/secret/ | n/a |

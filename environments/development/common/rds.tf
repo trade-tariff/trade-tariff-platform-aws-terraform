@@ -126,3 +126,18 @@ module "postgres_commodi_tea" {
     customer = "fpo"
   }
 }
+
+module "aurora_test" {
+  source = "../../../modules/rds_cluster"
+
+  cluster_name      = "aurora-test"
+  engine            = "aurora-postgresql"
+  engine_version    = "13.15.1"
+  engine_mode       = "serverless"
+  cluster_instances = 3
+
+  instance_class = "db.t3.micro"
+
+  username         = "tariff"
+  managed_password = true
+}
