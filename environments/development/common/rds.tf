@@ -132,11 +132,11 @@ module "aurora_test" {
 
   cluster_name      = "aurora-test"
   engine            = "aurora-postgresql"
-  engine_version    = "13.15.1"
-  engine_mode       = "serverless"
+  engine_version    = "13.15"
+  engine_mode       = "provisioned"
   cluster_instances = 3
 
-  instance_class = "db.t3.micro"
+  instance_class = "db.serverless"
 
   username         = "tariff"
   managed_password = true
