@@ -63,7 +63,7 @@ module "commodi_tea_cognito" {
   domain                 = "auth.tea.${var.domain_name}"
   domain_certificate_arn = module.acm.validated_certificate_arn
 
-  allow_user_registration  = true
+  allow_user_registration  = false
   username_attributes      = ["email"]
   auto_verified_attributes = ["email"]
 
