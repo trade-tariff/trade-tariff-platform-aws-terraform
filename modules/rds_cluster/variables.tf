@@ -7,16 +7,6 @@ variable "username" {
   type = string
 }
 
-variable "password" {
-  default = ""
-  type    = string
-}
-
-variable "managed_password" {
-  default = false
-  type    = bool
-}
-
 variable "engine_mode" {
   type = string
 }

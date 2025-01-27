@@ -5,9 +5,8 @@ resource "aws_rds_cluster" "this" {
   engine_mode    = var.engine_mode
   engine_version = var.engine_version
 
-  master_username             = var.username
-  master_password             = var.managed_password ? null : var.password
-  manage_master_user_password = var.managed_password
+  master_username = var.username
+  master_password = random_password.master_password.result
 
   database_name = var.database_name
 
@@ -26,4 +25,10 @@ resource "aws_rds_cluster_instance" "this" {
   engine_version     = aws_rds_cluster.this.engine_version
 
   instance_class = var.instance_class
+}
+
+resource "random_password" "master_password" {
+  length           = 16
+  special          = true
+  override_special = "_-"
 }

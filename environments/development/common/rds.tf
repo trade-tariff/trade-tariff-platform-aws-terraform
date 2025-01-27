@@ -139,6 +139,5 @@ module "aurora_test" {
   instance_class = "db.serverless"
   database_name  = "tariffaurora"
 
-  username         = "tariff"
-  managed_password = true
+  username = "tariff"
 }
