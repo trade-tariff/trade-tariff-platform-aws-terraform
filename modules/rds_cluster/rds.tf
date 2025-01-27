@@ -15,6 +15,8 @@ resource "aws_rds_cluster" "this" {
     max_capacity = 256
     min_capacity = 0
   }
+
+  apply_immediately = true
 }
 
 resource "aws_rds_cluster_instance" "this" {
