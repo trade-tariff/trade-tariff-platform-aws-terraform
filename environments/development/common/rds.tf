@@ -137,6 +137,7 @@ module "aurora_test" {
   cluster_instances = 3
 
   instance_class = "db.serverless"
+  database_name  = "tariffaurora"
 
   username         = "tariff"
   managed_password = true

@@ -9,6 +9,8 @@ resource "aws_rds_cluster" "this" {
   master_password             = var.managed_password ? null : var.password
   manage_master_user_password = var.managed_password
 
+  database_name = var.database_name
+
   serverlessv2_scaling_configuration {
     max_capacity = 256
     min_capacity = 0

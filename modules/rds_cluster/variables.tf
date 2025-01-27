@@ -37,3 +37,8 @@ variable "cluster_instances" {
 variable "instance_class" {
   type = string
 }
+
+variable "database_name" {
+  description = "Name of the database."
+  type        = string
+}
