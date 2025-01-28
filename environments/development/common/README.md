@@ -111,6 +111,8 @@ No outputs.
 | <a name="module_read_only_postgres_connection_string"></a> [read\_only\_postgres\_connection\_string](#module\_read\_only\_postgres\_connection\_string) | ../../../modules/secret/ | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
+| <a name="module_ro_aurora_connection_string"></a> [ro\_aurora\_connection\_string](#module\_ro\_aurora\_connection\_string) | ../../../modules/secret/ | n/a |
+| <a name="module_rw_aurora_connection_string"></a> [rw\_aurora\_connection\_string](#module\_rw\_aurora\_connection\_string) | ../../../modules/secret/ | n/a |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../../modules/ses | n/a |
 | <a name="module_signon_derivation_key"></a> [signon\_derivation\_key](#module\_signon\_derivation\_key) | ../../../modules/secret/ | n/a |

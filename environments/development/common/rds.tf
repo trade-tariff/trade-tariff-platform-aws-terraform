@@ -141,3 +141,19 @@ module "aurora_test" {
 
   username = "tariff"
 }
+
+module "rw_aurora_connection_string" {
+  source          = "../../../modules/secret/"
+  name            = "aurora-postgres-rw-connection-string"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = module.aurora_test.rw_connection_string
+}
+
+module "ro_aurora_connection_string" {
+  source          = "../../../modules/secret/"
+  name            = "aurora-postgres-ro-connection-string"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = module.aurora_test.ro_connection_string
+}
