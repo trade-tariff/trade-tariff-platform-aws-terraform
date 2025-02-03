@@ -16,6 +16,8 @@ resource "aws_rds_cluster" "this" {
     min_capacity = 0
   }
 
+  vpc_security_group_ids = var.security_group_ids
+
   apply_immediately = true
 }
 

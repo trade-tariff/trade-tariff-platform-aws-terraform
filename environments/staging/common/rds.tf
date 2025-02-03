@@ -143,8 +143,9 @@ module "postgres_aurora" {
 
   instance_class = "db.serverless"
   database_name  = "TradeTariffPostgres${title(var.environment)}"
+  username       = "tariff"
 
-  username = "tariff"
+  security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
 }
 
 module "rw_aurora_connection_string" {

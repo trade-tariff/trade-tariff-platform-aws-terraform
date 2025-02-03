@@ -32,3 +32,9 @@ variable "database_name" {
   description = "Name of the database."
   type        = string
 }
+
+variable "security_group_ids" {
+  description = "A list of security group IDs to associate with this RDS cluster."
+  type        = list(string)
+  default     = null
+}
