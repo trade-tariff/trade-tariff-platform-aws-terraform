@@ -34,7 +34,12 @@ variable "database_name" {
 }
 
 variable "security_group_ids" {
-  description = "A list of security group IDs to associate with this RDS cluster."
+  description = "A list of security group IDs to associate with this cluster."
   type        = list(string)
   default     = null
+}
+
+variable "private_subnet_ids" {
+  description = "A list of private subnet IDs to associate with this cluster."
+  type        = list(string)
 }

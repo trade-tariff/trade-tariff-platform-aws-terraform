@@ -142,6 +142,7 @@ module "postgres_aurora" {
   username       = "tariff"
 
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
+  private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 }
 
 module "rw_aurora_connection_string" {
