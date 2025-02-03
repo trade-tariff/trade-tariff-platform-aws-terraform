@@ -130,3 +130,35 @@ module "postgres_commodi_tea" {
     customer = "fpo"
   }
 }
+
+# Aurora cluster
+module "postgres_aurora" {
+  source = "../../../modules/rds_cluster"
+
+  cluster_name      = "postgres-aurora-${var.environment}"
+  engine            = "aurora-postgresql"
+  engine_version    = "13.15"
+  engine_mode       = "provisioned"
+  cluster_instances = 2
+
+  instance_class = "db.serverless"
+  database_name  = "TradeTariffPostgres${title(var.environment)}"
+
+  username = "tariff"
+}
+
+module "rw_aurora_connection_string" {
+  source          = "../../../modules/secret/"
+  name            = "aurora-postgres-rw-connection-string"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = module.postgres_aurora.rw_connection_string
+}
+
+module "ro_aurora_connection_string" {
+  source          = "../../../modules/secret/"
+  name            = "aurora-postgres-ro-connection-string"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = module.postgres_aurora.ro_connection_string
+}

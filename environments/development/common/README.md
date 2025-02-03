@@ -58,7 +58,6 @@ No outputs.
 | <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../../modules/security-group/ | n/a |
 | <a name="module_alb_preview"></a> [alb\_preview](#module\_alb\_preview) | ../../../modules/application-load-balancer/ | n/a |
 | <a name="module_api_cdn"></a> [api\_cdn](#module\_api\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
-| <a name="module_aurora_test"></a> [aurora\_test](#module\_aurora\_test) | ../../../modules/rds_cluster | n/a |
 | <a name="module_backend_differences_to_emails"></a> [backend\_differences\_to\_emails](#module\_backend\_differences\_to\_emails) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_green_lanes_api_tokens"></a> [backend\_green\_lanes\_api\_tokens](#module\_backend\_green\_lanes\_api\_tokens) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_oauth_id"></a> [backend\_oauth\_id](#module\_backend\_oauth\_id) | ../../../modules/secret/ | n/a |
@@ -106,6 +105,7 @@ No outputs.
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../../modules/rds | n/a |
 | <a name="module_postgres_admin"></a> [postgres\_admin](#module\_postgres\_admin) | ../../../modules/rds | n/a |
+| <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
 | <a name="module_preview_cdn"></a> [preview\_cdn](#module\_preview\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_read_only_postgres_connection_string"></a> [read\_only\_postgres\_connection\_string](#module\_read\_only\_postgres\_connection\_string) | ../../../modules/secret/ | n/a |
