@@ -43,3 +43,21 @@ variable "private_subnet_ids" {
   description = "A list of private subnet IDs to associate with this cluster."
   type        = list(string)
 }
+
+variable "max_capacity" {
+  description = "Maximum capacity (ACUs). Defaults to `256`."
+  type        = number
+  default     = 256
+}
+
+variable "min_capacity" {
+  description = "Minimum capacity (ACUs). Defaults to `0`."
+  type        = number
+  default     = 0
+}
+
+variable "apply_immediately" {
+  description = "Whether to apply changes immediately. Set to `true` when required. Defaults to `false`."
+  type        = bool
+  default     = false
+}

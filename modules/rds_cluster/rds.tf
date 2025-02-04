@@ -11,15 +11,18 @@ resource "aws_rds_cluster" "this" {
   database_name       = var.database_name
   skip_final_snapshot = true
 
-  serverlessv2_scaling_configuration {
-    max_capacity = 256
-    min_capacity = 0
+  dynamic "serverlessv2_scaling_configuration" {
+    for_each = var.engine_mode == "provisioned" ? [1] : []
+    content {
+      max_capacity = var.max_capacity
+      min_capacity = var.min_capacity
+    }
   }
 
   vpc_security_group_ids = var.security_group_ids
   db_subnet_group_name   = aws_db_subnet_group.rds_private_subnet.name
 
-  apply_immediately = true
+  apply_immediately = var.apply_immediately
 }
 
 resource "aws_rds_cluster_instance" "this" {

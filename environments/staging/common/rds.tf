@@ -140,6 +140,7 @@ module "postgres_aurora" {
   engine_version    = "13.15"
   engine_mode       = "provisioned"
   cluster_instances = 2
+  apply_immediately = true
 
   instance_class = "db.serverless"
   database_name  = "TradeTariffPostgres${title(var.environment)}"
