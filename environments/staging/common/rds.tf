@@ -25,7 +25,8 @@ module "postgres" {
   ]
 
   tags = {
-    Name = "TradeTariffPostgres${title(var.environment)}"
+    Name       = "TradeTariffPostgres${title(var.environment)}"
+    "RDS_Type" = "Instance"
   }
 }
 
@@ -64,7 +65,8 @@ module "postgres_admin" {
   ]
 
   tags = {
-    Name = "PostgresAdmin"
+    Name       = "PostgresAdmin"
+    "RDS_Type" = "Instance"
   }
 }
 
@@ -95,7 +97,8 @@ module "mysql" {
   ]
 
   tags = {
-    Name = "TradeTariffMySQL${title(var.environment)}"
+    Name       = "TradeTariffMySQL${title(var.environment)}"
+    "RDS_Type" = "Instance"
   }
 }
 
@@ -126,8 +129,9 @@ module "postgres_commodi_tea" {
   ]
 
   tags = {
-    Name     = "PostgresCommodiTea"
-    customer = "fpo"
+    Name       = "PostgresCommodiTea"
+    customer   = "fpo"
+    "RDS_Type" = "Instance"
   }
 }
 
@@ -146,8 +150,15 @@ module "postgres_aurora" {
   database_name  = "TradeTariffPostgres${title(var.environment)}"
   username       = "tariff"
 
+  min_capacity = 0.5
+  max_capacity = 256
+
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
+
+  tags = {
+    "RDS_Type" = "Aurora"
+  }
 }
 
 module "rw_aurora_connection_string" {

@@ -61,3 +61,9 @@ variable "apply_immediately" {
   type        = bool
   default     = false
 }
+
+variable "tags" {
+  description = "Tags to apply to all resources in the module."
+  type        = map(any)
+  default     = {}
+}

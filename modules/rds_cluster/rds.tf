@@ -23,6 +23,8 @@ resource "aws_rds_cluster" "this" {
   db_subnet_group_name   = aws_db_subnet_group.rds_private_subnet.name
 
   apply_immediately = var.apply_immediately
+
+  tags = var.tags
 }
 
 resource "aws_rds_cluster_instance" "this" {
@@ -35,6 +37,8 @@ resource "aws_rds_cluster_instance" "this" {
   db_subnet_group_name = aws_db_subnet_group.rds_private_subnet.name
 
   instance_class = var.instance_class
+
+  tags = var.tags
 }
 
 resource "random_password" "master_password" {
@@ -46,4 +50,5 @@ resource "random_password" "master_password" {
 resource "aws_db_subnet_group" "rds_private_subnet" {
   name       = "${var.cluster_name}-sg"
   subnet_ids = var.private_subnet_ids
+  tags       = var.tags
 }
