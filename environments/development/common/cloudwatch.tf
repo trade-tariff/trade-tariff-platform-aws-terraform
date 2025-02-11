@@ -120,8 +120,7 @@ module "logs" {
       enabled = true
 
       expiration = {
-        days                         = 7
-        expired_object_delete_marker = true
+        days = 7
       }
     }
   ]
