@@ -22,7 +22,7 @@ executors:
     environment:
       TF_INPUT: 0
       TF_IN_AUTOMATION: 1
-      TERRAGRUNT_VERSION: "0.50.15"
+      TERRAGRUNT_VERSION: "0.73.0"
 
 commands:
   install-terragrunt:
