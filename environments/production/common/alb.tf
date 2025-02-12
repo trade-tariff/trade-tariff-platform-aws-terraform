@@ -70,7 +70,7 @@ module "alb" {
   }
 }
 
-resource "aws_lb_target_group" "trade_tariff_target_groups" {
+resource "aws_lb_target_group" "backend_uk" {
   name                 = "backend-uk"
   port                 = 8080
   protocol             = "HTTP"
@@ -91,7 +91,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   }
 }
 
-resource "aws_lb_target_group" "trade_tariff_target_groups" {
+resource "aws_lb_target_group" "backend_xi" {
   name                 = "backend-xi"
   port                 = 8080
   protocol             = "HTTP"
