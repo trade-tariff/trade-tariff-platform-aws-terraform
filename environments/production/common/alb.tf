@@ -50,64 +50,22 @@ module "alb" {
       priority         = 17
     }
 
-    # backend_uk = {
-    #   paths            = ["/api/*", "/uk/api/*"]
-    #   healthcheck_path = "/healthcheckz"
-    #   priority         = 20
-    # }
-    #
-    # backend_xi = {
-    #   paths            = ["/xi/api/*"]
-    #   healthcheck_path = "/healthcheckz"
-    #   priority         = 21
-    # }
+    backend_uk = {
+      paths            = ["/new/api/*", "/new/uk/api/*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 20
+    }
+
+    backend_xi = {
+      paths            = ["/new/xi/api/*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 21
+    }
 
     frontend = {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
       priority         = 99 # Most generic rule for frontend should match last
     }
-  }
-}
-
-resource "aws_lb_target_group" "backend_uk" {
-  name                 = "backend-uk"
-  port                 = 8080
-  protocol             = "HTTP"
-  target_type          = "ip"
-  vpc_id               = data.terraform_remote_state.base.outputs.vpc_id
-  deregistration_delay = 20
-
-  health_check {
-    enabled             = true
-    interval            = 60
-    path                = "/healthcheckz"
-    port                = "traffic-port"
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
-    timeout             = 6
-    protocol            = "HTTP"
-    matcher             = "200"
-  }
-}
-
-resource "aws_lb_target_group" "backend_xi" {
-  name                 = "backend-xi"
-  port                 = 8080
-  protocol             = "HTTP"
-  target_type          = "ip"
-  vpc_id               = data.terraform_remote_state.base.outputs.vpc_id
-  deregistration_delay = 20
-
-  health_check {
-    enabled             = true
-    interval            = 60
-    path                = "/healthcheckz"
-    port                = "traffic-port"
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
-    timeout             = 6
-    protocol            = "HTTP"
-    matcher             = "200"
   }
 }
