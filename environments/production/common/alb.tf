@@ -50,10 +50,16 @@ module "alb" {
       priority         = 17
     }
 
-    # frontend_beta = {
-    #   hosts            = ["beta.*"]
+    # backend_uk = {
+    #   paths            = ["/api", "/uk/api"]
     #   healthcheck_path = "/healthcheckz"
-    #   priority         = 19
+    #   priority         = 20
+    # }
+    #
+    # backend_xi = {
+    #   paths            = ["/xi/api"]
+    #   healthcheck_path = "/healthcheckz"
+    #   priority         = 21
     # }
 
     frontend = {
@@ -61,5 +67,47 @@ module "alb" {
       healthcheck_path = "/healthcheckz"
       priority         = 99 # Most generic rule for frontend should match last
     }
+  }
+}
+
+resource "aws_lb_target_group" "trade_tariff_target_groups" {
+  name                 = "backend-uk"
+  port                 = 8080
+  protocol             = "HTTP"
+  target_type          = "ip"
+  vpc_id               = data.terraform_remote_state.base.outputs.vpc_id
+  deregistration_delay = 20
+
+  health_check {
+    enabled             = true
+    interval            = 60
+    path                = "/healthcheckz"
+    port                = "traffic-port"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 6
+    protocol            = "HTTP"
+    matcher             = "200"
+  }
+}
+
+resource "aws_lb_target_group" "trade_tariff_target_groups" {
+  name                 = "backend-xi"
+  port                 = 8080
+  protocol             = "HTTP"
+  target_type          = "ip"
+  vpc_id               = data.terraform_remote_state.base.outputs.vpc_id
+  deregistration_delay = 20
+
+  health_check {
+    enabled             = true
+    interval            = 60
+    path                = "/healthcheckz"
+    port                = "traffic-port"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 6
+    protocol            = "HTTP"
+    matcher             = "200"
   }
 }
