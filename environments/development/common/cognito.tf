@@ -19,6 +19,8 @@ module "dev_hub_cognito" {
       scope_description = "Protected API route."
     }
   ]
+  ses_identity_source_arn = data.aws_ses_domain_identity.this.arn
+  from_email_address      = "noreply@${var.domain_name}"
 }
 
 resource "aws_route53_record" "cognito_custom_domain" {
@@ -163,4 +165,8 @@ resource "random_password" "tea_cognito_secret" {
   length           = 16
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+data "aws_ses_domain_identity" "this" {
+  domain = var.domain_name
 }
