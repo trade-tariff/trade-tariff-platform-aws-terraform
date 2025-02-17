@@ -23,19 +23,7 @@ executors:
       TF_INPUT: 0
       TF_IN_AUTOMATION: 1
       TERRAGRUNT_VERSION: "0.73.0"
-
-commands:
-  install-terragrunt:
-    description: Install Terragrunt
-    steps:
-      - run:
-          name: Download Terragrunt
-          command: |
-            wget "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64" \
-              -O /usr/local/bin/terragrunt
-      - run:
-          name: Make Terragrunt executable
-          command: chmod u+x /usr/local/bin/terragrunt
+      TG_NON_INTERACTIVE: true
 
 jobs:
   terraform-fmt-validate:
@@ -45,12 +33,13 @@ jobs:
         type: string
     steps:
       - checkout
-      - install-terragrunt
       - run: terraform fmt
       - run: terragrunt hclfmt
-      - run: |
-          cd environments/<< parameters.environment >>
-          terragrunt run-all validate --terragrunt-non-interactive
+      - run:
+          name: Terraform validate
+          command: |
+            cd environments/<< parameters.environment >>
+            terragrunt run-all validate
 
   terragrunt-plan:
     executor: default
@@ -59,12 +48,11 @@ jobs:
         type: string
     steps:
       - checkout
-      - install-terragrunt
       - run:
           name: Terraform Plan
           command: |
             cd environments/<< parameters.environment >>
-            terragrunt run-all plan --terragrunt-non-interactive
+            terragrunt run-all plan
 
   terragrunt-apply:
     executor: default
@@ -73,36 +61,35 @@ jobs:
         type: string
     steps:
       - checkout
-      - install-terragrunt
       - run:
           name: Terraform apply base
           command: |
             cd environments/<< parameters.environment >>/base
-            terragrunt run-all apply --terragrunt-non-interactive
+            terragrunt run-all apply
 
       - run:
           name: Terraform apply applications
           command: |
             cd environments/<< parameters.environment >>/applications
-            terragrunt run-all apply --terragrunt-non-interactive
+            terragrunt run-all apply
 
       - run:
           name: Terraform apply common
           command: |
             cd environments/<< parameters.environment >>/common
-            terragrunt run-all apply --terragrunt-non-interactive
+            terragrunt run-all apply
 
       - run:
           name: Terraform apply extra regions
           command: |
             if [ -d environments/<< parameters.environment >>/extra-regions ]; then
               cd environments/<< parameters.environment >>/extra-regions
-              terragrunt run-all apply --terragrunt-non-interactive
+              terragrunt run-all apply
             fi
 
 workflows:
   version: 2
-  deploy-to-development:
+  development:
     jobs:
       - terraform-fmt-validate:
           name: terraform-fmt-development
@@ -132,7 +119,7 @@ workflows:
           environment: development
           context: trade-tariff-terraform-aws-development
 
-  deploy-to-staging:
+  staging:
     jobs:
       - terraform-fmt-validate:
           name: terraform-fmt-staging
@@ -154,7 +141,7 @@ workflows:
           environment: staging
           context: trade-tariff-terraform-aws-staging
 
-  deploy-to-production:
+  production:
     jobs:
       - terraform-fmt-validate:
           name: terraform-fmt-production
