@@ -10,4 +10,14 @@ terraform {
 
 provider "aws" {
   region = "eu-west-2"
+
+  default_tags {
+    tags = {
+      Terraform   = true
+      Project     = "trade-tariff"
+      Environment = "development"
+      Stack       = basename(path.cwd)
+      Region      = "eu-west-2"
+    }
+  }
 }
