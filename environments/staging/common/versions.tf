@@ -24,6 +24,7 @@ provider "aws" {
       Environment = var.environment
       Stack       = basename(path.cwd)
       Region      = var.region
+      BillingCode = "HMR:OTT"
     }
   }
 }
@@ -39,6 +40,7 @@ provider "aws" {
       Environment = var.environment
       Stack       = basename(path.cwd)
       Region      = "us-east-1"
+      BillingCode = "HMR:OTT"
     }
   }
 }

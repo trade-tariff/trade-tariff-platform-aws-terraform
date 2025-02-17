@@ -18,6 +18,7 @@ provider "aws" {
       Environment = "staging"
       Stack       = basename(path.cwd)
       Region      = "eu-west-2"
+      BillingCode = "HMR:OTT"
     }
   }
 }
