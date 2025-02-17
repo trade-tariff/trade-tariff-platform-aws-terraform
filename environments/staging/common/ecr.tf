@@ -4,5 +4,4 @@ resource "aws_ssm_parameter" "ecr_url" {
   description = "${title(each.key)} ECR repository URL."
   type        = "SecureString"
   value       = "${var.account_ids["production"]}.dkr.ecr.${var.region}.amazonaws.com/tariff-${each.key}-production"
-  tags        = var.tags
 }
