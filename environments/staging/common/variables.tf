@@ -25,17 +25,6 @@ variable "account_ids" {
   }
 }
 
-variable "tags" {
-  description = "A map of tags to assign to resources."
-  type        = map(string)
-  default = {
-    Terraform   = true
-    Project     = "trade-tariff"
-    Environment = "staging"
-    Billing     = "TRN.HMR11896"
-  }
-}
-
 variable "waf_rpm_limit" {
   description = "Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. "
   type        = number
