@@ -23,6 +23,7 @@ executors:
       TF_INPUT: 0
       TF_IN_AUTOMATION: 1
       TERRAGRUNT_VERSION: "0.73.0"
+      TG_NON_INTERACTIVE: true
 
 commands:
   install-terragrunt:
@@ -50,7 +51,7 @@ jobs:
       - run: terragrunt hclfmt
       - run: |
           cd environments/<< parameters.environment >>
-          terragrunt run-all validate --terragrunt-non-interactive
+          terragrunt run-all validate
 
   terragrunt-plan:
     executor: default
@@ -64,7 +65,7 @@ jobs:
           name: Terraform Plan
           command: |
             cd environments/<< parameters.environment >>
-            terragrunt run-all plan --terragrunt-non-interactive
+            terragrunt run-all plan
 
   terragrunt-apply:
     executor: default
@@ -78,26 +79,26 @@ jobs:
           name: Terraform apply base
           command: |
             cd environments/<< parameters.environment >>/base
-            terragrunt run-all apply --terragrunt-non-interactive
+            terragrunt run-all apply
 
       - run:
           name: Terraform apply applications
           command: |
             cd environments/<< parameters.environment >>/applications
-            terragrunt run-all apply --terragrunt-non-interactive
+            terragrunt run-all apply
 
       - run:
           name: Terraform apply common
           command: |
             cd environments/<< parameters.environment >>/common
-            terragrunt run-all apply --terragrunt-non-interactive
+            terragrunt run-all apply
 
       - run:
           name: Terraform apply extra regions
           command: |
             if [ -d environments/<< parameters.environment >>/extra-regions ]; then
               cd environments/<< parameters.environment >>/extra-regions
-              terragrunt run-all apply --terragrunt-non-interactive
+              terragrunt run-all apply
             fi
 
 workflows:
