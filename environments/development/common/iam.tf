@@ -285,7 +285,8 @@ resource "aws_iam_policy" "ci_appendix5a_persistence_readwrite_policy" {
 
         Resource = [
           "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}",
-          "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/config/chief_cds_guidance.json"
+          "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/config/chief_cds_guidance.json",
+          "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/config/cds_guidance.json"
         ]
       },
       {
