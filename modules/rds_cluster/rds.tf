@@ -12,7 +12,7 @@ resource "aws_rds_cluster" "this" {
   skip_final_snapshot = true
 
   storage_encrypted = var.encryption_at_rest
-  kms_key_id        = var.kms_key_id != null ? var.kms_key_id : aws_kms_key.this[0].arn
+  kms_key_id        = try(aws_kms_key.this[0].arn, var.kms_key_id)
 
   dynamic "serverlessv2_scaling_configuration" {
     for_each = var.engine_mode == "provisioned" ? [1] : []
