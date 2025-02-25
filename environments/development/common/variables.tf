@@ -33,7 +33,8 @@ variable "waf_rpm_limit" {
 
 variable "circleci_organisation_id" {
   type        = string
-  description = "CircleCI Organisation ID"
+  description = "The CircleCI organization ID for OIDC integration"
+  sensitive   = true
 }
 
 variable "thumbprint_list" {
@@ -45,7 +46,7 @@ variable "thumbprint_list" {
 variable "allowed_circleci_projects" {
   type        = list(string)
   description = "List of CircleCI projects that can assume the role."
-  default     = ["trade-tariff-backend", "trade-tariff-frontend", "trade-tariff-admin", "trade-tariff-signon", "trade-tariff-diff", "trade-tariff-duties", "trade-tariff-dev-hub-backend", "trade-tariff-dev-hub-frontend", "trade-tariff-fpo-search", "trade-tariff-commodi-tea"]
+  default     = ["trade-tariff-platform-terraform-aws-accounts", "trade-tariff-platform-aws-terraform"]
 }
 
 #
