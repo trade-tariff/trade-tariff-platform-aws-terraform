@@ -121,6 +121,8 @@ module "postgres_aurora" {
   database_name  = "TradeTariffPostgres${title(var.environment)}"
   username       = "tariff"
 
+  encryption_at_rest = true
+
   # TODO: monitor capacity in production
   min_capacity = 16
   max_capacity = 64
