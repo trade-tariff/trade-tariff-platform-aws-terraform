@@ -67,3 +67,15 @@ variable "tags" {
   type        = map(any)
   default     = {}
 }
+
+variable "encryption_at_rest" {
+  description = "Whether to enable encryption at rest. Defaults to `false`."
+  type        = bool
+  default     = false
+}
+
+variable "kms_key_id" {
+  description = "KMS key ARN for encryption at rest."
+  type        = string
+  default     = null
+}

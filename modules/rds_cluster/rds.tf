@@ -11,6 +11,9 @@ resource "aws_rds_cluster" "this" {
   database_name       = var.database_name
   skip_final_snapshot = true
 
+  storage_encrypted = var.encryption_at_rest
+  kms_key_id        = var.kms_key_id != null ? var.kms_key_id : aws_kms_key.this[0].arn
+
   dynamic "serverlessv2_scaling_configuration" {
     for_each = var.engine_mode == "provisioned" ? [1] : []
     content {
@@ -51,4 +54,12 @@ resource "aws_db_subnet_group" "rds_private_subnet" {
   name       = "${var.cluster_name}-sg"
   subnet_ids = var.private_subnet_ids
   tags       = var.tags
+}
+
+resource "aws_kms_key" "this" {
+  count               = local.create_kms_key
+  description         = "KMS key for ${var.cluster_name}."
+  key_usage           = "ENCRYPT_DECRYPT"
+  enable_key_rotation = true
+  tags                = var.tags
 }
