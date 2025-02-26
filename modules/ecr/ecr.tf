@@ -13,7 +13,6 @@ resource "aws_ecr_repository" "this" {
   name                 = "tariff-${each.key}-${var.environment}"
   image_tag_mutability = "MUTABLE"
   force_delete         = false
-  tags                 = var.tags
 
   image_scanning_configuration {
     scan_on_push = true

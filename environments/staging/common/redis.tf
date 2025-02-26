@@ -3,7 +3,6 @@ locals {
     "frontend",
     "backend-uk",
     "backend-xi",
-    "admin",
     "signon"
   ])
 }
@@ -67,7 +66,6 @@ module "redis" {
   ]
 
   apply_immediately = true
-  tags              = var.tags
 }
 
 resource "aws_secretsmanager_secret" "redis_connection_string" {

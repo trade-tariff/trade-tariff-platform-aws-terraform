@@ -93,7 +93,7 @@ resource "aws_kms_key_policy" "logs_bucket_kms_key_policy" {
 }
 
 module "logs" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v3.14.0"
+  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v4.5.0"
 
   bucket = "trade-tariff-logs-${local.account_id}"
   acl    = "log-delivery-write"
@@ -120,8 +120,7 @@ module "logs" {
       enabled = true
 
       expiration = {
-        days                         = 7
-        expired_object_delete_marker = true
+        days = 7
       }
     }
   ]

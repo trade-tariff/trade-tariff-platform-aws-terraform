@@ -50,10 +50,16 @@ module "alb" {
       priority         = 17
     }
 
-    frontend_beta = {
-      hosts            = ["beta.*"]
+    backend_uk = {
+      paths            = ["/api/*", "/uk/api/*"]
       healthcheck_path = "/healthcheckz"
-      priority         = 19
+      priority         = 20
+    }
+
+    backend_xi = {
+      paths            = ["/xi/api/*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 21
     }
 
     frontend = {

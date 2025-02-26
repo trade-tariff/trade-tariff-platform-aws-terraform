@@ -54,7 +54,6 @@ data "aws_iam_policy_document" "ecr_policy_document" {
 
 module "ecr" {
   source      = "../../../modules/ecr/"
-  tags        = var.tags
   environment = var.environment
 }
 
@@ -64,7 +63,6 @@ resource "aws_ssm_parameter" "ecr_url" {
   description = "${title(each.key)} ECR repository URL."
   type        = "SecureString"
   value       = each.value
-  tags        = var.tags
 }
 
 resource "aws_ecr_repository_policy" "ecr_allow_staging_and_development" {
