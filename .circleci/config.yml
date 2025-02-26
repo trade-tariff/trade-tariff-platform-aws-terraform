@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-cli: circleci/aws-cli@5.2  # Add the AWS CLI orb for OIDC support
+  aws-cli: circleci/aws-cli@5.2  # Add the AWS CLI orb
 
 deploy-feature-branches: &ignore-main
   filters:
