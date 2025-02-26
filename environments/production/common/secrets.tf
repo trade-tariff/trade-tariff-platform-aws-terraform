@@ -310,3 +310,11 @@ module "download_cds_files_to_emails_secret" {
   recovery_window       = 7
   create_secret_version = false
 }
+
+module "commodi_tea_fpo_search_api_key" {
+  source          = "../../../modules/secret/"
+  name            = "commodi-tea-fpo-search-api-key"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.commodi_tea_fpo_search_api_key
+}
