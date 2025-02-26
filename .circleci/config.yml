@@ -50,6 +50,12 @@ jobs:
         type: string
     steps:
       - checkout
+      - run:
+          pwd
+          ls -lrt
+          which aws
+          aws --version
+
       - aws-cli/setup:  # Configure AWS credentials using OIDC
           role_arn: $AWS_ROLE_ARN  # Role ARN for OIDC authentication
       - run:
