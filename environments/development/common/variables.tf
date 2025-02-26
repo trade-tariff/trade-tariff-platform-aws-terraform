@@ -328,3 +328,9 @@ variable "commodi_tea_cookie_signing_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "commodi_tea_fpo_search_api_key" {
+  description = "Value of FPO_SEARCH_API_KEY for the Commodi tea."
+  type        = string
+  sensitive   = true
+}
