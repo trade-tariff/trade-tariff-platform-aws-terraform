@@ -161,7 +161,6 @@ resource "aws_iam_role_policy_attachment" "fpo_models_ci_policy_attachment" {
   policy_arn = aws_iam_policy.ci_fpo_models_secrets_policy.arn
 }
 
-# Specify the project name which can assume the role
 resource "aws_iam_role" "terraform_role" {
   name = "CircleCi_Terraform-Role"
 
@@ -178,11 +177,11 @@ resource "aws_iam_role" "terraform_role" {
           StringEquals = {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
           }
-          StringLike = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:sub" = [
-              for project in var.allowed_circleci_projects : "org/${var.circleci_organisation_id}/${project}"
-            ]
-          }
+          # StringLike = {
+          #   "${aws_iam_openid_connect_provider.circleci_oidc.url}:sub" = [
+          #     for project_id in var.allowed_circleci_projects : "org/${var.circleci_organisation_id}/project/${project_id}"
+          #   ]
+          # }
         }
       }
     ]

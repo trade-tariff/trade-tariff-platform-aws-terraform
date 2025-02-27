@@ -245,7 +245,6 @@ No outputs.
 | <a name="input_admin_oauth_secret"></a> [admin\_oauth\_secret](#input\_admin\_oauth\_secret) | Value of TARIFF\_ADMIN\_OAUTH\_SECRET for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_secret_key_base"></a> [admin\_secret\_key\_base](#input\_admin\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_sentry_dsn"></a> [admin\_sentry\_dsn](#input\_admin\_sentry\_dsn) | Value of Sentry DSN for the admin tool. | `string` | n/a | yes |
-| <a name="input_allowed_circleci_projects"></a> [allowed\_circleci\_projects](#input\_allowed\_circleci\_projects) | List of CircleCI projects that can assume the role. | `list(string)` | <pre>[<br>  "trade-tariff-platform-terraform-aws-accounts",<br>  "trade-tariff-platform-aws-terraform"<br>]</pre> | no |
 | <a name="input_backend_secret_key_base"></a> [backend\_secret\_key\_base](#input\_backend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the backend. | `string` | n/a | yes |
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
 | <a name="input_circleci_organisation_id"></a> [circleci\_organisation\_id](#input\_circleci\_organisation\_id) | The CircleCI organization ID for OIDC integration | `string` | n/a | yes |

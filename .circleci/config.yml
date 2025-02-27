@@ -92,6 +92,16 @@ jobs:
               cd environments/<< parameters.environment >>/extra-regions
               terragrunt run-all apply
             fi
+  debug-oidc:
+    machine:
+      image: ubuntu-2404:current
+    steps:
+      - checkout
+      - run:
+          name: Print OIDC Token
+          command: |
+            echo "OIDC Token:"
+            echo $CIRCLE_OIDC_TOKEN
 
 workflows:
   development:
@@ -123,7 +133,9 @@ workflows:
           <<: *only-main
           environment: development
           context: trade-tariff-terraform-aws-development
-
+  test-oidc:
+    jobs:
+      - debug-oidc
   staging:
     jobs:
       - terraform-fmt-validate:
