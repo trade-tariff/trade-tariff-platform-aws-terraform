@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-cli: circleci/aws-cli@5.2  # Add the AWS CLI orb
+  aws-cli: circleci/aws-cli@5.2.0  # Add the AWS CLI orb
 
 deploy-feature-branches: &ignore-main
   filters:
@@ -34,7 +34,8 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:  # Configure AWS credentials using OIDC
-          role_arn: $AWS_ROLE_ARN  # Role ARN for OIDC authentication
+          role_arn: $AWS_ROLE_ARN
+          region: $AWS_DEFAULT_REGION
       - run: terraform fmt
       - run: terragrunt hclfmt
       - run:
@@ -51,7 +52,8 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:  # Configure AWS credentials using OIDC
-          role_arn: $AWS_ROLE_ARN  # Role ARN for OIDC authentication
+          role_arn: $AWS_ROLE_ARN
+          region: $AWS_DEFAULT_REGION
       - run:
           name: Terraform Plan
           command: |
@@ -66,7 +68,8 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:  # Configure AWS credentials using OIDC
-          role_arn: $AWS_ROLE_ARN  # Role ARN for OIDC authentication
+          role_arn: $AWS_ROLE_ARN
+          region: $AWS_DEFAULT_REGION
       - run:
           name: Terraform apply base
           command: |
@@ -143,7 +146,8 @@ workflows:
           context: trade-tariff-terraform-aws-development
   test-oidc:
     jobs:
-      - debug-oidc
+      - debug-oidc:
+          environment: development
   staging:
     jobs:
       - terraform-fmt-validate:
