@@ -93,15 +93,23 @@ jobs:
               terragrunt run-all apply
             fi
   debug-oidc:
-    machine:
-      image: ubuntu-2404:current
+    executor: default
+    parameters:
+      environment:
+        type: string
     steps:
       - checkout
+      - aws-cli/setup:  # Configure AWS credentials using OIDC
+          role_arn: $AWS_ROLE_ARN  # Role ARN for OIDC authentication
       - run:
           name: Print OIDC Token
           command: |
             echo "OIDC Token:"
             echo $CIRCLE_OIDC_TOKEN
+      - run:
+          name: Verify AWS CLI Access
+          command: |
+            aws sts get-caller-identity
 
 workflows:
   development:
