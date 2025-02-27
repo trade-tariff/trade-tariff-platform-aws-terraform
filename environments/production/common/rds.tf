@@ -124,7 +124,7 @@ module "postgres_aurora" {
   encryption_at_rest = true
 
   # TODO: monitor capacity in production
-  min_capacity = 16
+  min_capacity = 2
   max_capacity = 64
 
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
