@@ -79,3 +79,9 @@ variable "kms_key_id" {
   type        = string
   default     = null
 }
+
+variable "deletion_protection" {
+  description = "Whether to enable deletion protection. Defaults to `true`."
+  type        = bool
+  default     = true
+}

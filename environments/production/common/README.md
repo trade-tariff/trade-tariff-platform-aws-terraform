@@ -26,6 +26,7 @@
 | <a name="module_acm_london"></a> [acm\_london](#module\_acm\_london) | ../../../modules/acm/ | n/a |
 | <a name="module_acm_origin"></a> [acm\_origin](#module\_acm\_origin) | ../../../modules/acm | n/a |
 | <a name="module_admin_bearer_token"></a> [admin\_bearer\_token](#module\_admin\_bearer\_token) | ../../../modules/secret/ | n/a |
+| <a name="module_admin_connection_string"></a> [admin\_connection\_string](#module\_admin\_connection\_string) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_oauth_id"></a> [admin\_oauth\_id](#module\_admin\_oauth\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_oauth_secret"></a> [admin\_oauth\_secret](#module\_admin\_oauth\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_secret_key_base"></a> [admin\_secret\_key\_base](#module\_admin\_secret\_key\_base) | ../../../modules/secret/ | n/a |
@@ -79,6 +80,7 @@
 | <a name="module_notify_slack"></a> [notify\_slack](#module\_notify\_slack) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/aws-notify-slack | aws/aws-notify-slack-v1.0.0 |
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch | aws/opensearch-v1.2.0 |
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
+| <a name="module_postgres_admin_aurora"></a> [postgres\_admin\_aurora](#module\_postgres\_admin\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
