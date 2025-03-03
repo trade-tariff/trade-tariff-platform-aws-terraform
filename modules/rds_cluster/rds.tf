@@ -8,8 +8,11 @@ resource "aws_rds_cluster" "this" {
   master_username = var.username
   master_password = random_password.master_password.result
 
-  database_name       = var.database_name
-  skip_final_snapshot = true
+  database_name = var.database_name
+
+  deletion_protection       = var.deletion_protection
+  skip_final_snapshot       = false
+  final_snapshot_identifier = "${var.cluster_name}-final"
 
   storage_encrypted = var.encryption_at_rest
   kms_key_id        = try(aws_kms_key.this[0].arn, var.kms_key_id)
