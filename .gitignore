@@ -50,3 +50,6 @@ tmtags
 **/.terragrunt-cache
 skip-deprovision
 **/_pycache__
+
+.direnv
+.envrc

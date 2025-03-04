@@ -13,8 +13,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.3.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | >= 3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.67.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
 
 ## Modules
 
@@ -36,7 +36,7 @@ No modules.
 | <a name="input_auto_minor_version_upgrade"></a> [auto\_minor\_version\_upgrade](#input\_auto\_minor\_version\_upgrade) | Automatic upgrade of minor versions. | `bool` | `true` | no |
 | <a name="input_automatic_failover_enabled"></a> [automatic\_failover\_enabled](#input\_automatic\_failover\_enabled) | Redis automatic failover configuration. | `bool` | `true` | no |
 | <a name="input_description"></a> [description](#input\_description) | Redis cluster description | `string` | n/a | yes |
-| <a name="input_log_delivery_configuration"></a> [log\_delivery\_configuration](#input\_log\_delivery\_configuration) | Log delivery configuration for redis cluster. | <pre>list(object({<br>    destination_type = string<br>    destination      = string<br>    log_format       = string<br>    log_type         = string<br>  }))</pre> | `[]` | no |
+| <a name="input_log_delivery_configuration"></a> [log\_delivery\_configuration](#input\_log\_delivery\_configuration) | Log delivery configuration for redis cluster. | <pre>list(object({<br/>    destination_type = string<br/>    destination      = string<br/>    log_format       = string<br/>    log_type         = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | The weekly time range for maintenance periods on the cluster. Format: `ddd:hh22:mi-ddd:hh23:mi` (UTC). Minimum period must be 60 minutes. For example, `sun:05:00-sun:06:00`. | `string` | n/a | yes |
 | <a name="input_multi_az_enabled"></a> [multi\_az\_enabled](#input\_multi\_az\_enabled) | Redis multi-az configuration. | `bool` | `true` | no |
 | <a name="input_node_type"></a> [node\_type](#input\_node\_type) | Instance type, i.e. `cache.t3.small`. | `string` | n/a | yes |

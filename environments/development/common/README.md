@@ -36,8 +36,8 @@ No outputs.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.76.0 |
-| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.76.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.89.0 |
+| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.89.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
@@ -110,7 +110,6 @@ No outputs.
 | <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
 | <a name="module_preview_cdn"></a> [preview\_cdn](#module\_preview\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
-| <a name="module_read_only_postgres_connection_string"></a> [read\_only\_postgres\_connection\_string](#module\_read\_only\_postgres\_connection\_string) | ../../../modules/secret/ | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_rw_aurora_connection_string"></a> [rw\_aurora\_connection\_string](#module\_rw\_aurora\_connection\_string) | ../../../modules/secret/ | n/a |
