@@ -12,4 +12,6 @@ remote_state {
     region  = "eu-west-2"
     encrypt = true
   }
+
+  disable_init = tobool(get_env("DISABLE_INIT", false))
 }

@@ -24,10 +24,11 @@
         '';
 
         init = pkgs.writeScriptBin "init" ''
-          find environments -type d -mindepth 2 -maxdepth 2 -exec sh -c 'echo "###### START {} ######"; cd "{}" && terraform init -backend=false -reconfigure || echo "ERROR in {}: Initialization failed"; echo "###### END {} ######"' \;
+          export DISABLE_INIT=true
+          terragrunt run-all init
         '';
 
-        upgrade-providers = pkgs.writeScriptBin "upgrade-providers" ''
+        update-providers = pkgs.writeScriptBin "upgrade-providers" ''
           find environments -type d -mindepth 2 -maxdepth 2 -exec sh -c 'echo "###### START {} ######"; cd "{}" && terraform init -backend=false -reconfigure -upgrade || echo "ERROR in {}: Initialization failed"; echo "###### END {} ######"' \;
         '';
       in
@@ -42,6 +43,7 @@
             trufflehog       # For trufflehog secret scanning
             lint             # Custom lint script
             init             # Custom init script to get all the modules for validation
+            update-providers # Custom init script to get all the modules for validation
           ];
 
           shellHook = ''
