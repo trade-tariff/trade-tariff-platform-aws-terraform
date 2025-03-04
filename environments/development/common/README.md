@@ -50,6 +50,7 @@ No outputs.
 | <a name="module_acm_origin"></a> [acm\_origin](#module\_acm\_origin) | ../../../modules/acm | n/a |
 | <a name="module_acm_preview"></a> [acm\_preview](#module\_acm\_preview) | ../../../modules/acm | n/a |
 | <a name="module_admin_bearer_token"></a> [admin\_bearer\_token](#module\_admin\_bearer\_token) | ../../../modules/secret/ | n/a |
+| <a name="module_admin_connection_string"></a> [admin\_connection\_string](#module\_admin\_connection\_string) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_oauth_id"></a> [admin\_oauth\_id](#module\_admin\_oauth\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_oauth_secret"></a> [admin\_oauth\_secret](#module\_admin\_oauth\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_secret_key_base"></a> [admin\_secret\_key\_base](#module\_admin\_secret\_key\_base) | ../../../modules/secret/ | n/a |
@@ -105,12 +106,14 @@ No outputs.
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch | aws/opensearch-v1.2.0 |
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../../modules/rds | n/a |
-| <a name="module_postgres_admin"></a> [postgres\_admin](#module\_postgres\_admin) | ../../../modules/rds | n/a |
+| <a name="module_postgres_admin_aurora"></a> [postgres\_admin\_aurora](#module\_postgres\_admin\_aurora) | ../../../modules/rds_cluster | n/a |
+| <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
 | <a name="module_preview_cdn"></a> [preview\_cdn](#module\_preview\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_read_only_postgres_connection_string"></a> [read\_only\_postgres\_connection\_string](#module\_read\_only\_postgres\_connection\_string) | ../../../modules/secret/ | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
+| <a name="module_rw_aurora_connection_string"></a> [rw\_aurora\_connection\_string](#module\_rw\_aurora\_connection\_string) | ../../../modules/secret/ | n/a |
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../../modules/ses | n/a |
 | <a name="module_signon_derivation_key"></a> [signon\_derivation\_key](#module\_signon\_derivation\_key) | ../../../modules/secret/ | n/a |
@@ -239,7 +242,7 @@ No outputs.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br>  "development": "844815912454",<br>  "production": "382373577178",<br>  "staging": "451934005581"<br>}</pre> | no |
+| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br/>  "development": "844815912454",<br/>  "production": "382373577178",<br/>  "staging": "451934005581"<br/>}</pre> | no |
 | <a name="input_admin_bearer_token"></a> [admin\_bearer\_token](#input\_admin\_bearer\_token) | Value of BEARER\_TOKEN for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_id"></a> [admin\_oauth\_id](#input\_admin\_oauth\_id) | Value of TARIFF\_ADMIN\_OAUTH\_ID for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_secret"></a> [admin\_oauth\_secret](#input\_admin\_oauth\_secret) | Value of TARIFF\_ADMIN\_OAUTH\_SECRET for the admin tool. | `string` | n/a | yes |
