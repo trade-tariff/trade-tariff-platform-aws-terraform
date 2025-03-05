@@ -188,7 +188,7 @@ resource "aws_iam_role" "terraform_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "terraform_admin_access" {
+resource "aws_iam_role_policy_attachment" "ci_terraform_policy_attachment" {
   role       = aws_iam_role.terraform_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  policy_arn = aws_iam_policy.ci_terraform_policy.arn
 }
