@@ -177,11 +177,6 @@ resource "aws_iam_role" "terraform_role" {
           StringEquals = {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
           }
-          # StringLike = {
-          #   "${aws_iam_openid_connect_provider.circleci_oidc.url}:sub" = [
-          #     for project_id in var.allowed_circleci_projects : "org/${var.circleci_organisation_id}/project/${project_id/user/*}"
-          #   ]
-          # }
         }
       }
     ]

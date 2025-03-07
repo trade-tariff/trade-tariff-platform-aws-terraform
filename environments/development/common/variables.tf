@@ -43,12 +43,6 @@ variable "thumbprint_list" {
   default     = ["9e99a48a9960b14926bb7f3b02e22da2b0ab7280"]
 }
 
-# variable "allowed_circleci_projects" {
-#   type        = list(string)
-#   description = "List of CircleCI projects that can assume the role."
-#   default     = ["trade-tariff-platform-terraform-aws-accounts", "trade-tariff-platform-aws-terraform"]
-# }
-
 #
 # super secret stuff
 #
