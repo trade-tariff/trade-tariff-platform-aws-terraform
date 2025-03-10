@@ -21,6 +21,4 @@ locals {
   create_kms_key = (
     var.encryption_at_rest == true && var.kms_key_id == null ? 1 : 0
   )
-
-  kms_key = try(aws_kms_key.this[0].arn, var.kms_key_id)
 }
