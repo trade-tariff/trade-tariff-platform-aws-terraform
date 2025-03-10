@@ -15,6 +15,18 @@ resource "aws_iam_role" "reporting_ci_role" {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
           }
         }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          }
+        }
       }
     ]
   })
@@ -41,6 +53,18 @@ resource "aws_iam_role" "serverless_lambda_ci_role" {
           StringEquals = {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
 
+          }
+        }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
           }
         }
       }
@@ -70,6 +94,18 @@ resource "aws_iam_role" "appendix5a_ci_role" {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
           }
         }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          }
+        }
       }
     ]
   })
@@ -95,6 +131,18 @@ resource "aws_iam_role" "tech_docs_ci_role" {
         Condition = {
           StringEquals = {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
+          }
+        }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
           }
         }
       }
@@ -124,6 +172,18 @@ resource "aws_iam_role" "status_checks_ci_role" {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
           }
         }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          }
+        }
       }
     ]
   })
@@ -149,6 +209,18 @@ resource "aws_iam_role" "fpo_models_ci_role" {
         Condition = {
           StringEquals = {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
+          }
+        }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
           }
         }
       }
@@ -178,12 +250,24 @@ resource "aws_iam_role" "terraform_role" {
             "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
           }
         }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          }
+        }
       }
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ci_terraform_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "terraform_ci_policy_attachment" {
   role       = aws_iam_role.terraform_role.name
   policy_arn = aws_iam_policy.ci_terraform_policy.arn
 }
