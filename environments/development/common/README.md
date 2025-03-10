@@ -105,6 +105,7 @@ No outputs.
 | <a name="module_notify_slack"></a> [notify\_slack](#module\_notify\_slack) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/aws-notify-slack | aws/aws-notify-slack-v1.0.0 |
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch | aws/opensearch-v1.2.0 |
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
+| <a name="module_postgres"></a> [postgres](#module\_postgres) | ../../../modules/rds | n/a |
 | <a name="module_postgres_admin_aurora"></a> [postgres\_admin\_aurora](#module\_postgres\_admin\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
@@ -241,7 +242,7 @@ No outputs.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br/>  "development": "844815912454",<br/>  "production": "382373577178",<br/>  "staging": "451934005581"<br/>}</pre> | no |
+| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br>  "development": "844815912454",<br>  "production": "382373577178",<br>  "staging": "451934005581"<br>}</pre> | no |
 | <a name="input_admin_bearer_token"></a> [admin\_bearer\_token](#input\_admin\_bearer\_token) | Value of BEARER\_TOKEN for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_id"></a> [admin\_oauth\_id](#input\_admin\_oauth\_id) | Value of TARIFF\_ADMIN\_OAUTH\_ID for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_secret"></a> [admin\_oauth\_secret](#input\_admin\_oauth\_secret) | Value of TARIFF\_ADMIN\_OAUTH\_SECRET for the admin tool. | `string` | n/a | yes |
@@ -293,7 +294,7 @@ No outputs.
 | <a name="input_tariff_backend_xi_sync_host"></a> [tariff\_backend\_xi\_sync\_host](#input\_tariff\_backend\_xi\_sync\_host) | Value of Tariff Sync host. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_password"></a> [tariff\_backend\_xi\_sync\_password](#input\_tariff\_backend\_xi\_sync\_password) | Value of Tariff Sync password. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_username"></a> [tariff\_backend\_xi\_sync\_username](#input\_tariff\_backend\_xi\_sync\_username) | Value of Tariff Sync username. | `string` | n/a | yes |
-| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of thumbprints for the OIDC provider. | `list(string)` | <pre>[<br/>  "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"<br/>]</pre> | no |
+| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of thumbprints for the OIDC provider. | `list(string)` | <pre>[<br>  "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"<br>]</pre> | no |
 | <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. | `number` | `400` | no |
 
 ## Outputs

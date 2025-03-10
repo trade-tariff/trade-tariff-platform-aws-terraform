@@ -75,7 +75,7 @@ variable "encryption_at_rest" {
 }
 
 variable "kms_key_id" {
-  description = "KMS key ARN for encryption at rest, performance insights."
+  description = "KMS key ARN for encryption at rest."
   type        = string
   default     = null
 }

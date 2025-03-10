@@ -1,10 +1,9 @@
 resource "aws_rds_cluster" "this" {
   cluster_identifier = var.cluster_name
 
-  engine                      = var.engine
-  engine_mode                 = var.engine_mode
-  engine_version              = var.engine_version
-  allow_major_version_upgrade = true
+  engine         = var.engine
+  engine_mode    = var.engine_mode
+  engine_version = var.engine_version
 
   master_username = var.username
   master_password = random_password.master_password.result
@@ -14,10 +13,9 @@ resource "aws_rds_cluster" "this" {
   deletion_protection       = var.deletion_protection
   skip_final_snapshot       = false
   final_snapshot_identifier = "${var.cluster_name}-final"
-  delete_automated_backups  = false
 
   storage_encrypted = var.encryption_at_rest
-  kms_key_id        = local.kms_key
+  kms_key_id        = try(aws_kms_key.this[0].arn, var.kms_key_id)
 
   dynamic "serverlessv2_scaling_configuration" {
     for_each = var.engine_mode == "provisioned" ? [1] : []
@@ -32,10 +30,6 @@ resource "aws_rds_cluster" "this" {
 
   apply_immediately = var.apply_immediately
 
-  performance_insights_enabled    = true
-  performance_insights_kms_key_id = local.kms_key
-  # database_insights_mode          = "advanced"
-
   tags = var.tags
 }
 
@@ -45,6 +39,7 @@ resource "aws_rds_cluster_instance" "this" {
 
   cluster_identifier   = aws_rds_cluster.this.id
   engine               = aws_rds_cluster.this.engine
+  engine_version       = aws_rds_cluster.this.engine_version
   db_subnet_group_name = aws_db_subnet_group.rds_private_subnet.name
 
   instance_class = var.instance_class
@@ -70,10 +65,4 @@ resource "aws_kms_key" "this" {
   key_usage           = "ENCRYPT_DECRYPT"
   enable_key_rotation = true
   tags                = var.tags
-}
-
-resource "aws_kms_alias" "this" {
-  count         = local.create_kms_key
-  name          = "alias/${replace(var.cluster_name, "_", "-")}-key"
-  target_key_id = aws_kms_key.this[0].arn
 }
