@@ -20,10 +20,6 @@ module "mysql" {
 
   secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
 
-  depends_on = [
-    module.alb-security-group
-  ]
-
   tags = {
     Name       = "TradeTariffMySQL${title(var.environment)}"
     "RDS_Type" = "Instance"
@@ -36,7 +32,7 @@ module "postgres_commodi_tea" {
   environment    = var.environment
   name           = "PostgresCommodiTea"
   engine         = "postgres"
-  engine_version = "16.3"
+  engine_version = "16.4"
 
   deletion_protection = false
   multi_az            = false
