@@ -34,6 +34,8 @@ resource "aws_iam_policy" "ci_terraform_policy" {
           "s3:*",
           "sqs:*",
           "ses:*",
+          "secretsmanager:*",
+          "sservicediscovery:*",
           "sns:*",
           "ssm:*",
           "sts:*",
