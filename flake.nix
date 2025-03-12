@@ -44,6 +44,7 @@
             lint             # Custom lint script
             init             # Custom init script to get all the modules for validation
             update-providers # Custom init script to get all the modules for validation
+            circleci-cli     # For circleci-cli
           ];
 
           shellHook = ''
