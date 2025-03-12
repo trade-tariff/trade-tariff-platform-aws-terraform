@@ -35,6 +35,7 @@ jobs:
       - checkout
       - aws-cli/setup:
           role_arn: arn:aws:iam::<< parameters.environment >>:role/CircleCi_Terraform-Role
+          region: eu-west-2
       - run: terraform fmt
       - run: terragrunt hclfmt
       - run:
@@ -52,6 +53,7 @@ jobs:
       - checkout
       - aws-cli/setup:
           role_arn: arn:aws:iam::<< parameters.environment >>:role/CircleCi_Terraform-Role
+          region: eu-west-2
       - run:
           name: Terraform Plan
           command: |
@@ -67,6 +69,7 @@ jobs:
       - checkout
       - aws-cli/setup:
           role_arn: arn:aws:iam::<< parameters.environment >>:role/CircleCi_Terraform-Role
+          region: eu-west-2
       - run:
           name: Terraform apply base
           command: |
