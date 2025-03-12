@@ -34,7 +34,7 @@ variable "waf_rpm_limit" {
 variable "circleci_organisation_id" {
   type        = string
   description = "The CircleCI organization ID for OIDC integration"
-  sensitive   = true
+  default     = "da607531-93bb-4321-90ed-08710434ce1c"
 }
 
 variable "thumbprint_list" {

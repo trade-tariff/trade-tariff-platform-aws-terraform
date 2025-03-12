@@ -223,7 +223,7 @@
 | <a name="input_admin_sentry_dsn"></a> [admin\_sentry\_dsn](#input\_admin\_sentry\_dsn) | Value of Sentry DSN for the admin tool. | `string` | n/a | yes |
 | <a name="input_backend_secret_key_base"></a> [backend\_secret\_key\_base](#input\_backend\_secret\_key\_base) | Value of SECRET\_KEY\_BASE for the backend. | `string` | n/a | yes |
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
-| <a name="input_circleci_organisation_id"></a> [circleci\_organisation\_id](#input\_circleci\_organisation\_id) | The CircleCI organization ID for OIDC integration | `string` | n/a | yes |
+| <a name="input_circleci_organisation_id"></a> [circleci\_organisation\_id](#input\_circleci\_organisation\_id) | The CircleCI organization ID for OIDC integration | `string` | `"da607531-93bb-4321-90ed-08710434ce1c"` | no |
 | <a name="input_commodi_tea_cookie_signing_secret"></a> [commodi\_tea\_cookie\_signing\_secret](#input\_commodi\_tea\_cookie\_signing\_secret) | Value of COOKIE\_SIGNING\_SECRET for the Commodi tea. | `string` | n/a | yes |
 | <a name="input_commodi_tea_fpo_search_api_key"></a> [commodi\_tea\_fpo\_search\_api\_key](#input\_commodi\_tea\_fpo\_search\_api\_key) | Value of FPO\_SEARCH\_API\_KEY for the Commodi tea. | `string` | n/a | yes |
 | <a name="input_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#input\_dev\_hub\_backend\_encryption\_key) | Value of ENCRYPTION\_KEY for the dev hub backend. | `string` | n/a | yes |
