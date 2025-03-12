@@ -36,6 +36,7 @@ jobs:
       - aws-cli/setup:
           role_arn: arn:aws:iam::<< parameters.environment >>:role/CircleCi_Terraform-Role
           region: eu-west-2
+          profile_name: testAigul
       - run: terraform fmt
       - run: terragrunt hclfmt
       - run:
