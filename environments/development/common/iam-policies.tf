@@ -39,15 +39,8 @@ resource "aws_iam_policy" "ci_terraform_policy" {
           "sns:*",
           "ssm:*",
           "sts:*",
-          "secretsmanager:*",
-          "lambda:*",
-          "kms:*",
-          "cloudformation:*",
           "servicediscovery:*",
-          "ecs:*",
-          "ecr:*",
-          "autoscaling:*",
-          "cloudwatch:*"
+          "wafv2:*"
         ],
         Resource = "*",
         Condition = {
