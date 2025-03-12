@@ -294,7 +294,7 @@ No outputs.
 | <a name="input_tariff_backend_xi_sync_host"></a> [tariff\_backend\_xi\_sync\_host](#input\_tariff\_backend\_xi\_sync\_host) | Value of Tariff Sync host. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_password"></a> [tariff\_backend\_xi\_sync\_password](#input\_tariff\_backend\_xi\_sync\_password) | Value of Tariff Sync password. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_username"></a> [tariff\_backend\_xi\_sync\_username](#input\_tariff\_backend\_xi\_sync\_username) | Value of Tariff Sync username. | `string` | n/a | yes |
-| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of thumbprints for the OIDC provider. | `list(string)` | <pre>[<br>  "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"<br>]</pre> | no |
+| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of thumbprints for the OIDC provider. | `list(string)` | <pre>[<br>  "9e99a48a9960b14926bb7f3b02e22da2b0ab7280",<br>  "06B25927C42A721631C1EFD9431E648FA62E1E39"<br>]</pre> | no |
 | <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. | `number` | `400` | no |
 
 ## Outputs
