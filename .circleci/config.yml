@@ -34,7 +34,7 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:
-          role_arn: arn:aws:iam::<< parameters.environment >>:role/CircleCi_Terraform-Role
+          role_arn: arn:aws:iam::844815912454:oidc-provider/oidc.circleci.com/org/da607531-93bb-4321-90ed-08710434ce1c
           region: eu-west-2
           profile_name: testAigul
       - run: terraform fmt
