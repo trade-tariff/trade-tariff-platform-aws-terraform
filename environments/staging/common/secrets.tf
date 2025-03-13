@@ -1,3 +1,77 @@
+module "admin_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "developer-hub-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+module "commodi_tea_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "developer-hub-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+module "developer_hub_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "developer-hub-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+module "duty_calculator_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "duty-calculator-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+module "frontend_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "frontend-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+module "backend_uk_worker_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "backend-uk-worker-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+module "backend_xi_worker_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "backend-xi-worker-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+module "backend_uk_api_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "backend-uk-api-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+module "backend_xi_api_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "backend-xi-api-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
+######### OLD WORLD SECRETS START HERE ##########
+
 module "frontend_secret_key_base" {
   source          = "../../../modules/secret/"
   name            = "frontend-secret-key-base"
