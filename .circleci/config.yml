@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  aws-cli: circleci/aws-cli@5.2
+
 deploy-feature-branches: &ignore-main
   filters:
     branches:
@@ -14,9 +17,6 @@ executors:
   default:
     docker:
       - image: 382373577178.dkr.ecr.eu-west-2.amazonaws.com/tariff-terraform-production:latest
-        aws_auth:
-          aws_access_key_id: $AWS_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
     resource_class: small
     working_directory: "/tmp/terraform"
     environment:
@@ -33,6 +33,9 @@ jobs:
         type: string
     steps:
       - checkout
+      - aws-cli/setup:
+          role_arn: $AWS_ROLE_ARN
+          region: $AWS_DEFAULT_REGION
       - run: terraform fmt
       - run: terragrunt hclfmt
       - run:
@@ -48,6 +51,9 @@ jobs:
         type: string
     steps:
       - checkout
+      - aws-cli/setup:
+          role_arn: $AWS_ROLE_ARN
+          region: $AWS_DEFAULT_REGION
       - run:
           name: Terraform Plan
           command: |
@@ -61,6 +67,9 @@ jobs:
         type: string
     steps:
       - checkout
+      - aws-cli/setup:
+          role_arn: $AWS_ROLE_ARN
+          region: $AWS_DEFAULT_REGION
       - run:
           name: Terraform apply base
           command: |
