@@ -14,9 +14,9 @@ module "commodi_tea_configuration" {
   create_secret_version = false
 }
 
-module "developer_hub_configuration" {
+module "dev" {
   source                = "../../../modules/secret/"
-  name                  = "developer-hub-configuration"
+  name                  = "dev-hub-configuration"
   kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window       = 7
   create_secret_version = false
