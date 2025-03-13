@@ -117,7 +117,6 @@ No outputs.
 | <a name="module_postgres_admin_aurora"></a> [postgres\_admin\_aurora](#module\_postgres\_admin\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
-| <a name="module_postgres_developer_hub"></a> [postgres\_developer\_hub](#module\_postgres\_developer\_hub) | ../../../modules/rds | n/a |
 | <a name="module_preview_cdn"></a> [preview\_cdn](#module\_preview\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
