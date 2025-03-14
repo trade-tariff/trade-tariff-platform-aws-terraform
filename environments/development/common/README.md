@@ -36,8 +36,8 @@ No outputs.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.89.0 |
-| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.89.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.90.1 |
+| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.90.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
@@ -50,6 +50,7 @@ No outputs.
 | <a name="module_acm_origin"></a> [acm\_origin](#module\_acm\_origin) | ../../../modules/acm | n/a |
 | <a name="module_acm_preview"></a> [acm\_preview](#module\_acm\_preview) | ../../../modules/acm | n/a |
 | <a name="module_admin_bearer_token"></a> [admin\_bearer\_token](#module\_admin\_bearer\_token) | ../../../modules/secret/ | n/a |
+| <a name="module_admin_configuration"></a> [admin\_configuration](#module\_admin\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_connection_string"></a> [admin\_connection\_string](#module\_admin\_connection\_string) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_oauth_id"></a> [admin\_oauth\_id](#module\_admin\_oauth\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_admin_oauth_secret"></a> [admin\_oauth\_secret](#module\_admin\_oauth\_secret) | ../../../modules/secret/ | n/a |
@@ -66,14 +67,18 @@ No outputs.
 | <a name="module_backend_secret_key_base"></a> [backend\_secret\_key\_base](#module\_backend\_secret\_key\_base) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_sentry_dsn"></a> [backend\_sentry\_dsn](#module\_backend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_sync_email"></a> [backend\_sync\_email](#module\_backend\_sync\_email) | ../../../modules/secret/ | n/a |
+| <a name="module_backend_uk_api_configuration"></a> [backend\_uk\_api\_configuration](#module\_backend\_uk\_api\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_uk_sync_host"></a> [backend\_uk\_sync\_host](#module\_backend\_uk\_sync\_host) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_uk_sync_password"></a> [backend\_uk\_sync\_password](#module\_backend\_uk\_sync\_password) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_uk_sync_username"></a> [backend\_uk\_sync\_username](#module\_backend\_uk\_sync\_username) | ../../../modules/secret/ | n/a |
+| <a name="module_backend_uk_worker_configuration"></a> [backend\_uk\_worker\_configuration](#module\_backend\_uk\_worker\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xe_api_password"></a> [backend\_xe\_api\_password](#module\_backend\_xe\_api\_password) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xe_api_username"></a> [backend\_xe\_api\_username](#module\_backend\_xe\_api\_username) | ../../../modules/secret/ | n/a |
+| <a name="module_backend_xi_api_configuration"></a> [backend\_xi\_api\_configuration](#module\_backend\_xi\_api\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xi_sync_host"></a> [backend\_xi\_sync\_host](#module\_backend\_xi\_sync\_host) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xi_sync_password"></a> [backend\_xi\_sync\_password](#module\_backend\_xi\_sync\_password) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xi_sync_username"></a> [backend\_xi\_sync\_username](#module\_backend\_xi\_sync\_username) | ../../../modules/secret/ | n/a |
+| <a name="module_backend_xi_worker_configuration"></a> [backend\_xi\_worker\_configuration](#module\_backend\_xi\_worker\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_backups_cdn"></a> [backups\_cdn](#module\_backups\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../../modules/cloudwatch/ | n/a |
@@ -81,11 +86,13 @@ No outputs.
 | <a name="module_cognito_client_id"></a> [cognito\_client\_id](#module\_cognito\_client\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_cognito_client_secret"></a> [cognito\_client\_secret](#module\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_cognito"></a> [commodi\_tea\_cognito](#module\_commodi\_tea\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
+| <a name="module_commodi_tea_configuration"></a> [commodi\_tea\_configuration](#module\_commodi\_tea\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_cookie_signing_secret"></a> [commodi\_tea\_cookie\_signing\_secret](#module\_commodi\_tea\_cookie\_signing\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_fpo_search_api_key"></a> [commodi\_tea\_fpo\_search\_api\_key](#module\_commodi\_tea\_fpo\_search\_api\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#module\_dev\_hub\_backend\_encryption\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#module\_dev\_hub\_backend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
+| <a name="module_dev_hub_configuration"></a> [dev\_hub\_configuration](#module\_dev\_hub\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_application_support_email"></a> [dev\_hub\_frontend\_application\_support\_email](#module\_dev\_hub\_frontend\_application\_support\_email) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_cookie_signing_secret"></a> [dev\_hub\_frontend\_cookie\_signing\_secret](#module\_dev\_hub\_frontend\_cookie\_signing\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_csrf_signing_secret"></a> [dev\_hub\_frontend\_csrf\_signing\_secret](#module\_dev\_hub\_frontend\_csrf\_signing\_secret) | ../../../modules/secret/ | n/a |
@@ -94,10 +101,12 @@ No outputs.
 | <a name="module_dev_hub_frontend_scp_open_id_client_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_client\_secret](#module\_dev\_hub\_frontend\_scp\_open\_id\_client\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_scp_open_id_secret"></a> [dev\_hub\_frontend\_scp\_open\_id\_secret](#module\_dev\_hub\_frontend\_scp\_open\_id\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_sentry_dsn"></a> [dev\_hub\_frontend\_sentry\_dsn](#module\_dev\_hub\_frontend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
+| <a name="module_duty_calculator_configuration"></a> [duty\_calculator\_configuration](#module\_duty\_calculator\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../../modules/secret/ | n/a |
 | <a name="module_duty_calculator_sentry_dsn"></a> [duty\_calculator\_sentry\_dsn](#module\_duty\_calculator\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#module\_fpo\_search\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_fpo_search_training_pem"></a> [fpo\_search\_training\_pem](#module\_fpo\_search\_training\_pem) | ../../../modules/secret/ | n/a |
+| <a name="module_frontend_configuration"></a> [frontend\_configuration](#module\_frontend\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#module\_frontend\_secret\_key\_base) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_sentry_dsn"></a> [frontend\_sentry\_dsn](#module\_frontend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.5.0 |
@@ -242,7 +251,7 @@ No outputs.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br>  "development": "844815912454",<br>  "production": "382373577178",<br>  "staging": "451934005581"<br>}</pre> | no |
+| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br/>  "development": "844815912454",<br/>  "production": "382373577178",<br/>  "staging": "451934005581"<br/>}</pre> | no |
 | <a name="input_admin_bearer_token"></a> [admin\_bearer\_token](#input\_admin\_bearer\_token) | Value of BEARER\_TOKEN for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_id"></a> [admin\_oauth\_id](#input\_admin\_oauth\_id) | Value of TARIFF\_ADMIN\_OAUTH\_ID for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_secret"></a> [admin\_oauth\_secret](#input\_admin\_oauth\_secret) | Value of TARIFF\_ADMIN\_OAUTH\_SECRET for the admin tool. | `string` | n/a | yes |
@@ -294,7 +303,7 @@ No outputs.
 | <a name="input_tariff_backend_xi_sync_host"></a> [tariff\_backend\_xi\_sync\_host](#input\_tariff\_backend\_xi\_sync\_host) | Value of Tariff Sync host. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_password"></a> [tariff\_backend\_xi\_sync\_password](#input\_tariff\_backend\_xi\_sync\_password) | Value of Tariff Sync password. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_username"></a> [tariff\_backend\_xi\_sync\_username](#input\_tariff\_backend\_xi\_sync\_username) | Value of Tariff Sync username. | `string` | n/a | yes |
-| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of thumbprints for the OIDC provider. | `list(string)` | <pre>[<br>  "9e99a48a9960b14926bb7f3b02e22da2b0ab7280",<br>  "06B25927C42A721631C1EFD9431E648FA62E1E39"<br>]</pre> | no |
+| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of thumbprints for the OIDC provider. | `list(string)` | <pre>[<br/>  "9e99a48a9960b14926bb7f3b02e22da2b0ab7280",<br/>  "06B25927C42A721631C1EFD9431E648FA62E1E39"<br/>]</pre> | no |
 | <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. | `number` | `400` | no |
 
 ## Outputs
