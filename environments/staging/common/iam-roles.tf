@@ -263,7 +263,7 @@ resource "aws_iam_role" "fpo_models_ci_role" {
 
 resource "aws_iam_role_policy_attachment" "fpo_models_ci_policy_attachment" {
   role       = aws_iam_role.fpo_models_ci_role.name
-  policy_arn = aws_iam_policy.ci_fpo_models_secrets_policy.arn
+  policy_arn = aws_iam_policy.ci_fpo_models_policy.arn
 }
 
 resource "aws_iam_role" "terraform_role" {
