@@ -127,7 +127,7 @@ module "logs" {
 }
 
 module "cloudwatch-logs-exporter" {
-  source                        = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudwatch_log_exporter?ref=aws/cloudwatch_log_exporter-v1.0.0"
+  source                        = "../../../modules/cloudwatch_log_exporter"
   cloudwatch_logs_export_bucket = "trade-tariff-logs-${local.account_id}"
   environment                   = var.environment
 }

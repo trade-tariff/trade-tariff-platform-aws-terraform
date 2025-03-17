@@ -50,17 +50,17 @@
 | <a name="module_backend_xi_sync_password"></a> [backend\_xi\_sync\_password](#module\_backend\_xi\_sync\_password) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xi_sync_username"></a> [backend\_xi\_sync\_username](#module\_backend\_xi\_sync\_username) | ../../../modules/secret/ | n/a |
 | <a name="module_backups_cdn"></a> [backups\_cdn](#module\_backups\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
-| <a name="module_cdn"></a> [cdn](#module\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
+| <a name="module_cdn"></a> [cdn](#module\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../../modules/cloudwatch/ | n/a |
-| <a name="module_cloudwatch-logs-exporter"></a> [cloudwatch-logs-exporter](#module\_cloudwatch-logs-exporter) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudwatch_log_exporter | aws/cloudwatch_log_exporter-v1.0.0 |
+| <a name="module_cloudwatch-logs-exporter"></a> [cloudwatch-logs-exporter](#module\_cloudwatch-logs-exporter) | ../../../modules/cloudwatch_log_exporter | n/a |
 | <a name="module_cognito_client_id"></a> [cognito\_client\_id](#module\_cognito\_client\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_cognito_client_secret"></a> [cognito\_client\_secret](#module\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
-| <a name="module_commodi_tea_cognito"></a> [commodi\_tea\_cognito](#module\_commodi\_tea\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
+| <a name="module_commodi_tea_cognito"></a> [commodi\_tea\_cognito](#module\_commodi\_tea\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_commodi_tea_cookie_signing_secret"></a> [commodi\_tea\_cookie\_signing\_secret](#module\_commodi\_tea\_cookie\_signing\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_fpo_search_api_key"></a> [commodi\_tea\_fpo\_search\_api\_key](#module\_commodi\_tea\_fpo\_search\_api\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#module\_dev\_hub\_backend\_encryption\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#module\_dev\_hub\_backend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
-| <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito | aws/cognito-v1.1.1 |
+| <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_dev_hub_frontend_application_support_email"></a> [dev\_hub\_frontend\_application\_support\_email](#module\_dev\_hub\_frontend\_application\_support\_email) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_cookie_signing_secret"></a> [dev\_hub\_frontend\_cookie\_signing\_secret](#module\_dev\_hub\_frontend\_cookie\_signing\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_frontend_csrf_signing_secret"></a> [dev\_hub\_frontend\_csrf\_signing\_secret](#module\_dev\_hub\_frontend\_csrf\_signing\_secret) | ../../../modules/secret/ | n/a |
@@ -74,18 +74,18 @@
 | <a name="module_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#module\_fpo\_search\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#module\_frontend\_secret\_key\_base) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_sentry_dsn"></a> [frontend\_sentry\_dsn](#module\_frontend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
-| <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
+| <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
 | <a name="module_mysql"></a> [mysql](#module\_mysql) | ../../../modules/rds | n/a |
-| <a name="module_notify_slack"></a> [notify\_slack](#module\_notify\_slack) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/aws-notify-slack | aws/aws-notify-slack-v1.0.0 |
+| <a name="module_notify_slack"></a> [notify\_slack](#module\_notify\_slack) | ../../../modules/aws-notify-slack | n/a |
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/opensearch | aws/opensearch-v1.2.0 |
-| <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
+| <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
 | <a name="module_postgres_admin_aurora"></a> [postgres\_admin\_aurora](#module\_postgres\_admin\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_rw_aurora_connection_string"></a> [rw\_aurora\_connection\_string](#module\_rw\_aurora\_connection\_string) | ../../../modules/secret/ | n/a |
-| <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v3.14.0 |
+| <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../../modules/ses | n/a |
 | <a name="module_signon_derivation_key"></a> [signon\_derivation\_key](#module\_signon\_derivation\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_signon_derivation_salt"></a> [signon\_derivation\_salt](#module\_signon\_derivation\_salt) | ../../../modules/secret/ | n/a |
@@ -100,7 +100,7 @@
 | <a name="module_tea_cognito_client_secret"></a> [tea\_cognito\_client\_secret](#module\_tea\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_tea_cognito_secret"></a> [tea\_cognito\_secret](#module\_tea\_cognito\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_tech_docs_cdn"></a> [tech\_docs\_cdn](#module\_tech\_docs\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
-| <a name="module_waf"></a> [waf](#module\_waf) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/waf | aws/waf-v1.2.4 |
+| <a name="module_waf"></a> [waf](#module\_waf) | ../../../modules/waf | n/a |
 
 ## Resources
 

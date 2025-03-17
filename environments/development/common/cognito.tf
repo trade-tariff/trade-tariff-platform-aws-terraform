@@ -1,5 +1,5 @@
 module "dev_hub_cognito" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito?ref=aws/cognito-v1.1.1"
+  source = "../../../modules/cognito"
 
   pool_name              = "fpo-user-pool"
   domain                 = "auth.${var.domain_name}"
@@ -57,7 +57,7 @@ module "cognito_client_secret" {
 }
 
 module "commodi_tea_cognito" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cognito?ref=aws/cognito-v1.1.1"
+  source = "../../../modules/cognito"
 
   pool_name              = "commodi-tea-user-pool"
   domain                 = "auth.tea.${var.domain_name}"

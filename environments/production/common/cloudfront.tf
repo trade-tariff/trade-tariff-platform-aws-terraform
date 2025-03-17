@@ -1,5 +1,5 @@
 module "cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
+  source = "../../../modules/cloudfront"
 
   aliases = [
     var.domain_name,
