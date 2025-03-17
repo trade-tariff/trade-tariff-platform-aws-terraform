@@ -11,7 +11,7 @@ resource "aws_kms_alias" "opensearch_kms_alias" {
 }
 
 module "opensearch_packages_bucket" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v3.14.0"
+  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v4.6.0"
 
   bucket = "trade-tariff-opensearch-packages-${local.account_id}"
   acl    = "private"
@@ -35,7 +35,7 @@ module "opensearch_packages_bucket" {
 }
 
 module "search_configuration_bucket" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v3.14.0"
+  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v4.6.0"
 
   bucket = "trade-tariff-search-configuration-${local.account_id}"
   acl    = "private"

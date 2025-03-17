@@ -1,5 +1,5 @@
 module "notify_slack" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/aws-notify-slack?ref=aws/aws-notify-slack-v1.0.0"
+  source = "../../../modules/aws-notify-slack"
 
   enable_sns_topic_delivery_status_logs = true
 

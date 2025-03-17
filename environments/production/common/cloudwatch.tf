@@ -93,7 +93,7 @@ resource "aws_kms_key_policy" "logs_bucket_kms_key_policy" {
 }
 
 module "logs" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v3.14.0"
+  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v4.6.0"
 
   bucket = "trade-tariff-logs-${local.account_id}"
   acl    = "log-delivery-write"
@@ -127,7 +127,7 @@ module "logs" {
 }
 
 module "cloudwatch-logs-exporter" {
-  source                        = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudwatch_log_exporter?ref=aws/cloudwatch_log_exporter-v1.0.0"
+  source                        = "../../../modules/cloudwatch_log_exporter"
   cloudwatch_logs_export_bucket = "trade-tariff-logs-${local.account_id}"
   environment                   = var.environment
 }
