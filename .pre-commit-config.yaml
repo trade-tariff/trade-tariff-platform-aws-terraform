@@ -25,6 +25,6 @@ repos:
       - id: check-yaml
 
   - repo: https://github.com/trufflesecurity/trufflehog
-    rev: v3.88.16
+    rev: v3.88.17
     hooks:
       - id: trufflehog
