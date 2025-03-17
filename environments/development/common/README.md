@@ -36,8 +36,8 @@ No outputs.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.90.1 |
-| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.90.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.91.0 |
+| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.91.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
@@ -117,6 +117,7 @@ No outputs.
 | <a name="module_postgres_admin_aurora"></a> [postgres\_admin\_aurora](#module\_postgres\_admin\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
+| <a name="module_postgres_developer_hub"></a> [postgres\_developer\_hub](#module\_postgres\_developer\_hub) | ../../../modules/rds | n/a |
 | <a name="module_preview_cdn"></a> [preview\_cdn](#module\_preview\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront | aws/cloudfront-v1.4.2 |
