@@ -1,5 +1,5 @@
 resource "aws_iam_role" "reporting_ci_role" {
-  name = "CircleCI-Reporting-Role"
+  name = "GithubActions-Reporting-Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -43,7 +43,7 @@ resource "aws_iam_role_policy_attachment" "reporting_ci_policy_attachment" {
 }
 
 resource "aws_iam_role" "serverless_lambda_ci_role" {
-  name = "CircleCI-Serverless-Lambda-Role"
+  name = "GithubActions-Serverless-Lambda-Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -91,7 +91,7 @@ resource "aws_iam_role_policy_attachment" "serverless_lambda_ci_policy_attachmen
 }
 
 resource "aws_iam_role" "appendix5a_ci_role" {
-  name = "CircleCI-Appendix5a-Role"
+  name = "GithubActions-Appendix5a-Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -135,7 +135,7 @@ resource "aws_iam_role_policy_attachment" "appendix5a_ci_policy_attachment" {
 }
 
 resource "aws_iam_role" "tech_docs_ci_role" {
-  name = "CircleCI-Tech-Docs-Role"
+  name = "GithubActions-Tech-Docs-Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -179,7 +179,7 @@ resource "aws_iam_role_policy_attachment" "tech_docs_ci_policy_attachment" {
 }
 
 resource "aws_iam_role" "status_checks_ci_role" {
-  name = "CircleCI-Status-Checks-Role"
+  name = "GithubActions-Status-Checks-Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -223,7 +223,7 @@ resource "aws_iam_role_policy_attachment" "status_checks_ci_policy_attachment" {
 }
 
 resource "aws_iam_role" "fpo_models_ci_role" {
-  name = "CircleCI-FPO-Models-Role"
+  name = "GithubActions-FPO-Models-Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -327,7 +327,7 @@ resource "aws_iam_role_policy_attachment" "terraform_ci_policy_attachment" {
 }
 
 resource "aws_iam_role" "etf_ci_role" {
-  name = "CircleCI-ETF-Role"
+  name = "GithubActions-ETF-Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -374,9 +374,9 @@ resource "aws_iam_role_policy_attachment" "etf_ci_policy_attachment" {
 }
 
 resource "aws_iam_role" "ci_downloader_file_ci_role" {
-  name = "CircleCI-CDS-Downloader-File-Role"
+  name = "GithubActions-CDS-Downloader-File-Role"
 
-  description = "Role for CircleCI to download files from S3"
+  description = "Role for GithubActions to download files from S3"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -420,7 +420,7 @@ resource "aws_iam_role_policy_attachment" "ci_downloader_file_ci_policy_attachme
 }
 
 resource "aws_iam_role" "releases_user_role" {
-  name = "CircleCI-Releases-Role"
+  name = "GithubActions-Releases-Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
