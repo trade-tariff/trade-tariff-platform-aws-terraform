@@ -266,7 +266,7 @@ module "cdn" {
 
 
 module "api_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
+  source = "../../../modules/cloudfront"
 
   aliases             = ["api.${var.domain_name}"]
   create_alias        = true
@@ -319,7 +319,7 @@ module "api_cdn" {
 }
 
 module "reporting_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
+  source = "../../../modules/cloudfront"
 
   aliases         = ["reporting.${var.domain_name}"]
   create_alias    = true
@@ -371,7 +371,7 @@ module "reporting_cdn" {
 }
 
 module "backups_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
+  source = "../../../modules/cloudfront"
 
   aliases         = ["dumps.${var.domain_name}"]
   create_alias    = true
@@ -436,7 +436,7 @@ resource "aws_cloudfront_function" "basic_auth" {
 }
 
 module "tech_docs_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
+  source = "../../../modules/cloudfront"
 
   aliases             = ["docs.${var.domain_name}"]
   create_alias        = true
@@ -496,7 +496,7 @@ module "tech_docs_cdn" {
 }
 
 module "status_checks_cdn" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/cloudfront?ref=aws/cloudfront-v1.4.2"
+  source = "../../../modules/cloudfront"
 
   # TODO: This will end up becoming a redirect to the status page on a different
   # domain

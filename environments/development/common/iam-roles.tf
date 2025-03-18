@@ -266,6 +266,7 @@ resource "aws_iam_role_policy_attachment" "fpo_models_ci_policy_attachment" {
   policy_arn = aws_iam_policy.ci_fpo_models_secrets_policy.arn
 }
 
+# TODO: Delete this
 resource "aws_iam_role" "terraform_role" {
   name = "CircleCi_Terraform-Role"
 
@@ -297,13 +298,91 @@ resource "aws_iam_role" "terraform_role" {
           StringLike = {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
               "repo:trade-tariff/trade-tariff-platform-aws-terraform:*",
+              "repo:trade-tariff/trade-tariff-team:*",
+              "repo:trade-tariff/trade-tariff-platform-terraform-aws-accounts:*",
+            ]
+          }
+        }
+      }
+    ]
+  })
+}
+
+# TODO: Delete this
+resource "aws_iam_role_policy_attachment" "terraform_ci_policy_attachment" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.ci_terraform_policy.arn
+}
+
+resource "aws_iam_role" "ci_terraform_role" {
+  name = "GithubActions-Terraform-Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
+        }
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
+          }
+        }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          },
+          StringLike = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
+              "repo:trade-tariff/trade-tariff-platform-aws-terraform:*",
+              "repo:trade-tariff/trade-tariff-platform-terraform-aws-accounts:*",
+              "repo:trade-tariff/trade-tariff-team:*",
+            ]
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "github_terraform_ci_policy_attachment" {
+  role       = aws_iam_role.ci_terraform_role.name
+  policy_arn = aws_iam_policy.ci_terraform_policy.arn
+}
+
+resource "aws_iam_role" "ci_ecs_deployments_role" {
+  name = "GithubActions-ECS-Deployments-Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          },
+          StringLike = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
               "repo:trade-tariff/trade-tariff-duty-calculator:*",
               "repo:trade-tariff/trade-tariff-admin:*",
               "repo:trade-tariff/trade-tariff-frontend:*",
               "repo:trade-tariff/trade-tariff-backend:*",
               "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
-              "repo:trade-tariff/trade-tariff-team:*",
-              "repo:trade-tariff/trade-tariff-platform-terraform-aws-accounts:*", # Check if this repo should be included
               "repo:trade-tariff/trade-tariff-api-docs:*",
               "repo:trade-tariff/trade-tariff-commodi-tea:*",
               "repo:trade-tariff/trade-tariff-lambdas-database-backups:*",
@@ -318,7 +397,7 @@ resource "aws_iam_role" "terraform_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "terraform_ci_policy_attachment" {
-  role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.ci_terraform_policy.arn
+resource "aws_iam_role_policy_attachment" "ecs_deployments_ci_policy_attachment" {
+  role       = aws_iam_role.ci_ecs_deployments_role.name
+  policy_arn = aws_iam_policy.ci_ecs_deployment_policy.arn
 }
