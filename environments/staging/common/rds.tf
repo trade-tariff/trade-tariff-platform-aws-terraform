@@ -32,7 +32,7 @@ module "postgres_commodi_tea" {
   environment    = var.environment
   name           = "PostgresCommodiTea"
   engine         = "postgres"
-  engine_version = "16"
+  engine_version = "16.8"
 
   deletion_protection = false
   multi_az            = false
