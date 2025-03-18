@@ -112,6 +112,42 @@ module "commodi_tea_cognito" {
     "ALLOW_USER_SRP_AUTH",
     "ALLOW_REFRESH_TOKEN_AUTH",
   ]
+
+  invite_message_template = {
+    email_subject = "Your New 'Commodi-Tea' Account"
+    email_message = <<EOT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account Invitation</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f9f9f9;">
+    <table style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; padding: 20px;">
+        <tr>
+            <td>
+                <p style="color: #555555;">You have been invited to access <a href="https://tea.trade-tariff.service.gov.uk/" style="color: #1a73e8;">Commodi-Tea</a>. Please use the following details to log in and set up your account:</p>
+
+                <p style="color: #555555; margin-bottom: 4px;"><strong>Username:</strong> {username}</p>
+                <p style="color: #555555; margin-top: 4px; margin-bottom: 4px;"><strong>Temporary Password:</strong> {####}</p>
+
+                <p style="color: #555555; margin-top: 8px;">This invitation expires in 7 days.</p>
+
+                <p style="color: #555555; margin-top: 4px;">You will be asked to provide your name and set up a new password as part of the setup process. For security reasons, please do not share these details with anyone.</p>
+
+                <p style="color: #555555; margin-top: 16px;">If you require assistance, you may contact us at <a href="mailto:hmrc-trade-tariff-support-g@digital.hmrc.gov.uk" style="color: #1a73e8;">hmrc-trade-tariff-support-g@digital.hmrc.gov.uk</a>.</p>
+
+                <p style="color: #555555; margin-bottom: 4px;">Best regards,</p>
+                <p style="color: #555555; margin-top: 4px;">OTT Digital Support</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+EOT
+    sms_message   = "Your account has been created. Username: {username}, Temporary Password: {####}"
+  }
 }
 
 resource "aws_route53_record" "tea_cognito_custom_domain" {
