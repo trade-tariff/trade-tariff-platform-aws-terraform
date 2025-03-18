@@ -108,8 +108,8 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "s3:ListBucket"
         ],
         Resource = [
-          "arn:aws:s3:::terraform-state-development-844815912454",
-          "arn:aws:s3:::terraform-state-development-844815912454/*"
+          "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}",
+          "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}/*"
         ]
       },
       {
