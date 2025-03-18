@@ -411,54 +411,6 @@ resource "aws_iam_role_policy_attachment" "releases_user_policy_attachment" {
   policy_arn = aws_iam_policy.release_policy.arn
 }
 
-# TODO: Delete this
-resource "aws_iam_role" "terraform_role" {
-  name = "CircleCi_Terraform-Role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
-        }
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
-          }
-        }
-      },
-      {
-        Effect = "Allow",
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.github_oidc.arn
-        },
-        Action = "sts:AssumeRoleWithWebIdentity",
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
-          },
-          StringLike = {
-            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
-              "repo:trade-tariff/trade-tariff-platform-aws-terraform:*",
-              "repo:trade-tariff/trade-tariff-platform-terraform-aws-accounts:*",
-              "repo:trade-tariff/trade-tariff-team:*",
-            ]
-          }
-        }
-      }
-    ]
-  })
-}
-
-# TODO: Delete this
-resource "aws_iam_role_policy_attachment" "terraform_ci_policy_attachment" {
-  role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.ci_terraform_policy.arn
-}
-
 resource "aws_iam_role" "ci_terraform_role" {
   name = "GithubActions-Terraform-Role"
 
