@@ -164,9 +164,6 @@ resource "aws_cognito_user_pool" "this" {
 
   lifecycle {
     replace_triggered_by = [null_resource.schema_checksum]
-    ignore_changes = [
-      admin_create_user_config[0].invite_message_template
-    ]
   }
 
   tags = var.tags
