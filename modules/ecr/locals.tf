@@ -63,6 +63,11 @@ locals {
       production_images_to_keep  = 10
       development_images_to_keep = 30
     },
+    "dev-hub" = {
+      lifecycle_policy           = true
+      production_images_to_keep  = 10
+      development_images_to_keep = 30
+    }
     "fpo-developer-hub-backend" = {
       lifecycle_policy           = true
       production_images_to_keep  = 10

@@ -6,6 +6,7 @@ module "cdn" {
     "admin.${var.domain_name}",
     "beta.${var.domain_name}",
     "hub.${var.domain_name}",
+    "new-hub.${var.domain_name}",
     "signon.${var.domain_name}",
     "tea.${var.domain_name}",
   ]

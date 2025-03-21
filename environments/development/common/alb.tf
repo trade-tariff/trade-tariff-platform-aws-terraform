@@ -62,6 +62,12 @@ module "alb" {
       priority         = 21
     }
 
+    hub = {
+      hosts            = ["new-hub.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 22
+    }
+
     frontend = {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
