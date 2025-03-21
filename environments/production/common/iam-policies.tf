@@ -73,6 +73,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "elasticloadbalancing:DescribeTargetGroups",
           "iam:AttachRolePolicy",
           "iam:CreatePolicy",
+          "iam:CreateRole",
           "iam:DeletePolicy",
           "iam:DeletePolicyVersion",
           "iam:DetachRolePolicy",
