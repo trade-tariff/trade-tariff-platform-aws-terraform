@@ -4,6 +4,7 @@ locals {
     "admin",
     "backend",
     "database-backups",
+    "dev-hub",
     "duty-calculator",
     "fpo-developer-hub-backend",
     "fpo-developer-hub-frontend",
