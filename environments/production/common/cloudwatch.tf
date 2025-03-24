@@ -1,7 +1,7 @@
 module "cloudwatch" {
   source            = "../../../modules/cloudwatch/"
   name              = "platform-logs-${var.environment}"
-  retention_in_days = 30
+  retention_in_days = 1096
 }
 
 data "aws_iam_policy_document" "logs_bucket_policy" {
