@@ -114,16 +114,18 @@ module "logs" {
   attach_policy = true
   policy        = data.aws_iam_policy_document.logs_bucket_policy.json
 
-  lifecycle_rule = [
-    {
-      id      = "log"
-      enabled = true
+  lifecycle_rule = [{
+    id      = "log"
+    enabled = true
 
-      expiration = {
-        days = 30
-      }
+    transition = [{
+      storage_class = "DEEP_ARCHIVE"
+    }]
+
+    expiration = {
+      days = 1096
     }
-  ]
+  }]
 }
 
 module "cloudwatch-logs-exporter" {

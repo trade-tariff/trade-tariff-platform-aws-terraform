@@ -23,6 +23,7 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-merge-conflict
 
   - repo: https://github.com/trufflesecurity/trufflehog
     rev: v3.88.17
