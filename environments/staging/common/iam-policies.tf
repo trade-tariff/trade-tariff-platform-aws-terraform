@@ -43,7 +43,6 @@ resource "aws_iam_policy" "ci_terraform_policy" {
         Condition = {
           "StringEquals" : {
             "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
-
           }
         }
       }
@@ -74,6 +73,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "elasticloadbalancing:DescribeTargetGroups",
           "iam:AttachRolePolicy",
           "iam:CreatePolicy",
+          "iam:CreatePolicyVersion",
           "iam:CreateRole",
           "iam:DeletePolicy",
           "iam:DeletePolicyVersion",
