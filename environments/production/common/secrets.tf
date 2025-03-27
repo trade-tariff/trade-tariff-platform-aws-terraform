@@ -70,6 +70,14 @@ module "backend_xi_api_configuration" {
   create_secret_version = false
 }
 
+module "download_cds_files_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "download-cds-files-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
 ######### OLD WORLD SECRETS START HERE ##########
 
 module "frontend_secret_key_base" {

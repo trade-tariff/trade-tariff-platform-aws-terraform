@@ -399,7 +399,7 @@ resource "aws_iam_policy" "ci_cds_downloader_file_policy" {
           "secretsmanager:DescribeSecret",
           "secretsmanager:ListSecretVersionIds"
         ],
-        Resource = [module.download_cds_files_to_emails_secret.secret_arn]
+        Resource = [module.download_cds_files_configuration.secret_arn]
       }
     ]
   })
