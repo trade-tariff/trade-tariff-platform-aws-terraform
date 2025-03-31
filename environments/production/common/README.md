@@ -82,6 +82,7 @@
 | <a name="module_duty_calculator_secret_key_base"></a> [duty\_calculator\_secret\_key\_base](#module\_duty\_calculator\_secret\_key\_base) | ../../../modules/secret/ | n/a |
 | <a name="module_duty_calculator_sentry_dsn"></a> [duty\_calculator\_sentry\_dsn](#module\_duty\_calculator\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../../modules/ecr/ | n/a |
+| <a name="module_etf_configuration"></a> [etf\_configuration](#module\_etf\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#module\_fpo\_search\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_configuration"></a> [frontend\_configuration](#module\_frontend\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_secret_key_base"></a> [frontend\_secret\_key\_base](#module\_frontend\_secret\_key\_base) | ../../../modules/secret/ | n/a |
