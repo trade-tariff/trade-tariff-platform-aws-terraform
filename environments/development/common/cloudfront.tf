@@ -412,7 +412,7 @@ module "preview_cdn" {
 
   create_alias    = true
   route53_zone_id = data.aws_route53_zone.this.id
-  comment         = "${title(var.environment)} CDN"
+  comment         = "Preview CDN ${title(var.environment)}"
 
   enabled         = true
   is_ipv6_enabled = true
