@@ -298,7 +298,6 @@ resource "aws_iam_role" "ci_terraform_role" {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
               "repo:trade-tariff/trade-tariff-platform-aws-terraform:*",
               "repo:trade-tariff/trade-tariff-platform-terraform-aws-accounts:*",
-              "repo:trade-tariff/trade-tariff-team:*",
             ]
           }
         }
