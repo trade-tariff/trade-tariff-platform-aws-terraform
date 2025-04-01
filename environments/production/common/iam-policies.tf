@@ -140,3 +140,39 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ci_terraform_teams_policy" {
+  name        = "ci-terraform-teams-policy"
+  description = "Policy for Terraform to store state as part of the teams repo run"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:*",
+          "sts:AssumeRoleWithWebIdentity",
+        ],
+        Resource = "*",
+        Condition = {
+          "StringEquals" : {
+            "aws:RequestedRegion" : ["eu-west-2"]
+          }
+        }
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket"
+        ],
+        Resource = [
+          "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}",
+          "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}/*"
+        ]
+      },
+    ]
+  })
+}
