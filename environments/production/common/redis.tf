@@ -3,7 +3,6 @@ locals {
     "frontend",
     "backend-uk",
     "backend-xi",
-    "signon"
   ])
 }
 
