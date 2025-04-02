@@ -5,6 +5,5 @@ locals {
     "backend",
     "duty-calculator",
     "frontend",
-    "signon"
   ]
 }

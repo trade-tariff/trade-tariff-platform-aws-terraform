@@ -12,7 +12,6 @@ locals {
     "fpo-developer-hub-frontend",
     "fpo-search",
     "frontend",
-    "signon",
     "tea"
   ]
 

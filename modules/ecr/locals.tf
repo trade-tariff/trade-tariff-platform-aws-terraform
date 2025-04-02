@@ -4,7 +4,7 @@ locals {
   # Untagged images are considered "development" images but this is not always the
   # case since some applications don't cut a release tag to identify a
   # deployment as released to production (e.g. for different classes of lambda or applications owned
-  # by a different upstream - think signon).
+  # by a different upstream).
   #
   # The main case, though, is that we keep 5 production images and 30
   # development images (with the production image prioritised higher and
@@ -82,12 +82,6 @@ locals {
       lifecycle_policy           = true
       production_images_to_keep  = 10
       development_images_to_keep = 30
-    },
-    # Special snowflake cases
-    "signon" = {
-      lifecycle_policy           = true
-      production_images_to_keep  = 5
-      development_images_to_keep = 5
     },
     "terraform" = {
       lifecycle_policy           = true

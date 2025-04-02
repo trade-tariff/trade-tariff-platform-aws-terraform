@@ -18,12 +18,6 @@ module "alb" {
       priority         = 1
     }
 
-    signon = {
-      hosts            = ["signon.*"]
-      healthcheck_path = "/healthcheck/live"
-      priority         = 2
-    }
-
     hub_backend = {
       hosts            = ["hub.*"]
       paths            = ["/api/healthcheck"]
@@ -90,12 +84,6 @@ module "alb_preview" {
   }
 
   services = {
-    signon_preview = {
-      hosts            = ["signon.*"]
-      healthcheck_path = "/healthcheck/live"
-      priority         = 20
-    }
-
     hub_backend_preview = {
       hosts            = ["hub.*"]
       paths            = ["/api/healthcheck"]

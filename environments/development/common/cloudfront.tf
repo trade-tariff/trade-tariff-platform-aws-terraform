@@ -7,7 +7,6 @@ module "cdn" {
     "beta.${var.domain_name}",
     "hub.${var.domain_name}",
     "new-hub.${var.domain_name}",
-    "signon.${var.domain_name}",
     "tea.${var.domain_name}",
   ]
 
@@ -404,9 +403,7 @@ module "preview_cdn" {
   aliases = [
     "preview.${var.domain_name}",
     "admin.preview.${var.domain_name}",
-    "beta.preview.${var.domain_name}",
     "hub.preview.${var.domain_name}",
-    "signon.preview.${var.domain_name}",
     "tea.preview.${var.domain_name}",
   ]
 
