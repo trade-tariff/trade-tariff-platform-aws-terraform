@@ -272,54 +272,6 @@ module "backend_xe_api_password" {
   secret_string   = var.tariff_backend_xe_api_password
 }
 
-module "signon_secret_key_base" {
-  source          = "../../../modules/secret/"
-  name            = "signon-secret-key-base"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_secret_key_base
-}
-
-module "signon_devise_pepper" {
-  source          = "../../../modules/secret/"
-  name            = "signon-devise-pepper"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_devise_pepper
-}
-
-module "signon_devise_secret_key" {
-  source          = "../../../modules/secret/"
-  name            = "signon-devise-secret-key"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_devise_secret_key
-}
-
-module "signon_govuk_notify_api_key" {
-  source          = "../../../modules/secret/"
-  name            = "signon-govuk-notify-api-key"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_govuk_notify_api_key
-}
-
-module "signon_derivation_salt" {
-  source          = "../../../modules/secret/"
-  name            = "signon-derivation-salt"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_derivation_salt
-}
-
-module "signon_derivation_key" {
-  source          = "../../../modules/secret/"
-  name            = "signon-derivation-key"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.signon_derivation_key
-}
-
 module "dev_hub_backend_encryption_key" {
   source          = "../../../modules/secret/"
   name            = "dev-hub-backend-encryption-key"

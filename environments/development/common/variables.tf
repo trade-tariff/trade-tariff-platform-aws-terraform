@@ -95,12 +95,6 @@ variable "admin_sentry_dsn" {
   sensitive   = true
 }
 
-variable "signon_secret_key_base" {
-  description = "Value of SECRET_KEY_BASE for the signon app."
-  type        = string
-  sensitive   = true
-}
-
 variable "tariff_backend_sentry_dsn" {
   description = "Value of Backend Sentry DSN."
   type        = string
@@ -199,36 +193,6 @@ variable "tariff_backend_xe_api_username" {
 
 variable "tariff_backend_xe_api_password" {
   description = "Value of XE_API_PASSWORD for the tariff backend."
-  type        = string
-  sensitive   = true
-}
-
-variable "signon_devise_pepper" {
-  description = "Value of DEVISE_PEPPER for the signon app."
-  type        = string
-  sensitive   = true
-}
-
-variable "signon_devise_secret_key" {
-  description = "Value of DEVISE_SECRET_KEY for the signon app."
-  type        = string
-  sensitive   = true
-}
-
-variable "signon_govuk_notify_api_key" {
-  description = "Value of GOVUK_NOTIFY_API_KEY for the signon app."
-  type        = string
-  sensitive   = true
-}
-
-variable "signon_derivation_salt" {
-  description = "Value of ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT for the signon app."
-  type        = string
-  sensitive   = true
-}
-
-variable "signon_derivation_key" {
-  description = "Value of ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY for the signon app."
   type        = string
   sensitive   = true
 }
