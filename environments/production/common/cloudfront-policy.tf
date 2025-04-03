@@ -10,8 +10,8 @@ resource "random_password" "origin_header" {
 
 resource "aws_cloudfront_cache_policy" "cache_api" {
   name        = "cache-apiv2"
-  default_ttl = 1800
-  max_ttl     = 1800
+  default_ttl = 86400
+  max_ttl     = 86400
   min_ttl     = 1
 
   parameters_in_cache_key_and_forwarded_to_origin {
