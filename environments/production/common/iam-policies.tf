@@ -176,3 +176,50 @@ resource "aws_iam_policy" "ci_terraform_teams_policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ci_api_docs_policy" {
+  name        = "ci-api-docs-policy"
+  description = "Policy for API docs deployments"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:*",
+          "sts:AssumeRoleWithWebIdentity",
+        ],
+        Resource = "*",
+        Condition = {
+          "StringEquals" : {
+            "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
+          }
+        }
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket",
+          "s3:DeleteObject"
+        ],
+        Resource = [
+          "arn:aws:s3:::trade-tariff-api-docs-${local.account_id}",
+          "arn:aws:s3:::trade-tariff-api-docs-${local.account_id}/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "cloudfront:ListDistributions",
+          "cloudfront:CreateInvalidation",
+        ],
+        Resource = [
+          "*"
+        ]
+      }
+    ]
+  })
+}
