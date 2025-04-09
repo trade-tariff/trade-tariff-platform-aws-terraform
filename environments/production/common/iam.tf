@@ -623,7 +623,10 @@ data "aws_iam_policy_document" "fpo_model_access" {
         "arn:aws:iam::451934005581:role/fpo-model-garbage-collection-staging-eu-west-2-lambdaRole",
         "arn:aws:iam::451934005581:user/fpo-models-ci",
         "arn:aws:iam::382373577178:role/fpo-model-garbage-collection-production-eu-west-2-lambdaRole",
-        "arn:aws:iam::382373577178:user/fpo-models-ci"
+        "arn:aws:iam::382373577178:user/fpo-models-ci",
+        "arn:aws:iam::844815912454:role/GithubActions-FPO-Models-Role",
+        "arn:aws:iam::451934005581:role/GithubActions-FPO-Models-Role",
+        "arn:aws:iam::382373577178:role/GithubActions-FPO-Models-Role"
       ]
     }
   }
