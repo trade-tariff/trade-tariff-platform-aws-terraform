@@ -4,7 +4,6 @@ module "cdn" {
   aliases = [
     var.domain_name,
     "admin.${var.domain_name}",
-    "beta.${var.domain_name}",
     "hub.${var.domain_name}",
     "new-hub.${var.domain_name}",
     "tea.${var.domain_name}",
@@ -26,7 +25,7 @@ module "cdn" {
   }
 
   origin = {
-    frontend = {
+    alb = {
       domain_name = local.origin_domain_name
       custom_origin_config = {
         http_port              = 80
@@ -44,7 +43,7 @@ module "cdn" {
 
   cache_behavior = {
     default = {
-      target_origin_id       = "frontend"
+      target_origin_id       = "alb"
       viewer_protocol_policy = "redirect-to-https"
 
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
@@ -74,7 +73,7 @@ module "cdn" {
     }
 
     api = {
-      target_origin_id       = "frontend"
+      target_origin_id       = "alb"
       viewer_protocol_policy = "redirect-to-https"
 
       path_pattern = "/api/v2/*"
