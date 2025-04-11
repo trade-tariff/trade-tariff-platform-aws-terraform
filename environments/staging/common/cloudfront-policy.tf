@@ -60,7 +60,7 @@ resource "aws_cloudfront_cache_policy" "short_cache" {
   }
 }
 
-resource "aws_cloudfront_origin_request_policy" "this" {
+resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   name    = "Forward-All-QSA-${var.environment}"
   comment = "Forward all QSA (managed by Terraform)"
   cookies_config {

@@ -73,28 +73,28 @@ module "cdn" {
     }
 
     # Green lanes/SPIMM endpoints
-    xi_api_exchange_rates = {
+    xi_api_spimm = {
       target_origin_id           = "alb"
       path_pattern               = "/xi/api/v2/green_lanes/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
-    uk_api_exchange_rates = {
+    uk_api_spimm = {
       target_origin_id           = "alb"
       path_pattern               = "/uk/api/v2/green_lanes/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
-    default_api_exchange_rates = {
+    default_api_spimm = {
       target_origin_id           = "alb"
       path_pattern               = "/api/v2/green_lanes/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
 
@@ -104,7 +104,7 @@ module "cdn" {
       path_pattern               = "/xi/api/v2/exchange_rates/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     uk_api_exchange_rates = {
@@ -112,7 +112,7 @@ module "cdn" {
       path_pattern               = "/uk/api/v2/exchange_rates/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     default_api_exchange_rates = {
@@ -120,7 +120,7 @@ module "cdn" {
       path_pattern               = "/api/v2/exchange_rates/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
 
@@ -129,24 +129,24 @@ module "cdn" {
       target_origin_id           = "alb"
       path_pattern               = "/xi/api/v2/search_references"
       viewer_protocol_policy     = "redirect-to-https"
-      cache_policy_id            = aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     uk_api_search_references = {
       target_origin_id           = "alb"
       path_pattern               = "/uk/api/v2/search_references"
       viewer_protocol_policy     = "redirect-to-https"
-      cache_policy_id            = aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     default_api_search_references = {
       target_origin_id           = "alb"
       path_pattern               = "/api/v2/search_references"
       viewer_protocol_policy     = "redirect-to-https"
-      cache_policy_id            = aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
 
@@ -155,24 +155,24 @@ module "cdn" {
       target_origin_id           = "alb"
       path_pattern               = "/xi/api/v2/news*"
       viewer_protocol_policy     = "redirect-to-https"
-      cache_policy_id            = aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     uk_api_news = {
       target_origin_id           = "alb"
       path_pattern               = "/uk/api/v2/news*"
       viewer_protocol_policy     = "redirect-to-https"
-      cache_policy_id            = aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     default_api_news = {
       target_origin_id           = "alb"
       path_pattern               = "/api/v2/news*"
       viewer_protocol_policy     = "redirect-to-https"
-      cache_policy_id            = aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
 
@@ -182,7 +182,7 @@ module "cdn" {
       path_pattern               = "/xi/api/v2/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     uk_api = {
@@ -190,7 +190,7 @@ module "cdn" {
       path_pattern               = "/uk/api/v2/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     default_api = {
@@ -198,7 +198,7 @@ module "cdn" {
       path_pattern               = "/api/v2/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
 
@@ -208,7 +208,7 @@ module "cdn" {
       path_pattern               = "/xi/api/v1/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     uk_v1_api = {
@@ -216,7 +216,7 @@ module "cdn" {
       path_pattern               = "/uk/api/v1/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
     default_v1_api = {
@@ -224,7 +224,7 @@ module "cdn" {
       path_pattern               = "/api/v1/*"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
 
@@ -233,7 +233,7 @@ module "cdn" {
       target_origin_id           = "alb"
       viewer_protocol_policy     = "redirect-to-https"
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.this.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
   }

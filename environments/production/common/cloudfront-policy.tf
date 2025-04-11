@@ -60,7 +60,7 @@ resource "aws_cloudfront_cache_policy" "short_cache" {
   }
 }
 
-resource "aws_cloudfront_origin_request_policy" "this" {
+resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   name    = "Forward-All-QSA-${var.environment}"
   comment = "Forward all QSA (managed by Terraform)"
   cookies_config {
@@ -105,10 +105,10 @@ resource "aws_cloudfront_response_headers_policy" "this" {
     access_control_max_age_sec = 7200
 
     access_control_allow_headers {
-      items = ["Authorization"]
+      items = ["*"]
     }
 
-    access_control_allow_credentials = true
+    access_control_allow_credentials = false
 
     origin_override = false
   }
