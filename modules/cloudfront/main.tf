@@ -129,17 +129,19 @@ resource "aws_cloudfront_distribution" "this" {
       target_origin_id       = i.value["target_origin_id"]
       viewer_protocol_policy = i.value["viewer_protocol_policy"]
 
-      allowed_methods = lookup(i.value, "allowed_methods", ["GET", "HEAD", "OPTIONS"])
+      allowed_methods = lookup(i.value, "allowed_methods", ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"])
       cached_methods  = lookup(i.value, "cached_methods", ["GET", "HEAD"])
-      compress        = lookup(i.value, "compress", null)
+      compress        = lookup(i.value, "compress", true)
 
       field_level_encryption_id = lookup(i.value, "field_level_encryption_id", null)
       smooth_streaming          = lookup(i.value, "smooth_streaming", null)
       trusted_signers           = lookup(i.value, "trusted_signers", null)
 
-      min_ttl     = lookup(i.value, "min_ttl", null)
-      default_ttl = lookup(i.value, "default_ttl", null)
-      max_ttl     = lookup(i.value, "max_ttl", null)
+      # Thes are for legacy cache policies (where the policy is missing).
+      # TTLs are actually set in the cache policy.
+      min_ttl     = lookup(i.value, "min_ttl", 1)
+      default_ttl = lookup(i.value, "default_ttl", 1800)
+      max_ttl     = lookup(i.value, "max_ttl", 1800)
 
       cache_policy_id            = i.value["cache_policy_id"]
       origin_request_policy_id   = i.value["origin_request_policy_id"]
