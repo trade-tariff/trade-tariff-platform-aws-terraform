@@ -223,3 +223,200 @@ resource "aws_iam_policy" "ci_api_docs_policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ci_lambda_deployment_policy" {
+  name        = "ci-lambda-deployment-policy"
+  description = "Policy for GithubActions deployments of serverless applications"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}/*"
+        ]
+      },
+      {
+        Effect   = "Allow",
+        Action   = ["cloudformation:*"],
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow",
+        Action   = ["lambda:*"],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "iam:CreateRole",
+          "iam:CreateServiceLinkedRole",
+          "iam:DeleteRole",
+          "iam:DeleteRolePolicy",
+          "iam:GetRole",
+          "iam:GetRolePolicy",
+          "iam:PassRole",
+          "iam:PutRolePolicy",
+          "iam:TagRole",
+          "iam:AttachRolePolicy",
+          "iam:DetachRolePolicy",
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DeleteLogGroup",
+          "logs:TagResource",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "cloudwatch:PutMetricAlarm",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:DeleteAlarms"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow",
+        Action   = ["events:*"],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn,
+          aws_kms_alias.secretsmanager_kms_alias.target_key_arn,
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:ListSecrets",
+          "secretsmanager:ListSecretVersionIds",
+        ],
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ],
+        Resource = [
+          module.fpo_search_sentry_dsn.secret_arn,
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ssm:DescribeParameters",
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ],
+        Resource = [for v in aws_ssm_parameter.ecr_url : v.arn]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:DescribeImages",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:ListImages",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart",
+        ],
+        Resource = [
+          "arn:aws:ecr:*:*:repository/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "apigateway:*"
+        ],
+        Resource = [
+          "*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "acm:ListCertificates",
+        ],
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "route53:ListHostedZones",
+          "route53:GetHostedZone",
+          "route53:ListResourceRecordSets",
+        ],
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "route53:ChangeResourceRecordSets",
+        ],
+        Resource = [data.aws_route53_zone.this.arn]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeRouteTables"
+        ],
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeRouteTables"
+        ],
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:*",
+        ],
+        Resource = ["*"]
+        Condition = {
+          "StringEquals" : {
+            "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
+          }
+        }
+      },
+    ]
+  })
+}
