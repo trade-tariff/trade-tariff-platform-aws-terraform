@@ -51,18 +51,6 @@ resource "aws_iam_role" "serverless_lambda_ci_role" {
       {
         Effect = "Allow",
         Principal = {
-          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
-        },
-        Action = "sts:AssumeRoleWithWebIdentity",
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
-          }
-        }
-      },
-      {
-        Effect = "Allow",
-        Principal = {
           Federated = aws_iam_openid_connect_provider.github_oidc.arn
         },
         Action = "sts:AssumeRoleWithWebIdentity",
