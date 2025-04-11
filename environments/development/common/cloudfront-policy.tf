@@ -8,28 +8,59 @@ resource "random_password" "origin_header" {
   special = false
 }
 
-resource "aws_cloudfront_cache_policy" "cache_api" {
-  name        = "cache-apiv2"
-  default_ttl = 1800
-  max_ttl     = 1800
+resource "aws_cloudfront_cache_policy" "very_very_long_cache" {
+  name        = "very-very-long-cache"
+  default_ttl = 31536000 # 1 year
+  max_ttl     = 31536000 # 1 year
   min_ttl     = 1
 
   parameters_in_cache_key_and_forwarded_to_origin {
-    cookies_config {
-      cookie_behavior = "none"
-    }
-
-    headers_config {
-      header_behavior = "none"
-    }
-
-    query_strings_config {
-      query_string_behavior = "all"
-    }
+    cookies_config { cookie_behavior = "none" }
+    headers_config { header_behavior = "none" }
+    query_strings_config { query_string_behavior = "all" }
   }
 }
 
-resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
+resource "aws_cloudfront_cache_policy" "long_cache" {
+  name        = "long-cache"
+  default_ttl = 86400 # 1 day
+  max_ttl     = 86400 # 1 day
+  min_ttl     = 1
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config { cookie_behavior = "none" }
+    headers_config { header_behavior = "none" }
+    query_strings_config { query_string_behavior = "all" }
+  }
+}
+
+resource "aws_cloudfront_cache_policy" "medium_cache" {
+  name        = "medium-cache"
+  default_ttl = 7200 # 2 hours
+  max_ttl     = 7200 # 2 hours
+  min_ttl     = 1
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config { cookie_behavior = "none" }
+    headers_config { header_behavior = "none" }
+    query_strings_config { query_string_behavior = "all" }
+  }
+}
+
+resource "aws_cloudfront_cache_policy" "short_cache" {
+  name        = "short-cache"
+  default_ttl = 1800 # 30 minutes
+  max_ttl     = 1800 # 30 minutes
+  min_ttl     = 1
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config { cookie_behavior = "none" }
+    headers_config { header_behavior = "none" }
+    query_strings_config { query_string_behavior = "all" }
+  }
+}
+
+resource "aws_cloudfront_origin_request_policy" "this" {
   name    = "Forward-All-QSA-${var.environment}"
   comment = "Forward all QSA (managed by Terraform)"
   cookies_config {
