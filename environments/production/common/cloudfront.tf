@@ -4,7 +4,6 @@ module "cdn" {
   aliases = [
     var.domain_name,
     "admin.${var.domain_name}",
-    "beta.${var.domain_name}",
     "hub.${var.domain_name}",
     "new-hub.${var.domain_name}",
     "tea.${var.domain_name}",
@@ -27,7 +26,7 @@ module "cdn" {
   }
 
   origin = {
-    frontend = {
+    alb = {
       domain_name = local.origin_domain_name
       custom_origin_config = {
         http_port              = 80
@@ -43,215 +42,200 @@ module "cdn" {
     }
   }
 
+  # NOTE: More specific paths should be listed first, as they are evaluated in order
+  #       where the first matching path is used and the policy is applied.
   cache_behavior = {
-    default = {
-      target_origin_id       = "frontend"
-      viewer_protocol_policy = "redirect-to-https"
-
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 0
-      default_ttl = 0
-      max_ttl     = 0
-
-      compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-        "OPTIONS",
-        "PUT",
-        "POST",
-        "PATCH",
-        "DELETE"
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
-    }
-
-    api = {
-      target_origin_id       = "frontend"
-      viewer_protocol_policy = "redirect-to-https"
-
-      path_pattern = "/api/v2/*"
-
-      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 1
-      default_ttl = 1800
-      max_ttl     = 1800
-
-      compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-        "OPTIONS",
-        "PUT",
-        "POST",
-        "PATCH",
-        "DELETE"
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
-    }
-
-    xi_api = {
-      target_origin_id       = "frontend"
-      viewer_protocol_policy = "redirect-to-https"
-
-      path_pattern = "/xi/api/*"
-
-      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 1
-      default_ttl = 1800
-      max_ttl     = 1800
-
-      compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-        "OPTIONS",
-        "PUT",
-        "POST",
-        "PATCH",
-        "DELETE"
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
-    }
-
-    uk_api = {
-      target_origin_id       = "frontend"
-      viewer_protocol_policy = "redirect-to-https"
-
-      path_pattern = "/uk/api/*"
-
-      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 1
-      default_ttl = 1800
-      max_ttl     = 1800
-
-      compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-        "OPTIONS",
-        "PUT",
-        "POST",
-        "PATCH",
-        "DELETE"
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
-    }
-
+    # Static assets are fingerprinted and cached for a long time
     assets = {
-      target_origin_id       = "frontend"
-      viewer_protocol_policy = "redirect-to-https"
-
-      path_pattern = "/assets/*"
-
-      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      path_pattern               = "/assets/*"
+      cache_policy_id            = aws_cloudfront_cache_policy.very_very_long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 1
-      default_ttl = 86400
-      max_ttl     = 86400
-
-      compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-        "OPTIONS"
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
     }
 
     packs = {
-      target_origin_id       = "frontend"
-      viewer_protocol_policy = "redirect-to-https"
-
-      path_pattern = "/packs/*"
-
-      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      path_pattern               = "/packs/*"
+      cache_policy_id            = aws_cloudfront_cache_policy.very_very_long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 1
-      default_ttl = 86400
-      max_ttl     = 86400
-
-      compress = true
-
-      allowed_methods = [
-        "GET",
-        "HEAD",
-        "OPTIONS"
-      ]
-
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
     }
 
     images = {
-      target_origin_id       = "frontend"
-      viewer_protocol_policy = "redirect-to-https"
-
-      path_pattern = "/images/*"
-
-      cache_policy_id            = aws_cloudfront_cache_policy.cache_api.id
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      path_pattern               = "/images/*"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
 
-      min_ttl     = 1
-      default_ttl = 86400
-      max_ttl     = 86400
+    # Green lanes/SPIMM endpoints
+    xi_api_spimm = {
+      target_origin_id           = "alb"
+      path_pattern               = "/xi/api/v2/green_lanes/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    uk_api_spimm = {
+      target_origin_id           = "alb"
+      path_pattern               = "/uk/api/v2/green_lanes/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    default_api_spimm = {
+      target_origin_id           = "alb"
+      path_pattern               = "/api/v2/green_lanes/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
 
-      compress = true
+    # Exchange rate endpoints
+    xi_api_exchange_rates = {
+      target_origin_id           = "alb"
+      path_pattern               = "/xi/api/v2/exchange_rates/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    uk_api_exchange_rates = {
+      target_origin_id           = "alb"
+      path_pattern               = "/uk/api/v2/exchange_rates/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    default_api_exchange_rates = {
+      target_origin_id           = "alb"
+      path_pattern               = "/api/v2/exchange_rates/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
 
-      allowed_methods = [
-        "GET",
-        "HEAD",
-        "OPTIONS"
-      ]
+    # Search reference endpoints
+    xi_api_search_references = {
+      target_origin_id           = "alb"
+      path_pattern               = "/xi/api/v2/search_references"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    uk_api_search_references = {
+      target_origin_id           = "alb"
+      path_pattern               = "/uk/api/v2/search_references"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    default_api_search_references = {
+      target_origin_id           = "alb"
+      path_pattern               = "/api/v2/search_references"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
 
-      cached_methods = [
-        "GET",
-        "HEAD"
-      ]
+    # News endpoints
+    xi_api_news = {
+      target_origin_id           = "alb"
+      path_pattern               = "/xi/api/v2/news*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    uk_api_news = {
+      target_origin_id           = "alb"
+      path_pattern               = "/uk/api/v2/news*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    default_api_news = {
+      target_origin_id           = "alb"
+      path_pattern               = "/api/v2/news*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
+    # API v2 endpoints
+    xi_api = {
+      target_origin_id           = "alb"
+      path_pattern               = "/xi/api/v2/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    uk_api = {
+      target_origin_id           = "alb"
+      path_pattern               = "/uk/api/v2/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    default_api = {
+      target_origin_id           = "alb"
+      path_pattern               = "/api/v2/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
+    # API v1 endpoints TODO: this can be removed once we've migrated users to v2
+    xi_v1_api = {
+      target_origin_id           = "alb"
+      path_pattern               = "/xi/api/v1/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    uk_v1_api = {
+      target_origin_id           = "alb"
+      path_pattern               = "/uk/api/v1/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    default_v1_api = {
+      target_origin_id           = "alb"
+      path_pattern               = "/api/v1/*"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
+    # Fallback for all other endpoints
+    default = {
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
   }
 
@@ -300,12 +284,6 @@ module "api_cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 0
-      default_ttl = 0
-      max_ttl     = 0
-
-      compress = true
     },
   }
 
@@ -352,12 +330,6 @@ module "reporting_cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 0
-      default_ttl = 0
-      max_ttl     = 0
-
-      compress = true
     },
   }
 
@@ -404,12 +376,6 @@ module "backups_cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 0
-      default_ttl = 0
-      max_ttl     = 0
-
-      compress = true
 
       function_association = {
         "viewer-request" = {
@@ -470,19 +436,6 @@ module "tech_docs_cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 0
-      default_ttl = 0
-      max_ttl     = 0
-
-      compress = true
-
-      # TODO: When we're ready to enable basic auth for tech docs, uncomment this block
-      # function_association = {
-      #   "viewer-request" = {
-      #     function_arn = aws_cloudfront_function.basic_auth.arn
-      #   }
-      # }
     },
   }
 
@@ -530,12 +483,6 @@ module "status_checks_cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-
-      min_ttl     = 0
-      default_ttl = 0
-      max_ttl     = 0
-
-      compress = true
     },
   }
 
