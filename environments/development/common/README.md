@@ -117,7 +117,6 @@ No outputs.
 | <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
 | <a name="module_postgres_developer_hub"></a> [postgres\_developer\_hub](#module\_postgres\_developer\_hub) | ../../../modules/rds | n/a |
-| <a name="module_preview_cdn"></a> [preview\_cdn](#module\_preview\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_rw_aurora_connection_string"></a> [rw\_aurora\_connection\_string](#module\_rw\_aurora\_connection\_string) | ../../../modules/secret/ | n/a |
@@ -136,8 +135,11 @@ No outputs.
 
 | Name | Type |
 |------|------|
-| [aws_cloudfront_cache_policy.cache_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
+| [aws_cloudfront_cache_policy.long_cache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
+| [aws_cloudfront_cache_policy.medium_cache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
 | [aws_cloudfront_cache_policy.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
+| [aws_cloudfront_cache_policy.short_cache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
+| [aws_cloudfront_cache_policy.very_very_long_cache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
 | [aws_cloudfront_function.basic_auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_function) | resource |
 | [aws_cloudfront_origin_access_control.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
 | [aws_cloudfront_origin_request_policy.forward_all_qsa](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_request_policy) | resource |
