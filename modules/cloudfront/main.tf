@@ -204,8 +204,11 @@ resource "aws_cloudfront_distribution" "this" {
 }
 
 resource "aws_route53_record" "alias_record" {
-  count   = var.aliases != null && var.create_alias ? length(var.aliases) : 0
-  name    = element(var.aliases, count.index)
+  for_each = {
+    for alias in var.aliases : alias => alias
+    if var.create_alias
+  }
+  name    = each.key
   type    = "A"
   zone_id = var.route53_zone_id
 
@@ -217,8 +220,11 @@ resource "aws_route53_record" "alias_record" {
 }
 
 resource "aws_route53_record" "cname_record" {
-  count           = var.aliases != null && var.create_cname ? length(var.aliases) : 0
-  name            = element(var.aliases, count.index)
+  for_each = {
+    for alias in var.aliases : alias => alias
+    if var.create_cname
+  }
+  name            = each.key
   type            = "CNAME"
   ttl             = 60
   records         = [aws_cloudfront_distribution.this[0].domain_name]
