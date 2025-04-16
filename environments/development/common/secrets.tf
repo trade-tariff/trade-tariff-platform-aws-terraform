@@ -176,12 +176,28 @@ module "backend_differences_to_emails" {
   secret_string   = var.tariff_backend_differences_to_emails
 }
 
+module "backend_govuk_notify_api_key" {
+  source          = "../../../modules/secret/"
+  name            = "backend-govuk-notify-api-key"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_govuk_notify_api_key
+}
+
 module "backend_green_lanes_api_tokens" {
   source          = "../../../modules/secret/"
   name            = "backend-green-lanes-api-tokens"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_green_lanes_api_tokens
+}
+
+module "backend_override_notify_email" {
+  source          = "../../../modules/secret/"
+  name            = "backend-govuk-notify-api-key"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.tariff_backend_override_notify_email
 }
 
 module "backend_sync_email" {
