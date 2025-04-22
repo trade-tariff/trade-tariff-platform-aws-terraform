@@ -206,7 +206,8 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         ],
         Resource = [
           "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}",
-          "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}/*"
+          "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}/*",
+          "arn:aws:s3:::${aws_s3_bucket.this["database-backups"].id}"
         ]
       },
       {
