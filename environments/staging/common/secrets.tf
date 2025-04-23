@@ -194,7 +194,7 @@ module "backend_green_lanes_api_tokens" {
 
 module "backend_override_notify_email" {
   source          = "../../../modules/secret/"
-  name            = "backend-govuk-notify-api-key"
+  name            = "backend-override-notify-email"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
   secret_string   = var.tariff_backend_override_notify_email
