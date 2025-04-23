@@ -17,7 +17,7 @@
   outputs = { self, nixpkgs, flake-utils, nixpkgs-terraform }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        terraform = nixpkgs-terraform.packages.${system}."1.10";
+        terraform = nixpkgs-terraform.packages.${system}."1.11";
         pkgs = import nixpkgs { inherit system; };
 
         lint = pkgs.writeScriptBin "lint" ''
