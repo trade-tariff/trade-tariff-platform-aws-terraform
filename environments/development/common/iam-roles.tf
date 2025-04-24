@@ -214,6 +214,9 @@ resource "aws_iam_role_policy_attachment" "status_checks_ci_policy_attachment" {
 resource "aws_iam_role" "fpo_models_ci_role" {
   name = "GithubActions-FPO-Models-Role"
 
+  # NOTE: Models take a while to train so require a longer session duration
+  max_session_duration = 10800 # 3 hours
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
