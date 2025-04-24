@@ -83,6 +83,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "iam:GetRole",
           "iam:ListAttachedRolePolicies",
           "iam:ListGroups",
+          "iam:ListInstanceProfilesForRole",
           "iam:ListPolicyVersions",
           "iam:ListRolePolicies",
           "iam:ListRoles",
