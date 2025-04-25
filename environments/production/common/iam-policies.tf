@@ -248,6 +248,23 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         ]
       },
       {
+        Effect = "Allow",
+        Action = [
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+        ],
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["models"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["models"].id}/*"
+        ]
+      },
+      {
+        Effect   = "Allow",
+        Action   = ["kms:GenerateDataKey", "kms:Decrypt"],
+        Resource = [aws_kms_key.s3.arn]
+      },
+      {
         Effect   = "Allow",
         Action   = ["cloudformation:*"],
         Resource = "*"
@@ -413,11 +430,6 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "ecr:*",
         ],
         Resource = ["*"]
-        Condition = {
-          "StringEquals" : {
-            "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
-          }
-        }
       },
     ]
   })
