@@ -209,18 +209,7 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         Resource = [
           "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}",
           "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}/*",
-          "arn:aws:s3:::${aws_s3_bucket.this["database-backups"].id}"
-        ]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "s3:GetBucketLocation",
-          "s3:GetObject",
-          "s3:ListBucket",
-          "s3:ListObjectsV2",
-        ],
-        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["database-backups"].id}",
           "arn:aws:s3:::trade-tariff-models-382373577178",
           "arn:aws:s3:::trade-tariff-models-382373577178/*"
         ]
