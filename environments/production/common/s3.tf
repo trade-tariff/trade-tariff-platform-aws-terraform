@@ -48,6 +48,9 @@ data "aws_iam_policy_document" "s3_kms_key_policy" {
         ],
         [
           for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:role/GithubActions-FPO-Models-Role"
+        ],
+        [
+          for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:role/GithubActions-Serverless-Lambda-Role"
         ]
       )
     }
