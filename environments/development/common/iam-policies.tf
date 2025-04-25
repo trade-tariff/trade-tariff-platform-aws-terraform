@@ -77,6 +77,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "iam:CreateRole",
           "iam:DeletePolicy",
           "iam:DeletePolicyVersion",
+          "iam:DeleteRole",
           "iam:DetachRolePolicy",
           "iam:GetPolicy",
           "iam:GetPolicyVersion",
