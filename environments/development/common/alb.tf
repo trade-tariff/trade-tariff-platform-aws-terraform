@@ -18,20 +18,6 @@ module "alb" {
       priority         = 1
     }
 
-    # hub_backend = {
-    #   hosts            = ["hub.*"]
-    #   paths            = ["/api/healthcheck"]
-    #   healthcheck_path = "/api/healthcheckz"
-    #   priority         = 3
-    # }
-    #
-    # hub_frontend = {
-    #   hosts            = ["hub.*"]
-    #   paths            = ["/*"]
-    #   healthcheck_path = "/healthcheckz"
-    #   priority         = 4
-    # }
-
     tea = {
       hosts            = ["tea.*"]
       healthcheck_path = "/healthcheckz"
