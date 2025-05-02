@@ -83,6 +83,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "iam:GetRole",
           "iam:ListAttachedRolePolicies",
           "iam:ListGroups",
+          "iam:ListInstanceProfilesForRole",
           "iam:ListPolicyVersions",
           "iam:ListRolePolicies",
           "iam:ListRoles",
@@ -206,7 +207,21 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         ],
         Resource = [
           "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}",
-          "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}/*"
+          "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}/*",
+          "arn:aws:s3:::${aws_s3_bucket.this["database-backups"].id}",
+          "arn:aws:s3:::trade-tariff-models-382373577178",
+          "arn:aws:s3:::trade-tariff-models-382373577178/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          # Production S3 KMS key
+          "arn:aws:kms:eu-west-2:382373577178:key/7fc9fd19-e970-4877-9b56-3869a02c7b85"
         ]
       },
       {
@@ -375,11 +390,6 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "ecr:*",
         ],
         Resource = ["*"]
-        Condition = {
-          "StringEquals" : {
-            "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
-          }
-        }
       },
     ]
   })

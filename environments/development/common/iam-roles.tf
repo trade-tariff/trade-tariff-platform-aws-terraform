@@ -64,7 +64,8 @@ resource "aws_iam_role" "serverless_lambda_ci_role" {
               "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
               "repo:trade-tariff/trade-tariff-lambdas-fpo-model-garbage-collection:*",
               "repo:trade-tariff/trade-tariff-lambdas-electronic-tariff-file-rotations:*",
-              "repo:trade-tariff/trade-tariff-lambdas-uk-issues-mailer:*"
+              "repo:trade-tariff/trade-tariff-lambdas-uk-issues-mailer:*",
+              "repo:trade-tariff/trade-tariff-lambdas-database-backups:*"
             ]
           }
         }
@@ -212,6 +213,9 @@ resource "aws_iam_role_policy_attachment" "status_checks_ci_policy_attachment" {
 
 resource "aws_iam_role" "fpo_models_ci_role" {
   name = "GithubActions-FPO-Models-Role"
+
+  # NOTE: Models take a while to train so require a longer session duration
+  max_session_duration = 10800 # 3 hours
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -371,4 +375,36 @@ resource "aws_iam_role" "ci_api_docs_role" {
 resource "aws_iam_role_policy_attachment" "api_docs_ci_policy_attachment" {
   role       = aws_iam_role.ci_api_docs_role.name
   policy_arn = aws_iam_policy.ci_api_docs_policy.arn
+}
+
+resource "aws_iam_role" "ci_build_ami_role" {
+  name = "GithubActions-Build-Ami-Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          },
+          StringLike = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
+              "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
+            ]
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "build_ami_ci_policy_attachment" {
+  role       = aws_iam_role.ci_build_ami_role.name
+  policy_arn = aws_iam_policy.ci_build_ami_policy.arn
 }

@@ -176,6 +176,32 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
 
+    # API healthcheck endpoints
+    xi_api_healthcheck = {
+      target_origin_id           = "alb"
+      path_pattern               = "/xi/api/v2/healthcheck"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    uk_api_healthcheck = {
+      target_origin_id           = "alb"
+      path_pattern               = "/uk/api/v2/healthcheck"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+    default_api_healthcheck = {
+      target_origin_id           = "alb"
+      path_pattern               = "/api/v2/healthcheck"
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
     # API v2 endpoints
     xi_api = {
       target_origin_id           = "alb"

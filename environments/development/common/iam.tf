@@ -260,6 +260,7 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
           "s3:GetBucketLocation",
           "s3:GetObject",
           "s3:ListBucket",
+          "s3:ListObjectsV2",
           "s3:PutObject",
         ],
         Resource = [

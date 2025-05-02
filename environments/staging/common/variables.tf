@@ -113,8 +113,20 @@ variable "tariff_backend_differences_to_emails" {
   sensitive   = true
 }
 
+variable "tariff_backend_govuk_notify_api_key" {
+  description = "Govuk Notify API key for the tariff backend."
+  type        = string
+  sensitive   = true
+}
+
 variable "tariff_backend_green_lanes_api_tokens" {
   description = "Value of GREEN_LANES_API_TOKENS for the tariff backend."
+  type        = string
+  sensitive   = true
+}
+
+variable "tariff_backend_override_notify_email" {
+  description = "Value of OVERRIDE_NOTIFY_EMAIL for the tariff backend."
   type        = string
   sensitive   = true
 }

@@ -13,8 +13,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.94.1 |
-| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.94.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.96.0 |
+| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.96.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
@@ -36,9 +36,11 @@
 | <a name="module_alb-security-group"></a> [alb-security-group](#module\_alb-security-group) | ../../../modules/security-group/ | n/a |
 | <a name="module_api_cdn"></a> [api\_cdn](#module\_api\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_backend_differences_to_emails"></a> [backend\_differences\_to\_emails](#module\_backend\_differences\_to\_emails) | ../../../modules/secret/ | n/a |
+| <a name="module_backend_govuk_notify_api_key"></a> [backend\_govuk\_notify\_api\_key](#module\_backend\_govuk\_notify\_api\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_green_lanes_api_tokens"></a> [backend\_green\_lanes\_api\_tokens](#module\_backend\_green\_lanes\_api\_tokens) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_oauth_id"></a> [backend\_oauth\_id](#module\_backend\_oauth\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_oauth_secret"></a> [backend\_oauth\_secret](#module\_backend\_oauth\_secret) | ../../../modules/secret/ | n/a |
+| <a name="module_backend_override_notify_email"></a> [backend\_override\_notify\_email](#module\_backend\_override\_notify\_email) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_secret_key_base"></a> [backend\_secret\_key\_base](#module\_backend\_secret\_key\_base) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_sentry_dsn"></a> [backend\_sentry\_dsn](#module\_backend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_sync_email"></a> [backend\_sync\_email](#module\_backend\_sync\_email) | ../../../modules/secret/ | n/a |
@@ -260,9 +262,11 @@
 | <a name="input_slack_notify_lambda_slack_webhook_url"></a> [slack\_notify\_lambda\_slack\_webhook\_url](#input\_slack\_notify\_lambda\_slack\_webhook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the slack notify lambda. | `string` | n/a | yes |
 | <a name="input_slack_web_hook_url"></a> [slack\_web\_hook\_url](#input\_slack\_web\_hook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the backend. | `string` | n/a | yes |
 | <a name="input_tariff_backend_differences_to_emails"></a> [tariff\_backend\_differences\_to\_emails](#input\_tariff\_backend\_differences\_to\_emails) | Differences report TO email addresses. | `string` | n/a | yes |
+| <a name="input_tariff_backend_govuk_notify_api_key"></a> [tariff\_backend\_govuk\_notify\_api\_key](#input\_tariff\_backend\_govuk\_notify\_api\_key) | Govuk Notify API key for the tariff backend. | `string` | n/a | yes |
 | <a name="input_tariff_backend_green_lanes_api_tokens"></a> [tariff\_backend\_green\_lanes\_api\_tokens](#input\_tariff\_backend\_green\_lanes\_api\_tokens) | Value of GREEN\_LANES\_API\_TOKENS for the tariff backend. | `string` | n/a | yes |
 | <a name="input_tariff_backend_oauth_id"></a> [tariff\_backend\_oauth\_id](#input\_tariff\_backend\_oauth\_id) | Value of Tariff Backend OAuth ID. | `string` | n/a | yes |
 | <a name="input_tariff_backend_oauth_secret"></a> [tariff\_backend\_oauth\_secret](#input\_tariff\_backend\_oauth\_secret) | Value of Tariff Backend OAuth secret. | `string` | n/a | yes |
+| <a name="input_tariff_backend_override_notify_email"></a> [tariff\_backend\_override\_notify\_email](#input\_tariff\_backend\_override\_notify\_email) | Value of OVERRIDE\_NOTIFY\_EMAIL for the tariff backend. | `string` | n/a | yes |
 | <a name="input_tariff_backend_sentry_dsn"></a> [tariff\_backend\_sentry\_dsn](#input\_tariff\_backend\_sentry\_dsn) | Value of Backend Sentry DSN. | `string` | n/a | yes |
 | <a name="input_tariff_backend_sync_email"></a> [tariff\_backend\_sync\_email](#input\_tariff\_backend\_sync\_email) | Value of Tariff Sync email. | `string` | n/a | yes |
 | <a name="input_tariff_backend_uk_sync_host"></a> [tariff\_backend\_uk\_sync\_host](#input\_tariff\_backend\_uk\_sync\_host) | Value of Tariff Sync host. | `string` | n/a | yes |
