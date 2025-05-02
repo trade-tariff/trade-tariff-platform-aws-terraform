@@ -64,6 +64,7 @@
 | <a name="module_commodi_tea_configuration"></a> [commodi\_tea\_configuration](#module\_commodi\_tea\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_cookie_signing_secret"></a> [commodi\_tea\_cookie\_signing\_secret](#module\_commodi\_tea\_cookie\_signing\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_fpo_search_api_key"></a> [commodi\_tea\_fpo\_search\_api\_key](#module\_commodi\_tea\_fpo\_search\_api\_key) | ../../../modules/secret/ | n/a |
+| <a name="module_db_replicate_configuration"></a> [db\_replicate\_configuration](#module\_db\_replicate\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_dev"></a> [dev](#module\_dev) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#module\_dev\_hub\_backend\_encryption\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#module\_dev\_hub\_backend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
@@ -227,7 +228,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br/>  "development": "844815912454",<br/>  "production": "382373577178",<br/>  "staging": "451934005581"<br/>}</pre> | no |
+| <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br>  "development": "844815912454",<br>  "production": "382373577178",<br>  "staging": "451934005581"<br>}</pre> | no |
 | <a name="input_admin_bearer_token"></a> [admin\_bearer\_token](#input\_admin\_bearer\_token) | Value of BEARER\_TOKEN for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_id"></a> [admin\_oauth\_id](#input\_admin\_oauth\_id) | Value of TARIFF\_ADMIN\_OAUTH\_ID for the admin tool. | `string` | n/a | yes |
 | <a name="input_admin_oauth_secret"></a> [admin\_oauth\_secret](#input\_admin\_oauth\_secret) | Value of TARIFF\_ADMIN\_OAUTH\_SECRET for the admin tool. | `string` | n/a | yes |
@@ -272,7 +273,7 @@
 | <a name="input_tariff_backend_xi_sync_host"></a> [tariff\_backend\_xi\_sync\_host](#input\_tariff\_backend\_xi\_sync\_host) | Value of Tariff Sync host. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_password"></a> [tariff\_backend\_xi\_sync\_password](#input\_tariff\_backend\_xi\_sync\_password) | Value of Tariff Sync password. | `string` | n/a | yes |
 | <a name="input_tariff_backend_xi_sync_username"></a> [tariff\_backend\_xi\_sync\_username](#input\_tariff\_backend\_xi\_sync\_username) | Value of Tariff Sync username. | `string` | n/a | yes |
-| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of thumbprints for the OIDC provider. | `list(string)` | <pre>[<br/>  "9e99a48a9960b14926bb7f3b02e22da2b0ab7280",<br/>  "06B25927C42A721631C1EFD9431E648FA62E1E39"<br/>]</pre> | no |
+| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of thumbprints for the OIDC provider. | `list(string)` | <pre>[<br>  "9e99a48a9960b14926bb7f3b02e22da2b0ab7280",<br>  "06B25927C42A721631C1EFD9431E648FA62E1E39"<br>]</pre> | no |
 | <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. | `number` | `400` | no |
 
 ## Outputs
