@@ -391,3 +391,11 @@ module "commodi_tea_fpo_search_api_key" {
   recovery_window = 7
   secret_string   = var.commodi_tea_fpo_search_api_key
 }
+
+module "db_replicate_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "db-replicate-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
