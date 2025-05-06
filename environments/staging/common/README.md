@@ -13,8 +13,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.96.0 |
-| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.96.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.97.0 |
+| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.97.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
@@ -66,6 +66,7 @@
 | <a name="module_commodi_tea_configuration"></a> [commodi\_tea\_configuration](#module\_commodi\_tea\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_cookie_signing_secret"></a> [commodi\_tea\_cookie\_signing\_secret](#module\_commodi\_tea\_cookie\_signing\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_fpo_search_api_key"></a> [commodi\_tea\_fpo\_search\_api\_key](#module\_commodi\_tea\_fpo\_search\_api\_key) | ../../../modules/secret/ | n/a |
+| <a name="module_db_replicate_configuration"></a> [db\_replicate\_configuration](#module\_db\_replicate\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_dev"></a> [dev](#module\_dev) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_backend_encryption_key"></a> [dev\_hub\_backend\_encryption\_key](#module\_dev\_hub\_backend\_encryption\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_backend_sentry_dsn"></a> [dev\_hub\_backend\_sentry\_dsn](#module\_dev\_hub\_backend\_sentry\_dsn) | ../../../modules/secret/ | n/a |
