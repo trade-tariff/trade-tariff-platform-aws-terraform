@@ -78,6 +78,11 @@ locals {
       production_images_to_keep  = 10
       development_images_to_keep = 30
     }
+    "identity" = {
+      lifecycle_policy           = true
+      production_images_to_keep  = 10
+      development_images_to_keep = 30
+    },
     "tea" = {
       lifecycle_policy           = true
       production_images_to_keep  = 10

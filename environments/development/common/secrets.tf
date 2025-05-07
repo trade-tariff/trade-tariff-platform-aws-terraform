@@ -78,6 +78,14 @@ module "db_replicate_configuration" {
   create_secret_version = false
 }
 
+module "identity_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "identity-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
+}
+
 ######### OLD WORLD SECRETS START HERE ##########
 
 module "fpo_search_sentry_dsn" {
