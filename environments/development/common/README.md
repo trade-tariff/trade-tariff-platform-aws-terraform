@@ -76,6 +76,7 @@ No outputs.
 | <a name="module_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#module\_fpo\_search\_sentry\_dsn) | ../../../modules/secret/ | n/a |
 | <a name="module_fpo_search_training_pem"></a> [fpo\_search\_training\_pem](#module\_fpo\_search\_training\_pem) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_configuration"></a> [frontend\_configuration](#module\_frontend\_configuration) | ../../../modules/secret/ | n/a |
+| <a name="module_identity_configuration"></a> [identity\_configuration](#module\_identity\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.5.0 |
 | <a name="module_notify_slack"></a> [notify\_slack](#module\_notify\_slack) | ../../../modules/aws-notify-slack | n/a |
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | ../../../modules/opensearch | n/a |
