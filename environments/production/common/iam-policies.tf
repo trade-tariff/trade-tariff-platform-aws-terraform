@@ -62,6 +62,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
         Action = [
           "application-autoscaling:*",
           "cloudwatch:*",
+          "cognito-idp:DescribeUserPool",
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeSubnets",
           "ec2:DescribeVpcAttribute",
