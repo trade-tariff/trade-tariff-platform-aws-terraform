@@ -60,7 +60,6 @@ resource "aws_ses_receipt_rule" "receive_all" {
     position          = 1
     bucket_name       = var.ses_inbound_bucket
     object_key_prefix = "inbound/"
-    kms_key_arn       = var.s3_kms_key
     iam_role_arn      = var.ses_iam_role
   }
 }
