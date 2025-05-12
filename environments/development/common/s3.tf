@@ -8,6 +8,7 @@ locals {
     reporting         = "trade-tariff-reporting-${local.account_id}"
     models            = "trade-tariff-models-${local.account_id}"
     status-checks     = "trade-tariff-status-checks-${local.account_id}"
+    ses-inbound       = "trade-tariff-ses-inbound-${local.account_id}"
   }
 }
 
@@ -93,4 +94,72 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
       sse_algorithm     = "aws:kms"
     }
   }
+}
+
+resource "aws_s3_bucket_policy" "ses_policy" {
+  bucket = aws_s3_bucket.this["ses-inbound"].id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ses.amazonaws.com"
+        }
+        Action = "s3:PutObject"
+        Resource = "${aws_s3_bucket.this["ses-inbound"].arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceAccount" = local.account_id
+            "AWS:SourceArn"     = "arn:aws:ses:${var.region}:${local.account_id}:identity/${var.domain_name}"
+          }
+        }
+      }
+    ]
+  })
+
+  depends_on = [aws_s3_bucket.this]
+}
+
+resource "aws_iam_role" "ses_s3" {
+  name = "ses-s3-write-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "ses.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "ses_s3_policy" {
+  role = aws_iam_role.ses_s3.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:PutObject"
+        ],
+        Resource = "${aws_s3_bucket.this["ses-inbound"].arn}/*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Encrypt",
+          "kms:GenerateDataKey"
+        ],
+        Resource = aws_kms_key.s3.arn
+      }
+    ]
+  })
 }
