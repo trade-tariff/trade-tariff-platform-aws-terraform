@@ -46,12 +46,6 @@
             init             # Custom init script to get all the modules for validation
             update-providers # Custom init script to get all the modules for validation
           ];
-
-          shellHook = ''
-            export AWS_REGION="eu-west-2"
-            export AWS_ACCESS_KEY_ID="your-key"
-            export AWS_SECRET_ACCESS_KEY="your-secret"
-          '';
         };
       });
 }
