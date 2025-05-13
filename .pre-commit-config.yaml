@@ -26,6 +26,6 @@ repos:
       - id: check-merge-conflict
 
   - repo: https://github.com/trufflesecurity/trufflehog
-    rev: v3.88.28
+    rev: v3.88.29
     hooks:
       - id: trufflehog

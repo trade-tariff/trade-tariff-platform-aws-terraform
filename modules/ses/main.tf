@@ -29,7 +29,7 @@ resource "aws_route53_record" "dkim_record" {
 }
 
 resource "aws_route53_record" "mx" {
-  count   = var.email_receiver  ? 1 : 0
+  count   = var.email_receiver ? 1 : 0
   zone_id = var.route53_zone_id
   name    = var.domain_name
   type    = "MX"
@@ -38,17 +38,17 @@ resource "aws_route53_record" "mx" {
 }
 
 resource "aws_ses_receipt_rule_set" "this" {
-  count   = var.email_receiver  ? 1 : 0
+  count         = var.email_receiver ? 1 : 0
   rule_set_name = "default-rule-set"
 }
 
 resource "aws_ses_active_receipt_rule_set" "this" {
-  count   = var.email_receiver  ? 1 : 0
+  count         = var.email_receiver ? 1 : 0
   rule_set_name = aws_ses_receipt_rule_set.this[0].rule_set_name
 }
 
 resource "aws_ses_receipt_rule" "receive_all" {
-  count   = var.email_receiver  ? 1 : 0
+  count         = var.email_receiver ? 1 : 0
   name          = "receive-all"
   rule_set_name = aws_ses_receipt_rule_set.this[0].rule_set_name
   recipients    = [var.domain_name]
@@ -63,4 +63,3 @@ resource "aws_ses_receipt_rule" "receive_all" {
     iam_role_arn      = var.ses_iam_role
   }
 }
-

@@ -67,7 +67,6 @@
 | <a name="module_search_configuration_bucket"></a> [search\_configuration\_bucket](#module\_search\_configuration\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../../modules/ses | n/a |
 | <a name="module_slack_notify_lambda_slack_webhook_url"></a> [slack\_notify\_lambda\_slack\_webhook\_url](#module\_slack\_notify\_lambda\_slack\_webhook\_url) | ../../../modules/secret/ | n/a |
-| <a name="module_status_checks_cdn"></a> [status\_checks\_cdn](#module\_status\_checks\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_tea_cognito_client_id"></a> [tea\_cognito\_client\_id](#module\_tea\_cognito\_client\_id) | ../../../modules/secret/ | n/a |
 | <a name="module_tea_cognito_client_secret"></a> [tea\_cognito\_client\_secret](#module\_tea\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_tea_cognito_secret"></a> [tea\_cognito\_secret](#module\_tea\_cognito\_secret) | ../../../modules/secret/ | n/a |
@@ -184,7 +183,6 @@
 | [aws_s3_bucket_policy.backups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_policy.fpo_model_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_policy.reporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
-| [aws_s3_bucket_policy.status_checks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_policy.tech_docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_public_access_block.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
@@ -210,7 +208,6 @@
 | [aws_iam_policy_document.opensearch_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.reporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3_kms_key_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.status_checks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.tech_docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.waf_log_group_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |

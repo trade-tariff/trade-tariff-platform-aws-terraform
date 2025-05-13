@@ -264,28 +264,3 @@ data "aws_iam_policy_document" "tech_docs" {
     }
   }
 }
-
-resource "aws_s3_bucket_policy" "status_checks" {
-  bucket = aws_s3_bucket.this["status-checks"].id
-  policy = data.aws_iam_policy_document.status_checks.json
-}
-
-data "aws_iam_policy_document" "status_checks" {
-  statement {
-    sid       = "AllowCloudFrontServicePrincipal"
-    effect    = "Allow"
-    actions   = ["s3:GetObject", "s3:ListBucket"]
-    resources = [aws_s3_bucket.this["status-checks"].arn, "${aws_s3_bucket.this["status-checks"].arn}/*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-      values   = [module.status_checks_cdn.aws_cloudfront_distribution_arn]
-    }
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudfront.amazonaws.com"]
-    }
-  }
-}

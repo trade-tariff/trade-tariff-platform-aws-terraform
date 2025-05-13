@@ -107,7 +107,7 @@ resource "aws_s3_bucket_policy" "ses_policy" {
         Principal = {
           Service = "ses.amazonaws.com"
         }
-        Action = "s3:PutObject"
+        Action   = "s3:PutObject"
         Resource = "${aws_s3_bucket.this["ses-inbound"].arn}/*"
         Condition = {
           StringEquals = {
