@@ -55,3 +55,6 @@ skip-deprovision
 .envrc
 
 *.terraformrc*
+**/builds
+**/tmp
+*.zip

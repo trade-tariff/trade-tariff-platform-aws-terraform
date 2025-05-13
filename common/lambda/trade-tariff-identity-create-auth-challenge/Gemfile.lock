@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    base64 (0.2.0)
+    jwt (2.10.1)
+      base64
+    notifications-ruby-client (6.2.0)
+      jwt (>= 1.5, < 3)
+
+PLATFORMS
+  arm64-darwin-24
+  ruby
+
+DEPENDENCIES
+  notifications-ruby-client
+
+BUNDLED WITH
+   2.6.8
