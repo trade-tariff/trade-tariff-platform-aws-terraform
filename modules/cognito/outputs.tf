@@ -24,9 +24,9 @@ output "user_pool_public_keys_url" {
 }
 
 output "cloudfront_distribution_arn" {
-  value = aws_cognito_user_pool_domain.this[0].cloudfront_distribution_arn
+  value = length(aws_cognito_user_pool_domain.this) > 0 ? aws_cognito_user_pool_domain.this[0].cloudfront_distribution_arn : null
 }
 
 output "cloudfront_distribution_zone_id" {
-  value = aws_cognito_user_pool_domain.this[0].cloudfront_distribution_zone_id
+  value = length(aws_cognito_user_pool_domain.this) > 0 ? aws_cognito_user_pool_domain.this[0].cloudfront_distribution_zone_id : null
 }

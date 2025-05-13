@@ -53,3 +53,6 @@ skip-deprovision
 
 .direnv
 .envrc
+
+**/builds
+**/tmp
