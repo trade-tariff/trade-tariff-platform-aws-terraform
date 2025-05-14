@@ -55,10 +55,28 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
 
-    packs = {
+    js = {
       target_origin_id           = "alb"
       viewer_protocol_policy     = "redirect-to-https"
-      path_pattern               = "/packs/*"
+      path_pattern               = "*.js"
+      cache_policy_id            = aws_cloudfront_cache_policy.very_very_long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
+    css = {
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      path_pattern               = "*.css"
+      cache_policy_id            = aws_cloudfront_cache_policy.very_very_long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
+    maps = {
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      path_pattern               = "*.map"
       cache_policy_id            = aws_cloudfront_cache_policy.very_very_long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
@@ -67,11 +85,39 @@ module "cdn" {
     images = {
       target_origin_id           = "alb"
       viewer_protocol_policy     = "redirect-to-https"
-      path_pattern               = "/images/*"
+      path_pattern               = "*images/*"
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     }
+
+    pngs = {
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      path_pattern               = "*.png"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
+    govuk_frontend = {
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      path_pattern               = "/govuk-frontend*"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
+    govuk_publishing_components = {
+      target_origin_id           = "alb"
+      viewer_protocol_policy     = "redirect-to-https"
+      path_pattern               = "/govuk_publishing_components*"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    }
+
 
     # Green lanes/SPIMM endpoints
     xi_api_spimm = {
