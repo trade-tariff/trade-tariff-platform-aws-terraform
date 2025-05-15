@@ -24,13 +24,10 @@
           ${pkgs.pre-commit}/bin/pre-commit run -a
         '';
 
-        init = pkgs.writeScriptBin "init" ''
-          export DISABLE_INIT=true
-          terragrunt run-all init
-        '';
+        init = pkgs.writeScriptBin "init" ''DISABLE_INIT=true terragrunt init --all'';
 
         update-providers = pkgs.writeScriptBin "upgrade-providers" ''
-          find environments -type d -mindepth 2 -maxdepth 2 -exec sh -c 'echo "###### START {} ######"; cd "{}" && terraform init -backend=false -reconfigure -upgrade || echo "ERROR in {}: Initialization failed"; echo "###### END {} ######"' \;
+          DISABLE_INIT=true terragrunt init --all --upgrade --reconfigure
         '';
       in
       {
