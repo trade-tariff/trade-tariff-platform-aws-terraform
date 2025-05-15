@@ -28,9 +28,9 @@ No outputs.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.86 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | 3.6.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | < 5.98.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3 |
 
 ## Providers
 
@@ -38,7 +38,7 @@ No outputs.
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.97.0 |
 | <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.97.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -202,8 +202,8 @@ No outputs.
 | [aws_ssm_parameter.ecr_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.tea_cognito_public_keys](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_wafv2_web_acl_logging_configuration.waf_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_logging_configuration) | resource |
-| [random_password.origin_header](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs/resources/password) | resource |
-| [random_password.tea_cognito_secret](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs/resources/password) | resource |
+| [random_password.origin_header](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+| [random_password.tea_cognito_secret](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_cloudfront_cache_policy.caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_iam_policy_document.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |

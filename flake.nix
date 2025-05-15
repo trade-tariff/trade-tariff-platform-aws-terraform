@@ -24,11 +24,19 @@
           ${pkgs.pre-commit}/bin/pre-commit run -a
         '';
 
-        init = pkgs.writeScriptBin "init" ''DISABLE_INIT=true terragrunt init --all'';
-
-        update-providers = pkgs.writeScriptBin "upgrade-providers" ''
-          DISABLE_INIT=true terragrunt init --all --upgrade --reconfigure
+        clean = pkgs.writeScriptBin "clean" ''
+          find . -type d -name ".terraform" -exec rm -rf {} \;
+          find . -type f -name ".terraform.lock.hcl" -exec rm -rf {} \;
         '';
+
+        init = pkgs.writeScriptBin "init" ''
+          DISABLE_INIT=true terragrunt init --all
+          for m in modules/*; do
+            pushd $m; terraform init; popd
+          done
+        '';
+
+        update-providers = pkgs.writeScriptBin "update-providers" ''clean && init'';
       in
       {
         devShells.default = pkgs.mkShell {
@@ -41,6 +49,7 @@
             trufflehog       # For trufflehog secret scanning
             lint             # Custom lint script
             init             # Custom init script to get all the modules for validation
+            clean            # Custom init script to clean up modules
             update-providers # Custom init script to get all the modules for validation
           ];
         };
