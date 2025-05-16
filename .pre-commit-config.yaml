@@ -16,7 +16,6 @@ repos:
           - --hook-config=--add-to-existing-file=true
           - --hook-config=--path-to-file=README.md
           - --hook-config=--create-file-if-not-exist=true
-          - --hook-config=--lock-file=false
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0

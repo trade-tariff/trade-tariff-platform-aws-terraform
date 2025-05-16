@@ -1,7 +1,9 @@
+name: Deploy to Production
+
 on:
   workflow_run:
     workflows:
-      - deploy-to-staging.yml
+      - 'Deploy to Staging'
     types:
       - completed
   workflow_dispatch:

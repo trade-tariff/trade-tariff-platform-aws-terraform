@@ -26,20 +26,30 @@
 
         clean = pkgs.writeScriptBin "clean" ''
           find . -type d -name ".terraform" -exec rm -rf {} \;
-          find . -type f -name ".terraform.lock.hcl" -exec rm -rf {} \;
+          find . -type f -name ".terraform.lock.hcl" -delete
         '';
 
         init = pkgs.writeScriptBin "init" ''
-          DISABLE_INIT=true terragrunt init --all
           for m in modules/*; do
-            pushd $m; terraform init; popd
+            if [ -d $m ]; then
+              terraform -chdir=$m init
+            fi
           done
+
+          DISABLE_INIT=true terragrunt init --all --provider-cache
         '';
 
-        update-providers = pkgs.writeScriptBin "update-providers" ''clean && init'';
+        update-providers = pkgs.writeScriptBin "update-providers" ''clean &&
+        init && lint'';
       in
       {
         devShells.default = pkgs.mkShell {
+          shellHook = ''
+            export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+            export TG_PROVIDER_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+            export TG_PROVIDER_CACHE=1
+          '';
+
           buildInputs = with pkgs; [
             terraform        # For terraform_fmt, terraform_validate
             terragrunt       # For terragrunt-hclfmt
