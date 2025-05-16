@@ -54,7 +54,16 @@ jobs:
         working-directory: environments/production
 
       - run: terragrunt apply --all
-        working-directory: environments/production
+        name: apply-all-base
+        working-directory: environments/production/base
+
+      - run: terragrunt apply --all
+        name: apply-all-applications
+        working-directory: environments/production/applications
+
+      - run: terragrunt apply --all
+        name: apply-all-common
+        working-directory: environments/production/common
 
   post-apply-production:
     needs: apply-production

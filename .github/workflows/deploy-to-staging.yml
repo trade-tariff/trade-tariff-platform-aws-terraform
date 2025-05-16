@@ -51,7 +51,16 @@ jobs:
         working-directory: environments/staging
 
       - run: terragrunt apply --all
-        working-directory: environments/staging
+        name: apply-all-base
+        working-directory: environments/staging/base
+
+      - run: terragrunt apply --all
+        name: apply-all-applications
+        working-directory: environments/staging/applications
+
+      - run: terragrunt apply --all
+        name: apply-all-common
+        working-directory: environments/staging/common
 
   post-apply-staging:
     needs: apply-staging
