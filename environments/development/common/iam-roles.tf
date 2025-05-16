@@ -7,18 +7,6 @@ resource "aws_iam_role" "reporting_ci_role" {
       {
         Effect = "Allow",
         Principal = {
-          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
-        },
-        Action = "sts:AssumeRoleWithWebIdentity",
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
-          }
-        }
-      },
-      {
-        Effect = "Allow",
-        Principal = {
           Federated = aws_iam_openid_connect_provider.github_oidc.arn
         },
         Action = "sts:AssumeRoleWithWebIdentity",
@@ -60,7 +48,6 @@ resource "aws_iam_role" "serverless_lambda_ci_role" {
           },
           StringLike = {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
-              "repo:trade-tariff/trade-tariff-lambdas-status-checks:*",
               "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
               "repo:trade-tariff/trade-tariff-lambdas-fpo-model-garbage-collection:*",
               "repo:trade-tariff/trade-tariff-lambdas-electronic-tariff-file-rotations:*",
@@ -85,18 +72,6 @@ resource "aws_iam_role" "appendix5a_ci_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
-        }
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
-          }
-        }
-      },
       {
         Effect = "Allow",
         Principal = {
@@ -130,18 +105,6 @@ resource "aws_iam_role" "tech_docs_ci_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
-        }
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
-          }
-        }
-      },
-      {
         Effect = "Allow",
         Principal = {
           Federated = aws_iam_openid_connect_provider.github_oidc.arn
@@ -162,55 +125,6 @@ resource "aws_iam_role" "tech_docs_ci_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "tech_docs_ci_policy_attachment" {
-  role       = aws_iam_role.tech_docs_ci_role.name
-  policy_arn = aws_iam_policy.ci_tech_docs_persistence_readwrite_policy.arn
-}
-
-resource "aws_iam_role" "status_checks_ci_role" {
-  name = "GithubActions-Status-Checks-Role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
-        }
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
-          }
-        }
-      },
-      {
-        Effect = "Allow",
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.github_oidc.arn
-        },
-        Action = "sts:AssumeRoleWithWebIdentity",
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
-          },
-          StringLike = {
-            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
-              "repo:trade-tariff/trade-tariff-status:*"
-            ]
-          }
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "status_checks_ci_policy_attachment" {
-  role       = aws_iam_role.status_checks_ci_role.name
-  policy_arn = aws_iam_policy.ci_status_checks_persistence_readwrite_policy.arn
-}
-
 resource "aws_iam_role" "fpo_models_ci_role" {
   name = "GithubActions-FPO-Models-Role"
 
@@ -220,18 +134,6 @@ resource "aws_iam_role" "fpo_models_ci_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
-        }
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
-          }
-        }
-      },
       {
         Effect = "Allow",
         Principal = {
@@ -264,18 +166,6 @@ resource "aws_iam_role" "ci_terraform_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.circleci_oidc.arn
-        }
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "${aws_iam_openid_connect_provider.circleci_oidc.url}:aud" = var.circleci_organisation_id
-          }
-        }
-      },
       {
         Effect = "Allow",
         Principal = {
