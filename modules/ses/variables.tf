@@ -25,12 +25,6 @@ variable "ses_inbound_bucket" {
   default     = "placeholder"
 }
 
-variable "s3_kms_key" {
-  description = "S3 kms key for SES inbox"
-  type        = string
-  default     = "placeholder"
-}
-
 variable "ses_iam_role" {
   description = "SES iam role to access s3"
   type        = string

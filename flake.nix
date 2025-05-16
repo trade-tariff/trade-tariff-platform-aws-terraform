@@ -24,17 +24,32 @@
           ${pkgs.pre-commit}/bin/pre-commit run -a
         '';
 
-        init = pkgs.writeScriptBin "init" ''
-          export DISABLE_INIT=true
-          terragrunt run-all init
+        clean = pkgs.writeScriptBin "clean" ''
+          find . -type d -name ".terraform" -exec rm -rf {} \;
+          find . -type f -name ".terraform.lock.hcl" -delete
         '';
 
-        update-providers = pkgs.writeScriptBin "upgrade-providers" ''
-          find environments -type d -mindepth 2 -maxdepth 2 -exec sh -c 'echo "###### START {} ######"; cd "{}" && terraform init -backend=false -reconfigure -upgrade || echo "ERROR in {}: Initialization failed"; echo "###### END {} ######"' \;
+        init = pkgs.writeScriptBin "init" ''
+          for m in modules/*; do
+            if [ -d $m ]; then
+              terraform -chdir=$m init
+            fi
+          done
+
+          DISABLE_INIT=true terragrunt init --all --provider-cache
         '';
+
+        update-providers = pkgs.writeScriptBin "update-providers" ''clean &&
+        init && lint'';
       in
       {
         devShells.default = pkgs.mkShell {
+          shellHook = ''
+            export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+            export TG_PROVIDER_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+            export TG_PROVIDER_CACHE=1
+          '';
+
           buildInputs = with pkgs; [
             terraform        # For terraform_fmt, terraform_validate
             terragrunt       # For terragrunt-hclfmt
@@ -44,6 +59,7 @@
             trufflehog       # For trufflehog secret scanning
             lint             # Custom lint script
             init             # Custom init script to get all the modules for validation
+            clean            # Custom init script to clean up modules
             update-providers # Custom init script to get all the modules for validation
           ];
         };
