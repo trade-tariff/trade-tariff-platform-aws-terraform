@@ -457,3 +457,199 @@ resource "aws_iam_policy" "ci_build_ami_policy" {
 
   policy = data.aws_iam_policy_document.ci_build_ami_policy.json
 }
+
+resource "aws_iam_policy" "ci_reporting_policy" {
+  name        = "ci-reporting-policy"
+  description = "Policy for GithubAction to enable read/write access to reporting bucket for deploying the reporting app https://github.com/trade-tariff/trade-tariff-reporting"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["reporting"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["reporting"].id}/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "cloudfront:CreateInvalidation",
+        ],
+        Resource = [
+          "arn:aws:cloudfront::${local.account_id}:distribution/${module.reporting_cdn.aws_cloudfront_distribution_id}"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ci_appendix5a_persistence_readwrite_policy" {
+  name        = "ci-appendix5a-persistence-readwrite-policy"
+  description = "Policy for GithubActions to enable read/write access to Appendix5a persistence bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/config/chief_cds_guidance.json",
+          "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/config/cds_guidance.json"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ci_tech_docs_persistence_readwrite_policy" {
+  name        = "ci-tech-docs-persistence-readwrite-policy"
+  description = "Policy for Github Actions to enable read/write access to Tech Docs bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:PutObject",
+        ],
+
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["tech-docs"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["tech-docs"].id}/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
+  name        = "ci-fpo-models-secrets-policy"
+  description = "Policy for Github Actions to enable read access to FPO models secrets"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ],
+        Resource = [
+          module.fpo_search_training_pem.secret_arn,
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_key.secretsmanager_kms_key.arn
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:ListObjectsV2",
+          "s3:PutObject",
+        ],
+        Resource = [
+          "arn:aws:s3:::trade-tariff-models-382373577178",
+          "arn:aws:s3:::trade-tariff-models-382373577178/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          # Production S3 KMS key
+          "arn:aws:kms:eu-west-2:382373577178:key/7fc9fd19-e970-4877-9b56-3869a02c7b85"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:CopyImage",
+          "ec2:CreateSecurityGroup",
+          "ec2:CreateTags",
+          "ec2:DescribeImages",
+          "ec2:DescribeInstanceStatus",
+          "ec2:DescribeInstanceTypeOfferings",
+          "ec2:DescribeInstances",
+          "ec2:DescribeKeyPairs",
+          "ec2:DescribeRegions",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeVpcs",
+          "ec2:ImportKeyPair",
+          "ec2:RunInstances",
+          "ec2:TerminateInstances",
+          "ec2:WaitInstanceRunning",
+        ],
+        Resource = ["*"]
+      },
+    ]
+  })
+}
