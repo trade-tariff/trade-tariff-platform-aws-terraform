@@ -7,6 +7,7 @@ module "myott_cognito" {
   allow_user_registration  = true
   auto_verified_attributes = ["email"]
   mfa_configuration        = "OFF"
+  allow_software_mfa_token = false
 
   username_attributes = ["email"]
 

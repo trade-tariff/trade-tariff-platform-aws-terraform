@@ -392,7 +392,7 @@ variable "client_oauth_flow_allowed" {
 variable "client_generate_secret" {
   description = "Whether to generate a client secret for this application client."
   type        = bool
-  default     = false
+  default     = null
 }
 
 variable "tags" {
@@ -424,18 +424,36 @@ variable "resource_server_scopes" {
 
 variable "client_token_validity" {
   type = object({
-    access_token = object({
-      length = number
-      units  = string
-    })
-    id_token = object({
-      length = number
-      units  = string
-    })
-    refresh_token = object({
-      length = number
-      units  = string
-    })
+    access_token = optional(
+      object({
+        length = optional(number, 1)
+        units  = optional(string, "hours")
+      }),
+      {
+        length = 1
+        units  = "hours"
+      }
+    )
+    id_token = optional(
+      object({
+        length = optional(number, 1)
+        units  = optional(string, "hours")
+      }),
+      {
+        length = 1
+        units  = "hours"
+      }
+    )
+    refresh_token = optional(
+      object({
+        length = optional(number, 1)
+        units  = optional(string, "hours")
+      }),
+      {
+        length = 1
+        units  = "hours"
+      }
+    )
   })
 
   description = "Client token validity settings. Units can be 'seconds', 'minutes', 'hours', or 'days'. Default to 1 hour for all tokens."
