@@ -653,3 +653,59 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ci_preview_app_policy" {
+  name        = "ci-preview-app-policy"
+  description = "Policy for Github Actions to enable"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        "Effect" = "Allow",
+        "Action" = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket"
+        ],
+        "Resource" = [
+          "arn:aws:s3:::preevy-profile-store",
+          "arn:aws:s3:::preevy-profile-store/*"
+        ]
+      },
+      {
+        "Effect"   = "Allow",
+        "Action"   = "lightsail:*",
+        "Resource" = "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ],
+        "Resource" : "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:BatchGetSecretValue",
+        ],
+        "Resource" : "arn:aws:secretsmanager:eu-west-2:844815912454:secret:*configuration*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        Resource = [
+          aws_kms_alias.s3_kms_alias.target_key_arn,
+          aws_kms_alias.secretsmanager_kms_alias.target_key_arn,
+        ]
+      },
+    ]
+  })
+}
