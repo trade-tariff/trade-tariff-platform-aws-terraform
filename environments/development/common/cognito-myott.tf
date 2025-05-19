@@ -40,6 +40,10 @@ module "myott_cognito" {
     }
   ]
 
+  lambda_create_auth_challenge_arn      = "arn:aws:lambda:${var.region}:${local.account_id}:function:trade-tariff-identity-create-auth-challenge"
+  lambda_define_auth_challenge          = "arn:aws:lambda:${var.region}:${local.account_id}:function:trade-tariff-identity-define-auth-challenge"
+  lambda_verify_auth_challenge_response = "arn:aws:lambda:${var.region}:${local.account_id}:function:trade-tariff-identity-verify-auth-challenge-response"
+
   # Client options
 
   client_name = "identity-client"
