@@ -182,7 +182,7 @@
 | <a name="input_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#input\_fpo\_search\_sentry\_dsn) | Value of SENTRY\_DSN for the FPO search lambda. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_slack_notify_lambda_slack_webhook_url"></a> [slack\_notify\_lambda\_slack\_webhook\_url](#input\_slack\_notify\_lambda\_slack\_webhook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the slack notify lambda. | `string` | n/a | yes |
-| <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. | `number` | `400` | no |
+| <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. | `number` | `2000` | no |
 
 ## Outputs
 
