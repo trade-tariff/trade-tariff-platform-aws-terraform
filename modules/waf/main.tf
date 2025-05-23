@@ -148,6 +148,24 @@ resource "aws_wafv2_web_acl" "this" {
           limit                 = rule.value.rpm_limit
           evaluation_window_sec = 60
           aggregate_key_type    = "IP"
+
+          # NOTE: This block will exclude assets from the rate limiting rules since these are all cached in the CDN.
+          scope_down_statement {
+            not_statement {
+              statement {
+                regex_pattern_set_reference_statement {
+                  arn = aws_wafv2_regex_pattern_set.this.arn
+                  field_to_match {
+                    uri_path {}
+                  }
+                  text_transformation {
+                    priority = 0
+                    type     = "LOWERCASE"
+                  }
+                }
+              }
+            }
+          }
         }
       }
 
@@ -302,6 +320,20 @@ resource "aws_wafv2_web_acl" "this" {
   }
 
   tags = var.tags
+}
+
+resource "aws_wafv2_regex_pattern_set" "this" {
+  name        = "assets"
+  description = "Web application assets regex pattern set"
+  scope       = var.scope
+
+  regular_expression {
+    regex_string = "^.*\\.(js|map|css|png|jpg|jpeg|gif|svg)$"
+  }
+
+  regular_expression {
+    regex_string = "^.*\\/(assets|images)\\/.*$"
+  }
 }
 
 resource "aws_wafv2_web_acl_association" "this" {
