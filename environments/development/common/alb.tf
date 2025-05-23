@@ -37,13 +37,18 @@ module "alb" {
     }
 
     backend_uk = {
-      paths            = ["/api/*", "/uk/api/*"]
+      paths = [
+        "/users/*",
+        "/api/*",
+        "/uk/api/*",
+        "/uk/users/*"
+      ]
       healthcheck_path = "/healthcheckz"
       priority         = 20
     }
 
     backend_xi = {
-      paths            = ["/xi/api/*"]
+      paths            = ["/xi/api/*", "/xi/users/*"]
       healthcheck_path = "/healthcheckz"
       priority         = 21
     }
