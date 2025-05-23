@@ -125,6 +125,11 @@ resource "aws_iam_role" "tech_docs_ci_role" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "tech_docs_ci_policy_attachment" {
+  role       = aws_iam_role.tech_docs_ci_role.name
+  policy_arn = aws_iam_policy.ci_tech_docs_persistence_readwrite_policy.arn
+}
+
 resource "aws_iam_role" "fpo_models_ci_role" {
   name = "GithubActions-FPO-Models-Role"
 
