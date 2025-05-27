@@ -466,11 +466,10 @@ module "backups_cdn" {
 }
 
 resource "aws_cloudfront_function" "basic_auth" {
-  name       = "backups-basic-auth"
-  runtime    = "cloudfront-js-1.0"
-  publish    = true
-  code       = local.cloudfront_auth
-  depends_on = [data.aws_secretsmanager_secret_version.backups_basic_auth]
+  name    = "backups-basic-auth"
+  runtime = "cloudfront-js-1.0"
+  publish = true
+  code    = local.cloudfront_auth
 }
 
 module "tech_docs_cdn" {
