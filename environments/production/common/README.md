@@ -42,8 +42,6 @@
 | <a name="module_cognito_client_secret"></a> [cognito\_client\_secret](#module\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_cognito"></a> [commodi\_tea\_cognito](#module\_commodi\_tea\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_commodi_tea_configuration"></a> [commodi\_tea\_configuration](#module\_commodi\_tea\_configuration) | ../../../modules/secret/ | n/a |
-| <a name="module_commodi_tea_cookie_signing_secret"></a> [commodi\_tea\_cookie\_signing\_secret](#module\_commodi\_tea\_cookie\_signing\_secret) | ../../../modules/secret/ | n/a |
-| <a name="module_commodi_tea_fpo_search_api_key"></a> [commodi\_tea\_fpo\_search\_api\_key](#module\_commodi\_tea\_fpo\_search\_api\_key) | ../../../modules/secret/ | n/a |
 | <a name="module_db_replicate_configuration"></a> [db\_replicate\_configuration](#module\_db\_replicate\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_dev_hub_configuration"></a> [dev\_hub\_configuration](#module\_dev\_hub\_configuration) | ../../../modules/secret/ | n/a |
@@ -193,8 +191,6 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | n/a | `map(string)` | <pre>{<br/>  "development": "844815912454",<br/>  "production": "382373577178",<br/>  "staging": "451934005581"<br/>}</pre> | no |
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
-| <a name="input_commodi_tea_cookie_signing_secret"></a> [commodi\_tea\_cookie\_signing\_secret](#input\_commodi\_tea\_cookie\_signing\_secret) | Value of COOKIE\_SIGNING\_SECRET for the Commodi tea. | `string` | n/a | yes |
-| <a name="input_commodi_tea_fpo_search_api_key"></a> [commodi\_tea\_fpo\_search\_api\_key](#input\_commodi\_tea\_fpo\_search\_api\_key) | Value of FPO\_SEARCH\_API\_KEY for the Commodi tea. | `string` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name of the service. | `string` | `"trade-tariff.service.gov.uk"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `"production"` | no |
 | <a name="input_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#input\_fpo\_search\_sentry\_dsn) | Value of SENTRY\_DSN for the FPO search lambda. | `string` | n/a | yes |
