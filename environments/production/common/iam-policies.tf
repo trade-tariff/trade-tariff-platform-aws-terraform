@@ -340,7 +340,7 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "secretsmanager:GetSecretValue",
         ],
         Resource = [
-          module.fpo_search_sentry_dsn.secret_arn,
+          module.fpo_search_configuration.secret_arn,
         ]
       },
       {

@@ -71,7 +71,7 @@ No outputs.
 | <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_dev_hub_configuration"></a> [dev\_hub\_configuration](#module\_dev\_hub\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_duty_calculator_configuration"></a> [duty\_calculator\_configuration](#module\_duty\_calculator\_configuration) | ../../../modules/secret/ | n/a |
-| <a name="module_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#module\_fpo\_search\_sentry\_dsn) | ../../../modules/secret/ | n/a |
+| <a name="module_fpo_search_configuration"></a> [fpo\_search\_configuration](#module\_fpo\_search\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_fpo_search_training_pem"></a> [fpo\_search\_training\_pem](#module\_fpo\_search\_training\_pem) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_configuration"></a> [frontend\_configuration](#module\_frontend\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_identity_configuration"></a> [identity\_configuration](#module\_identity\_configuration) | ../../../modules/secret/ | n/a |
@@ -206,8 +206,6 @@ No outputs.
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name of the service. | `string` | `"dev.trade-tariff.service.gov.uk"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `"development"` | no |
-| <a name="input_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#input\_fpo\_search\_sentry\_dsn) | Value of SENTRY\_DSN for the FPO search lambda. | `string` | n/a | yes |
-| <a name="input_fpo_search_training_pem"></a> [fpo\_search\_training\_pem](#input\_fpo\_search\_training\_pem) | Private ed25519 ssh pem used to generate training model artifacts in EC2. This is development, only. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_slack_notify_lambda_slack_webhook_url"></a> [slack\_notify\_lambda\_slack\_webhook\_url](#input\_slack\_notify\_lambda\_slack\_webhook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the slack notify lambda. | `string` | n/a | yes |
 | <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. | `number` | `2000` | no |

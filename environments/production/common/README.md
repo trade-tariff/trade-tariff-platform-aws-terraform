@@ -49,7 +49,7 @@
 | <a name="module_duty_calculator_configuration"></a> [duty\_calculator\_configuration](#module\_duty\_calculator\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | ../../../modules/ecr/ | n/a |
 | <a name="module_etf_configuration"></a> [etf\_configuration](#module\_etf\_configuration) | ../../../modules/secret/ | n/a |
-| <a name="module_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#module\_fpo\_search\_sentry\_dsn) | ../../../modules/secret/ | n/a |
+| <a name="module_fpo_search_configuration"></a> [fpo\_search\_configuration](#module\_fpo\_search\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_configuration"></a> [frontend\_configuration](#module\_frontend\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
 | <a name="module_notify_slack"></a> [notify\_slack](#module\_notify\_slack) | ../../../modules/aws-notify-slack | n/a |
@@ -193,7 +193,6 @@
 | <a name="input_backups_basic_auth"></a> [backups\_basic\_auth](#input\_backups\_basic\_auth) | base64 encoded credentials for backups basic auth. | `string` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name of the service. | `string` | `"trade-tariff.service.gov.uk"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `"production"` | no |
-| <a name="input_fpo_search_sentry_dsn"></a> [fpo\_search\_sentry\_dsn](#input\_fpo\_search\_sentry\_dsn) | Value of SENTRY\_DSN for the FPO search lambda. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to use. Defaults to `eu-west-2`. | `string` | `"eu-west-2"` | no |
 | <a name="input_slack_notify_lambda_slack_webhook_url"></a> [slack\_notify\_lambda\_slack\_webhook\_url](#input\_slack\_notify\_lambda\_slack\_webhook\_url) | Value of SLACK\_WEB\_HOOK\_URL for the slack notify lambda. | `string` | n/a | yes |
 | <a name="input_waf_rpm_limit"></a> [waf\_rpm\_limit](#input\_waf\_rpm\_limit) | Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. | `number` | `500` | no |
