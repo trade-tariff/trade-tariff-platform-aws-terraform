@@ -34,6 +34,7 @@
 | <a name="module_backend_uk_worker_configuration"></a> [backend\_uk\_worker\_configuration](#module\_backend\_uk\_worker\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xi_api_configuration"></a> [backend\_xi\_api\_configuration](#module\_backend\_xi\_api\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xi_worker_configuration"></a> [backend\_xi\_worker\_configuration](#module\_backend\_xi\_worker\_configuration) | ../../../modules/secret/ | n/a |
+| <a name="module_backups_basic_auth"></a> [backups\_basic\_auth](#module\_backups\_basic\_auth) | ../../../modules/secret/ | n/a |
 | <a name="module_backups_cdn"></a> [backups\_cdn](#module\_backups\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../../modules/cloudwatch/ | n/a |
@@ -165,6 +166,7 @@
 | [aws_iam_policy_document.waf_log_group_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_route53_zone.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
+| [aws_secretsmanager_secret_version.backups_basic_auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 | [aws_secretsmanager_secret_version.slack_notify_lambda_slack_webhook_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 | [terraform_remote_state.base](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
