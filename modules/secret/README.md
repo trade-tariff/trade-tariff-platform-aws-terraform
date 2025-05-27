@@ -29,7 +29,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_create_secret_version"></a> [create\_secret\_version](#input\_create\_secret\_version) | Whether to create a secret version. Set to false to create a secret without a version. | `bool` | `true` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | KMS Key ARN with which to encrypt the secret. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the secret. | `string` | n/a | yes |
 | <a name="input_recovery_window"></a> [recovery\_window](#input\_recovery\_window) | Recovery window in days for the secret. | `string` | n/a | yes |
