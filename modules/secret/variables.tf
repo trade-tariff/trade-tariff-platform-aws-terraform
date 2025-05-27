@@ -19,9 +19,3 @@ variable "recovery_window" {
   description = "Recovery window in days for the secret."
   type        = string
 }
-
-variable "create_secret_version" {
-  description = "Whether to create a secret version. Set to false to create a secret without a version."
-  type        = bool
-  default     = true
-}

@@ -6,7 +6,7 @@ module "notify_slack" {
   lambda_function_name = "notify_slack_${var.environment}"
   sns_topic_name       = "slack-topic"
 
-  slack_webhook_url = var.slack_notify_lambda_slack_webhook_url
+  slack_webhook_url = data.aws_secretsmanager_secret_version.slack_notify_lambda_slack_webhook_url.secret_string
   slack_channel     = "non-production-alerts"
   slack_username    = "AWS"
 
@@ -60,4 +60,8 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
     LoadBalancer = module.alb.arn_suffix
     TargetGroup  = each.value.arn
   }
+}
+
+data "aws_secretsmanager_secret_version" "slack_notify_lambda_slack_webhook_url" {
+  secret_id = module.slack_notify_lambda_slack_webhook_url.secret_arn
 }
