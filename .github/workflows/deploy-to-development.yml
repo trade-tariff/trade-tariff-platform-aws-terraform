@@ -61,8 +61,6 @@ jobs:
     environment: development
     env:
       TF_VAR_backups_basic_auth: ${{ secrets.BACKUPS_BASIC_AUTH }}
-      TF_VAR_fpo_search_sentry_dsn: ${{ secrets.FPO_SEARCH_SENTRY_DSN }}
-      TF_VAR_fpo_search_training_pem: ${{ secrets.FPO_SEARCH_TRAINING_PEM }}
       TF_VAR_slack_notify_lambda_slack_webhook_url: ${{ secrets.SLACK_NOTIFY_LAMBDA_SLACK_WEBHOOK_URL }}
 
     runs-on: ubuntu-latest
@@ -97,8 +95,6 @@ jobs:
     environment: development
     env:
       TF_VAR_backups_basic_auth: ${{ secrets.BACKUPS_BASIC_AUTH }}
-      TF_VAR_fpo_search_sentry_dsn: ${{ secrets.FPO_SEARCH_SENTRY_DSN }}
-      TF_VAR_fpo_search_training_pem: ${{ secrets.FPO_SEARCH_TRAINING_PEM }}
       TF_VAR_slack_notify_lambda_slack_webhook_url: ${{ secrets.SLACK_NOTIFY_LAMBDA_SLACK_WEBHOOK_URL }}
       TERRAGRUNT_NON_INTERACTIVE: true
       TF_INPUT: false
@@ -165,9 +161,6 @@ jobs:
     environment: staging
     env:
       TF_VAR_backups_basic_auth: ${{ secrets.BACKUPS_BASIC_AUTH }}
-      TF_VAR_commodi_tea_cookie_signing_secret: ${{ secrets.COMMODI_TEA_COOKIE_SIGNING_SECRET }}
-      TF_VAR_commodi_tea_fpo_search_api_key: ${{ secrets.COMMODI_TEA_FPO_SEARCH_API_KEY }}
-      TF_VAR_fpo_search_sentry_dsn: ${{ secrets.FPO_SEARCH_SENTRY_DSN }}
       TF_VAR_slack_notify_lambda_slack_webhook_url: ${{ secrets.SLACK_NOTIFY_LAMBDA_SLACK_WEBHOOK_URL }}
     runs-on: ubuntu-latest
     steps:
@@ -200,9 +193,6 @@ jobs:
     environment: production
     env:
       TF_VAR_backups_basic_auth: ${{ secrets.BACKUPS_BASIC_AUTH }}
-      TF_VAR_commodi_tea_cookie_signing_secret: ${{ secrets.COMMODI_TEA_COOKIE_SIGNING_SECRET }}
-      TF_VAR_commodi_tea_fpo_search_api_key: ${{ secrets.COMMODI_TEA_FPO_SEARCH_API_KEY }}
-      TF_VAR_fpo_search_sentry_dsn: ${{ secrets.FPO_SEARCH_SENTRY_DSN }}
       TF_VAR_slack_notify_lambda_slack_webhook_url: ${{ secrets.SLACK_NOTIFY_LAMBDA_SLACK_WEBHOOK_URL }}
     runs-on: ubuntu-latest
     steps:

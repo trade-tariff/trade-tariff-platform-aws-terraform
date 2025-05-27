@@ -79,15 +79,15 @@ module "db_replicate_configuration" {
   create_secret_version = false
 }
 
-######### OLD WORLD SECRETS START HERE ##########
-
-module "fpo_search_sentry_dsn" {
-  source          = "../../../modules/secret/"
-  name            = "fpo-search-sentry-dsn"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-  secret_string   = var.fpo_search_sentry_dsn
+module "fpo_search_configuration" {
+  source                = "../../../modules/secret/"
+  name                  = "fpo-search-configuration"
+  kms_key_arn           = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window       = 7
+  create_secret_version = false
 }
+
+######### OLD WORLD SECRETS START HERE ##########
 
 module "slack_notify_lambda_slack_webhook_url" {
   source          = "../../../modules/secret/"
