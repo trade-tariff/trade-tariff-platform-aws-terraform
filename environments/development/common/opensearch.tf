@@ -67,9 +67,10 @@ module "opensearch" {
 
   master_instance_enabled = false
   warm_instance_enabled   = false
-  instance_count          = 3
-  instance_type           = "m5.xlarge.search"
+  instance_count          = 1
+  instance_type           = "t3.small.search"
   ebs_volume_size         = 80
+  availability_zones      = 1
 
   create_master_user = true
   encrypt_kms_key_id = aws_kms_key.opensearch_kms_key.key_id
