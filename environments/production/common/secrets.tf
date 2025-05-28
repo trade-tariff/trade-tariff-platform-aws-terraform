@@ -95,3 +95,11 @@ module "slack_notify_lambda_slack_webhook_url" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
 }
+
+module "backups_basic_auth" {
+  source          = "../../../modules/secret/"
+  name            = "backups-basic-auth"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = var.backups_basic_auth
+}

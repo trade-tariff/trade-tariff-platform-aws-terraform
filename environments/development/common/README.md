@@ -59,6 +59,7 @@ No outputs.
 | <a name="module_backend_uk_worker_configuration"></a> [backend\_uk\_worker\_configuration](#module\_backend\_uk\_worker\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xi_api_configuration"></a> [backend\_xi\_api\_configuration](#module\_backend\_xi\_api\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_backend_xi_worker_configuration"></a> [backend\_xi\_worker\_configuration](#module\_backend\_xi\_worker\_configuration) | ../../../modules/secret/ | n/a |
+| <a name="module_backups_basic_auth"></a> [backups\_basic\_auth](#module\_backups\_basic\_auth) | ../../../modules/secret/ | n/a |
 | <a name="module_backups_cdn"></a> [backups\_cdn](#module\_backups\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../../modules/cloudwatch/ | n/a |
