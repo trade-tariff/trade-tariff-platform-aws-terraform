@@ -60,6 +60,7 @@ module "commodi_tea_cognito" {
   source = "../../../modules/cognito"
 
   pool_name              = "commodi-tea-user-pool"
+  user_pool_tier         = "ESSENTIALS"
   domain                 = "auth.tea.${var.domain_name}"
   domain_certificate_arn = module.acm.validated_certificate_arn
 
@@ -112,6 +113,12 @@ module "commodi_tea_cognito" {
     "ALLOW_USER_SRP_AUTH",
     "ALLOW_REFRESH_TOKEN_AUTH",
   ]
+
+  client_token_validity = {
+    refresh_token = {
+      units = "days"
+    }
+  }
 
   invite_message_template = {
     email_subject = "Your New 'Commodi-Tea Staging' Account"
