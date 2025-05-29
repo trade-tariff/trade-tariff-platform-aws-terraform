@@ -12,24 +12,41 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
+    nixpkgs-ruby = {
+      url = "github:bobvanderlinden/nixpkgs-ruby";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, nixpkgs-terraform }:
+  outputs = { self, nixpkgs, flake-utils, nixpkgs-terraform, nixpkgs-ruby }:
     flake-utils.lib.eachDefaultSystem (system:
       let
+        pkgs = import nixpkgs {
+          system = system;
+          overlays = [ nixpkgs-ruby.overlays.default ];
+        };
+
+        rubyVersion = builtins.head (builtins.split "\n" (builtins.readFile ./.ruby-version));
+        ruby = pkgs."ruby-${rubyVersion}";
+
         terraform = nixpkgs-terraform.packages.${system}."1.11";
-        pkgs = import nixpkgs { inherit system; };
 
         lint = pkgs.writeScriptBin "lint" ''
           ${pkgs.pre-commit}/bin/pre-commit run -a
         '';
 
-        clean = pkgs.writeScriptBin "clean" ''
+        clean-terraform = pkgs.writeScriptBin "clean-terraform" ''
           find . -type d -name ".terraform" -exec rm -rf {} \;
-          find . -type f -name ".terraform.lock.hcl" -delete
+        '';
+
+        clean = pkgs.writeScriptBin "clean" ''
+          clean-terraform && find . -type f -name ".terraform.lock.hcl" -delete
         '';
 
         init = pkgs.writeScriptBin "init" ''
+          clean-terraform
+
           for m in modules/*; do
             if [ -d $m ]; then
               terraform -chdir=$m init
@@ -59,8 +76,10 @@
             trufflehog       # For trufflehog secret scanning
             lint             # Custom lint script
             init             # Custom init script to get all the modules for validation
-            clean            # Custom init script to clean up modules
+            clean            # Custom script to clean up .terraform.lock.hcl files and .terraform.lock.hcl
             update-providers # Custom init script to get all the modules for validation
+            clean-terraform  # Custom script to clean up .terraform directories
+            ruby             # Ruby interpreter for myott lambdas
           ];
         };
       });

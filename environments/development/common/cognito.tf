@@ -19,6 +19,12 @@ module "dev_hub_cognito" {
       scope_description = "Protected API route."
     }
   ]
+
+  client_token_validity = {
+    refresh_token = {
+      units = "days"
+    }
+  }
 }
 
 resource "aws_route53_record" "cognito_custom_domain" {
@@ -60,6 +66,7 @@ module "commodi_tea_cognito" {
   source = "../../../modules/cognito"
 
   pool_name              = "commodi-tea-user-pool"
+  user_pool_tier         = "ESSENTIALS"
   domain                 = "auth.tea.${var.domain_name}"
   domain_certificate_arn = module.acm.validated_certificate_arn
 
@@ -115,8 +122,14 @@ module "commodi_tea_cognito" {
     "ALLOW_REFRESH_TOKEN_AUTH",
   ]
 
+  client_token_validity = {
+    refresh_token = {
+      units = "days"
+    }
+  }
+
   invite_message_template = {
-    email_subject = "Your New 'Commodi-Tea Dev' Account"
+    email_subject = "Your New 'Commodi-Tea ${title(var.environment)}' Account"
     email_message = <<EOT
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +142,7 @@ module "commodi_tea_cognito" {
     <table style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; padding: 20px;">
         <tr>
             <td>
-                <p style="color: #555555;">You have been invited to access <a href="https://tea.dev.trade-tariff.service.gov.uk/" style="color: #1a73e8;">Commodi-Tea</a>. Please use the following details to log in and set up your account:</p>
+                <p style="color: #555555;">You have been invited to access <a href="https://tea.${var.domain_name}/" style="color: #1a73e8;">Commodi-Tea</a>. Please use the following details to log in and set up your account:</p>
 
                 <p style="color: #555555; margin-bottom: 4px;"><strong>Username:</strong> {username}</p>
                 <p style="color: #555555; margin-top: 4px; margin-bottom: 4px;"><strong>Temporary Password:</strong> {####}</p>

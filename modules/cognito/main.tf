@@ -7,11 +7,14 @@ resource "null_resource" "schema_checksum" {
 resource "aws_cognito_user_pool" "this" {
   name = var.pool_name
 
+  user_pool_tier             = var.user_pool_tier
   alias_attributes           = var.alias_attributes
   auto_verified_attributes   = var.auto_verified_attributes
   mfa_configuration          = var.mfa_configuration
   sms_authentication_message = var.sms_authentication_message
   username_attributes        = var.username_attributes
+
+  deletion_protection = var.prevent_deletion ? "ACTIVE" : "INACTIVE"
 
   dynamic "account_recovery_setting" {
     for_each = length(var.recovery_mechanisms) > 0 ? [true] : []
@@ -88,6 +91,7 @@ resource "aws_cognito_user_pool" "this" {
     for_each = var.password_policy != null ? [var.password_policy] : []
     content {
       minimum_length                   = password_policy.value.minimum_length
+      password_history_size            = password_policy.value.password_history_size
       require_lowercase                = password_policy.value.require_lowercase
       require_numbers                  = password_policy.value.require_numbers
       require_symbols                  = password_policy.value.require_symbols
@@ -146,6 +150,13 @@ resource "aws_cognito_user_pool" "this" {
     advanced_security_mode = var.advanced_security_mode
   }
 
+  dynamic "sign_in_policy" {
+    for_each = var.allowed_first_auth_factors != null ? [1] : []
+    content {
+      allowed_first_auth_factors = var.allowed_first_auth_factors
+    }
+  }
+
   username_configuration {
     case_sensitive = var.case_sensitive_usernames
   }
@@ -201,15 +212,16 @@ resource "aws_cognito_user_pool_client" "this" {
 
   prevent_user_existence_errors = var.client_prevent_user_existence_errors ? "ENABLED" : "LEGACY"
 
-  access_token_validity  = var.client_access_token_validity
-  id_token_validity      = var.client_id_token_validity
-  refresh_token_validity = var.client_refresh_token_validity
+  auth_session_validity = var.client_auth_session_validity
 
-  # "seconds", "minutes", "hours", or "days"
+  access_token_validity  = var.client_token_validity["access_token"]["length"]
+  id_token_validity      = var.client_token_validity["id_token"]["length"]
+  refresh_token_validity = var.client_token_validity["refresh_token"]["length"]
+
   token_validity_units {
-    access_token  = "hours"
-    id_token      = "hours"
-    refresh_token = "days"
+    access_token  = var.client_token_validity["access_token"]["units"]
+    id_token      = var.client_token_validity["id_token"]["units"]
+    refresh_token = var.client_token_validity["refresh_token"]["units"]
   }
 }
 

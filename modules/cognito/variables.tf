@@ -196,15 +196,17 @@ variable "lambda_custom_sms_sender" {
 variable "password_policy" {
   description = "Object containing the password policy."
   type = object({
-    minimum_length                   = number,
-    require_lowercase                = bool,
-    require_numbers                  = bool,
-    require_symbols                  = bool,
-    require_uppercase                = bool,
+    minimum_length                   = number
+    password_history_size            = number
+    require_lowercase                = bool
+    require_numbers                  = bool
+    require_symbols                  = bool
+    require_uppercase                = bool
     temporary_password_validity_days = number
   })
   default = {
     minimum_length                   = 12
+    password_history_size            = 0
     require_lowercase                = true
     require_numbers                  = true
     require_symbols                  = true
@@ -321,22 +323,10 @@ variable "client_oauth_scopes" {
   default     = null
 }
 
-variable "client_access_token_validity" {
-  description = "Time (in hours) for access tokens to be valid. Defaults to `1`."
+variable "client_auth_session_validity" {
+  description = "Time (in minutes) for session to be valid in authentication flow. Defaults to `3` (minimum). Maximum value is `15`."
   type        = number
-  default     = 1
-}
-
-variable "client_refresh_token_validity" {
-  description = "Time (in days) for refresh tokens to be valid. Defaults to `1`."
-  type        = number
-  default     = 1
-}
-
-variable "client_id_token_validity" {
-  description = "Time (in hours) for ID tokens to be valid. Defaults to `1`."
-  type        = number
-  default     = 1
+  default     = 3
 }
 
 variable "client_read_attributes" {
@@ -384,7 +374,7 @@ variable "client_oauth_flow_allowed" {
 variable "client_generate_secret" {
   description = "Whether to generate a client secret for this application client."
   type        = bool
-  default     = false
+  default     = null
 }
 
 variable "tags" {
@@ -411,5 +401,81 @@ variable "resource_server_scopes" {
     scope_description = string
   }))
   description = "List of scopes for resource server."
+  default     = null
+}
+
+variable "client_token_validity" {
+  type = object({
+    access_token = optional(
+      object({
+        length = optional(number, 1)
+        units  = optional(string, "hours")
+      }),
+      {
+        length = 1
+        units  = "hours"
+      }
+    )
+    id_token = optional(
+      object({
+        length = optional(number, 1)
+        units  = optional(string, "hours")
+      }),
+      {
+        length = 1
+        units  = "hours"
+      }
+    )
+    refresh_token = optional(
+      object({
+        length = optional(number, 1)
+        units  = optional(string, "hours")
+      }),
+      {
+        length = 1
+        units  = "hours"
+      }
+    )
+  })
+
+  description = "Client token validity settings. Units can be 'seconds', 'minutes', 'hours', or 'days'. Default to 1 hour for all tokens."
+
+  default = {
+    access_token = {
+      length = 1
+      units  = "hours"
+    }
+    id_token = {
+      length = 1
+      units  = "hours"
+    }
+    refresh_token = {
+      length = 1
+      units  = "hours"
+    }
+  }
+
+}
+
+variable "prevent_deletion" {
+  type        = bool
+  description = "Whether to prevent deletion of the user pool. Defaults to `true`."
+  default     = true
+}
+
+variable "user_pool_tier" {
+  type        = string
+  description = "Feature plan name of the user pool. One of `LITE`, `ESSENTIALS`, or `PLUS`. Defaults to `LITE`."
+  default     = "LITE"
+
+  validation {
+    condition     = var.user_pool_tier == "LITE" || var.user_pool_tier == "ESSENTIALS" || var.user_pool_tier == "PLUS"
+    error_message = "Must be one of 'LITE', 'ESSENTIALS', or 'PLUS'."
+  }
+}
+
+variable "allowed_first_auth_factors" {
+  type        = list(string)
+  description = "A list of sign in methods supported as the first factor. Any of `PASSWORD`, `EMAIL_OTP`, `SMS_OTP`, and `WEB_AUTHN`."
   default     = null
 }
