@@ -36,6 +36,11 @@ jobs:
         with:
           ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
+      - uses: ruby/setup-ruby@v1
+
+      - run: bundle config set path 'vendor/bundle' && bundle install
+        working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
+
       - uses: autero1/action-terragrunt@v3
         with:
           terragrunt-version: ${{ env.TERRAGRUNT_VERSION }}
