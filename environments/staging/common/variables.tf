@@ -30,13 +30,3 @@ variable "waf_rpm_limit" {
   type        = number
   default     = 2000
 }
-
-#
-# super secret stuff
-#
-
-variable "backups_basic_auth" {
-  description = "base64 encoded credentials for backups basic auth."
-  type        = string
-  sensitive   = true
-}
