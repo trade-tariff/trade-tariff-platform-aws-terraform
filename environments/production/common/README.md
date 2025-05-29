@@ -6,6 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
+| <a name="requirement_archive"></a> [archive](#requirement\_archive) | >= 2 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | < 5.98.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3 |
 
@@ -13,6 +14,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.4.0 |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.97.0 |
 | <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | 5.97.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
@@ -43,7 +45,9 @@
 | <a name="module_cognito_client_secret"></a> [cognito\_client\_secret](#module\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_commodi_tea_cognito"></a> [commodi\_tea\_cognito](#module\_commodi\_tea\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_commodi_tea_configuration"></a> [commodi\_tea\_configuration](#module\_commodi\_tea\_configuration) | ../../../modules/secret/ | n/a |
+| <a name="module_create_auth_challenge"></a> [create\_auth\_challenge](#module\_create\_auth\_challenge) | ../../../modules/lambda | n/a |
 | <a name="module_db_replicate_configuration"></a> [db\_replicate\_configuration](#module\_db\_replicate\_configuration) | ../../../modules/secret/ | n/a |
+| <a name="module_define_auth_challenge"></a> [define\_auth\_challenge](#module\_define\_auth\_challenge) | ../../../modules/lambda | n/a |
 | <a name="module_dev_hub_cognito"></a> [dev\_hub\_cognito](#module\_dev\_hub\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_dev_hub_configuration"></a> [dev\_hub\_configuration](#module\_dev\_hub\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_download_cds_files_configuration"></a> [download\_cds\_files\_configuration](#module\_download\_cds\_files\_configuration) | ../../../modules/secret/ | n/a |
@@ -54,6 +58,7 @@
 | <a name="module_frontend_configuration"></a> [frontend\_configuration](#module\_frontend\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_identity_create_auth_challenge_configuration"></a> [identity\_create\_auth\_challenge\_configuration](#module\_identity\_create\_auth\_challenge\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
+| <a name="module_myott_cognito"></a> [myott\_cognito](#module\_myott\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_notify_slack"></a> [notify\_slack](#module\_notify\_slack) | ../../../modules/aws-notify-slack | n/a |
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | ../../../modules/opensearch | n/a |
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
@@ -71,6 +76,7 @@
 | <a name="module_tea_cognito_client_secret"></a> [tea\_cognito\_client\_secret](#module\_tea\_cognito\_client\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_tea_cognito_secret"></a> [tea\_cognito\_secret](#module\_tea\_cognito\_secret) | ../../../modules/secret/ | n/a |
 | <a name="module_tech_docs_cdn"></a> [tech\_docs\_cdn](#module\_tech\_docs\_cdn) | ../../../modules/cloudfront | n/a |
+| <a name="module_verify_auth_challenge"></a> [verify\_auth\_challenge](#module\_verify\_auth\_challenge) | ../../../modules/lambda | n/a |
 | <a name="module_waf"></a> [waf](#module\_waf) | ../../../modules/waf | n/a |
 
 ## Resources
@@ -107,6 +113,7 @@
 | [aws_iam_policy.ci_tech_docs_persistence_readwrite_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ci_terraform_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ci_terraform_teams_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.lambda_ses](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.appendix5a_ci_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.breakglass](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.ci_api_docs_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
@@ -169,6 +176,9 @@
 | [aws_wafv2_web_acl_logging_configuration.waf_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_logging_configuration) | resource |
 | [random_password.origin_header](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.tea_cognito_secret](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+| [archive_file.create_auth_challenge](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
+| [archive_file.define_auth_challenge](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
+| [archive_file.verify_auth_challenge](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_cloudfront_cache_policy.caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_iam_policy_document.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -176,6 +186,7 @@
 | [aws_iam_policy_document.breakglass_assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ecr_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.fpo_model_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.lambda_ses](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.logs_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.reporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3_kms_key_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -184,6 +195,7 @@
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_route53_zone.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 | [aws_secretsmanager_secret_version.backups_basic_auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
+| [aws_secretsmanager_secret_version.identity_create_auth_challenge_configuration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 | [aws_secretsmanager_secret_version.slack_notify_lambda_slack_webhook_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 | [terraform_remote_state.base](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 | [terraform_remote_state.development](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
