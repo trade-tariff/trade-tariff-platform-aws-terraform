@@ -59,8 +59,6 @@ jobs:
 
   plan-development:
     environment: development
-    env:
-      TF_VAR_backups_basic_auth: ${{ secrets.BACKUPS_BASIC_AUTH }}
 
     runs-on: ubuntu-latest
     steps:
@@ -93,7 +91,6 @@ jobs:
     needs: plan-development
     environment: development
     env:
-      TF_VAR_backups_basic_auth: ${{ secrets.BACKUPS_BASIC_AUTH }}
       TERRAGRUNT_NON_INTERACTIVE: true
       TF_INPUT: false
       TF_IN_AUTOMATION: 1
@@ -162,8 +159,6 @@ jobs:
 
   plan-staging:
     environment: staging
-    env:
-      TF_VAR_backups_basic_auth: ${{ secrets.BACKUPS_BASIC_AUTH }}
 
     runs-on: ubuntu-latest
     steps:
@@ -194,8 +189,6 @@ jobs:
 
   plan-production:
     environment: production
-    env:
-      TF_VAR_backups_basic_auth: ${{ secrets.BACKUPS_BASIC_AUTH }}
 
     runs-on: ubuntu-latest
     steps:

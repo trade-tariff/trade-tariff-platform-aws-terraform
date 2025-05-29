@@ -88,7 +88,6 @@ module "backups_basic_auth" {
   name            = "backups-basic-auth"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = var.backups_basic_auth
 }
 
 module "identity_create_auth_challenge_configuration" {
