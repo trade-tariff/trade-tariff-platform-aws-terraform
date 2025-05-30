@@ -8,6 +8,7 @@ locals {
     "fpo-developer-hub-backend",
     "fpo-developer-hub-frontend",
     "frontend",
+    "identity",
     "tea"
   ]
 }

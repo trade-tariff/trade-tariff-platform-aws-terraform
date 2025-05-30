@@ -10,6 +10,7 @@ locals {
     "fpo-developer-hub-frontend",
     "fpo-search",
     "frontend",
+    "identity",
     "tea"
   ]
 }

@@ -4,6 +4,7 @@ locals {
     "admin",
     "backend",
     "duty-calculator",
+    "identity",
     "frontend",
   ]
 }
