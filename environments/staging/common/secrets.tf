@@ -76,6 +76,13 @@ module "fpo_search_configuration" {
   recovery_window = 7
 }
 
+module "identity_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "identity-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
+
 module "slack_notify_lambda_slack_webhook_url" {
   source          = "../../../modules/secret/"
   name            = "slack-notify-lambda-slack-webhook-url"
