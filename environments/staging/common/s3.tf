@@ -6,8 +6,6 @@ locals {
     lambda-deployment = "trade-tariff-lambda-deployment-${local.account_id}"
     persistence       = "trade-tariff-persistence-${local.account_id}"
     reporting         = "trade-tariff-reporting-${local.account_id}"
-    models            = "trade-tariff-models-${local.account_id}"
-    status-checks     = "trade-tariff-status-checks-${local.account_id}"
     ses-inbound       = "trade-tariff-ses-inbound-${local.account_id}"
   }
 }

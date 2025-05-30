@@ -48,11 +48,9 @@ resource "aws_iam_role" "serverless_lambda_ci_role" {
           },
           StringLike = {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
-              "repo:trade-tariff/trade-tariff-lambdas-status-checks:*",
               "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
               "repo:trade-tariff/trade-tariff-lambdas-fpo-model-garbage-collection:*",
               "repo:trade-tariff/trade-tariff-lambdas-electronic-tariff-file-rotations:*",
-              "repo:trade-tariff/trade-tariff-lambdas-uk-issues-mailer:*",
               "repo:trade-tariff/trade-tariff-lambdas-database-backups:*",
             ]
           }
@@ -287,13 +285,9 @@ resource "aws_iam_role" "ci_ecs_deployments_role" {
               "repo:trade-tariff/trade-tariff-api-docs:*",
               "repo:trade-tariff/trade-tariff-backend:*",
               "repo:trade-tariff/trade-tariff-commodi-tea:*",
-              "repo:trade-tariff/trade-tariff-dev-hub-backend:*",
-              "repo:trade-tariff/trade-tariff-dev-hub-frontend:*",
               "repo:trade-tariff/trade-tariff-dev-hub:*",
               "repo:trade-tariff/trade-tariff-duty-calculator:*",
               "repo:trade-tariff/trade-tariff-frontend:*",
-              "repo:trade-tariff/trade-tariff-lambdas-database-backups:*",
-              "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
             ]
           }
         }
