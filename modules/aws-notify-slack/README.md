@@ -11,7 +11,7 @@ This module is derived from official terraform module https://github.com/terrafo
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.98.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.99.0 |
 
 ## Modules
 
