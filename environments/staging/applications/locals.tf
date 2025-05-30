@@ -6,6 +6,7 @@ locals {
     "duty-calculator",
     "dev-hub",
     "frontend",
+    "identity",
     "tea"
   ]
 }

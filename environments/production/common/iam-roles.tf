@@ -281,6 +281,7 @@ resource "aws_iam_role" "ci_ecs_deployments_role" {
           },
           StringLike = {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
+              "repo:trade-tariff/identity:*",
               "repo:trade-tariff/trade-tariff-admin:*",
               "repo:trade-tariff/trade-tariff-api-docs:*",
               "repo:trade-tariff/trade-tariff-backend:*",
