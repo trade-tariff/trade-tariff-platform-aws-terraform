@@ -37,7 +37,7 @@
         '';
 
         clean-terraform = pkgs.writeScriptBin "clean-terraform" ''
-          find . -type d -name ".terraform" -exec rm -rf {} \;
+          find . -type d -name ".terraform" | xargs -- rm -rf
         '';
 
         clean = pkgs.writeScriptBin "clean" ''
