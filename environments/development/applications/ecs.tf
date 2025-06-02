@@ -42,7 +42,7 @@ resource "aws_kms_key" "log_key" {
         Effect   = "Allow"
         Resource = "*"
         Principal = {
-          AWS = "arn:aws:iam::${local.account_id}:root"
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
         }
       },
       {
