@@ -656,7 +656,7 @@ resource "aws_iam_policy" "ci_fpo_models_secrets_policy" {
 
 resource "aws_iam_policy" "ci_preview_app_policy" {
   name        = "ci-preview-app-policy"
-  description = "Policy for Github Actions to enable"
+  description = "Policy for Github Actions to enable preview app deployments with preevy"
 
   policy = jsonencode({
     Version = "2012-10-17",
