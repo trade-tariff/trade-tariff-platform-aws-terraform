@@ -8,6 +8,7 @@ locals {
     "duty-calculator",
     "fpo-search",
     "frontend",
+    "identity",
     "tea"
   ]
 }

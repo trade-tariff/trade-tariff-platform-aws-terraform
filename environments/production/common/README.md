@@ -53,6 +53,7 @@
 | <a name="module_etf_configuration"></a> [etf\_configuration](#module\_etf\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_fpo_search_configuration"></a> [fpo\_search\_configuration](#module\_fpo\_search\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_frontend_configuration"></a> [frontend\_configuration](#module\_frontend\_configuration) | ../../../modules/secret/ | n/a |
+| <a name="module_identity_configuration"></a> [identity\_configuration](#module\_identity\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_identity_create_auth_challenge_configuration"></a> [identity\_create\_auth\_challenge\_configuration](#module\_identity\_create\_auth\_challenge\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
 | <a name="module_myott_cognito"></a> [myott\_cognito](#module\_myott\_cognito) | ../../../modules/cognito | n/a |

@@ -24,6 +24,12 @@ module "alb" {
       priority         = 5
     }
 
+    identity = {
+      hosts            = ["id.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 10
+    }
+
     duty_calculator = {
       paths            = ["/duty-calculator/*"]
       healthcheck_path = "/healthcheckz"
