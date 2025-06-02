@@ -328,6 +328,6 @@ resource "aws_iam_role" "ci_preview_app_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "ci_preview_app_policy_attachment" {
-  role       = aws_iam_role.ci_preview_app_role.nameAdd
+  role       = aws_iam_role.ci_preview_app_role.name
   policy_arn = aws_iam_policy.ci_preview_app_policy.arn
 }
