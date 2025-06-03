@@ -1,0 +1,23 @@
+name: checkov
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/checkov.yml'
+      - '**.tf'
+
+jobs:
+  scan:
+    permissions:
+      contents: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: bridgecrewio/checkov-action@v12
+        with:
+          framework: terraform
+          skip_check: CKV_TF_2
+          quiet: true
