@@ -18,6 +18,4 @@ jobs:
 
       - uses: bridgecrewio/checkov-action@v12
         with:
-          framework: terraform
-          skip_check: CKV_TF_2
-          quiet: true
+          config_file: .checkov.yaml

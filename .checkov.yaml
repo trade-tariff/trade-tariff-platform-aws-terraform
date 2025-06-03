@@ -1,0 +1,10 @@
+compact: true
+directory:
+- .
+evaluate-variables: true
+framework: terraform
+quiet: true
+skip-check:
+- CKV_TF_1
+- CKV_TF_2
+summary-position: top
