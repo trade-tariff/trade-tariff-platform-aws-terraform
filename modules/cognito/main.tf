@@ -239,3 +239,12 @@ resource "aws_cognito_resource_server" "this" {
     }
   }
 }
+
+resource "aws_cognito_user_group" "groups" {
+  for_each     = { for group in var.user_groups : group.name => group }
+  name         = each.value.name
+  user_pool_id = aws_cognito_user_pool.this.id
+  description  = each.value.description
+  precedence   = each.value.precedence
+  role_arn     = each.value.role_arn
+}

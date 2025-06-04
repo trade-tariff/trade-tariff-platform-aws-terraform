@@ -84,4 +84,11 @@ module "identity_cognito" {
   ]
 
   client_identity_providers = ["COGNITO"]
+
+  user_groups = [
+    {
+      name        = "myott"
+      description = "MyOTT user group"
+    }
+  ]
 }

@@ -479,3 +479,14 @@ variable "allowed_first_auth_factors" {
   description = "A list of sign in methods supported as the first factor. Any of `PASSWORD`, `EMAIL_OTP`, `SMS_OTP`, and `WEB_AUTHN`."
   default     = null
 }
+
+variable "user_groups" {
+  type = list(object({
+    name        = string
+    description = optional(string, null)
+    precedence  = optional(number, null)
+    role_arn    = optional(string, null)
+  }))
+  description = "List of user groups to create. Each group can have a name, description, precedence, and role ARN."
+  default     = []
+}

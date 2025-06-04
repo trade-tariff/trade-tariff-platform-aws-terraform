@@ -30,3 +30,13 @@ output "cloudfront_distribution_arn" {
 output "cloudfront_distribution_zone_id" {
   value = length(aws_cognito_user_pool_domain.this) > 0 ? aws_cognito_user_pool_domain.this[0].cloudfront_distribution_zone_id : null
 }
+
+output "user_groups" {
+  description = "Map of user group names to their details"
+  value = { for k, v in aws_cognito_user_group.groups : k => {
+    name        = v.name
+    description = v.description
+    precedence  = v.precedence
+    role_arn    = v.role_arn
+  } }
+}
