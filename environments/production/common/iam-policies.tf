@@ -346,15 +346,6 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
       {
         Effect = "Allow",
         Action = [
-          "ssm:DescribeParameters",
-          "ssm:GetParameter",
-          "ssm:GetParameters"
-        ],
-        Resource = [for v in aws_ssm_parameter.ecr_url : v.arn]
-      },
-      {
-        Effect = "Allow",
-        Action = [
           "ecr:BatchCheckLayerAvailability",
           "ecr:BatchGetImage",
           "ecr:CompleteLayerUpload",

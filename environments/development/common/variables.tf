@@ -16,15 +16,6 @@ variable "region" {
   default     = "eu-west-2"
 }
 
-variable "account_ids" {
-  type = map(string)
-  default = {
-    "development" = "844815912454"
-    "staging"     = "451934005581"
-    "production"  = "382373577178"
-  }
-}
-
 variable "waf_rpm_limit" {
   description = "Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. "
   type        = number
