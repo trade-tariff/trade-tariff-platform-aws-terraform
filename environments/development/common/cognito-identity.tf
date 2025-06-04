@@ -1,4 +1,4 @@
-module "myott_cognito" {
+module "identity_cognito" {
   source = "../../../modules/cognito"
 
   pool_name      = "trade-tariff-identity-user-pool"

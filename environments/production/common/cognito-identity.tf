@@ -1,4 +1,4 @@
-module "myott_cognito" {
+module "identity_cognito" {
   source = "../../../modules/cognito"
 
   pool_name      = "trade-tariff-identity-user-pool"
@@ -84,4 +84,11 @@ module "myott_cognito" {
   ]
 
   client_identity_providers = ["COGNITO"]
+
+  user_groups = [
+    {
+      name        = "myott"
+      description = "MyOTT user group"
+    }
+  ]
 }
