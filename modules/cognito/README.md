@@ -57,6 +57,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_cognito_resource_server.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_resource_server) | resource |
+| [aws_cognito_user_group.groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_group) | resource |
 | [aws_cognito_user_pool.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool) | resource |
 | [aws_cognito_user_pool_client.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client) | resource |
 | [aws_cognito_user_pool_domain.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_domain) | resource |
@@ -124,6 +125,7 @@ No modules.
 | <a name="input_sms_authentication_message"></a> [sms\_authentication\_message](#input\_sms\_authentication\_message) | String to use as the SMS authentication message. Must contain '{####}' placeholder. | `string` | `"Your temporary password is {####}."` | no |
 | <a name="input_sms_configuration"></a> [sms\_configuration](#input\_sms\_configuration) | SMS configuration object. Contains external\_id and sns\_caller\_arn. | <pre>object({<br/>    external_id    = string<br/>    sns_caller_arn = string<br/>  })</pre> | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources. | `map(string)` | `{}` | no |
+| <a name="input_user_groups"></a> [user\_groups](#input\_user\_groups) | List of user groups to create. Each group can have a name, description, precedence, and role ARN. | <pre>list(object({<br/>    name        = string<br/>    description = optional(string, null)<br/>    precedence  = optional(number, null)<br/>    role_arn    = optional(string, null)<br/>  }))</pre> | `[]` | no |
 | <a name="input_user_pool_tier"></a> [user\_pool\_tier](#input\_user\_pool\_tier) | Feature plan name of the user pool. One of `LITE`, `ESSENTIALS`, or `PLUS`. Defaults to `LITE`. | `string` | `"LITE"` | no |
 | <a name="input_username_attributes"></a> [username\_attributes](#input\_username\_attributes) | If email addresses, and/or phone numbers can be used as usernames when a user signs up. | `list(string)` | `null` | no |
 | <a name="input_verification_message_template"></a> [verification\_message\_template](#input\_verification\_message\_template) | Verification message object. | <pre>object({<br/>    default_email_option  = string<br/>    email_message         = string<br/>    email_message_by_link = string<br/>    email_subject         = string<br/>    email_subject_by_link = string<br/>    sms_message           = string<br/>  })</pre> | <pre>{<br/>  "default_email_option": "CONFIRM_WITH_CODE",<br/>  "email_message": "Your verification code is {####}.",<br/>  "email_message_by_link": "Please click the link to verify your email address. {##Verify email##}.",<br/>  "email_subject": "Your Verification Code",<br/>  "email_subject_by_link": "Your Verification Link",<br/>  "sms_message": "Your verification code is {####}."<br/>}</pre> | no |
@@ -137,6 +139,7 @@ No modules.
 | <a name="output_cloudfront_distribution_arn"></a> [cloudfront\_distribution\_arn](#output\_cloudfront\_distribution\_arn) | n/a |
 | <a name="output_cloudfront_distribution_zone_id"></a> [cloudfront\_distribution\_zone\_id](#output\_cloudfront\_distribution\_zone\_id) | n/a |
 | <a name="output_domain"></a> [domain](#output\_domain) | n/a |
+| <a name="output_user_groups"></a> [user\_groups](#output\_user\_groups) | Map of user group names to their details |
 | <a name="output_user_pool_arn"></a> [user\_pool\_arn](#output\_user\_pool\_arn) | n/a |
 | <a name="output_user_pool_id"></a> [user\_pool\_id](#output\_user\_pool\_id) | n/a |
 | <a name="output_user_pool_public_keys_url"></a> [user\_pool\_public\_keys\_url](#output\_user\_pool\_public\_keys\_url) | n/a |

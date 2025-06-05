@@ -43,7 +43,7 @@ resource "aws_lambda_permission" "allow_cognito_invoke_create_auth_challenge" {
   action        = "lambda:InvokeFunction"
   function_name = module.create_auth_challenge.lambda_arn
   principal     = "cognito-idp.amazonaws.com"
-  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.myott_cognito.user_pool_id}"
+  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.identity_cognito.user_pool_id}"
 }
 
 module "define_auth_challenge" {
@@ -62,7 +62,7 @@ resource "aws_lambda_permission" "allow_cognito_invoke_define_auth_challenge" {
   action        = "lambda:InvokeFunction"
   function_name = module.define_auth_challenge.lambda_arn
   principal     = "cognito-idp.amazonaws.com"
-  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.myott_cognito.user_pool_id}"
+  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.identity_cognito.user_pool_id}"
 }
 
 module "verify_auth_challenge" {
@@ -81,5 +81,5 @@ resource "aws_lambda_permission" "allow_cognito_invoke_verify_auth_challenge" {
   action        = "lambda:InvokeFunction"
   function_name = module.verify_auth_challenge.lambda_arn
   principal     = "cognito-idp.amazonaws.com"
-  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.myott_cognito.user_pool_id}"
+  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.identity_cognito.user_pool_id}"
 }

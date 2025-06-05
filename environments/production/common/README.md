@@ -56,7 +56,7 @@
 | <a name="module_identity_configuration"></a> [identity\_configuration](#module\_identity\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_identity_create_auth_challenge_configuration"></a> [identity\_create\_auth\_challenge\_configuration](#module\_identity\_create\_auth\_challenge\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
-| <a name="module_myott_cognito"></a> [myott\_cognito](#module\_myott\_cognito) | ../../../modules/cognito | n/a |
+| <a name="module_identity_cognito"></a> [identity\_cognito](#module\_identity\_cognito) | ../../../modules/cognito | n/a |
 | <a name="module_notify_slack"></a> [notify\_slack](#module\_notify\_slack) | ../../../modules/aws-notify-slack | n/a |
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | ../../../modules/opensearch | n/a |
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
