@@ -5,7 +5,6 @@ locals {
     "backend",
     "database-backups",
     "dev-hub",
-    "duty-calculator",
     "fpo-search",
     "frontend",
     "identity",

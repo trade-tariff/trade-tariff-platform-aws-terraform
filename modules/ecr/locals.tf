@@ -36,11 +36,6 @@ locals {
       production_images_to_keep  = 5
       development_images_to_keep = 30
     },
-    "duty-calculator" = {
-      lifecycle_policy           = true
-      production_images_to_keep  = 30
-      development_images_to_keep = 30
-    },
     "frontend" = {
       lifecycle_policy           = true
       production_images_to_keep  = 5
