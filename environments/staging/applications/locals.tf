@@ -3,7 +3,6 @@ locals {
   applications = [
     "admin",
     "backend",
-    "duty-calculator",
     "dev-hub",
     "frontend",
     "identity",
