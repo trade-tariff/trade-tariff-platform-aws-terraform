@@ -92,9 +92,9 @@ resource "aws_cloudfront_distribution" "this" {
       # NOTE:These are for legacy cache policies (where the cache policy is present this is vestigial).
       #
       # These defaults are what you get if you create a distribution without a legacy cache policy.
-      min_ttl     = lookup(i.value, "min_ttl", 1)
-      default_ttl = lookup(i.value, "default_ttl", 1800)
-      max_ttl     = lookup(i.value, "max_ttl", 1800)
+      min_ttl     = lookup(i.value, "min_ttl", 0)
+      default_ttl = lookup(i.value, "default_ttl", 0)
+      max_ttl     = lookup(i.value, "max_ttl", 0)
 
       cache_policy_id            = i.value["cache_policy_id"]
       origin_request_policy_id   = i.value["origin_request_policy_id"]
@@ -141,9 +141,9 @@ resource "aws_cloudfront_distribution" "this" {
       trusted_signers           = lookup(i.value, "trusted_signers", null)
 
       # NOTE:These are for legacy cache policies (where the cache policy is present this is vestigial).
-      min_ttl     = lookup(i.value, "min_ttl", 1)
-      default_ttl = lookup(i.value, "default_ttl", 1800)
-      max_ttl     = lookup(i.value, "max_ttl", 1800)
+      min_ttl     = lookup(i.value, "min_ttl", 0)
+      default_ttl = lookup(i.value, "default_ttl", 0)
+      max_ttl     = lookup(i.value, "max_ttl", 0)
 
       cache_policy_id            = i.value["cache_policy_id"]
       origin_request_policy_id   = i.value["origin_request_policy_id"]
