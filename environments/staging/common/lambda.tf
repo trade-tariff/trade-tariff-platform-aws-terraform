@@ -36,8 +36,6 @@ module "create_auth_challenge" {
   memory_size      = 512
 
   environment_variables = local.create_auth_challenge_configuration_secret_map
-
-  additional_policy_arns = [aws_iam_policy.lambda_ses.arn]
 }
 
 module "define_auth_challenge" {
@@ -62,20 +60,26 @@ module "verify_auth_challenge" {
   memory_size      = 512
 }
 
-data "aws_iam_policy_document" "lambda_ses" {
-  statement {
-    sid    = 1
-    effect = "Allow"
-    actions = [
-      "ses:SendEmail",
-      "ses:SendRawEmail"
-    ]
-    resources = ["*"]
-  }
+resource "aws_lambda_permission" "allow_cognito_invoke_create_auth_challenge" {
+  statement_id  = "AllowExecutionFromCognitoCreateAuthChallenge"
+  action        = "lambda:InvokeFunction"
+  function_name = module.create_auth_challenge.lambda_arn
+  principal     = "cognito-idp.amazonaws.com"
+  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.identity_cognito.user_pool_id}"
 }
 
-resource "aws_iam_policy" "lambda_ses" {
-  name   = "lambda-ses-policy"
-  path   = "/"
-  policy = data.aws_iam_policy_document.lambda_ses.json
+resource "aws_lambda_permission" "allow_cognito_invoke_define_auth_challenge" {
+  statement_id  = "AllowExecutionFromCognitoDefineAuthChallenge"
+  action        = "lambda:InvokeFunction"
+  function_name = module.define_auth_challenge.lambda_arn
+  principal     = "cognito-idp.amazonaws.com"
+  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.identity_cognito.user_pool_id}"
+}
+
+resource "aws_lambda_permission" "allow_cognito_invoke_verify_auth_challenge" {
+  statement_id  = "AllowExecutionFromCognitoVerifyAuthChallenge"
+  action        = "lambda:InvokeFunction"
+  function_name = module.verify_auth_challenge.lambda_arn
+  principal     = "cognito-idp.amazonaws.com"
+  source_arn    = "arn:aws:cognito-idp:${var.region}:${local.account_id}:userpool/${module.identity_cognito.user_pool_id}"
 }

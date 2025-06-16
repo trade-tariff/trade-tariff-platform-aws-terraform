@@ -30,25 +30,22 @@ module "alb" {
       priority         = 10
     }
 
-    duty_calculator = {
-      paths            = ["/duty-calculator/*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 17
-    }
-
     backend_uk = {
       paths = [
-        "/users/*",
         "/api/*",
+        "/sidekiq*",
         "/uk/api/*",
-        "/uk/users/*"
+        "/user/*",
       ]
       healthcheck_path = "/healthcheckz"
       priority         = 20
     }
 
     backend_xi = {
-      paths            = ["/xi/api/*", "/xi/users/*"]
+      paths = [
+        "/xi/api/*",
+        "/xi/sidekiq*",
+      ]
       healthcheck_path = "/healthcheckz"
       priority         = 21
     }

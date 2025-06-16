@@ -20,13 +20,6 @@ module "dev" {
   recovery_window = 7
 }
 
-module "duty_calculator_configuration" {
-  source          = "../../../modules/secret/"
-  name            = "duty-calculator-configuration"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-}
-
 module "frontend_configuration" {
   source          = "../../../modules/secret/"
   name            = "frontend-configuration"
