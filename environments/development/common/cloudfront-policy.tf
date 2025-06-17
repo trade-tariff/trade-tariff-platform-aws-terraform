@@ -84,6 +84,7 @@ resource "aws_cloudfront_response_headers_policy" "this" {
       access_control_max_age_sec = 31536000
       include_subdomains         = true
       override                   = true
+      preload                    = true
     }
 
     xss_protection {
