@@ -8,6 +8,9 @@ locals {
     reporting         = "trade-tariff-reporting-${local.account_id}"
     ses-inbound       = "trade-tariff-ses-inbound-${local.account_id}"
   }
+  buckets_with_versioning = {
+    persistence = local.buckets.persistence
+  }
 }
 
 resource "aws_kms_key" "s3" {
@@ -59,9 +62,7 @@ resource "aws_s3_bucket" "this" {
 }
 
 resource "aws_s3_bucket_versioning" "this" {
-  for_each = {
-    for k, v in local.buckets : k => v if k != "database-backups"
-  }
+  for_each = local.buckets_with_versioning
 
   bucket = aws_s3_bucket.this[each.key].id
 
@@ -160,4 +161,18 @@ resource "aws_iam_role_policy" "ses_s3_policy" {
       }
     ]
   })
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "database_backups_rotation" {
+  bucket = aws_s3_bucket.this["database-backups"].id
+
+  rule {
+    id = "rotate-database-backups"
+
+    expiration {
+      days = 60
+    }
+
+    status = "Enabled"
+  }
 }
