@@ -58,3 +58,6 @@ skip-deprovision
 **/builds
 **/tmp
 *.zip
+
+common/lambda/trade-tariff-identity-create-auth-challenge/.bundle/
+common/lambda/trade-tariff-identity-create-auth-challenge/vendor/
