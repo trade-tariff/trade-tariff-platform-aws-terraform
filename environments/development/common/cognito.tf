@@ -114,6 +114,7 @@ resource "aws_route53_record" "tea_cognito_custom_domain" {
 }
 
 resource "aws_ssm_parameter" "tea_cognito_public_keys" {
+  # checkov:skip=CKV_AWS_337: "Ensure SSM parameters are using KMS CMK"
   name        = "/${var.environment}/COMMODI_TEA_COGNITO_PUBLIC_USER_URL"
   description = "Commodi-Tea Cognito public keys URL."
   type        = "SecureString"

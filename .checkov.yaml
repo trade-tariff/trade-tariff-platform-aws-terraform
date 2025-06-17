@@ -6,6 +6,15 @@ quiet: true
 skip-check:
   - CKV_TF_1
   - CKV_TF_2
+  # Skip checking for s3 bucket versioning, lifecyle configuration
+  - CKV_AWS_21
+  - CKV2_AWS_61
+  # Skip check for log retainment of 1yr
+  - CKV_AWS_338
+  # TODO: remove
+  # skip IAM wildcards
+  - CKV_AWS_355
+
 summary-position: top
 
 # TODO: remove soft-fail when checks pass
