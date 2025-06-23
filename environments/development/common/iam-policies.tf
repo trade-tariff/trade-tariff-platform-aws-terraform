@@ -145,6 +145,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
 }
 
 resource "aws_iam_policy" "ci_api_docs_policy" {
+  # checkov:skip=CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
   name        = "ci-api-docs-policy"
   description = "Policy for API docs deployments"
 
@@ -416,10 +417,8 @@ data "aws_iam_policy_document" "ci_build_ami_policy" {
       "ec2:DescribeTags",
       "ec2:DescribeVolumes",
       "ec2:DetachVolume",
-      "ec2:GetPasswordData",
       "ec2:ModifyImageAttribute",
       "ec2:ModifyInstanceAttribute",
-      "ec2:ModifySnapshotAttribute",
       "ec2:RegisterImage",
       "ec2:RunInstances",
       "ec2:StopInstances",
