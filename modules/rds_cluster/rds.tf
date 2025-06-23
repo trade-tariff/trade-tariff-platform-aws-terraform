@@ -5,6 +5,8 @@ resource "aws_rds_cluster" "this" {
   engine_mode    = var.engine_mode
   engine_version = var.engine_version
 
+  allow_major_version_upgrade = true
+
   master_username = var.username
   master_password = random_password.master_password.result
 
