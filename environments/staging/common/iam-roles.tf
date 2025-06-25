@@ -263,3 +263,35 @@ resource "aws_iam_role_policy_attachment" "api_docs_ci_policy_attachment" {
   role       = aws_iam_role.ci_api_docs_role.name
   policy_arn = aws_iam_policy.ci_api_docs_policy.arn
 }
+
+resource "aws_iam_role" "ci_preview_app_role" {
+  name = "GithubActions-Preview-App-Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          },
+          StringLike = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
+              "repo:trade-tariff/trade-tariff-frontend:*",
+            ]
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ci_preview_app_policy_attachment" {
+  role       = aws_iam_role.ci_preview_app_role.name
+  policy_arn = aws_iam_policy.ci_preview_app_policy.arn
+}
