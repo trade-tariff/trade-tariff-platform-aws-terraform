@@ -7,7 +7,7 @@ locals {
     persistence       = "trade-tariff-persistence-${local.account_id}"
     reporting         = "trade-tariff-reporting-${local.account_id}"
     ses-inbound       = "trade-tariff-ses-inbound-${local.account_id}"
-    preevy-profile   = "preevy-profile-store"
+    preevy-profile    = "preevy-profile-store"
   }
   buckets_with_versioning = {
     persistence = local.buckets.persistence

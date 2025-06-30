@@ -16,7 +16,7 @@ resource "aws_db_instance" "this" {
   maintenance_window      = var.maintenance_window
   skip_final_snapshot     = true
 
-  allow_major_version_upgrade = false
+  allow_major_version_upgrade = true
   auto_minor_version_upgrade  = true
   # apply db modifications during maintenance windows only
   # this prevents downtime as the server restarts
