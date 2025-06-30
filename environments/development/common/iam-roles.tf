@@ -319,6 +319,8 @@ resource "aws_iam_role" "ci_preview_app_role" {
           StringLike = {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
               "repo:trade-tariff/trade-tariff-frontend:*",
+              "repo:trade-tariff/trade-tariff-admin:*",
+              "repo:trade-tariff/trade-tariff-tools:*",
             ]
           }
         }
