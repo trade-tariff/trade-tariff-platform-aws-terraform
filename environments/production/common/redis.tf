@@ -1,9 +1,9 @@
 locals {
-  redis = toset([
-    "frontend",
-    "backend-uk",
-    "backend-xi",
-  ])
+  redis = {
+    "frontend"   = "cache.r4.large",
+    "backend-uk" = "cache.t3.medium",
+    "backend-xi" = "cache.t3.medium",
+  }
 }
 
 resource "aws_elasticache_subnet_group" "this" {
@@ -35,7 +35,7 @@ module "redis" {
   parameter_group_name        = "default.redis7"
   num_node_groups             = 1
   replicas_per_node_group     = 2
-  node_type                   = "cache.t3.medium"
+  node_type                   = each.value
   security_group_ids          = [module.alb-security-group.redis_security_group_id]
   subnet_group_name           = aws_elasticache_subnet_group.this.name
   multi_az_enabled            = true
