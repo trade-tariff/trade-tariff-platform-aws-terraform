@@ -33,6 +33,10 @@ resource "aws_db_instance" "this" {
   vpc_security_group_ids = var.security_group_ids
 
   tags = local.tags
+
+  lifecycle {
+    ignore_changes = [db_name]
+  }
 }
 
 resource "aws_db_subnet_group" "rds_private_subnet" {

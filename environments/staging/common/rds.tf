@@ -2,7 +2,7 @@ module "postgres_commodi_tea" {
   source = "../../../modules/rds"
 
   environment    = var.environment
-  name           = "PostgresCommodiTea"
+  name           = "postgrescommoditea"
   engine         = "postgres"
   engine_version = "16.8"
 

@@ -2,7 +2,7 @@ module "postgres_commodi_tea" {
   source = "../../../modules/rds"
 
   environment    = var.environment
-  name           = "PostgresCommodiTea"
+  name           = "postgrescommoditea"
   engine         = "postgres"
   engine_version = "16"
 
@@ -43,7 +43,7 @@ module "postgres_aurora" {
   apply_immediately = true
 
   instance_class = "db.serverless"
-  database_name  = "TradeTariffPostgres${title(var.environment)}"
+  database_name  = "tradetariffpostgres${var.environment}"
   username       = "tariff"
 
   encryption_at_rest = true

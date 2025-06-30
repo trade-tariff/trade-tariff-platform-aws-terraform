@@ -33,6 +33,10 @@ resource "aws_rds_cluster" "this" {
   apply_immediately = var.apply_immediately
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [database_name]
+  }
 }
 
 resource "aws_rds_cluster_instance" "this" {
