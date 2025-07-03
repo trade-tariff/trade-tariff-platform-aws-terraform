@@ -427,13 +427,6 @@ data "aws_iam_policy_document" "ci_build_ami_policy" {
     ]
 
     resources = ["*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:RequestedRegion"
-
-      values = ["us-east-1"]
-    }
   }
 
   statement {
