@@ -222,6 +222,7 @@ resource "aws_iam_role" "ci_ecs_deployments_role" {
               "repo:trade-tariff/trade-tariff-commodi-tea:*",
               "repo:trade-tariff/trade-tariff-dev-hub:*",
               "repo:trade-tariff/trade-tariff-frontend:*",
+              "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
               "repo:trade-tariff/trade-tariff-tools:*",
             ]
           }

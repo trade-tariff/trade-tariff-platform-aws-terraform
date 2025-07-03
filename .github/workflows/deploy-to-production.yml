@@ -71,7 +71,7 @@ jobs:
     needs: apply-production
     uses: trade-tariff/trade-tariff-tools/.github/workflows/e2e-tests.yml@main
     with:
-      test-url: "https://www.trade-tariff.service.gov.uk"
+      test-environment: production
 
   notifications:
       runs-on: ubuntu-latest
