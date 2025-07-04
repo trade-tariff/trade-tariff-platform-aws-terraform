@@ -5,22 +5,22 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_acm"></a> [acm](#module\_acm) | git@github.com:terraform-aws-modules/terraform-aws-acm | v5.0.0 |
+| <a name="module_acm"></a> [acm](#module\_acm) | git@github.com:terraform-aws-modules/terraform-aws-acm | v6.0.0 |
 
 ## Resources
 
