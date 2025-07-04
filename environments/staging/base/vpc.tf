@@ -1,11 +1,11 @@
 data "aws_region" "current" {}
 
 locals {
-  region = data.aws_region.current.name
+  region = data.aws_region.current.region
 }
 
 module "vpc" {
-  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v5.1.2"
+  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v6.0.1"
 
   name = "trade-tariff-staging-vpc"
   cidr = "10.0.0.0/16"

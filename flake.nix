@@ -30,7 +30,7 @@
         rubyVersion = builtins.head (builtins.split "\n" (builtins.readFile ./.ruby-version));
         ruby = pkgs."ruby-${rubyVersion}";
 
-        terraform = nixpkgs-terraform.packages.${system}."1.11";
+        terraform = nixpkgs-terraform.packages.${system}."1.12";
 
         lint = pkgs.writeScriptBin "lint" ''
           ${pkgs.pre-commit}/bin/pre-commit run -a
@@ -41,7 +41,7 @@
         '';
 
         clean = pkgs.writeScriptBin "clean" ''
-          clean-terraform && find . -type f -name ".terraform.lock.hcl" -delete
+          clean-terraform && find . -type f -name ".terraform.lock.hcl" -delete && find . -type f -name "backend.tf" -delete
         '';
 
         init = pkgs.writeScriptBin "init" ''

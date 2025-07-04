@@ -53,7 +53,7 @@ resource "aws_iam_role_policy" "log_exporter" {
         "ssm:GetParametersByPath",
         "ssm:PutParameter"
       ],
-      "Resource": "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-last-export/*",
+      "Resource": "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-last-export/*",
       "Effect": "Allow"
     },
     {
@@ -62,7 +62,7 @@ resource "aws_iam_role_policy" "log_exporter" {
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
-      "Resource": "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/log-exporter-*",
+      "Resource": "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/log-exporter-*",
       "Effect": "Allow"
     },
     {
