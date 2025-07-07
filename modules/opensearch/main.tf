@@ -1,5 +1,5 @@
 module "acm" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-acm?ref=v5.0.0"
+  source = "git@github.com:terraform-aws-modules/terraform-aws-acm?ref=v6.0.0"
 
   domain_name = "${var.cluster_name}.${data.aws_route53_zone.opensearch.name}"
   zone_id     = data.aws_route53_zone.opensearch.id

@@ -1,5 +1,5 @@
 module "ecs" {
-  source = "github.com/terraform-aws-modules/terraform-aws-ecs?ref=v5.12.1"
+  source = "github.com/terraform-aws-modules/terraform-aws-ecs?ref=v6.0.0"
 
   cluster_name = "trade-tariff-cluster-${var.environment}"
 
@@ -12,19 +12,13 @@ module "ecs" {
     }
   }
 
-  default_capacity_provider_use_fargate = true
-
-  fargate_capacity_providers = {
+  default_capacity_provider_strategy = {
     FARGATE = {
-      default_capacity_provider_strategy = {
-        weight = 50
-        base   = 20
-      }
+      weight = 50
+      base   = 20
     }
     FARGATE_SPOT = {
-      default_capacity_provider_strategy = {
-        weight = 50
-      }
+      weight = 50
     }
   }
 }
