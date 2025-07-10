@@ -75,98 +75,92 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   dynamic "default_cache_behavior" {
-    for_each = [for k, v in var.cache_behavior : v if k == "default"]
-    iterator = i
+    for_each = [for behavior in var.cache_behaviors : behavior if behavior.path_pattern == null]
 
     content {
-      target_origin_id       = i.value["target_origin_id"]
-      viewer_protocol_policy = i.value["viewer_protocol_policy"]
+      target_origin_id       = default_cache_behavior.value.target_origin_id
+      viewer_protocol_policy = default_cache_behavior.value.viewer_protocol_policy
 
-      allowed_methods           = lookup(i.value, "allowed_methods", ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"])
-      cached_methods            = lookup(i.value, "cached_methods", ["GET", "HEAD"])
-      compress                  = lookup(i.value, "compress", true)
-      field_level_encryption_id = lookup(i.value, "field_level_encryption_id", null)
-      smooth_streaming          = lookup(i.value, "smooth_streaming", null)
-      trusted_signers           = lookup(i.value, "trusted_signers", null)
+      allowed_methods           = default_cache_behavior.value.allowed_methods
+      cached_methods            = default_cache_behavior.value.cached_methods
+      compress                  = default_cache_behavior.value.compress
+      field_level_encryption_id = default_cache_behavior.value.field_level_encryption_id
+      smooth_streaming          = default_cache_behavior.value.smooth_streaming
+      trusted_signers           = default_cache_behavior.value.trusted_signers
 
-      # NOTE:These are for legacy cache policies (where the cache policy is present this is vestigial).
+      # NOTE: These are for legacy cache policies (where the cache policy is present this is vestigial).
       #
       # These defaults are what you get if you create a distribution without a legacy cache policy.
-      min_ttl     = lookup(i.value, "min_ttl", 0)
-      default_ttl = lookup(i.value, "default_ttl", 0)
-      max_ttl     = lookup(i.value, "max_ttl", 0)
+      min_ttl     = default_cache_behavior.value.min_ttl
+      default_ttl = default_cache_behavior.value.default_ttl
+      max_ttl     = default_cache_behavior.value.max_ttl
 
-      cache_policy_id            = i.value["cache_policy_id"]
-      origin_request_policy_id   = i.value["origin_request_policy_id"]
-      response_headers_policy_id = i.value["response_headers_policy_id"]
+      cache_policy_id            = default_cache_behavior.value.cache_policy_id
+      origin_request_policy_id   = default_cache_behavior.value.origin_request_policy_id
+      response_headers_policy_id = default_cache_behavior.value.response_headers_policy_id
 
       dynamic "function_association" {
-        for_each = lookup(i.value, "function_association", [])
-        iterator = f
+        for_each = default_cache_behavior.value.function_association
 
         content {
-          event_type   = f.key
-          function_arn = f.value.function_arn
+          event_type   = function_association.key
+          function_arn = function_association.value.function_arn
         }
       }
 
       dynamic "lambda_function_association" {
-        for_each = lookup(i.value, "lambda_function_association", [])
-        iterator = l
+        for_each = default_cache_behavior.value.lambda_function_association
 
         content {
-          event_type   = l.key
-          lambda_arn   = l.value.lambda_arn
-          include_body = lookup(l.value, "include_body", null)
+          event_type   = lambda_function_association.key
+          lambda_arn   = lambda_function_association.value.lambda_arn
+          include_body = lambda_function_association.value.include_body
         }
       }
     }
   }
 
   dynamic "ordered_cache_behavior" {
-    for_each = [for k, v in var.cache_behavior : v if k != "default"]
-    iterator = i
+    for_each = [for behavior in var.cache_behaviors : behavior if behavior.path_pattern != null]
 
     content {
-      path_pattern           = i.value["path_pattern"]
-      target_origin_id       = i.value["target_origin_id"]
-      viewer_protocol_policy = i.value["viewer_protocol_policy"]
+      path_pattern           = ordered_cache_behavior.value.path_pattern
+      target_origin_id       = ordered_cache_behavior.value.target_origin_id
+      viewer_protocol_policy = ordered_cache_behavior.value.viewer_protocol_policy
 
-      allowed_methods = lookup(i.value, "allowed_methods", ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"])
-      cached_methods  = lookup(i.value, "cached_methods", ["GET", "HEAD"])
-      compress        = lookup(i.value, "compress", true)
+      allowed_methods = ordered_cache_behavior.value.allowed_methods
+      cached_methods  = ordered_cache_behavior.value.cached_methods
+      compress        = ordered_cache_behavior.value.compress
 
-      field_level_encryption_id = lookup(i.value, "field_level_encryption_id", null)
-      smooth_streaming          = lookup(i.value, "smooth_streaming", null)
-      trusted_signers           = lookup(i.value, "trusted_signers", null)
+      field_level_encryption_id = ordered_cache_behavior.value.field_level_encryption_id
+      smooth_streaming          = ordered_cache_behavior.value.smooth_streaming
+      trusted_signers           = ordered_cache_behavior.value.trusted_signers
 
-      # NOTE:These are for legacy cache policies (where the cache policy is present this is vestigial).
-      min_ttl     = lookup(i.value, "min_ttl", 0)
-      default_ttl = lookup(i.value, "default_ttl", 0)
-      max_ttl     = lookup(i.value, "max_ttl", 0)
+      # NOTE: These are for legacy cache policies (where the cache policy is present this is vestigial).
+      min_ttl     = ordered_cache_behavior.value.min_ttl
+      default_ttl = ordered_cache_behavior.value.default_ttl
+      max_ttl     = ordered_cache_behavior.value.max_ttl
 
-      cache_policy_id            = i.value["cache_policy_id"]
-      origin_request_policy_id   = i.value["origin_request_policy_id"]
-      response_headers_policy_id = i.value["response_headers_policy_id"]
+      cache_policy_id            = ordered_cache_behavior.value.cache_policy_id
+      origin_request_policy_id   = ordered_cache_behavior.value.origin_request_policy_id
+      response_headers_policy_id = ordered_cache_behavior.value.response_headers_policy_id
 
       dynamic "function_association" {
-        for_each = lookup(i.value, "function_association", [])
-        iterator = f
+        for_each = ordered_cache_behavior.value.function_association
 
         content {
-          event_type   = f.key
-          function_arn = f.value.function_arn
+          event_type   = function_association.key
+          function_arn = function_association.value.function_arn
         }
       }
 
       dynamic "lambda_function_association" {
-        for_each = lookup(i.value, "lambda_function_association", [])
-        iterator = l
+        for_each = ordered_cache_behavior.value.lambda_function_association
 
         content {
-          event_type   = l.key
-          lambda_arn   = l.value.lambda_arn
-          include_body = lookup(l.value, "include_body", null)
+          event_type   = lambda_function_association.key
+          lambda_arn   = lambda_function_association.value.lambda_arn
+          include_body = lambda_function_association.value.include_body
         }
       }
     }

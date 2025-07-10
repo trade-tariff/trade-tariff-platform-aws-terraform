@@ -109,10 +109,43 @@ variable "custom_error_response" {
   default     = {}
 }
 
-variable "cache_behavior" {
-  description = "The map of cache behaviors for this distribution. Key `default` will be used as the default cache behavior, all other keys will be used as ordered list of cache behaviors. List from top to bottom in order of precedence. The topmost cache behavior will have precedence 0."
-  type        = any
-  default     = null
+variable "cache_behaviors" {
+  description = "List of cache behaviors in order of precedence (most specific first). Leave path_pattern empty when configuring the default behavior"
+  type = list(object({
+    name                       = string
+    path_pattern               = optional(string)
+    target_origin_id           = string
+    viewer_protocol_policy     = optional(string, "redirect-to-https")
+    cache_policy_id            = string
+    origin_request_policy_id   = string
+    response_headers_policy_id = string
+
+    # Optional fields with defaults
+    allowed_methods           = optional(list(string), ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"])
+    cached_methods            = optional(list(string), ["GET", "HEAD"])
+    compress                  = optional(bool, true)
+    field_level_encryption_id = optional(string)
+    smooth_streaming          = optional(bool)
+    trusted_signers           = optional(list(string))
+
+    # Legacy TTL settings (usually not needed with cache policies)
+    min_ttl     = optional(number, 0)
+    default_ttl = optional(number, 0)
+    max_ttl     = optional(number, 0)
+
+    # Function associations
+    function_association = optional(map(object({
+      function_arn = string
+    })), {})
+
+    # Lambda function associations
+    lambda_function_association = optional(map(object({
+      lambda_arn   = string
+      include_body = optional(bool)
+    })), {})
+  }))
+
+  default = []
 }
 
 variable "route53_zone_id" {
