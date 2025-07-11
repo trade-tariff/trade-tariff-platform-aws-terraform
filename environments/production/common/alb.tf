@@ -30,22 +30,30 @@ module "alb" {
       priority         = 10
     }
 
-    backend_uk = {
-      paths            = ["/user/*", "/api/*", "/uk/api/*"]
+    backend_xi = {
+      paths = [
+        "/api/xi/*",
+        "/xi/api/*"
+      ]
       healthcheck_path = "/healthcheckz"
-      priority         = 20
+      priority         = 23
     }
 
-    backend_xi = {
-      paths            = ["/xi/api/*"]
+    backend_uk = {
+      paths = [
+        "/api/*",
+        "/uk/api/*",
+        "/uk/user/*",
+        "/user/*"
+      ]
       healthcheck_path = "/healthcheckz"
-      priority         = 21
+      priority         = 24
     }
 
     hub = {
       hosts            = ["hub.*"]
       healthcheck_path = "/healthcheckz"
-      priority         = 22
+      priority         = 25
     }
 
     frontend = {
