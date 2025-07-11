@@ -33,7 +33,6 @@ module "alb" {
     backend_xi = {
       paths = [
         "/api/xi*",
-        "/xi/sidekiq*",
         "/xi/users*",
         "/xi/admin*",
       ]
@@ -45,7 +44,6 @@ module "alb" {
       paths = [
         "/api/*",
         "/uk/api*",
-        "/uk/sidekiq*",
         "/uk/user*",
         "/uk/admin*",
       ]
