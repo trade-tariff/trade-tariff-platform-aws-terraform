@@ -6,6 +6,11 @@ locals {
   ])
 }
 
+resource "aws_elasticache_subnet_group" "this" {
+  name       = "redis-subnet-group"
+  subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
+}
+
 module "redis" {
   source   = "../../../modules/elasticache/"
   for_each = local.redis
@@ -20,7 +25,7 @@ module "redis" {
   replicas_per_node_group     = 2
   node_type                   = "cache.t3.micro"
   security_group_ids          = [module.alb-security-group.redis_security_group_id]
-  subnet_ids                  = data.terraform_remote_state.base.outputs.private_subnet_ids
+  subnet_group_name           = aws_elasticache_subnet_group.this.name
   multi_az_enabled            = true
   automatic_failover_enabled  = true
   preferred_cache_cluster_azs = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]

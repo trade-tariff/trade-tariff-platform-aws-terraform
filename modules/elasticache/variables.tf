@@ -109,7 +109,7 @@ variable "parameter_group_name" {
 }
 
 variable "subnet_group_name" {
-  description = "Name of the subnet group to be used."
+  description = "Name of the subnet group to be used. Leave blank to have one be created."
   type        = string
   default     = null
 }
@@ -124,10 +124,4 @@ variable "subnet_ids" {
   description = "List of subnet IDs for Elasticache subnet group."
   type        = list(string)
   default     = []
-}
-
-variable "create_subnet_group" {
-  description = "Whether to create a subnet group. Defaults to `true`."
-  type        = bool
-  default     = true
 }

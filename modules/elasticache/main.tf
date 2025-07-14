@@ -40,7 +40,7 @@ resource "aws_elasticache_replication_group" "this" {
 }
 
 resource "aws_elasticache_subnet_group" "this" {
-  count      = var.create_subnet_group ? 1 : 0
+  count      = var.subnet_group_name == null ? 1 : 0
   name       = "${var.replication_group_id}-subnet-group"
   subnet_ids = var.subnet_ids
 }
