@@ -6,21 +6,6 @@ locals {
   ])
 }
 
-moved {
-  from = aws_elasticache_subnet_group.this
-  to   = module.redis.aws_elasticache_subnet_group.this
-}
-
-moved {
-  from = aws_cloudwatch_log_group.redis_slow_lg
-  to   = module.redis.aws_cloudwatch_log_group.slow_lg
-}
-
-moved {
-  from = aws_cloudwatch_log_group.redis_engine_lg
-  to   = module.redis.aws_cloudwatch_log_group.engine_lg
-}
-
 module "redis" {
   source   = "../../../modules/elasticache/"
   for_each = local.redis

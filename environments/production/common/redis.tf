@@ -6,22 +6,6 @@ locals {
   }
 }
 
-moved {
-  from = aws_elasticache_subnet_group.this
-  to   = module.redis.aws_elasticache_subnet_group.this
-}
-
-moved {
-  from = aws_cloudwatch_log_group.redis_slow_lg
-  to   = module.redis.aws_cloudwatch_log_group.slow_lg
-}
-
-moved {
-  from = aws_cloudwatch_log_group.redis_engine_lg
-  to   = module.redis.aws_cloudwatch_log_group.engine_lg
-}
-
-### Multi node redis with cluster mode disabled (one primary and two replica nodes spread across all 3 availability zones)
 module "redis" {
   source   = "../../../modules/elasticache/"
   for_each = local.redis
@@ -46,7 +30,6 @@ module "redis" {
   snapshot_retention_limit    = 7
   apply_immediately           = true
 }
-
 
 resource "aws_secretsmanager_secret" "redis_connection_string" {
   for_each   = local.redis
