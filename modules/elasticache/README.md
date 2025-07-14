@@ -1,4 +1,4 @@
-# elasticache-redis
+# elasticache
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
