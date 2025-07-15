@@ -16,11 +16,11 @@ module "redis" {
   for_each = local.redis
 
   engine         = "valkey"
-  engine_version = "7.2"
+  engine_version = "8.0"
 
   replication_group_id        = "redis-${each.key}-${var.environment}"
   description                 = "redis-${each.key}-${var.environment}"
-  parameter_group_name        = "default.valkey7"
+  parameter_group_name        = "default.valkey8"
   num_node_groups             = 1
   replicas_per_node_group     = 2
   node_type                   = each.value
