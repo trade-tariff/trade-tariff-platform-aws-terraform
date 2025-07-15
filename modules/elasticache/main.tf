@@ -1,7 +1,6 @@
-### Terraform module for elasticache redis cluster
-
 resource "aws_elasticache_replication_group" "this" {
-  engine                      = "redis"
+  engine                      = var.engine
+  engine_version              = var.engine_version
   port                        = var.port
   replication_group_id        = var.replication_group_id
   description                 = var.description
@@ -10,7 +9,7 @@ resource "aws_elasticache_replication_group" "this" {
   replicas_per_node_group     = var.replicas_per_node_group
   node_type                   = var.node_type
   security_group_ids          = var.security_group_ids
-  subnet_group_name           = var.subnet_group_name
+  subnet_group_name           = local.subnet_group_name
   multi_az_enabled            = var.multi_az_enabled
   automatic_failover_enabled  = var.automatic_failover_enabled
   preferred_cache_cluster_azs = var.preferred_cache_cluster_azs
@@ -23,17 +22,35 @@ resource "aws_elasticache_replication_group" "this" {
   at_rest_encryption_enabled = var.at_rest_encryption_enabled
   transit_encryption_enabled = var.transit_encryption_enabled
 
-  dynamic "log_delivery_configuration" {
-    for_each = var.log_delivery_configuration
+  log_delivery_configuration {
+    destination      = aws_cloudwatch_log_group.slow_lg.name
+    destination_type = "cloudwatch-logs"
+    log_format       = "json"
+    log_type         = "slow-log"
+  }
 
-    content {
-      destination_type = log_delivery_configuration.value.destination_type
-      destination      = log_delivery_configuration.value.destination
-      log_format       = log_delivery_configuration.value.log_format
-      log_type         = log_delivery_configuration.value.log_type
-    }
+  log_delivery_configuration {
+    destination      = aws_cloudwatch_log_group.engine_lg.name
+    destination_type = "cloudwatch-logs"
+    log_format       = "json"
+    log_type         = "engine-log"
   }
 
   apply_immediately = var.apply_immediately
-  tags              = local.tags
+}
+
+resource "aws_elasticache_subnet_group" "this" {
+  count      = var.subnet_group_name == null ? 1 : 0
+  name       = "${var.replication_group_id}-subnet-group"
+  subnet_ids = var.subnet_ids
+}
+
+resource "aws_cloudwatch_log_group" "slow_lg" {
+  name              = "${var.replication_group_id}-slow-lg"
+  retention_in_days = 30
+}
+
+resource "aws_cloudwatch_log_group" "engine_lg" {
+  name              = "${var.replication_group_id}-engine-lg"
+  retention_in_days = 30
 }

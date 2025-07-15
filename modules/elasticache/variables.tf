@@ -1,5 +1,21 @@
+variable "engine" {
+  description = "Which caching engine to use. One of `redis` or `valkey`. Defaults to `redis`."
+  type        = string
+  default     = "redis"
+
+  validation {
+    condition     = contains(["redis", "valkey"], var.engine)
+    error_message = "Engine must be either `redis` or `valkey`."
+  }
+}
+
+variable "engine_version" {
+  description = "Version of the caching engine to use."
+  type        = string
+}
+
 variable "port" {
-  description = "Redis port number."
+  description = "Port number."
   type        = number
   default     = 6379
 }
@@ -16,7 +32,7 @@ variable "apply_immediately" {
 }
 
 variable "multi_az_enabled" {
-  description = "Redis multi-az configuration."
+  description = "Whether multi-az is enabled. Defaults to `true`."
   type        = bool
   default     = true
 }
@@ -34,7 +50,7 @@ variable "transit_encryption_enabled" {
 }
 
 variable "automatic_failover_enabled" {
-  description = "Redis automatic failover configuration."
+  description = "Whether automatic failover is enabled. Defaults to `true`."
   type        = bool
   default     = true
 }
@@ -46,7 +62,7 @@ variable "auto_minor_version_upgrade" {
 }
 
 variable "description" {
-  description = "Redis cluster description"
+  description = "Cluster description"
   type        = string
 }
 
@@ -63,22 +79,6 @@ variable "replicas_per_node_group" {
 variable "node_type" {
   description = "Instance type, i.e. `cache.t3.small`."
   type        = string
-}
-
-variable "log_delivery_configuration" {
-  type = list(object({
-    destination_type = string
-    destination      = string
-    log_format       = string
-    log_type         = string
-  }))
-  description = "Log delivery configuration for redis cluster."
-  default     = []
-
-  validation {
-    condition     = length(var.log_delivery_configuration) <= 2
-    error_message = "You can set 2 targets at most for log delivery options."
-  }
 }
 
 variable "maintenance_window" {
@@ -109,7 +109,7 @@ variable "parameter_group_name" {
 }
 
 variable "subnet_group_name" {
-  description = "Name of the subnet group to be used."
+  description = "Name of the subnet group to be used. Leave blank to have one be created."
   type        = string
   default     = null
 }
@@ -120,8 +120,8 @@ variable "preferred_cache_cluster_azs" {
   default     = null
 }
 
-variable "tags" {
-  description = "Map of tags to apply to all taggable resources."
-  type        = map(string)
-  default     = {}
+variable "subnet_ids" {
+  description = "List of subnet IDs for Elasticache subnet group."
+  type        = list(string)
+  default     = []
 }
