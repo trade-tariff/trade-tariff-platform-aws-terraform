@@ -109,7 +109,8 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
         Action = [
           "s3:GetObject",
           "s3:PutObject",
-          "s3:ListBucket"
+          "s3:ListBucket",
+          "s3:DeleteObject"
         ],
         Resource = [
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}",
