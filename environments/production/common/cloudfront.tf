@@ -54,8 +54,24 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     },
     {
+      name                       = "xi_api_spimm_unversioned"
+      path_pattern               = "/xi/api/green_lanes/*"
+      target_origin_id           = "alb"
+      cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
       name                       = "uk_api_spimm"
       path_pattern               = "/uk/api/v2/green_lanes/*"
+      target_origin_id           = "alb"
+      cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
+      name                       = "uk_api_spimm_unversioned"
+      path_pattern               = "/uk/api/green_lanes/*"
       target_origin_id           = "alb"
       cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
@@ -80,8 +96,24 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     },
     {
+      name                       = "xi_api_exchange_rates_unversioned"
+      path_pattern               = "/xi/api/exchange_rates/*"
+      target_origin_id           = "alb"
+      cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
       name                       = "uk_api_exchange_rates"
       path_pattern               = "/uk/api/v2/exchange_rates/*"
+      target_origin_id           = "alb"
+      cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
+      name                       = "uk_api_exchange_rates_unversioned"
+      path_pattern               = "/uk/api/exchange_rates/*"
       target_origin_id           = "alb"
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
@@ -106,8 +138,24 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     },
     {
+      name                       = "xi_api_search_references_unversioned"
+      path_pattern               = "/xi/api/search_references"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
       name                       = "uk_api_search_references"
       path_pattern               = "/uk/api/v2/search_references"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
+      name                       = "uk_api_search_references_unversioned"
+      path_pattern               = "/uk/api/search_references"
       target_origin_id           = "alb"
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
@@ -132,8 +180,24 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     },
     {
+      name                       = "xi_api_news_unversioned"
+      path_pattern               = "/xi/api/news*"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
       name                       = "uk_api_news"
       path_pattern               = "/uk/api/v2/news*"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
+      name                       = "uk_api_news_unversioned"
+      path_pattern               = "/uk/api/news*"
       target_origin_id           = "alb"
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
@@ -158,8 +222,24 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     },
     {
+      name                       = "xi_api_live_issues_unversioned"
+      path_pattern               = "/xi/api/live_issues*"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
       name                       = "uk_api_live_issues"
       path_pattern               = "/uk/api/v2/live_issues*"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
+      name                       = "uk_api_live_issues_unversioned"
+      path_pattern               = "/uk/api/live_issues*"
       target_origin_id           = "alb"
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
@@ -184,8 +264,24 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     },
     {
+      name                       = "xi_api_healthcheck_unversioned"
+      path_pattern               = "/xi/api/healthcheck"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
       name                       = "uk_api_healthcheck"
       path_pattern               = "/uk/api/v2/healthcheck"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
+      name                       = "uk_api_healthcheck_unversioned"
+      path_pattern               = "/uk/api/healthcheck"
       target_origin_id           = "alb"
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
@@ -246,6 +342,24 @@ module "cdn" {
     {
       name                       = "default_v1_api"
       path_pattern               = "/api/v1/*"
+      target_origin_id           = "alb"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+
+    # V1/V2 API endpoints without version in the path
+    {
+      name                       = "xi_api_unversioned"
+      path_pattern               = "/xi/api/*"
+      target_origin_id           = "alb"
+      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
+      name                       = "uk_api_unversioned"
+      path_pattern               = "/uk/api/*"
       target_origin_id           = "alb"
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
