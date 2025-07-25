@@ -16,7 +16,12 @@ resource "aws_cloudfront_cache_policy" "very_very_long_cache" {
 
   parameters_in_cache_key_and_forwarded_to_origin {
     cookies_config { cookie_behavior = "none" }
-    headers_config { header_behavior = "none" }
+    headers_config {
+      header_behavior = "whitelist"
+      headers {
+        items = ["Accept"]
+      }
+    }
     query_strings_config { query_string_behavior = "all" }
   }
 }
@@ -29,7 +34,12 @@ resource "aws_cloudfront_cache_policy" "long_cache" {
 
   parameters_in_cache_key_and_forwarded_to_origin {
     cookies_config { cookie_behavior = "none" }
-    headers_config { header_behavior = "none" }
+    headers_config {
+      header_behavior = "whitelist"
+      headers {
+        items = ["Accept"]
+      }
+    }
     query_strings_config { query_string_behavior = "all" }
   }
 }
@@ -42,7 +52,12 @@ resource "aws_cloudfront_cache_policy" "medium_cache" {
 
   parameters_in_cache_key_and_forwarded_to_origin {
     cookies_config { cookie_behavior = "none" }
-    headers_config { header_behavior = "none" }
+    headers_config {
+      header_behavior = "whitelist"
+      headers {
+        items = ["Accept"]
+      }
+    }
     query_strings_config { query_string_behavior = "all" }
   }
 }
@@ -55,7 +70,12 @@ resource "aws_cloudfront_cache_policy" "short_cache" {
 
   parameters_in_cache_key_and_forwarded_to_origin {
     cookies_config { cookie_behavior = "none" }
-    headers_config { header_behavior = "none" }
+    headers_config {
+      header_behavior = "whitelist"
+      headers {
+        items = ["Accept"]
+      }
+    }
     query_strings_config { query_string_behavior = "all" }
   }
 }
