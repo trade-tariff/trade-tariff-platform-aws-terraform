@@ -44,7 +44,7 @@ module "identity_cognito" {
       units  = "days"
     }
     refresh_token = {
-      length = 5
+      length = 1
       units  = "days"
     }
   }
