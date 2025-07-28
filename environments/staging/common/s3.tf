@@ -11,6 +11,19 @@ locals {
   buckets_with_versioning = {
     persistence = local.buckets.persistence
   }
+
+  buckets_to_rotate = {
+    database-backups = {
+      bucket = local.buckets.database-backups
+      days   = 60
+      prefix = ""
+    }
+    ses-inbound = {
+      bucket = local.buckets.ses-inbound
+      days   = 5
+      prefix = "inbound/"
+    }
+  }
 }
 
 resource "aws_kms_key" "s3" {
@@ -163,16 +176,20 @@ resource "aws_iam_role_policy" "ses_s3_policy" {
   })
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "database_backups_rotation" {
-  bucket = aws_s3_bucket.this["database-backups"].id
+resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  for_each = local.buckets_to_rotate
+  bucket   = each.value.bucket
 
   rule {
-    id = "rotate-database-backups"
+    id     = "Rotate ${each.key} bucket"
+    status = "Enabled"
 
     expiration {
-      days = 60
+      days = each.value.days
     }
 
-    status = "Enabled"
+    filter {
+      prefix = each.value.prefix
+    }
   }
 }
