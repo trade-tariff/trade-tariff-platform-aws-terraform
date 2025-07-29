@@ -527,3 +527,41 @@ resource "aws_iam_policy" "ci_fpo_models_policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ci_e2e_testing_policy" {
+  name        = "ci-e2e-testing-policy"
+  description = "Policy for GithubActions to enable E2E testing"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "AllowS3OperationsForEmailAndLock"
+        Action = [
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:HeadObject",
+          "s3:DeleteObject"
+        ]
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.this["ses-inbound"].id}",
+          "arn:aws:s3:::${aws_s3_bucket.this["ses-inbound"].id}/*",
+        ]
+        Effect = "Allow"
+      },
+      {
+        Sid = "AllowCognitoUserManagement"
+        Action = [
+          "cognito-idp:ListUserPools",
+          "cognito-idp:AdminListUsers",
+          "cognito-idp:AdminDeleteUser"
+        ]
+        Resource = [
+          module.identity_cognito.user_pool_arn,
+        ]
+        Effect = "Allow"
+      }
+    ]
+  })
+}

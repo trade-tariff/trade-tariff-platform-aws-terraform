@@ -1,11 +1,9 @@
-# This file is maintained automatically by "terraform init".
-# Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/aws" {
   version     = "6.6.0"
-  constraints = ">= 6.0.0"
+  constraints = "6.6.0"
   hashes = [
-    "h1:FXkLuVKvc8ZiU5wSBYTCogJtnrprbSTpXjYPTYrnek8=",
+    "h1:HbkYySBwJyItrJB7oRiRz+0ZhCx3AO6dv2jiWxGEh8M=",
     "zh:04a29ab348b367ff65bda325177aae682f3ff99c4cb52285976f0569fe6dfed0",
     "zh:1b9c5b248aff286be093c6e30d14a75d6c494df7e45ad47d2aa710114583cde5",
     "zh:3701ff5ba4b202ee4645f617f806d0c3888af49db7173fbe8fac0b8cada21194",
