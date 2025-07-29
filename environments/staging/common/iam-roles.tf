@@ -263,3 +263,37 @@ resource "aws_iam_role_policy_attachment" "api_docs_ci_policy_attachment" {
   role       = aws_iam_role.ci_api_docs_role.name
   policy_arn = aws_iam_policy.ci_api_docs_policy.arn
 }
+
+resource "aws_iam_role" "e2e_testing_ci_role" {
+  name = "GithubActions-E2E-Testing-Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          },
+          StringLike = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
+              "repo:trade-tariff/identity:*",
+              "repo:trade-tariff/trade-tariff-backend:*",
+              "repo:trade-tariff/trade-tariff-frontend:*",
+            ]
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "e2e_testing_ci_policy_attachment" {
+  role       = aws_iam_role.e2e_testing_ci_role.name
+  policy_arn = aws_iam_policy.ci_e2e_testing_policy.arn
+}
