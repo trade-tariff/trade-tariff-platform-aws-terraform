@@ -15,7 +15,6 @@ resource "aws_iam_policy" "ci_terraform_policy" {
           "cloudfront:*",
           "cloudwatch:*",
           "cognito-idp:*",
-          "dynamodb:*",
           "ec2:*",
           "ecr:*",
           "ecs:*",
@@ -115,17 +114,6 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
         Resource = [
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}",
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}/*"
-        ]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:DeleteItem"
-        ],
-        Resource = [
-          "arn:aws:dynamodb:${var.region}:${local.account_id}:table/*-lock-*"
         ]
       },
       {
