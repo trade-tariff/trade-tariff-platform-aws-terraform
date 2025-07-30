@@ -355,6 +355,7 @@ resource "aws_iam_role" "e2e_testing_ci_role" {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
               "repo:trade-tariff/identity:*",
               "repo:trade-tariff/trade-tariff-backend:*",
+              "repo:trade-tariff/trade-tariff-e2e-tests:*",
               "repo:trade-tariff/trade-tariff-frontend:*",
             ]
           }
