@@ -1,12 +1,14 @@
 name: Deploy to Production
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows:
       - 'Deploy to Staging'
     types:
       - completed
-  workflow_dispatch:
+    branches:
+      - main
 
 permissions:
   contents: read
