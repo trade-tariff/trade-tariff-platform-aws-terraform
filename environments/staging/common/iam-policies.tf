@@ -562,12 +562,21 @@ resource "aws_iam_policy" "ci_e2e_testing_policy" {
       {
         Sid = "AllowCognitoUserManagement"
         Action = [
-          "cognito-idp:ListUserPools",
-          "cognito-idp:AdminListUsers",
+          "cognito-idp:ListUsers",
           "cognito-idp:AdminDeleteUser"
         ]
         Resource = [
           module.identity_cognito.user_pool_arn,
+        ]
+        Effect = "Allow"
+      },
+      {
+        Sid = "AllowListUserPools"
+        Action = [
+          "cognito-idp:ListUserPools",
+        ]
+        Resource = [
+          "*"
         ]
         Effect = "Allow"
       }
