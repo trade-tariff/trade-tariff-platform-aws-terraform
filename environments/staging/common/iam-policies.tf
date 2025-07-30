@@ -557,6 +557,7 @@ resource "aws_iam_policy" "ci_e2e_testing_policy" {
           "kms:Decrypt"
         ]
         Resource = ["*"]
+        Effect   = "Allow"
       },
       {
         Sid = "AllowCognitoUserManagement"
