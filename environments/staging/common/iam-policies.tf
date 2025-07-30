@@ -551,6 +551,14 @@ resource "aws_iam_policy" "ci_e2e_testing_policy" {
         Effect = "Allow"
       },
       {
+        Sid = "AllowKMSFull"
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ]
+        Resource = ["*"]
+      },
+      {
         Sid = "AllowCognitoUserManagement"
         Action = [
           "cognito-idp:ListUserPools",
