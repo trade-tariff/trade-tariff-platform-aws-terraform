@@ -116,6 +116,16 @@ module "cdn" {
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     },
 
+    # Live Issues endpoints
+    {
+      name                       = "uk_api_live_issues_unversioned"
+      path_pattern               = "/uk/api/live_issues*"
+      target_origin_id           = "alb"
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    },
+
     # Healthcheck endpoints
     {
       name                       = "xi_api_healthcheck"
