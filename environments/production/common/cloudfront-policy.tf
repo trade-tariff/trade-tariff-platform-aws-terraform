@@ -19,7 +19,11 @@ resource "aws_cloudfront_cache_policy" "very_very_long_cache" {
     headers_config {
       header_behavior = "whitelist"
       headers {
-        items = ["Accept"]
+        items = [
+          "Accept",        # Routes to specific versions of our apis
+          "Authorization", # Enables differentiated caching for authenticated users
+          "X-Api-Key"      # Enables differentiated caching for authenticated users
+        ]
       }
     }
     query_strings_config { query_string_behavior = "all" }
@@ -37,7 +41,11 @@ resource "aws_cloudfront_cache_policy" "long_cache" {
     headers_config {
       header_behavior = "whitelist"
       headers {
-        items = ["Accept"]
+        items = [
+          "Accept",        # Routes to specific versions of our apis
+          "Authorization", # Enables differentiated caching for authenticated users
+          "X-Api-Key"      # Enables differentiated caching for authenticated users
+        ]
       }
     }
     query_strings_config { query_string_behavior = "all" }
@@ -55,7 +63,11 @@ resource "aws_cloudfront_cache_policy" "medium_cache" {
     headers_config {
       header_behavior = "whitelist"
       headers {
-        items = ["Accept"]
+        items = [
+          "Accept",        # Routes to specific versions of our apis
+          "Authorization", # Enables differentiated caching for authenticated users
+          "X-Api-Key"      # Enables differentiated caching for authenticated users
+        ]
       }
     }
     query_strings_config { query_string_behavior = "all" }
@@ -73,7 +85,11 @@ resource "aws_cloudfront_cache_policy" "short_cache" {
     headers_config {
       header_behavior = "whitelist"
       headers {
-        items = ["Accept"]
+        items = [
+          "Accept",        # Routes to specific versions of our apis
+          "Authorization", # Enables differentiated caching for authenticated users
+          "X-Api-Key"      # Enables differentiated caching for authenticated users
+        ]
       }
     }
     query_strings_config { query_string_behavior = "all" }
