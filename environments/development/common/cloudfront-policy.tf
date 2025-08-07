@@ -153,30 +153,6 @@ resource "aws_cloudfront_origin_request_policy" "s3" {
   }
 }
 
-resource "aws_cloudfront_cache_policy" "s3" {
-  name = "s3"
-
-  comment = "Enables caching s3 buckets. Bucket policies restrict specific cloudfront distributions."
-
-  default_ttl = 86400
-  max_ttl     = 31536000
-  min_ttl     = 1
-
-  parameters_in_cache_key_and_forwarded_to_origin {
-    cookies_config {
-      cookie_behavior = "none"
-    }
-
-    headers_config {
-      header_behavior = "none"
-    }
-
-    query_strings_config {
-      query_string_behavior = "all"
-    }
-  }
-}
-
 resource "aws_cloudfront_origin_access_control" "s3" {
   name                              = "s3"
   description                       = "Enables accessing s3 buckets. Bucket policies restrict specific cloudfront distributions."
