@@ -288,6 +288,7 @@ resource "aws_iam_role" "e2e_testing_ci_role" {
               "repo:trade-tariff/trade-tariff-frontend:*",
               "repo:trade-tariff/trade-tariff-platform-aws-terraform:*",
               "repo:trade-tariff/trade-tariff-commodi-tea:*",
+              "repo:trade-tariff/trade-tariff-admin:*",
             ]
           }
         }
