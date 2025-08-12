@@ -19,7 +19,11 @@ resource "aws_cloudfront_cache_policy" "very_very_long_cache" {
     headers_config {
       header_behavior = "whitelist"
       headers {
-        items = ["Accept"]
+        items = [
+          "Accept",        # Routes to specific versions of our apis
+          "Authorization", # Enables differentiated caching for authenticated users
+          "X-Api-Key"      # Enables differentiated caching for authenticated users
+        ]
       }
     }
     query_strings_config { query_string_behavior = "all" }
@@ -37,7 +41,11 @@ resource "aws_cloudfront_cache_policy" "long_cache" {
     headers_config {
       header_behavior = "whitelist"
       headers {
-        items = ["Accept"]
+        items = [
+          "Accept",        # Routes to specific versions of our apis
+          "Authorization", # Enables differentiated caching for authenticated users
+          "X-Api-Key"      # Enables differentiated caching for authenticated users
+        ]
       }
     }
     query_strings_config { query_string_behavior = "all" }
@@ -55,7 +63,11 @@ resource "aws_cloudfront_cache_policy" "medium_cache" {
     headers_config {
       header_behavior = "whitelist"
       headers {
-        items = ["Accept"]
+        items = [
+          "Accept",        # Routes to specific versions of our apis
+          "Authorization", # Enables differentiated caching for authenticated users
+          "X-Api-Key"      # Enables differentiated caching for authenticated users
+        ]
       }
     }
     query_strings_config { query_string_behavior = "all" }
@@ -73,7 +85,11 @@ resource "aws_cloudfront_cache_policy" "short_cache" {
     headers_config {
       header_behavior = "whitelist"
       headers {
-        items = ["Accept"]
+        items = [
+          "Accept",        # Routes to specific versions of our apis
+          "Authorization", # Enables differentiated caching for authenticated users
+          "X-Api-Key"      # Enables differentiated caching for authenticated users
+        ]
       }
     }
     query_strings_config { query_string_behavior = "all" }
@@ -150,30 +166,6 @@ resource "aws_cloudfront_origin_request_policy" "s3" {
 
   query_strings_config {
     query_string_behavior = "all"
-  }
-}
-
-resource "aws_cloudfront_cache_policy" "s3" {
-  name = "s3"
-
-  comment = "Enables caching s3 buckets. Bucket policies restrict specific cloudfront distributions."
-
-  default_ttl = 86400
-  max_ttl     = 31536000
-  min_ttl     = 1
-
-  parameters_in_cache_key_and_forwarded_to_origin {
-    cookies_config {
-      cookie_behavior = "none"
-    }
-
-    headers_config {
-      header_behavior = "none"
-    }
-
-    query_strings_config {
-      query_string_behavior = "all"
-    }
   }
 }
 
