@@ -150,3 +150,27 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
     }
   }
 }
+
+data "aws_iam_policy_document" "alb_logs_policy" {
+  count = length(aws_s3_bucket.access_logs)
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.access_logs[0].arn}/AWSLogs/${local.account_id}/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.elastic_load_balancing_principals[local.region]}:root"]
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:loadbalancer/*"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "this" {
+  count  = length(aws_s3_bucket.access_logs)
+  bucket = aws_s3_bucket.access_logs[0].id
+  policy = data.aws_iam_policy_document.alb_logs_policy[0].json
+}
