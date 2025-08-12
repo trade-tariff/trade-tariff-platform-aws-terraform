@@ -15,7 +15,7 @@ resource "aws_lb" "application_load_balancer" {
   dynamic "access_logs" {
     for_each = var.enable_access_logs ? [1] : []
     content {
-      bucket  = var.access_logs_bucket != null ? var.access_logs_bucket : aws_s3_bucket.access_logs.id
+      bucket  = var.access_logs_bucket != null ? var.access_logs_bucket : aws_s3_bucket.access_logs[0].id
       enabled = true
       prefix  = var.access_logs_prefix
     }
