@@ -72,3 +72,21 @@ variable "services" {
     })
   )
 }
+
+variable "enable_access_logs" {
+  description = "Whether to enable access logs for ALB."
+  type        = bool
+  default     = false
+}
+
+variable "access_logs_bucket" {
+  description = "Name of the S3 bucket to send access logs to. Leave blank to have one created."
+  type        = string
+  default     = null
+}
+
+variable "access_logs_prefix" {
+  description = "S3 object prefix for access log entries."
+  type        = string
+  default     = null
+}

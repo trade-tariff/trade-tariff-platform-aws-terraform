@@ -11,7 +11,17 @@ resource "aws_lb" "application_load_balancer" {
   enable_cross_zone_load_balancing = true
   ip_address_type                  = "ipv4"
   drop_invalid_header_fields       = true
+
+  dynamic "access_logs" {
+    for_each = var.enable_access_logs ? [1] : []
+    content {
+      bucket  = var.access_logs_bucket != null ? var.access_logs_bucket : aws_s3_bucket.access_logs[0].id
+      enabled = true
+      prefix  = var.access_logs_prefix
+    }
+  }
 }
+
 
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
@@ -102,6 +112,41 @@ resource "aws_lb_listener_rule" "this" {
     http_header {
       http_header_name = var.custom_header.name
       values           = [var.custom_header.value]
+    }
+  }
+}
+
+resource "aws_s3_bucket" "access_logs" {
+  count  = var.enable_access_logs && var.access_logs_bucket == null ? 1 : 0
+  bucket = "${var.alb_name}-access-logs-${local.account_id}"
+}
+
+resource "aws_s3_bucket_public_access_block" "this" {
+  count  = length(aws_s3_bucket.access_logs)
+  bucket = aws_s3_bucket.access_logs[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  count  = length(aws_s3_bucket.access_logs)
+  bucket = aws_s3_bucket.access_logs[0].id
+
+  rule {
+    status = "Enabled"
+    id     = "ExpireAfter1Month"
+
+    filter {}
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 32
+    }
+
+    expiration {
+      days = 32
     }
   }
 }
