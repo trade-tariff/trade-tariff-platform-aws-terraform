@@ -120,3 +120,33 @@ resource "aws_s3_bucket" "access_logs" {
   count  = var.enable_access_logs && var.access_logs_bucket == null ? 1 : 0
   bucket = "${var.alb_name}-access-logs-${local.account_id}"
 }
+
+resource "aws_s3_bucket_public_access_block" "this" {
+  count  = length(aws_s3_bucket.access_logs)
+  bucket = aws_s3_bucket.access_logs[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  count  = length(aws_s3_bucket.access_logs)
+  bucket = aws_s3_bucket.access_logs[0].id
+
+  rule {
+    status = "Enabled"
+    id     = "ExpireAfter1Month"
+
+    filter {}
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 32
+    }
+
+    expiration {
+      days = 32
+    }
+  }
+}
