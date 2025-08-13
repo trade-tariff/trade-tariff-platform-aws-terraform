@@ -19,11 +19,39 @@ resource "aws_iam_role_policy" "firehose_policy" {
   policy = jsonencode(
     {
       Version = "2012-10-17"
-      Statement = [{
-        Effect   = "Allow"
-        Action   = ["logs:*", "s3:*", "kinesis:*"] # Restrict to specific resources and actions later
-        Resource = "*"
-      }]
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "s3:AbortMultipartUpload",
+            "s3:GetBucketLocation",
+            "s3:GetObject",
+            "s3:ListBucket",
+            "s3:ListBucketMultipartUploads",
+            "s3:PutObject"
+          ]
+          Resource = [
+            "arn:aws:s3:::${var.firehose_backups_bucket}",
+            "arn:aws:s3:::${var.firehose_backups_bucket}/*"
+          ]
+        },
+        {
+          Effect = "Allow"
+          Action = [
+            "logs:PutLogEvents"
+          ]
+          Resource = ["*"]
+        },
+        {
+          Effect = "Allow"
+          Action = [
+            "kms:Decrypt",
+            "kms:GenerateDataKey"
+          ],
+          Resource = ["*"]
+        }
+
+      ]
   })
 }
 
@@ -42,7 +70,7 @@ resource "aws_kinesis_firehose_delivery_stream" "nr_stream" {
     s3_backup_mode     = "FailedDataOnly"
 
     s3_configuration {
-      bucket_arn         = var.s3_backup_bucket
+      bucket_arn         = var.firehose_backups_bucket
       role_arn           = aws_iam_role.firehose_role.arn
       buffering_interval = 400
       buffering_size     = 10

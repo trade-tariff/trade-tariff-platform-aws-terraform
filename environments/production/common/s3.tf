@@ -7,6 +7,7 @@ locals {
     persistence       = "trade-tariff-persistence-${local.account_id}"
     reporting         = "trade-tariff-reporting-${local.account_id}"
     models            = "trade-tariff-models-${local.account_id}"
+    firehose_backups  = "trade-tariff-firehose-backups-${local.account_id}"
   }
   buckets_with_versioning = {
     persistence = local.buckets.persistence
@@ -121,12 +122,28 @@ resource "aws_s3_bucket_lifecycle_configuration" "database_backups_rotation" {
   bucket = aws_s3_bucket.this["database-backups"].id
 
   rule {
-    id = "rotate-database-backups"
+    id     = "rotate-database-backups"
+    status = "Enabled"
+
+    filter {}
 
     expiration {
       days = 60
     }
+  }
+}
 
+resource "aws_s3_bucket_lifecycle_configuration" "firehose_backups_rotation" {
+  bucket = aws_s3_bucket.this["firehose_backups"].id
+
+  rule {
+    id     = "rotate-firehose-backups"
     status = "Enabled"
+
+    filter {}
+
+    expiration {
+      days = 30
+    }
   }
 }

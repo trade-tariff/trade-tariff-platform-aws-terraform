@@ -1,9 +1,9 @@
 module "firehose_to_nr" {
-  source               = "../../../modules/firehose_delivery"
-  environment          = var.environment
-  newrelic_license_key = var.newrelic_license_key
-  newrelic_datacenter  = "EU"
-  s3_backup_bucket     = "arn:aws:s3:::my-firehose-backup-bucket"
+  source                  = "../../../modules/firehose_delivery"
+  environment             = var.environment
+  newrelic_license_key    = var.newrelic_license_key
+  newrelic_datacenter     = "EU"
+  firehose_backups_bucket = aws_s3_bucket.this["firehose_backups"].arn
 }
 
 module "cw_metric_stream" {

@@ -16,7 +16,7 @@ variable "newrelic_license_key" {
   sensitive   = true
 }
 
-variable "s3_backup_bucket" {
+variable "firehose_backups_bucket" {
   description = "ARN of the S3 bucket for failed Firehose metrics"
   type        = string
 }
