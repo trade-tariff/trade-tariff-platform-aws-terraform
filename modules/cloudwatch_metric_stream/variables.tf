@@ -11,7 +11,7 @@ variable "firehose_arn" {
 }
 
 variable "namespaces" {
-  description = "List of AWS CloudWatch namespaces to stream metrics from"
+  description = "List of CloudWatch namespaces to stream metrics from"
   type        = list(string)
   default     = []
 }

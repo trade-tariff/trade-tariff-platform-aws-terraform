@@ -13,7 +13,7 @@ resource "aws_cloudwatch_metric_stream" "nr_metric_stream" {
 }
 
 resource "aws_iam_role" "metric_stream_role" {
-  name = "metric-stream-role"
+  name = "metric-stream-role-${var.environment}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -31,8 +31,22 @@ resource "aws_iam_role_policy" "metric_stream_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = ["firehose:PutRecord", "firehose:PutRecordBatch"]
+        Effect = "Allow"
+        Action = [
+          "cloudwatch:ListMetrics",
+          "cloudwatch:GetMetricData",
+          "cloudwatch:GetMetricStatistics",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:GetMetricStream"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "firehose:PutRecord",
+          "firehose:PutRecordBatch"
+        ]
         Resource = var.firehose_arn
       }
     ]

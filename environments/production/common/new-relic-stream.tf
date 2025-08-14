@@ -10,5 +10,5 @@ module "cw_metric_stream" {
   source       = "../../../modules/cloudwatch_metric_stream"
   environment  = var.environment
   firehose_arn = module.firehose_to_nr.firehose_arn
-  namespaces   = ["AWS/ECS", "ECS/ContainerInsights", "AWS/RDS", "AWS/ApplicationELB"]
+  namespaces   = ["ECS/ContainerInsights", "AWS/ECS", "AWS/RDS"]
 }
