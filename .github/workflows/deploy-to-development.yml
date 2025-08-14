@@ -180,7 +180,8 @@ jobs:
 
   plan-production:
     environment: production
-
+    env:
+      TF_VAR_newrelic_license_key: ${{ secrets.NEW_RELIC_API_KEY }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
