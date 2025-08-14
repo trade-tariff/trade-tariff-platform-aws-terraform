@@ -30,7 +30,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `""` | no |
 | <a name="input_firehose_arn"></a> [firehose\_arn](#input\_firehose\_arn) | The ARN of the Kinesis Firehose delivery stream | `string` | `""` | no |
-| <a name="input_namespaces"></a> [namespaces](#input\_namespaces) | List of AWS CloudWatch namespaces to stream metrics from | `list(string)` | `[]` | no |
+| <a name="input_namespaces"></a> [namespaces](#input\_namespaces) | List of CloudWatch namespaces to stream metrics from | `list(string)` | `[]` | no |
 
 ## Outputs
 

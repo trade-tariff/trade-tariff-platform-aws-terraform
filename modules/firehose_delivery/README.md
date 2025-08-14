@@ -29,9 +29,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment name | `string` | `""` | no |
+| <a name="input_firehose_backups_bucket"></a> [firehose\_backups\_bucket](#input\_firehose\_backups\_bucket) | ARN of the S3 bucket for failed Firehose metrics | `string` | n/a | yes |
 | <a name="input_newrelic_datacenter"></a> [newrelic\_datacenter](#input\_newrelic\_datacenter) | US or EU datacenter ('US' or 'EU') | `string` | `"EU"` | no |
 | <a name="input_newrelic_license_key"></a> [newrelic\_license\_key](#input\_newrelic\_license\_key) | New Relic ingest license key | `string` | n/a | yes |
-| <a name="input_s3_backup_bucket"></a> [s3\_backup\_bucket](#input\_s3\_backup\_bucket) | ARN of the S3 bucket for failed Firehose metrics | `string` | n/a | yes |
 
 ## Outputs
 
