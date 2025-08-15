@@ -31,8 +31,8 @@ resource "aws_iam_role_policy" "firehose_policy" {
             "s3:PutObject"
           ]
           Resource = [
-            "arn:aws:s3:::${var.firehose_backups_bucket}",
-            "arn:aws:s3:::${var.firehose_backups_bucket}/*"
+            var.firehose_backups_bucket,
+            "${var.firehose_backups_bucket}/*"
           ]
         },
         {
