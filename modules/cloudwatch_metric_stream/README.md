@@ -28,8 +28,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `""` | no |
-| <a name="input_firehose_arn"></a> [firehose\_arn](#input\_firehose\_arn) | The ARN of the Kinesis Firehose delivery stream | `string` | `""` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | n/a | yes |
+| <a name="input_firehose_arn"></a> [firehose\_arn](#input\_firehose\_arn) | The ARN of the Kinesis Firehose delivery stream | `string` | n/a | yes |
 | <a name="input_namespaces"></a> [namespaces](#input\_namespaces) | List of CloudWatch namespaces to stream metrics from | `list(string)` | `[]` | no |
 
 ## Outputs
