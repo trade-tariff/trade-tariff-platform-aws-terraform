@@ -7,7 +7,7 @@ locals {
     data.aws_secretsmanager_secret_version.newrelic_configuration.secret_string,
     error("Failed to retrieve New Relic secret from AWS Secrets Manager. Please ensure the secret exists and is accessible.")
   )
-  newrelic_secret_map   = jsondecode(local.newrelic_secret_value)
+  newrelic_secret_map = jsondecode(local.newrelic_secret_value)
 
   newrelic_license_key = local.newrelic_secret_map["license_key"]
 }
