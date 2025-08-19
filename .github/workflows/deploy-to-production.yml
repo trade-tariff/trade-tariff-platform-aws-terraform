@@ -28,7 +28,6 @@ jobs:
       TERRAGRUNT_NON_INTERACTIVE: true
       TF_INPUT: false
       TF_IN_AUTOMATION: 1
-      TF_VAR_newrelic_license_key: ${{ secrets.NEW_RELIC_API_KEY }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
