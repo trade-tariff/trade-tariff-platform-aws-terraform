@@ -5,9 +5,10 @@ resource "aws_cloudwatch_metric_stream" "nr_metric_stream" {
   output_format = "opentelemetry0.7"
 
   dynamic "include_filter" {
-    for_each = var.namespaces
+    for_each = var.include_metric_filters
     content {
-      namespace = include_filter.value
+      namespace    = include_filter.key
+      metric_names = include_filter.value
     }
   }
 }

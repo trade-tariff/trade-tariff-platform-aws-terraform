@@ -30,9 +30,3 @@ variable "waf_rpm_limit" {
   type        = number
   default     = 500
 }
-
-variable "newrelic_license_key" {
-  description = "New Relic ingest license key"
-  type        = string
-  sensitive   = true
-}

@@ -73,13 +73,28 @@ resource "aws_kinesis_firehose_delivery_stream" "nr_stream" {
     s3_configuration {
       role_arn           = aws_iam_role.firehose_role.arn
       bucket_arn         = var.firehose_backups_bucket
-      buffering_interval = 300
-      buffering_size     = 5
+      buffering_interval = 400
+      buffering_size     = 10
       compression_format = "GZIP"
+
+      cloudwatch_logging_options {
+        enabled        = true
+        log_group_name = aws_cloudwatch_log_group.firehose_log_group.name
+      }
     }
 
     request_configuration {
       content_encoding = "GZIP"
     }
+
+    cloudwatch_logging_options {
+      enabled        = true
+      log_group_name = aws_cloudwatch_log_group.firehose_log_group.name
+    }
   }
+}
+
+resource "aws_cloudwatch_log_group" "firehose_log_group" {
+  name              = "/aws/kinesisfirehose/cloudwatch-to-newrelic"
+  retention_in_days = 7
 }

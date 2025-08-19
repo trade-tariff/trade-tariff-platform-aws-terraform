@@ -30,7 +30,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | n/a | yes |
 | <a name="input_firehose_arn"></a> [firehose\_arn](#input\_firehose\_arn) | The ARN of the Kinesis Firehose delivery stream | `string` | n/a | yes |
-| <a name="input_namespaces"></a> [namespaces](#input\_namespaces) | List of CloudWatch namespaces to stream metrics from | `list(string)` | `[]` | no |
+| <a name="input_include_metric_filters"></a> [include\_metric\_filters](#input\_include\_metric\_filters) | Map of inclusive metric filters. Use the namespace as the key and the list of metric names as the value. | `map(list(string))` | `{}` | no |
 
 ## Outputs
 

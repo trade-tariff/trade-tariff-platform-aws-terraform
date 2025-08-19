@@ -8,8 +8,8 @@ variable "firehose_arn" {
   type        = string
 }
 
-variable "namespaces" {
-  description = "List of CloudWatch namespaces to stream metrics from"
-  type        = list(string)
-  default     = []
+variable "include_metric_filters" {
+  description = "Map of inclusive metric filters. Use the namespace as the key and the list of metric names as the value."
+  type        = map(list(string))
+  default     = {}
 }
