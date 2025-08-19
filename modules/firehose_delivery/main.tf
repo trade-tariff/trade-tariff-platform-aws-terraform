@@ -38,9 +38,14 @@ resource "aws_iam_role_policy" "firehose_policy" {
         {
           Effect = "Allow"
           Action = [
-            "logs:PutLogEvents"
+            "logs:PutLogEvents",
+            "logs:CreateLogStream",
+            "logs:DescribeLogStreams"
           ]
-          Resource = ["*"]
+          Resource = [
+            aws_cloudwatch_log_group.firehose_log_group.arn,       # log group
+            "${aws_cloudwatch_log_group.firehose_log_group.arn}:*" # streams under log group
+          ]
         },
         {
           Effect = "Allow"
@@ -78,8 +83,9 @@ resource "aws_kinesis_firehose_delivery_stream" "nr_stream" {
       compression_format = "GZIP"
 
       cloudwatch_logging_options {
-        enabled        = true
-        log_group_name = aws_cloudwatch_log_group.firehose_log_group.name
+        enabled         = true
+        log_group_name  = aws_cloudwatch_log_group.firehose_log_group.name
+        log_stream_name = "s3-backup-delivery"
       }
     }
 
@@ -88,8 +94,9 @@ resource "aws_kinesis_firehose_delivery_stream" "nr_stream" {
     }
 
     cloudwatch_logging_options {
-      enabled        = true
-      log_group_name = aws_cloudwatch_log_group.firehose_log_group.name
+      enabled         = true
+      log_group_name  = aws_cloudwatch_log_group.firehose_log_group.name
+      log_stream_name = "http-endpoint-delivery"
     }
   }
 }
