@@ -7,9 +7,8 @@ def lambda_handler(event:, context:)
   api_key = ENV['GOVUK_NOTIFY_API_KEY']
   notify = Notifications::Client.new(api_key)
   email = event.dig('request', 'userAttributes', 'email')
-  consumer = 'myott'
   token = SecureRandom.hex(32)
-  auth_link = "#{url}/passwordless/callback?email=#{CGI.escape(email)}&token=#{token}&consumer=#{consumer}"
+  auth_link = "#{url}/passwordless/callback?email=#{CGI.escape(email)}&token=#{token}"
 
   notify.send_email(
     email_address: email,
