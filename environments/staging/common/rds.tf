@@ -4,7 +4,7 @@ module "postgres_commodi_tea" {
   environment    = var.environment
   name           = "PostgresCommodiTea"
   engine         = "postgres"
-  engine_version = "16.8"
+  engine_version = "17.6"
 
   deletion_protection = false
   multi_az            = false
@@ -37,7 +37,7 @@ module "postgres_aurora" {
 
   cluster_name      = "postgres-aurora-${var.environment}"
   engine            = "aurora-postgresql"
-  engine_version    = "16.8"
+  engine_version    = "17.6"
   engine_mode       = "provisioned"
   cluster_instances = 2
   apply_immediately = true
@@ -71,7 +71,7 @@ module "postgres_developer_hub" {
   environment    = var.environment
   name           = "PostgresDeveloperHub"
   engine         = "postgres"
-  engine_version = "17.4"
+  engine_version = "17.6"
 
   deletion_protection = false
   multi_az            = false
