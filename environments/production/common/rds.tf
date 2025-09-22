@@ -76,8 +76,8 @@ module "postgres_aurora_16_8" {
 
   encryption_at_rest = true
 
-  min_capacity = 2
-  max_capacity = 64
+  min_capacity = 0.5
+  max_capacity = 1
 
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
