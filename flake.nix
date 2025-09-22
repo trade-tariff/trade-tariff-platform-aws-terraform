@@ -19,8 +19,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, nixpkgs-terraform, nixpkgs-ruby }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      nixpkgs-terraform,
+      nixpkgs-ruby,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs {
           system = system;
@@ -56,8 +64,7 @@
           DISABLE_INIT=true terragrunt init --all --provider-cache
         '';
 
-        update-providers = pkgs.writeScriptBin "update-providers" ''clean &&
-        init && lint'';
+        update-providers = pkgs.writeScriptBin "update-providers" ''clean && init && lint'';
       in
       {
         devShells.default = pkgs.mkShell {
@@ -68,19 +75,18 @@
           '';
 
           buildInputs = with pkgs; [
-            terraform        # For terraform_fmt, terraform_validate
-            terragrunt       # For terragrunt-hclfmt
-            tflint           # For terraform_tflint
-            terraform-docs   # For terraform_docs
-            pre-commit       # For running hooks
-            trufflehog       # For trufflehog secret scanning
-            lint             # Custom lint script
-            init             # Custom init script to get all the modules for validation
-            clean            # Custom script to clean up .terraform.lock.hcl files and .terraform.lock.hcl
+            terraform
+            terragrunt
+            tflint # For terraform_tflint
+            pre-commit
+            lint # Custom lint script
+            init # Custom init script to get all the modules for validation
+            clean-terraform # Custom script to clean up .terraform directories
+            clean # Custom script to clean up .terraform.lock.hcl files and .terraform.lock.hcl
             update-providers # Custom init script to get all the modules for validation
-            clean-terraform  # Custom script to clean up .terraform directories
-            ruby             # Ruby interpreter for myott lambdas
+            ruby # Ruby interpreter for myott lambdas
           ];
         };
-      });
+      }
+    );
 }
