@@ -8,16 +8,17 @@ It will only export each log group if it has the tag ExportToS3=true, if the las
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.0 |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
-| <a name="requirement_archive"></a> [archive](#requirement\_archive) | 2.4.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.3 |
+| <a name="requirement_archive"></a> [archive](#requirement\_archive) | 2.7.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.4.0 |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.3 |
+| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.7.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.0.0 |
 
 ## Modules
 
@@ -33,7 +34,7 @@ No modules.
 | [aws_iam_role_policy.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_lambda_function.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 | [aws_lambda_permission.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
-| [archive_file.log_exporter](https://registry.terraform.io/providers/hashicorp/archive/2.4.0/docs/data-sources/file) | data source |
+| [archive_file.log_exporter](https://registry.terraform.io/providers/hashicorp/archive/2.7.1/docs/data-sources/file) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 

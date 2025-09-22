@@ -37,16 +37,16 @@ resource "aws_route53_record" "cognito_custom_domain" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | >= 3 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.0.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | >= 3.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6 |
-| <a name="provider_null"></a> [null](#provider\_null) | >= 3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.0.0 |
+| <a name="provider_null"></a> [null](#provider\_null) | >= 3.0.0 |
 
 ## Modules
 
