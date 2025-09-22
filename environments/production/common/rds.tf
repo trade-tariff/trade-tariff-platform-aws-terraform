@@ -63,7 +63,7 @@ module "postgres_aurora" {
 module "postgres_aurora_16_8" {
   source = "../../../modules/rds_cluster"
 
-  cluster_name      = "postgres-aurora-${var.environment}"
+  cluster_name      = "postgres-aurora-${var.environment}-16-8"
   engine            = "aurora-postgresql"
   engine_version    = "16.8"
   engine_mode       = "provisioned"
