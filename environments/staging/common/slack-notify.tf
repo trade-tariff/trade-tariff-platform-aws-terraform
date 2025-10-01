@@ -65,3 +65,26 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
 data "aws_secretsmanager_secret_version" "slack_notify_lambda_slack_webhook_url" {
   secret_id = module.slack_notify_lambda_slack_webhook_url.secret_arn
 }
+
+resource "aws_cloudwatch_metric_alarm" "lambds_errors" {
+  for_each = local.monitored_lambdas
+
+  alarm_name          = "Lambda-errors-${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "Errors"
+  namespace           = "AWS/Lambda"
+  period              = "300" # 5 minutes
+  statistic           = "Sum"
+  unit                = "Count"
+  threshold           = 0
+  alarm_description   = "Lambda function ${each.key} is experiencing errors in ${var.environment}"
+  treat_missing_data  = "notBreaching"
+
+  alarm_actions = [module.notify_slack.slack_topic_arn]
+  ok_actions    = [module.notify_slack.slack_topic_arn]
+
+  dimensions = {
+    FunctionName = each.value
+  }
+}
