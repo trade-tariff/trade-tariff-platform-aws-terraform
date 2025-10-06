@@ -97,7 +97,7 @@ resource "aws_sns_topic" "critical_email_alerts" {
 resource "aws_sns_topic_subscription" "critical_emails" {
   topic_arn = aws_sns_topic.critical_email_alerts.arn
   protocol  = "email"
-  endpoint  = "hmrc-trade-tariff-support-g@digital.hmrc.gov.uk"
+  endpoint  = "alerts@staging.trade-tariff.service.gov.uk"
 }
 
 resource "aws_cloudwatch_metric_alarm" "slack_notify_self_monitor" {
