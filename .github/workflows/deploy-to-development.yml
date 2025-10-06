@@ -19,15 +19,14 @@ env:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    env:
+      TF_PLUGIN_CACHE_DIR: "/home/runner/.terraform.d/plugin-cache"
+      TG_PROVIDER_CACHE_DIR: "/home/runner/.terraform.d/plugin-cache"
+      TG_PROVIDER_CACHE: 1
     steps:
+      - run: mkdir -p "$TF_PLUGIN_CACHE_DIR" && echo "Plugin cache directory created at $TF_PLUGIN_CACHE_DIR" && ls -la "$TF_PLUGIN_CACHE_DIR"
+        shell: bash
       - uses: actions/checkout@v5
-
-      - name: Setup Terraform plugin cache
-        run: |
-          echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >> $GITHUB_ENV
-          mkdir -p "$HOME/.terraform.d/plugin-cache"
-          echo "TMPDIR=$HOME/tmp" >> $GITHUB_ENV
-          mkdir -p "$HOME/tmp"
 
       - uses: actions/cache@v4
         with:
