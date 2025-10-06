@@ -20,12 +20,16 @@ repos:
       - id: check-yaml
       - id: check-merge-conflict
 
-  - repo: https://github.com/trufflesecurity/trufflehog
-    rev: v3.89.2
-    hooks:
-      - id: trufflehog
-
   - repo: https://github.com/rhysd/actionlint.git
     rev: v1.7.7
     hooks:
       - id: actionlint-docker
+
+  - repo: local
+    hooks:
+      - id: trufflehog
+        name: TruffleHog
+        description: Detect secrets in your repo
+        entry: bash -c '.github/bin/trufflehog'
+        language: system
+        stages: ["commit", "push"]

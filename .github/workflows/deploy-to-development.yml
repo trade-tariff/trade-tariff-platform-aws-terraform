@@ -24,8 +24,7 @@ jobs:
       TG_PROVIDER_CACHE_DIR: "/home/runner/.terraform.d/plugin-cache"
       TG_PROVIDER_CACHE: 1
     steps:
-      - run: mkdir -p "$TF_PLUGIN_CACHE_DIR" && echo "Plugin cache directory created at $TF_PLUGIN_CACHE_DIR" && ls -la "$TF_PLUGIN_CACHE_DIR"
-        shell: bash
+      - run: mkdir -p "$TF_PLUGIN_CACHE_DIR"
       - uses: actions/checkout@v5
 
       - uses: actions/cache@v4
@@ -40,8 +39,6 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-tflint@main
-
-      - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-terraform-docs@main
 
       - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-ssh@main
         with:
