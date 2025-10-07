@@ -88,3 +88,33 @@ resource "aws_cloudwatch_metric_alarm" "lambds_errors" {
     FunctionName = each.value
   }
 }
+
+# Monitor the slack_notify Lambda itself
+resource "aws_sns_topic" "critical_email_alerts" {
+  name = "critical-email-alerts-${var.environment}"
+}
+
+resource "aws_sns_topic_subscription" "critical_emails" {
+  topic_arn = aws_sns_topic.critical_email_alerts.arn
+  protocol  = "email"
+  endpoint  = "alerts@dev.trade-tariff.service.gov.uk"
+}
+
+resource "aws_cloudwatch_metric_alarm" "slack_notify_self_monitor" {
+  alarm_name          = "slack-notify-${var.environment}-errors"
+  alarm_description   = "CRITICAL: The slack_notify Lambda itself is failing"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "Errors"
+  namespace           = "AWS/Lambda"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = 0
+
+  dimensions = {
+    FunctionName = "notify_slack_${var.environment}"
+  }
+
+  alarm_actions = [aws_sns_topic.critical_email_alerts.arn]
+  ok_actions    = [aws_sns_topic.critical_email_alerts.arn]
+}
