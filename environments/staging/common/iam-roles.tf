@@ -284,12 +284,13 @@ resource "aws_iam_role" "e2e_testing_ci_role" {
           StringLike = {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
               "repo:trade-tariff/identity:*",
+              "repo:trade-tariff/trade-tariff-admin:*",
               "repo:trade-tariff/trade-tariff-backend:*",
+              "repo:trade-tariff/trade-tariff-commodi-tea:*",
               "repo:trade-tariff/trade-tariff-e2e-tests:*",
+              "repo:trade-tariff/trade-tariff-fpo-dev-hub-e2e:*",
               "repo:trade-tariff/trade-tariff-frontend:*",
               "repo:trade-tariff/trade-tariff-platform-aws-terraform:*",
-              "repo:trade-tariff/trade-tariff-commodi-tea:*",
-              "repo:trade-tariff/trade-tariff-admin:*",
             ]
           }
         }
