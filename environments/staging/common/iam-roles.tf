@@ -287,9 +287,11 @@ resource "aws_iam_role" "e2e_testing_ci_role" {
               "repo:trade-tariff/trade-tariff-admin:*",
               "repo:trade-tariff/trade-tariff-backend:*",
               "repo:trade-tariff/trade-tariff-commodi-tea:*",
+              "repo:trade-tariff/trade-tariff-dev-hub:*",
               "repo:trade-tariff/trade-tariff-e2e-tests:*",
               "repo:trade-tariff/trade-tariff-fpo-dev-hub-e2e:*",
               "repo:trade-tariff/trade-tariff-frontend:*",
+              "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
               "repo:trade-tariff/trade-tariff-platform-aws-terraform:*",
             ]
           }
