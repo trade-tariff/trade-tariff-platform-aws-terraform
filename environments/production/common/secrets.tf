@@ -54,6 +54,21 @@ module "backend_xi_api_configuration" {
   recovery_window = 7
 }
 
+module "backend_job_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "backend-job-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
+
+# TODO: Remove me once migrated to consistent naming
+module "db_replicate_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "db-replicate-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
+
 module "download_cds_files_configuration" {
   source          = "../../../modules/secret/"
   name            = "download-cds-files-configuration"
@@ -64,13 +79,6 @@ module "download_cds_files_configuration" {
 module "etf_configuration" {
   source          = "../../../modules/secret/"
   name            = "electronic-tariff-file-configuration"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-}
-
-module "db_replicate_configuration" {
-  source          = "../../../modules/secret/"
-  name            = "db-replicate-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
 }
