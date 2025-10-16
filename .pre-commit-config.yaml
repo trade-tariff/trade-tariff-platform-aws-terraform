@@ -6,7 +6,7 @@ repos:
       - id: terragrunt-hclfmt
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.101.0
+    rev: v1.102.0
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
@@ -21,7 +21,7 @@ repos:
       - id: check-merge-conflict
 
   - repo: https://github.com/rhysd/actionlint.git
-    rev: v1.7.7
+    rev: v1.7.8
     hooks:
       - id: actionlint-docker
 
