@@ -95,6 +95,8 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "secretsmanager:*",
           "servicediscovery:*",
           "sts:AssumeRoleWithWebIdentity",
+          "sns:ListTopics",
+          "sns:ListTagsForResource"
         ],
         Resource = "*",
         Condition = {
