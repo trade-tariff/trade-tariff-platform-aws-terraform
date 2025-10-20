@@ -4,6 +4,25 @@
 
 This RFC proposes a major version upgrade of the Amazon Aurora PostgreSQL database from engine version 16.8 to 17.5. The upgrade will leverage our existing infrastructure and deployment processes to ensure zero downtime. The change will be executed outside of peak hours at 6:30 PM London time (BST/GMT depending on the season) to minimize any potential impact on users.
 
+## Schedule
+
+- **Proposed Date/Time**: 28th October at 6:30 PM London time.
+- **Duration**: 10 minutes for the switchover.
+- **Approval Required By**: [Neil]
+- **Downtime**: None (zero-downtime deployment strategy).
+
+## Rollback Plan
+
+- If issues arise, revert the backend deployments to the previous configuration pointing to the Aurora PostgreSQL 16.8 cluster. This will take approximately 10 minutes.
+- Maintain the original 16.8 cluster until full validation of the 17.5 deployment is complete, allowing quick failback.
+- Restore from a pre-upgrade snapshot if needed, though this may involve brief downtime as a last resort.
+
+## Testing Plan
+
+- Validate the new database instance in a staging environment with a subset of production data.
+- Execute a full E2E test run post-deployment to confirm production stability.
+- Do some exploratory testing of key application functionalities against the new database version prior to the scheduled upgrade.
+
 ## Description
 
 The migration involves upgrading the Aurora PostgreSQL-Compatible Edition cluster to version 17.5, which is based on PostgreSQL 17. This includes applying community-driven enhancements along with Aurora-specific optimizations. No schema changes or data migrations are required beyond the engine upgrade, assuming application compatibility with PostgreSQL 17 features and behaviors.
@@ -59,23 +78,3 @@ These updates address potential vulnerabilities, improve operational efficiency,
    - Run a full end-to-end (E2E) test suite against the production environment to validate functionality and performance.
    - Verify database operations and application behavior with the new version.
    - Update any monitoring alerts or automation scripts for Aurora PostgreSQL 17.5.
-
-## Testing Plan
-
-- Validate the new database instance in a staging environment with a subset of production data.
-- Run regression tests on queries, stored procedures, and application workloads against the new database.
-- Validate key features like logical replication and JSON handling if applicable.
-- Perform load testing to ensure performance gains are realized without regressions.
-- Execute a full E2E test run post-deployment to confirm production stability.
-
-## Rollback Plan
-
-- If issues arise, revert the backend deployments to the previous configuration pointing to the Aurora PostgreSQL 16.8 cluster.
-- Maintain the original 16.8 cluster until full validation of the 17.5 deployment is complete, allowing quick failback.
-- Restore from a pre-upgrade snapshot if needed, though this may involve brief downtime as a last resort.
-
-## Schedule
-
-- **Proposed Date/Time**: Start of November at 6:30 PM London time.
-- **Duration**: Expected 1-2 hours for database deployment, replication, backend deployment, and validation but during the actual migration only about 10 minutes for the switchover.
-- **Approval Required By**: [Neil]
