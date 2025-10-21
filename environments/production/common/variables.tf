@@ -30,3 +30,9 @@ variable "waf_rpm_limit" {
   type        = number
   default     = 500
 }
+
+variable "enable_sns_alerts" {
+  description = "Enable SNS alerts for all CloudWatch alarms"
+  type        = bool
+  default     = true
+}

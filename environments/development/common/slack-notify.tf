@@ -14,6 +14,10 @@ module "notify_slack" {
   log_events         = true
 }
 
+locals {
+  alert_actions = var.enable_sns_alerts ? [module.notify_slack.slack_topic_arn] : []
+}
+
 resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   for_each = module.alb.target_groups
 
@@ -29,8 +33,8 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   alarm_description   = "Too many HTTP 5xx errors in ${var.environment} environment for target group ${each.value.name}"
   treat_missing_data  = "notBreaching"
 
-  alarm_actions = [module.notify_slack.slack_topic_arn]
-  ok_actions    = [module.notify_slack.slack_topic_arn]
+  alarm_actions = local.alert_actions
+  ok_actions    = local.alert_actions
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -53,8 +57,8 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   alarm_description   = "Long response times in ${var.environment} environment for target group ${each.value.name}"
   treat_missing_data  = "notBreaching"
 
-  alarm_actions = [module.notify_slack.slack_topic_arn]
-  ok_actions    = [module.notify_slack.slack_topic_arn]
+  alarm_actions = local.alert_actions
+  ok_actions    = local.alert_actions
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -81,8 +85,8 @@ resource "aws_cloudwatch_metric_alarm" "lambds_errors" {
   alarm_description   = "Lambda function ${each.key} is experiencing errors in ${var.environment}"
   treat_missing_data  = "notBreaching"
 
-  alarm_actions = [module.notify_slack.slack_topic_arn]
-  ok_actions    = [module.notify_slack.slack_topic_arn]
+  alarm_actions = local.alert_actions
+  ok_actions    = local.alert_actions
 
   dimensions = {
     FunctionName = each.value
@@ -115,6 +119,6 @@ resource "aws_cloudwatch_metric_alarm" "slack_notify_self_monitor" {
     FunctionName = "notify_slack_${var.environment}"
   }
 
-  alarm_actions = [aws_sns_topic.critical_email_alerts.arn]
-  ok_actions    = [aws_sns_topic.critical_email_alerts.arn]
+  alarm_actions = var.enable_sns_alerts ? [aws_sns_topic.critical_email_alerts.arn] : []
+  ok_actions    = var.enable_sns_alerts ? [aws_sns_topic.critical_email_alerts.arn] : []
 }
