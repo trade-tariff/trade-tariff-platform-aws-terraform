@@ -53,6 +53,14 @@ module "identity_cognito" {
     {
       name        = "myott"
       description = "MyOTT user group"
+    },
+    {
+      name        = "admin"
+      description = "Admin user group. See https://admin.trade-tariff.service.gov.uk"
+    },
+    {
+      name        = "portal"
+      description = "Developer Portal user group. See https://portal.trade-tariff.service.gov.uk"
     }
   ]
 }
