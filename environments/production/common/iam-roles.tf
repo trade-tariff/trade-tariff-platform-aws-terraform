@@ -364,3 +364,25 @@ resource "aws_iam_role_policy_attachment" "api_docs_ci_policy_attachment" {
   role       = aws_iam_role.ci_api_docs_role.name
   policy_arn = aws_iam_policy.ci_api_docs_policy.arn
 }
+
+resource "aws_iam_role" "apigw_cloudwatch_logs" {
+  name = "serverlessApiGatewayCloudWatchRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "apigateway.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "apigw_cloudwatch_logs_policy_attachment" {
+  role       = aws_iam_role.apigw_cloudwatch_logs.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
