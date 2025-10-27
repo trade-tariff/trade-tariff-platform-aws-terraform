@@ -4,7 +4,7 @@ module "postgres_commodi_tea" {
   environment    = var.environment
   name           = "PostgresCommodiTea"
   engine         = "postgres"
-  engine_version = "16"
+  engine_version = "17.6"
 
   deletion_protection = false
   multi_az            = false
@@ -67,6 +67,42 @@ module "postgres_database_url" {
   secret_string   = module.postgres_aurora_16_8.rw_connection_string
 }
 
+# Aurora 17.5 cluster clone
+module "postgres_aurora_17_5" {
+  source = "../../../modules/rds_cluster"
+
+  cluster_name      = "postgres-aurora-${var.environment}-17.5"
+  engine            = "aurora-postgresql"
+  engine_version    = "17.5"
+  engine_mode       = "provisioned"
+  cluster_instances = 2
+  apply_immediately = true
+
+  instance_class = "db.serverless"
+  database_name  = "TradeTariffPostgres${title(var.environment)}"
+  username       = "tariff"
+
+  encryption_at_rest = true
+
+  min_capacity = 2
+  max_capacity = 64
+
+  security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
+  private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
+
+  tags = {
+    "RDS_Type" = "Aurora"
+  }
+}
+
+module "postgres_database_url_17_5" {
+  source          = "../../../modules/secret/"
+  name            = "${var.environment}-postgres-17-5-database-url"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+  secret_string   = module.postgres_aurora_17_5.rw_connection_string
+}
+
 module "postgres_admin_aurora" {
   source = "../../../modules/rds_cluster"
 
@@ -108,7 +144,7 @@ module "postgres_developer_hub" {
   environment    = var.environment
   name           = "PostgresDeveloperHub"
   engine         = "postgres"
-  engine_version = "17.4"
+  engine_version = "17.6"
 
   deletion_protection = false
   multi_az            = false
