@@ -47,10 +47,10 @@ resource "aws_elasticache_subnet_group" "this" {
 
 resource "aws_cloudwatch_log_group" "slow_lg" {
   name              = "${var.replication_group_id}-slow-lg"
-  retention_in_days = 30
+  retention_in_days = var.log_retention_days
 }
 
 resource "aws_cloudwatch_log_group" "engine_lg" {
   name              = "${var.replication_group_id}-engine-lg"
-  retention_in_days = 30
+  retention_in_days = var.log_retention_days
 }

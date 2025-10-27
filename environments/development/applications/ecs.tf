@@ -7,7 +7,8 @@ module "ecs" {
     execute_command_configuration = {
       logging = "OVERRIDE"
       log_configuration = {
-        cloud_watch_log_group_name = "/aws/ecs/trade-tariff-ecs-${var.environment}"
+        cloud_watch_log_group_name             = "/aws/ecs/trade-tariff-ecs-${var.environment}"
+        cloudwatch_log_group_retention_in_days = 7
       }
     }
   }

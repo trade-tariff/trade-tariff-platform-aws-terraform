@@ -139,17 +139,17 @@ jobs:
         name: apply-all-common
         working-directory: environments/development/common
 
-  notifications:
-      runs-on: ubuntu-latest
-      needs: apply-development
-      if: always()
-      steps:
-        - uses: actions/checkout@v5
-        - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
-          with:
-            result: ${{ needs.apply-development.result }}
-            slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
-        - run: if [[ "${{ needs.apply-development.result }}" != "success" ]]; then exit 1; fi
+  # notifications:
+  #     runs-on: ubuntu-latest
+  #     needs: apply-development
+  #     if: always()
+  #     steps:
+  #       - uses: actions/checkout@v5
+  #       - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
+  #         with:
+  #           result: ${{ needs.apply-development.result }}
+  #           slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+  #       - run: if [[ "${{ needs.apply-development.result }}" != "success" ]]; then exit 1; fi
 
   plan-staging:
     environment: staging

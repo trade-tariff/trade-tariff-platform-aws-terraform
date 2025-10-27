@@ -34,6 +34,7 @@ module "redis" {
   snapshot_window             = "02:00-04:00"
   snapshot_retention_limit    = 7
   apply_immediately           = true
+  log_retention_days          = 7
 }
 
 resource "aws_secretsmanager_secret" "redis_connection_string" {
