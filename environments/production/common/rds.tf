@@ -71,7 +71,7 @@ module "postgres_database_url" {
 module "postgres_aurora_17_5" {
   source = "../../../modules/rds_cluster"
 
-  cluster_name      = "postgres-aurora-${var.environment}-17.5"
+  cluster_name      = "postgres-aurora-${var.environment}-17-5"
   engine            = "aurora-postgresql"
   engine_version    = "17.5"
   engine_mode       = "provisioned"
