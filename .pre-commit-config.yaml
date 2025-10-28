@@ -3,7 +3,7 @@ repos:
   - repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.30
     hooks:
-      - id: terragrunt-hclfmt
+      - id: terragrunt-hcl-fmt
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.103.0

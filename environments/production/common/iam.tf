@@ -59,3 +59,50 @@ data "aws_iam_policy_document" "fpo_model_access" {
     }
   }
 }
+
+resource "aws_s3_bucket_policy" "persistence_bucket_access" {
+  bucket = aws_s3_bucket.this["persistence"].id
+
+  policy = data.aws_iam_policy_document.persistence_bucket_access.json
+}
+
+data "aws_iam_policy_document" "persistence_bucket_access" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}",
+      "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/*",
+    ]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::844815912454:role/backend-job-execution-role",
+        "arn:aws:iam::451934005581:role/backend-job-execution-role",
+      ]
+    }
+  }
+
+  statement {
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}",
+      "arn:aws:s3:::${aws_s3_bucket.this["persistence"].id}/data/exchange_rates/*"
+    ]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::844815912454:role/backend-job-execution-role",
+        "arn:aws:iam::451934005581:role/backend-job-execution-role",
+      ]
+    }
+  }
+}
