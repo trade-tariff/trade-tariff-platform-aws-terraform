@@ -74,6 +74,12 @@ resource "aws_s3_bucket" "this" {
   bucket   = each.value
 }
 
+# NOTE: Edge Lambda functions must be deployed from us-east-1
+resource "aws_s3_bucket" "deployment-bucket-us-east-1" {
+  bucket = "${local.buckets["lambda-deployment"]}-us-east-1"
+  region = "us-east-1"
+}
+
 resource "aws_s3_bucket_versioning" "this" {
   for_each = local.buckets_with_versioning
   bucket   = aws_s3_bucket.this[each.key].id
