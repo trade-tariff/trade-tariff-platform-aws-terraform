@@ -42,6 +42,7 @@ No modules.
 | <a name="input_filename"></a> [filename](#input\_filename) | Name of the payload | `string` | n/a | yes |
 | <a name="input_function_name"></a> [function\_name](#input\_function\_name) | Name of the function | `string` | n/a | yes |
 | <a name="input_handler"></a> [handler](#input\_handler) | Function entrypoint | `string` | n/a | yes |
+| <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | Number of days to retain CloudWatch logs | `number` | `14` | no |
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Memory limit in MB | `number` | `128` | no |
 | <a name="input_runtime"></a> [runtime](#input\_runtime) | Function runtime identifier | `string` | n/a | yes |
 | <a name="input_source_code_hash"></a> [source\_code\_hash](#input\_source\_code\_hash) | base64 encoded SHA256 hash of the payload file | `string` | n/a | yes |
