@@ -289,7 +289,11 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "logs:DeleteLogGroup",
           "logs:TagResource",
           "logs:DescribeLogGroups",
-          "logs:DescribeLogStreams"
+          "logs:DescribeLogStreams",
+          "logs:PutRetentionPolicy",
+          "logs:DeleteRetentionPolicy",
+          "logs:ListTagsForResource",
+          "logs:UntagResource"
         ],
         Resource = "*"
       },
