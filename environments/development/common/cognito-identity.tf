@@ -1,8 +1,10 @@
 module "identity_cognito" {
   source = "../../../modules/cognito"
 
-  pool_name      = "trade-tariff-identity-user-pool"
-  user_pool_tier = "ESSENTIALS"
+  pool_name              = "trade-tariff-identity-user-pool"
+  user_pool_tier         = "ESSENTIALS"
+  domain                 = "auth.id.${var.domain_name}"
+  domain_certificate_arn = module.acm.validated_certificate_arn
 
   allow_user_registration  = true
   auto_verified_attributes = ["email"]
@@ -63,4 +65,16 @@ module "identity_cognito" {
       description = "Developer Portal user group. See https://portal.trade-tariff.service.gov.uk"
     }
   ]
+}
+
+resource "aws_route53_record" "id_cognito_custom_domain" {
+  name    = "auth.id.${var.domain_name}"
+  type    = "A"
+  zone_id = data.aws_route53_zone.this.zone_id
+
+  alias {
+    evaluate_target_health = false
+    name                   = module.identity_cognito.cloudfront_distribution_arn
+    zone_id                = module.identity_cognito.cloudfront_distribution_zone_id
+  }
 }
