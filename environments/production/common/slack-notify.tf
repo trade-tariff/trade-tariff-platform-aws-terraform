@@ -10,8 +10,9 @@ module "notify_slack" {
   slack_channel     = "production-alerts"
   slack_username    = "AWS"
 
-  lambda_description = "Lambda function which sends notifications to Slack"
-  log_events         = true
+  lambda_description                     = "Lambda function which sends notifications to Slack"
+  log_events                             = true
+  cloudwatch_log_group_retention_in_days = 90
 }
 
 locals {

@@ -12,7 +12,7 @@ module "notify_slack" {
 
   lambda_description                     = "Lambda function which sends notifications to Slack"
   log_events                             = true
-  cloudwatch_log_group_retention_in_days = 365
+  cloudwatch_log_group_retention_in_days = 30
 }
 
 locals {
