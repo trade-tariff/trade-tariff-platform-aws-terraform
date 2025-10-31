@@ -12,20 +12,20 @@ resource "aws_iam_role" "log_exporter" {
   name = "log-exporter-${var.environment}"
 
   assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "lambda.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": ""
+      }
+    ]
+  }
+  EOF
 }
 
 resource "aws_iam_role_policy" "log_exporter" {
@@ -33,59 +33,59 @@ resource "aws_iam_role_policy" "log_exporter" {
   role = aws_iam_role.log_exporter.id
 
   policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "logs:CreateExportTask",
-        "logs:Describe*",
-        "logs:ListTagsLogGroup"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    },
-    {
-      "Action": [
-        "ssm:DescribeParameters",
-        "ssm:GetParameter",
-        "ssm:GetParameters",
-        "ssm:GetParametersByPath",
-        "ssm:PutParameter"
-      ],
-      "Resource": "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-last-export/*",
-      "Effect": "Allow"
-    },
-    {
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/log-exporter-*",
-      "Effect": "Allow"
-    },
-    {
-        "Sid": "AllowCrossAccountObjectAcc",
-        "Effect": "Allow",
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
         "Action": [
-            "s3:PutObject",
-            "s3:PutObjectACL"
+          "logs:CreateExportTask",
+          "logs:Describe*",
+          "logs:ListTagsLogGroup"
         ],
-        "Resource": "arn:aws:s3:::${var.cloudwatch_logs_export_bucket}/*"
-    },
-    {
-        "Sid": "AllowCrossAccountBucketAcc",
         "Effect": "Allow",
+        "Resource": "*"
+      },
+      {
         "Action": [
-            "s3:PutBucketAcl",
-            "s3:GetBucketAcl"
+          "ssm:DescribeParameters",
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:GetParametersByPath",
+          "ssm:PutParameter"
         ],
-        "Resource": "arn:aws:s3:::${var.cloudwatch_logs_export_bucket}"
-    }
-  ]
-}
-EOF
+        "Resource": "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-last-export/*",
+        "Effect": "Allow"
+      },
+      {
+        "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        "Resource": "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/log-exporter-*",
+        "Effect": "Allow"
+      },
+      {
+          "Sid": "AllowCrossAccountObjectAcc",
+          "Effect": "Allow",
+          "Action": [
+              "s3:PutObject",
+              "s3:PutObjectACL"
+          ],
+          "Resource": "arn:aws:s3:::${var.cloudwatch_logs_export_bucket}/*"
+      },
+      {
+          "Sid": "AllowCrossAccountBucketAcc",
+          "Effect": "Allow",
+          "Action": [
+              "s3:PutBucketAcl",
+              "s3:GetBucketAcl"
+          ],
+          "Resource": "arn:aws:s3:::${var.cloudwatch_logs_export_bucket}"
+      }
+    ]
+  }
+  EOF
 }
 
 resource "aws_lambda_function" "log_exporter" {
@@ -117,6 +117,12 @@ resource "aws_cloudwatch_event_target" "log_exporter" {
   target_id = "log-exporter-${var.environment}"
   arn       = aws_lambda_function.log_exporter.arn
 }
+
+resource "aws_cloudwatch_log_group" "log_exporter" {
+  name              = "/aws/lambda/log-exporter-${var.environment}"
+  retention_in_days = var.log_retention_days
+}
+
 
 resource "aws_lambda_permission" "log_exporter" {
   statement_id  = "AllowExecutionFromCloudWatch"

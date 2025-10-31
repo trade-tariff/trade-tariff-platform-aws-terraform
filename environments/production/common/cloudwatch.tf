@@ -132,4 +132,5 @@ module "cloudwatch-logs-exporter" {
   source                        = "../../../modules/cloudwatch_log_exporter"
   cloudwatch_logs_export_bucket = "trade-tariff-logs-${local.account_id}"
   environment                   = var.environment
+  log_retention_days            = 30
 }
