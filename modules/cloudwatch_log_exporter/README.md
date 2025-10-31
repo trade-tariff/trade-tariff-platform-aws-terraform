@@ -30,6 +30,7 @@ No modules.
 |------|------|
 | [aws_cloudwatch_event_rule.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
 | [aws_cloudwatch_event_target.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
+| [aws_cloudwatch_log_group.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_iam_role.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_lambda_function.log_exporter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
@@ -44,6 +45,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_cloudwatch_logs_export_bucket"></a> [cloudwatch\_logs\_export\_bucket](#input\_cloudwatch\_logs\_export\_bucket) | Bucket to export logs | `string` | `""` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Build environment | `string` | `""` | no |
+| <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | Number of days to retain CloudWatch logs | `number` | `14` | no |
 
 ## Outputs
 

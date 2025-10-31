@@ -1,7 +1,7 @@
 module "cloudwatch" {
   source            = "../../../modules/cloudwatch/"
   name              = "platform-logs-${var.environment}"
-  retention_in_days = 30
+  retention_in_days = 7
 }
 
 data "aws_iam_policy_document" "logs_bucket_policy" {
@@ -130,4 +130,5 @@ module "cloudwatch-logs-exporter" {
   source                        = "../../../modules/cloudwatch_log_exporter"
   cloudwatch_logs_export_bucket = "trade-tariff-logs-${local.account_id}"
   environment                   = var.environment
+  log_retention_days            = 7
 }

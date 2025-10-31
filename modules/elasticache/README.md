@@ -38,6 +38,7 @@ No modules.
 | <a name="input_description"></a> [description](#input\_description) | Cluster description | `string` | n/a | yes |
 | <a name="input_engine"></a> [engine](#input\_engine) | Which caching engine to use. One of `redis` or `valkey`. Defaults to `redis`. | `string` | `"redis"` | no |
 | <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | Version of the caching engine to use. | `string` | n/a | yes |
+| <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | Number of days to retain CloudWatch logs | `number` | `30` | no |
 | <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | The weekly time range for maintenance periods on the cluster. Format: `ddd:hh22:mi-ddd:hh23:mi` (UTC). Minimum period must be 60 minutes. For example, `sun:05:00-sun:06:00`. | `string` | n/a | yes |
 | <a name="input_multi_az_enabled"></a> [multi\_az\_enabled](#input\_multi\_az\_enabled) | Whether multi-az is enabled. Defaults to `true`. | `bool` | `true` | no |
 | <a name="input_node_type"></a> [node\_type](#input\_node\_type) | Instance type, i.e. `cache.t3.small`. | `string` | n/a | yes |

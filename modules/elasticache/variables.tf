@@ -125,3 +125,9 @@ variable "subnet_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "log_retention_days" {
+  description = "Number of days to retain CloudWatch logs"
+  type        = number
+  default     = 30
+}

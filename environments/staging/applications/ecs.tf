@@ -1,5 +1,5 @@
 module "ecs" {
-  source = "github.com/terraform-aws-modules/terraform-aws-ecs?ref=v6.0.0"
+  source = "github.com/terraform-aws-modules/terraform-aws-ecs?ref=v6.7.0"
 
   cluster_name = "trade-tariff-cluster-${var.environment}"
 
