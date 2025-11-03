@@ -1,3 +1,12 @@
+data "external" "latest_auth_lambda_version" {
+  program = ["bash", "../../../${path.root}/bin/latest-lambda-version-arn"]
+
+  query = {
+    function_name = "viewer-request-${var.environment}-auth"
+    region        = "us-east-1"
+  }
+}
+
 module "cdn" {
   source = "../../../modules/cloudfront"
 
@@ -203,6 +212,11 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "uk_api_unversioned"
@@ -211,6 +225,11 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        }
+      }
     },
 
     # Static assets (can be anywhere in order since they're distinct patterns)
