@@ -48,10 +48,11 @@ resource "aws_iam_role" "serverless_lambda_ci_role" {
           },
           StringLike = {
             "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
-              "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
-              "repo:trade-tariff/trade-tariff-lambdas-fpo-model-garbage-collection:*",
-              "repo:trade-tariff/trade-tariff-lambdas-electronic-tariff-file-rotations:*",
+              "repo:trade-tariff/trade-tariff-lambdas-authenticator:*",
               "repo:trade-tariff/trade-tariff-lambdas-database-backups:*",
+              "repo:trade-tariff/trade-tariff-lambdas-electronic-tariff-file-rotations:*",
+              "repo:trade-tariff/trade-tariff-lambdas-fpo-model-garbage-collection:*",
+              "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
             ]
           }
         }
