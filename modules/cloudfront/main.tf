@@ -147,6 +147,7 @@ resource "aws_cloudfront_distribution" "this" {
       origin_request_policy_id   = ordered_cache_behavior.value.origin_request_policy_id
       response_headers_policy_id = ordered_cache_behavior.value.response_headers_policy_id
 
+      # Cloudfront Functions
       dynamic "function_association" {
         for_each = ordered_cache_behavior.value.function_association
 
@@ -156,6 +157,7 @@ resource "aws_cloudfront_distribution" "this" {
         }
       }
 
+      # Lambda@Edge associations
       dynamic "lambda_function_association" {
         for_each = ordered_cache_behavior.value.lambda_function_association
 

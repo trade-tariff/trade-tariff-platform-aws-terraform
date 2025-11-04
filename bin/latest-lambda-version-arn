@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+[[ $TRACE ]] && set -x
+
 # Fetches the non-aliased (e.g. not $LATEST) latest version number of an AWS Lambda function and constructs the full ARN.
 # Usage:
 # echo '{"function_name": "my-lambda-function", "region": "eu-west-2"}' | bin/latest-lambda-version-arn
@@ -16,10 +18,11 @@ if [ $? -ne 0 ] || [ -z "$ACCOUNT_ID" ]; then
   ACCOUNT_ID="000000000000"
 fi
 
+
 LATEST_VERSION=$(aws lambda list-versions-by-function \
   --region "$AWS_REGION" \
   --function-name "$FUNCTION_NAME" \
-  --query "Versions[?Version!='\$LATEST'].Version | max(@)" --output text 2>/dev/null)
+  --query "Versions[?Version!='\$LATEST'].Version | map(&to_number(@), @) | max(@)" --output text 2>/dev/null)
 
 if [ $? -ne 0 ] || [ "$LATEST_VERSION" == "None" ] || [ -z "$LATEST_VERSION" ]; then
   LATEST_VERSION=0
