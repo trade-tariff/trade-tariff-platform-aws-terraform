@@ -160,6 +160,11 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "uk_api"
@@ -168,6 +173,11 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "default_api"
@@ -176,6 +186,11 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        }
+      }
     },
 
     # V1 API endpoints
@@ -186,6 +201,11 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "uk_v1_api"
@@ -194,6 +214,11 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "default_v1_api"
@@ -202,6 +227,11 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        }
+      }
     },
 
     # V1/V2 API endpoints without version in the path
