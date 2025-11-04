@@ -2,7 +2,7 @@
 
 # Fetches the non-aliased (e.g. not $LATEST) latest version number of an AWS Lambda function and constructs the full ARN.
 # Usage:
-# echo '{"function_name": "my-lambda-function", "region": "eu-west-2"}' | .github/bin/latest-lambda-version
+# echo '{"function_name": "my-lambda-function", "region": "eu-west-2"}' | bin/latest-lambda-version-arn
 
 eval "$(jq -r '@sh "FUNCTION_NAME=\(.function_name) AWS_REGION=\(.region)"')"
 
@@ -10,12 +10,20 @@ if [ -z "$AWS_REGION" ] || [ "$AWS_REGION" == "null" ]; then
   AWS_REGION="us-east-1"
 fi
 
-ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>/dev/null)
+
+if [ $? -ne 0 ] || [ -z "$ACCOUNT_ID" ]; then
+  ACCOUNT_ID="000000000000"
+fi
 
 LATEST_VERSION=$(aws lambda list-versions-by-function \
   --region "$AWS_REGION" \
   --function-name "$FUNCTION_NAME" \
-  --query "Versions[?Version!='\$LATEST'].Version | max(@)" --output text)
+  --query "Versions[?Version!='\$LATEST'].Version | max(@)" --output text 2>/dev/null)
+
+if [ $? -ne 0 ] || [ "$LATEST_VERSION" == "None" ] || [ -z "$LATEST_VERSION" ]; then
+  LATEST_VERSION=0
+fi
 
 if [ "$LATEST_VERSION" == "None" ]; then
   LATEST_VERSION=0
