@@ -18,7 +18,6 @@ if [ $? -ne 0 ] || [ -z "$ACCOUNT_ID" ]; then
   ACCOUNT_ID="000000000000"
 fi
 
-
 LATEST_VERSION=$(aws lambda list-versions-by-function \
   --region "$AWS_REGION" \
   --function-name "$FUNCTION_NAME" \

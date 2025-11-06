@@ -7,6 +7,15 @@ data "external" "latest_auth_lambda_version" {
   }
 }
 
+data "external" "latest_response_lambda_version" {
+  program = ["bash", "../../../${path.root}/bin/latest-lambda-version-arn"]
+
+  query = {
+    function_name = "viewer-request-${var.environment}-response"
+    region        = "us-east-1"
+  }
+}
+
 module "cdn" {
   source = "../../../modules/cloudfront"
 
@@ -60,6 +69,14 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "xi_api_spimm_unversioned"
@@ -68,6 +85,14 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
 
     # Exchange rate endpoints
@@ -78,6 +103,14 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "uk_api_exchange_rates_unversioned"
@@ -86,6 +119,14 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "default_api_exchange_rates"
@@ -94,6 +135,14 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
 
     # Search reference endpoints
@@ -104,6 +153,14 @@ module "cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
     {
       name                       = "uk_api_search_references"
@@ -112,6 +169,14 @@ module "cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
 
     # News endpoints
@@ -122,6 +187,14 @@ module "cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
 
     # Live Issues endpoints
@@ -132,6 +205,14 @@ module "cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
 
     # Healthcheck endpoints
@@ -150,6 +231,14 @@ module "cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = {
+        "viewer-request" = {
+          lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
+        }
+      }
     },
 
     # BROADER API PATTERNS (must come after specific endpoints)
@@ -163,6 +252,9 @@ module "cdn" {
       lambda_function_association = {
         "viewer-request" = {
           lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
         }
       }
     },
@@ -176,6 +268,9 @@ module "cdn" {
       lambda_function_association = {
         "viewer-request" = {
           lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
         }
       }
     },
@@ -189,6 +284,9 @@ module "cdn" {
       lambda_function_association = {
         "viewer-request" = {
           lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
         }
       }
     },
@@ -204,6 +302,9 @@ module "cdn" {
       lambda_function_association = {
         "viewer-request" = {
           lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
         }
       }
     },
@@ -217,6 +318,9 @@ module "cdn" {
       lambda_function_association = {
         "viewer-request" = {
           lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
         }
       }
     },
@@ -230,6 +334,9 @@ module "cdn" {
       lambda_function_association = {
         "viewer-request" = {
           lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
         }
       }
     },
@@ -245,6 +352,9 @@ module "cdn" {
       lambda_function_association = {
         "viewer-request" = {
           lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
         }
       }
     },
@@ -258,6 +368,9 @@ module "cdn" {
       lambda_function_association = {
         "viewer-request" = {
           lambda_arn = data.external.latest_auth_lambda_version.result.arn
+        },
+        "viewer-response" = {
+          lambda_arn = data.external.latest_response_lambda_version.result.arn
         }
       }
     },
