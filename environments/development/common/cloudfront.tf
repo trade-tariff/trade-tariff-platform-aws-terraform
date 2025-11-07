@@ -16,6 +16,18 @@ data "external" "latest_response_lambda_version" {
   }
 }
 
+locals {
+  edge_functions_enabled = false
+  lambda_assoc = local.edge_functions_enabled ? {
+    "viewer-request" = {
+      lambda_arn = data.external.latest_auth_lambda_version.result.arn
+    },
+    "viewer-response" = {
+      lambda_arn = data.external.latest_response_lambda_version.result.arn
+    }
+  } : {}
+}
+
 module "cdn" {
   source = "../../../modules/cloudfront"
 
@@ -63,156 +75,93 @@ module "cdn" {
   #       where the first matching path is used and the policy is applied.
   cache_behaviors = [
     {
-      name                       = "xi_api_spimm"
-      path_pattern               = "/xi/api/v2/green_lanes/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "xi_api_spimm"
+      path_pattern                = "/xi/api/v2/green_lanes/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.short_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "xi_api_spimm_unversioned"
-      path_pattern               = "/xi/api/green_lanes/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "xi_api_spimm_unversioned"
+      path_pattern                = "/xi/api/green_lanes/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.short_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
 
     # Exchange rate endpoints
     {
-      name                       = "uk_api_exchange_rates"
-      path_pattern               = "/uk/api/v2/exchange_rates/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "uk_api_exchange_rates"
+      path_pattern                = "/uk/api/v2/exchange_rates/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.medium_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "uk_api_exchange_rates_unversioned"
-      path_pattern               = "/uk/api/exchange_rates/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "uk_api_exchange_rates_unversioned"
+      path_pattern                = "/uk/api/exchange_rates/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.medium_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "default_api_exchange_rates"
-      path_pattern               = "/api/v2/exchange_rates/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "default_api_exchange_rates"
+      path_pattern                = "/api/v2/exchange_rates/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.medium_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
 
     # Search reference endpoints
     {
-      name                       = "xi_api_search_references"
-      path_pattern               = "/xi/api/search_references"
-      target_origin_id           = "alb"
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "xi_api_search_references"
+      path_pattern                = "/xi/api/search_references"
+      target_origin_id            = "alb"
+      cache_policy_id             = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "uk_api_search_references"
-      path_pattern               = "/uk/api/search_references"
-      target_origin_id           = "alb"
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "uk_api_search_references"
+      path_pattern                = "/uk/api/search_references"
+      target_origin_id            = "alb"
+      cache_policy_id             = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
 
     # News endpoints
     {
-      name                       = "uk_api_news"
-      path_pattern               = "/uk/api/news*"
-      target_origin_id           = "alb"
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "uk_api_news"
+      path_pattern                = "/uk/api/news*"
+      target_origin_id            = "alb"
+      cache_policy_id             = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
 
     # Live Issues endpoints
     {
-      name                       = "uk_api_live_issues_unversioned"
-      path_pattern               = "/uk/api/live_issues*"
-      target_origin_id           = "alb"
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "uk_api_live_issues_unversioned"
+      path_pattern                = "/uk/api/live_issues*"
+      target_origin_id            = "alb"
+      cache_policy_id             = data.aws_cloudfront_cache_policy.caching_disabled.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
 
     # Healthcheck endpoints
@@ -231,148 +180,84 @@ module "cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
     },
 
     # BROADER API PATTERNS (must come after specific endpoints)
     {
-      name                       = "xi_api"
-      path_pattern               = "/xi/api/v2/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "xi_api"
+      path_pattern                = "/xi/api/v2/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "uk_api"
-      path_pattern               = "/uk/api/v2/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "uk_api"
+      path_pattern                = "/uk/api/v2/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "default_api"
-      path_pattern               = "/api/v2/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "default_api"
+      path_pattern                = "/api/v2/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
 
     # V1 API endpoints
     {
-      name                       = "xi_v1_api"
-      path_pattern               = "/xi/api/v1/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "xi_v1_api"
+      path_pattern                = "/xi/api/v1/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "uk_v1_api"
-      path_pattern               = "/uk/api/v1/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "uk_v1_api"
+      path_pattern                = "/uk/api/v1/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "default_v1_api"
-      path_pattern               = "/api/v1/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "default_v1_api"
+      path_pattern                = "/api/v1/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
 
     # V1/V2 API endpoints without version in the path
     {
-      name                       = "xi_api_unversioned"
-      path_pattern               = "/xi/api/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "xi_api_unversioned"
+      path_pattern                = "/xi/api/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
     {
-      name                       = "uk_api_unversioned"
-      path_pattern               = "/uk/api/*"
-      target_origin_id           = "alb"
-      cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-      lambda_function_association = {
-        "viewer-request" = {
-          lambda_arn = data.external.latest_auth_lambda_version.result.arn
-        },
-        "viewer-response" = {
-          lambda_arn = data.external.latest_response_lambda_version.result.arn
-        }
-      }
+      name                        = "uk_api_unversioned"
+      path_pattern                = "/uk/api/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+      lambda_function_association = local.lambda_assoc
     },
 
     # Static assets (can be anywhere in order since they're distinct patterns)
