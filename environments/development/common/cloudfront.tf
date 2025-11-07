@@ -17,7 +17,8 @@ data "external" "latest_response_lambda_version" {
 }
 
 locals {
-  edge_functions_enabled = false
+  edge_functions_enabled = true
+
   lambda_assoc = local.edge_functions_enabled ? {
     "viewer-request" = {
       lambda_arn = data.external.latest_auth_lambda_version.result.arn
