@@ -178,6 +178,63 @@ resource "aws_wafv2_web_acl" "this" {
   }
 
   dynamic "rule" {
+    for_each = var.assets_rate_based_rule != null ? [var.assets_rate_based_rule] : []
+    content {
+      name     = rule.value.name
+      priority = rule.value.priority
+
+      action {
+        dynamic "count" {
+          for_each = rule.value.action == "count" ? [1] : []
+          content {}
+        }
+
+        dynamic "block" {
+          for_each = rule.value.action == "block" ? [1] : []
+          content {
+            custom_response {
+              custom_response_body_key = rule.value.custom_response.body_key
+              response_code            = rule.value.custom_response.response_code
+              response_header {
+                name  = rule.value.custom_response.response_header.name
+                value = rule.value.custom_response.response_header.value
+              }
+            }
+          }
+        }
+      }
+
+      statement {
+        rate_based_statement {
+          limit                 = rule.value.rpm_limit
+          evaluation_window_sec = 60
+          aggregate_key_type    = "IP"
+
+          # This rule specifically TARGETS the assets from the regex pattern set
+          scope_down_statement {
+            regex_pattern_set_reference_statement {
+              arn = aws_wafv2_regex_pattern_set.this.arn
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = rule.value.name
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
     for_each = var.ip_rate_url_based_rules
     content {
       name     = rule.value.name
