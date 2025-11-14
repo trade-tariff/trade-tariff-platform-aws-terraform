@@ -108,7 +108,6 @@ variable "ip_rate_url_based_rules" {
     action                = string
     search_string         = string
     positional_constraint = string
-    regex_pattern_set_arn = string
   }))
   description = "A rate and url based rules tracks the rate of requests for each originating IP address, and triggers the rule action when the rate exceeds a limit that you specify on the number of requests in any 5-minute time span"
   default     = []
