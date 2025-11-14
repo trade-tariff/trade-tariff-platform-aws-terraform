@@ -81,6 +81,25 @@ variable "ip_rate_based_rule" {
   default     = null
 }
 
+variable "assets_rate_based_rule" {
+  type = object({
+    name      = string
+    priority  = number
+    rpm_limit = number
+    action    = string
+    custom_response = object({
+      response_code = number
+      body_key      = string
+      response_header = object({
+        name  = string
+        value = string
+      })
+    })
+  })
+  description = "A rate-based rule specifically for assets defined in regex pattern set"
+  default     = null
+}
+
 variable "ip_rate_url_based_rules" {
   type = list(object({
     name                  = string
