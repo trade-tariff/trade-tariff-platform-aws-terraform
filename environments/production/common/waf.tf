@@ -26,8 +26,8 @@ module "waf" {
       response_code = 429
       body_key      = "rate-limit-exceeded"
       response_header = {
-        name  = "X-Rate-Limit"
-        value = "1"
+        name  = "X-RateLimit-Remaining"
+        value = "0"
       }
     }
   }
