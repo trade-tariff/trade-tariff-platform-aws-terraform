@@ -90,6 +90,22 @@ module "fpo_search_configuration" {
   recovery_window = 7
 }
 
+module "examples_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "examples-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
+
+module "identity_create_auth_challenge_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "identity-create-auth-challenge-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
+
+# Other non-configuration secrets
+
 module "slack_notify_lambda_slack_webhook_url" {
   source          = "../../../modules/secret/"
   name            = "slack-notify-lambda-slack-webhook-url"
@@ -100,13 +116,6 @@ module "slack_notify_lambda_slack_webhook_url" {
 module "backups_basic_auth" {
   source          = "../../../modules/secret/"
   name            = "backups-basic-auth"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-}
-
-module "identity_create_auth_challenge_configuration" {
-  source          = "../../../modules/secret/"
-  name            = "identity-create-auth-challenge-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
 }
