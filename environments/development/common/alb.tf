@@ -30,6 +30,12 @@ module "alb" {
       priority         = 10
     }
 
+    examples = {
+      hosts            = ["examples.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 20
+    }
+
     backend_xi = {
       paths = [
         "/xi/admin*",
