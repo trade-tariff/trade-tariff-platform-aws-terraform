@@ -25,7 +25,7 @@ jobs:
       TG_PROVIDER_CACHE: 1
     steps:
       - run: mkdir -p "$TF_PLUGIN_CACHE_DIR"
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: actions/cache@v4
         with:
@@ -65,7 +65,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: aws-actions/configure-aws-credentials@v5
         with:
@@ -100,7 +100,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: aws-actions/configure-aws-credentials@v5
         with:
@@ -144,7 +144,7 @@ jobs:
       needs: apply-development
       if: always()
       steps:
-        - uses: actions/checkout@v5
+        - uses: actions/checkout@v6
         - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
           with:
             result: ${{ needs.apply-development.result }}
@@ -156,7 +156,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: aws-actions/configure-aws-credentials@v5
         with:
@@ -185,7 +185,7 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: aws-actions/configure-aws-credentials@v5
         with:
