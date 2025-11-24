@@ -36,11 +36,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1761349956,
-        "narHash": "sha256-tH3wHnOJms+U4k/rK2Nn1RfBrhffX92jLP/2VndSn0w=",
+        "lastModified": 1763934636,
+        "narHash": "sha256-9glbI7f1uU+yzQCq5LwLgdZqx6svOhZWkd4JRY265fc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "02f2cb8e0feb4596d20cc52fda73ccee960e3538",
+        "rev": "ee09932cedcef15aaf476f9343d1dea2cb77e261",
         "type": "github"
       },
       "original": {
@@ -50,7 +50,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-1_0": {
+    "nixpkgs-23_05": {
       "locked": {
         "lastModified": 1705033721,
         "narHash": "sha256-K5eJHmL1/kev6WuqyqqbS1cdNnSidIZ3jeqJ7GbrYnQ=",
@@ -66,7 +66,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-1_6": {
+    "nixpkgs-24_05": {
       "locked": {
         "lastModified": 1735651292,
         "narHash": "sha256-YLbzcBtYo1/FEzFsB3AnM16qFc6fWPMIoOuSoDwvg9g=",
@@ -93,11 +93,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1759902829,
-        "narHash": "sha256-8mF8hyntxkjxZ5AOM+uHbJMSdA/kTgNTGOdskCKm1+c=",
+        "lastModified": 1763847687,
+        "narHash": "sha256-vkIXmeU/knEHJfDNWonG0lpYKTb5cHK0ocFfoYf3EYA=",
         "owner": "bobvanderlinden",
         "repo": "nixpkgs-ruby",
-        "rev": "5fba6c022a63f1e76dee4da71edddad8959f088a",
+        "rev": "8051a5f1e14faeca094382c8086dd4000a3fe74d",
         "type": "github"
       },
       "original": {
@@ -109,16 +109,16 @@
     "nixpkgs-terraform": {
       "inputs": {
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-1_0": "nixpkgs-1_0",
-        "nixpkgs-1_6": "nixpkgs-1_6",
+        "nixpkgs-23_05": "nixpkgs-23_05",
+        "nixpkgs-24_05": "nixpkgs-24_05",
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1760585172,
-        "narHash": "sha256-MhjD2Z2LHun2DIO2e2C04okFmAzr1iDarRZv1U/28NM=",
+        "lastModified": 1763130160,
+        "narHash": "sha256-zRqYjE+uUOQhnnPhpE3haDFMpbAbbwaEch/Gdh/LtQs=",
         "owner": "stackbuilders",
         "repo": "nixpkgs-terraform",
-        "rev": "67111c56b525073991fcb656ce30e9ad25a78826",
+        "rev": "388e4937186539d2aac3cf05d9de49f6eab242fc",
         "type": "github"
       },
       "original": {

@@ -38,7 +38,7 @@
         rubyVersion = builtins.head (builtins.split "\n" (builtins.readFile ./.ruby-version));
         ruby = pkgs."ruby-${rubyVersion}";
 
-        terraform = nixpkgs-terraform.packages.${system}."1.13.4";
+        terraform = nixpkgs-terraform.packages.${system}."terraform-1.13.4";
 
         lint = pkgs.writeScriptBin "lint" ''
           ${pkgs.pre-commit}/bin/pre-commit run -a
