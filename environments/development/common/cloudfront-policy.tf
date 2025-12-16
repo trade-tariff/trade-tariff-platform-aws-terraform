@@ -177,22 +177,25 @@ resource "aws_cloudfront_origin_access_control" "s3" {
   signing_protocol                  = "sigv4"
 }
 
-resource "aws_s3_bucket_policy" "api" {
+resource "aws_s3_bucket_policy" "docs" {
   bucket = aws_s3_bucket.this["api-docs"].id
-  policy = data.aws_iam_policy_document.api.json
+  policy = data.aws_iam_policy_document.docs.json
 }
 
-data "aws_iam_policy_document" "api" {
+data "aws_iam_policy_document" "docs" {
   statement {
-    sid       = "AllowCloudFrontServicePrincipal"
-    effect    = "Allow"
-    actions   = ["s3:GetObject", "s3:ListBucket"]
-    resources = [aws_s3_bucket.this["api-docs"].arn, "${aws_s3_bucket.this["api-docs"].arn}/*"]
+    sid     = "AllowCloudFrontServicePrincipal"
+    effect  = "Allow"
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = [
+      aws_s3_bucket.this["api-docs"].arn,
+      "${aws_s3_bucket.this["api-docs"].arn}/*",
+    ]
 
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values   = [module.api_cdn.aws_cloudfront_distribution_arn]
+      values   = [module.docs_cdn.aws_cloudfront_distribution_arn]
     }
 
     principals {
@@ -243,31 +246,6 @@ data "aws_iam_policy_document" "backups" {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
       values   = [module.backups_cdn.aws_cloudfront_distribution_arn]
-    }
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudfront.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_s3_bucket_policy" "tech_docs" {
-  bucket = aws_s3_bucket.this["tech-docs"].id
-  policy = data.aws_iam_policy_document.tech_docs.json
-}
-
-data "aws_iam_policy_document" "tech_docs" {
-  statement {
-    sid       = "AllowCloudFrontServicePrincipal"
-    effect    = "Allow"
-    actions   = ["s3:GetObject", "s3:ListBucket"]
-    resources = [aws_s3_bucket.this["tech-docs"].arn, "${aws_s3_bucket.this["tech-docs"].arn}/*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-      values   = [module.tech_docs_cdn.aws_cloudfront_distribution_arn]
     }
 
     principals {

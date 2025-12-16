@@ -5,6 +5,7 @@ module "alb" {
   certificate_arn       = module.acm_origin.validated_certificate_arn
   public_subnet_ids     = data.terraform_remote_state.base.outputs.public_subnet_ids
   vpc_id                = data.terraform_remote_state.base.outputs.vpc_id
+  domain_name           = var.domain_name
 
   custom_header = {
     name  = random_password.origin_header[0].result
@@ -67,6 +68,20 @@ module "alb" {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
       priority         = 99 # Most generic rule for frontend should match last
+    }
+  }
+
+  gateway_services = {
+    backend_xi = {
+      paths            = ["/xi/api/*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 1
+    }
+
+    backend_uk = {
+      paths            = ["/uk/api*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 2
     }
   }
 }

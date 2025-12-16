@@ -346,10 +346,10 @@ module "cdn" {
 }
 
 
-module "api_cdn" {
+module "docs_cdn" {
   source = "../../../modules/cloudfront"
 
-  aliases             = ["api.${var.domain_name}"]
+  aliases             = ["docs.${var.domain_name}"]
   create_alias        = true
   route53_zone_id     = data.aws_route53_zone.this.id
   comment             = "API Docs ${title(var.environment)} CDN"
@@ -367,7 +367,7 @@ module "api_cdn" {
   }
 
   origin = {
-    api = {
+    docs = {
       domain_name              = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
       origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     }
@@ -376,7 +376,7 @@ module "api_cdn" {
   cache_behaviors = [
     {
       name                       = "default"
-      target_origin_id           = "api"
+      target_origin_id           = "docs"
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
@@ -492,48 +492,4 @@ resource "aws_cloudfront_function" "basic_auth" {
   runtime = "cloudfront-js-1.0"
   publish = true
   code    = local.cloudfront_auth
-}
-
-module "tech_docs_cdn" {
-  source = "../../../modules/cloudfront"
-
-  aliases             = ["docs.${var.domain_name}"]
-  create_alias        = true
-  route53_zone_id     = data.aws_route53_zone.this.id
-  comment             = "${title(var.environment)} Tech Docs CDN"
-  default_root_object = "index.html"
-
-  enabled         = true
-  is_ipv6_enabled = true
-  price_class     = "PriceClass_100"
-
-  logging_config = {
-    bucket = module.logs.s3_bucket_bucket_domain_name
-    prefix = "cloudfront/${var.environment}"
-  }
-
-  origin = {
-    docs = {
-      domain_name              = aws_s3_bucket.this["tech-docs"].bucket_regional_domain_name
-      origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
-    }
-  }
-
-  cache_behaviors = [
-    {
-      name                       = "default"
-      target_origin_id           = "docs"
-      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
-      origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
-      response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
-    },
-  ]
-
-  viewer_certificate = {
-    ssl_support_method  = "sni-only"
-    acm_certificate_arn = module.acm.validated_certificate_arn
-    depends_on = [
-      module.acm.validated_certificate_arn
-    ]
-  }
 }

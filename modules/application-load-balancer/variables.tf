@@ -73,6 +73,19 @@ variable "services" {
   )
 }
 
+variable "gateway_services" {
+  description = "Map of services to make ALB target groups and listener rules for routable from API Gateway."
+  type = map(
+    object({
+      healthcheck_path = string
+      hosts            = optional(list(string))
+      paths            = optional(list(string))
+      priority         = number
+    })
+  )
+  default = {}
+}
+
 variable "enable_access_logs" {
   description = "Whether to enable access logs for ALB."
   type        = bool
@@ -89,4 +102,9 @@ variable "access_logs_prefix" {
   description = "S3 object prefix for access log entries."
   type        = string
   default     = null
+}
+
+variable "domain_name" {
+  description = "The domain name for the application."
+  type        = string
 }
