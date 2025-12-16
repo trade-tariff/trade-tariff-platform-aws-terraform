@@ -48,6 +48,7 @@ No modules.
 | [aws_lb.application_load_balancer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
 | [aws_lb_listener.redirect_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_listener.trade_tariff_listeners](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener_rule.redirect_http_rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_target_group.trade_tariff_target_groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_s3_bucket.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
@@ -69,9 +70,11 @@ No modules.
 | <a name="input_application_port"></a> [application\_port](#input\_application\_port) | Port the application exposes. | `string` | `8080` | no |
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | ARN of the default SSL server certificate. | `string` | n/a | yes |
 | <a name="input_custom_header"></a> [custom\_header](#input\_custom\_header) | Custom header required in all requests to the load balancer. | <pre>object({<br/>    name  = string<br/>    value = string<br/>  })</pre> | n/a | yes |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The domain name for the application. | `string` | n/a | yes |
 | <a name="input_enable_access_logs"></a> [enable\_access\_logs](#input\_enable\_access\_logs) | Whether to enable access logs for ALB. | `bool` | `false` | no |
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | If true, deletion of the load balancer will be disabled via the AWS API. | `bool` | `true` | no |
 | <a name="input_enable_http2"></a> [enable\_http2](#input\_enable\_http2) | Indicates whether HTTP/2 is enabled in application load balancers | `bool` | `true` | no |
+| <a name="input_gateway_services"></a> [gateway\_services](#input\_gateway\_services) | Map of services to make ALB target groups and listener rules for routable from API Gateway. | <pre>map(<br/>    object({<br/>      healthcheck_path = string<br/>      hosts            = optional(list(string))<br/>      paths            = optional(list(string))<br/>      priority         = number<br/>    })<br/>  )</pre> | `{}` | no |
 | <a name="input_idle_timeout"></a> [idle\_timeout](#input\_idle\_timeout) | The time in seconds that the connection is allowed to be idle. | `string` | `60` | no |
 | <a name="input_listening_port"></a> [listening\_port](#input\_listening\_port) | Port on which the load balancer listens to. | `string` | `443` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | Public subnet IDs | `list(any)` | n/a | yes |
@@ -84,6 +87,10 @@ No modules.
 |------|-------------|
 | <a name="output_arn_suffix"></a> [arn\_suffix](#output\_arn\_suffix) | arn\_suffix of the load balancer. |
 | <a name="output_dns_name"></a> [dns\_name](#output\_dns\_name) | DNS name of the load balancer. |
+| <a name="output_http_listener_arn"></a> [http\_listener\_arn](#output\_http\_listener\_arn) | n/a |
+| <a name="output_https_listener_arn"></a> [https\_listener\_arn](#output\_https\_listener\_arn) | n/a |
+| <a name="output_lb_arn"></a> [lb\_arn](#output\_lb\_arn) | The ARN of the application load balancer. |
+| <a name="output_lb_dns_name"></a> [lb\_dns\_name](#output\_lb\_dns\_name) | The DNS name of the load balancer. |
 | <a name="output_target_groups"></a> [target\_groups](#output\_target\_groups) | List of target groups. |
 | <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | Zone ID of the load balancer. |
 <!-- END_TF_DOCS -->
