@@ -32,8 +32,8 @@ resource "aws_api_gateway_deployment" "this" {
       aws_api_gateway_method.proxy.http_method,
       aws_api_gateway_method.proxy.request_parameters,
 
-      aws_api_gateway_integration.proxy_integration.uri,
-      aws_api_gateway_integration.proxy_integration.request_parameters,
+      aws_api_gateway_integration.proxy_redirect.uri,
+      aws_api_gateway_integration.proxy_redirect.request_parameters,
 
       keys(aws_api_gateway_resource.uk_exceptions),
       keys(aws_api_gateway_resource.xi_exceptions),
