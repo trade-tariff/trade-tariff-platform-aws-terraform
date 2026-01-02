@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "s3_kms_key_policy" {
       type = "AWS"
       identifiers = concat(
         [
-          for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:role/backend-job-execution-role"
+          for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:role/backend-job-task-role"
         ],
         [
           for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:role/GithubActions-FPO-Models-Role"
@@ -155,4 +155,34 @@ resource "aws_s3_bucket_lifecycle_configuration" "firehose_backups_rotation" {
       days = 30
     }
   }
+}
+
+# NOTE: READONLY cross-account access for persistence bucket to allow backend jobs to replicate exchange rate data
+data "aws_iam_policy_document" "persistence_cross_account_policy" {
+  statement {
+    sid    = "AllowCrossAccountReadAccess"
+    effect = "Allow"
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        for account_id in values(var.account_ids) : "arn:aws:iam::${account_id}:role/backend-job-task-role"
+      ]
+    }
+
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject"
+    ]
+
+    resources = [
+      aws_s3_bucket.this["persistence"].arn,
+      "${aws_s3_bucket.this["persistence"].arn}/data/exchange_rates/*"
+    ]
+  }
+}
+
+resource "aws_s3_bucket_policy" "persistence" {
+  bucket = aws_s3_bucket.this["persistence"].id
+  policy = data.aws_iam_policy_document.persistence_cross_account_policy.json
 }
