@@ -748,3 +748,34 @@ resource "aws_iam_policy" "ci_e2e_testing_policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ci_ecs_task_cleanup_policy" {
+  name        = "ci-ecs-task-cleanup-policy"
+  description = "Policy for Github Actions to list and deregister old ECS task definitions"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ecs:DeregisterTaskDefinition",
+          "ecs:DescribeServices",
+          "ecs:DescribeTaskDefinition",
+          "ecs:DescribeTasks",
+          "ecs:ListClusters",
+          "ecs:ListServices",
+          "ecs:ListTaskDefinitionFamilies",
+          "ecs:ListTaskDefinitions",
+          "ecs:ListTasks",
+        ],
+        Resource = "*",
+        Condition = {
+          "StringEquals" : {
+            "aws:RequestedRegion" : ["eu-west-2"]
+          }
+        }
+      }
+    ]
+  })
+}
