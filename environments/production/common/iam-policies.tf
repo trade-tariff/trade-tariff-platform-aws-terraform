@@ -694,12 +694,13 @@ resource "aws_iam_policy" "ci_ecs_task_cleanup_policy" {
       {
         Effect = "Allow",
         Action = [
+          "ecs:DeregisterTaskDefinition",
+          "ecs:DescribeServices",
+          "ecs:DescribeTaskDefinition",
           "ecs:ListClusters",
           "ecs:ListServices",
           "ecs:ListTaskDefinitions",
-          "ecs:DescribeServices",
-          "ecs:DescribeTaskDefinition",
-          "ecs:DeregisterTaskDefinition",
+          "ecs:ListTasks",
         ],
         Resource = "*",
         Condition = {
