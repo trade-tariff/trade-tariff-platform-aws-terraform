@@ -6,6 +6,7 @@ module "alb" {
   public_subnet_ids     = data.terraform_remote_state.base.outputs.public_subnet_ids
   vpc_id                = data.terraform_remote_state.base.outputs.vpc_id
   enable_access_logs    = true
+  domain_name           = var.domain_name
 
   custom_header = {
     name  = random_password.origin_header[0].result

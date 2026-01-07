@@ -9,6 +9,7 @@ resource "aws_iam_policy" "ci_terraform_policy" {
         Effect = "Allow",
         Action = [
           "acm:*",
+          "apigateway:*",
           "application-autoscaling:*",
           "autoscaling:*",
           "cloudformation:*",
