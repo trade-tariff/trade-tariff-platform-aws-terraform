@@ -399,3 +399,35 @@ resource "aws_iam_role_policy_attachment" "apigw_cloudwatch_logs_policy_attachme
   role       = aws_iam_role.apigw_cloudwatch_logs.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
 }
+
+resource "aws_iam_role" "ci_ecs_task_cleanup_role" {
+  name = "GithubActions-ECS-Task-Cleanup-Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+          },
+          StringLike = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = [
+              "repo:trade-tariff/trade-tariff-tools:*",
+            ]
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_cleanup_ci_policy_attachment" {
+  role       = aws_iam_role.ci_ecs_task_cleanup_role.name
+  policy_arn = aws_iam_policy.ci_ecs_task_cleanup_policy.arn
+}
