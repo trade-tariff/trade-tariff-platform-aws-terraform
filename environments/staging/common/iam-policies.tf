@@ -609,6 +609,7 @@ resource "aws_iam_policy" "ci_ecs_task_cleanup_policy" {
           "ecs:DescribeTaskDefinition",
           "ecs:ListClusters",
           "ecs:ListServices",
+          "ecs:ListTaskDefinitionFamilies",
           "ecs:ListTaskDefinitions",
           "ecs:ListTasks",
         ],
