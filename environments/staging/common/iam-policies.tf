@@ -24,6 +24,7 @@ resource "aws_iam_policy" "ci_terraform_policy" {
           "elasticloadbalancing:*",
           "es:*",
           "events:*",
+          "firehose:*",
           "iam:*",
           "kms:*",
           "lambda:*",
