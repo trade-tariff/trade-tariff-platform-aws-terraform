@@ -104,3 +104,10 @@ module "identity_create_auth_challenge_configuration" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
 }
+
+module "newrelic_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "newrelic-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
