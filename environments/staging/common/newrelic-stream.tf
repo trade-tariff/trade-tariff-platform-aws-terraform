@@ -17,6 +17,7 @@ module "cw_metric_stream" {
 
   include_metric_filters = {
     "ECS/ContainerInsights" = [],
+    "AWS/ECS"               = [],
     "AWS/RDS"               = []
   }
 }

@@ -21,6 +21,11 @@ terraform {
       source  = "hashicorp/external"
       version = ">= 2.3.5"
     }
+
+    newrelic = {
+      source  = "newrelic/newrelic"
+      version = ">= 3.78.0"
+    }
   }
 }
 
@@ -53,4 +58,10 @@ provider "aws" {
       BillingCode = "HMR:OTT"
     }
   }
+}
+
+provider "newrelic" {
+  account_id = local.newrelic_account_id
+  api_key    = local.newrelic_user_key
+  region     = "EU"
 }
