@@ -164,3 +164,15 @@ variable "default_action" {
   description = "The action to perform if none of the rules contained in the WebACL match."
   default     = "allow"
 }
+
+variable "uri_path_match_rules" {
+  description = "Custom URI path match rules"
+  type = list(object({
+    name                  = string
+    priority              = number
+    action                = string # allow | block | count
+    search_string         = string
+    positional_constraint = string # CONTAINS | EXACTLY | STARTS_WITH | ENDS_WITH
+  }))
+  default = []
+}
