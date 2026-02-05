@@ -43,6 +43,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | A friendly name of the WebACL. | `string` | n/a | yes |
 | <a name="input_scope"></a> [scope](#input\_scope) | The scope of this Web ACL. Valid options: CLOUDFRONT, REGIONAL. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the WAFv2 ACL. | `map(string)` | `{}` | no |
+| <a name="input_uri_path_match_rules"></a> [uri\_path\_match\_rules](#input\_uri\_path\_match\_rules) | Custom URI path match rules | <pre>list(object({<br/>    name                  = string<br/>    priority              = number<br/>    action                = string # allow | block | count<br/>    search_string         = string<br/>    positional_constraint = string # CONTAINS | EXACTLY | STARTS_WITH | ENDS_WITH<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
