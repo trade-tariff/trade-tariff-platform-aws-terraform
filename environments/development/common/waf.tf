@@ -3,6 +3,7 @@ module "waf" {
 
   name  = "tariff-waf-${var.environment}"
   scope = "CLOUDFRONT"
+
   ip_rate_based_rule = {
     name      = "ratelimiting"
     priority  = 1
@@ -32,6 +33,16 @@ module "waf" {
       }
     }
   }
+
+  uri_path_match_rules = [
+    {
+      name                  = "count-mycommodities-path"
+      priority              = 9
+      action                = "count"
+      search_string         = "/subscriptions/mycommodities"
+      positional_constraint = "CONTAINS"
+    }
+  ]
 }
 
 resource "aws_cloudwatch_log_group" "waf_logs" {
