@@ -36,9 +36,9 @@ module "waf" {
 
   uri_path_match_rules = [
     {
-      name                  = "count-mycommodities-path"
+      name                  = "allow-mycommodities-path"
       priority              = 9
-      action                = "count"
+      action                = "allow"
       search_string         = "/subscriptions/mycommodities"
       positional_constraint = "CONTAINS"
     }
