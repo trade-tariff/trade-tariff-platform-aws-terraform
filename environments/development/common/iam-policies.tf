@@ -73,6 +73,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "elasticloadbalancing:DescribeTags",
           "elasticloadbalancing:DescribeTargetGroupAttributes",
           "elasticloadbalancing:DescribeTargetGroups",
+          "events:*",
           "iam:AttachRolePolicy",
           "iam:CreatePolicy",
           "iam:CreatePolicyVersion",
