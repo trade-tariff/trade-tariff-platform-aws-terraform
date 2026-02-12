@@ -17,7 +17,7 @@ subdirectory.
 
 ```shell
 export DISABLE_INIT=true
-terragrunt run-all init
+terragrunt run --all init
 ```
 
 - Install and run the [`pre-commit`](https://pre-commit.com/) hooks when making

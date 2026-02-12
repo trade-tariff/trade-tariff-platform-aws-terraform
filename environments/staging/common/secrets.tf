@@ -20,6 +20,13 @@ module "dev" {
   recovery_window = 7
 }
 
+module "dev_hub_job_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "dev-hub-job-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
+
 module "frontend_configuration" {
   source          = "../../../modules/secret/"
   name            = "frontend-configuration"

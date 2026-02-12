@@ -1,5 +1,5 @@
 data "external" "latest_auth_lambda_version" {
-  program = ["bash", "../../../${path.root}/bin/latest-lambda-version-arn"]
+  program = ["bash", "${path.module}/../../../bin/latest-lambda-version-arn"]
 
   query = {
     function_name = "viewer-request-${var.environment}-auth"
@@ -8,7 +8,7 @@ data "external" "latest_auth_lambda_version" {
 }
 
 data "external" "latest_response_lambda_version" {
-  program = ["bash", "../../../${path.root}/bin/latest-lambda-version-arn"]
+  program = ["bash", "${path.module}/../../../bin/latest-lambda-version-arn"]
 
   query = {
     function_name = "viewer-request-${var.environment}-response"
