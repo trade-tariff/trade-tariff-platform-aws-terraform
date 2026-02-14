@@ -40,19 +40,19 @@
 
         terraform = nixpkgs-terraform.packages.${system}."terraform-1.13.4";
 
-        lint = pkgs.writeScriptBin "lint" ''
+        lint = pkgs.writeShellScriptBin "lint" ''
           ${pkgs.pre-commit}/bin/pre-commit run -a
         '';
 
-        clean-terraform = pkgs.writeScriptBin "clean-terraform" ''
+        clean-terraform = pkgs.writeShellScriptBin "clean-terraform" ''
           find . -type d -name ".terraform" | xargs -- rm -rf
         '';
 
-        clean = pkgs.writeScriptBin "clean" ''
+        clean = pkgs.writeShellScriptBin "clean" ''
           clean-terraform && find . -type f -name ".terraform.lock.hcl" -delete && find . -type f -name "backend.tf" -delete
         '';
 
-        init = pkgs.writeScriptBin "init" ''
+        init = pkgs.writeShellScriptBin "init" ''
           clean-terraform
 
           for m in modules/*; do
@@ -64,7 +64,7 @@
           DISABLE_INIT=true terragrunt init --all --provider-cache
         '';
 
-        update-providers = pkgs.writeScriptBin "update-providers" ''clean && init && lint'';
+        update-providers = pkgs.writeShellScriptBin "update-providers" ''clean && init && lint'';
       in
       {
         devShells.default = pkgs.mkShell {
