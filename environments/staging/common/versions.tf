@@ -22,12 +22,15 @@ terraform {
       version = ">= 2.3.5"
     }
 
-
     newrelic = {
       source  = "newrelic/newrelic"
       version = ">= 3.78.0"
     }
 
+    tls = {
+      source  = "hashicorp/tls"
+      version = ">= 4.0.0"
+    }
   }
 }
 

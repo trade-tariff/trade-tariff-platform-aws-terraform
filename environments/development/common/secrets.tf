@@ -133,3 +133,15 @@ module "apigw_internal_test_key" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
 }
+
+module "ecs_tls_certificate" {
+  source          = "../../../modules/secret/"
+  name            = "ecs-tls-certificate"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+
+  secret_string = jsonencode({
+    private_key = tls_private_key.ecs_tls.private_key_pem
+    certificate = tls_self_signed_cert.ecs_tls.cert_pem
+  })
+}
