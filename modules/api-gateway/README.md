@@ -78,5 +78,8 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_rest_api_id"></a> [rest\_api\_id](#output\_rest\_api\_id) | ID of the API Gateway REST API. |
+| <a name="output_stage_name"></a> [stage\_name](#output\_stage\_name) | Name of the deployed stage. |
 <!-- END_TF_DOCS -->

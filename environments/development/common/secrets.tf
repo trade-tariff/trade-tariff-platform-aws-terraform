@@ -126,3 +126,10 @@ module "backups_basic_auth" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
 }
+
+module "apigw_internal_test_key" {
+  source          = "../../../modules/secret/"
+  name            = "apigw-${var.environment}-internal-test-api-key"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
