@@ -62,17 +62,4 @@ module "alb" {
       priority         = 99 # Most generic rule for frontend should match last
     }
   }
-  gateway_services = {
-    backend_xi = {
-      paths            = ["/xi/api/*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 1
-    }
-
-    backend_uk = {
-      paths            = ["/uk/api/*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 2
-    }
-  }
 }
