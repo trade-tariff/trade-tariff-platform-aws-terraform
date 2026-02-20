@@ -131,3 +131,38 @@ variable "log_retention_days" {
   type        = number
   default     = 30
 }
+
+variable "auth_token" {
+  description = "Password used to access the cluster. Requires `transit_encryption_enabled` to be `true`. Defaults to \"\", not set."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "auth_token_update_strategy" {
+  description = <<-EOT
+    Method to use in updating the auth token on a cluster.
+    Can be one of `SET`, `ROTATE`, or `DELETE`:
+      - `SET` should be used when setting a new auth token.
+      - `ROTATE` is the default, for changing an auth token.
+      - `DELETE` should be used, with an empty auth token, to remove password protection on a cluster.
+  EOT
+  type        = string
+  default     = "ROTATE"
+
+  validation {
+    condition     = contains(["SET", "ROTATE", "DELETE"], var.auth_token_update_strategy)
+    error_message = "Must be one of `SET`, `ROTATE`, or `DELETE`."
+  }
+}
+
+variable "transit_encryption_mode" {
+  description = "Whether to force transit encryption. `preferred` allows both, `required` forces it. Must use `preferred` on new replication groups."
+  type        = string
+  default     = "preferred"
+
+  validation {
+    condition     = contains(["preferred", "required"], var.transit_encryption_mode)
+    error_message = "Must be one of `preferred` or `required`."
+  }
+}

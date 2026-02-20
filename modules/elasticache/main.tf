@@ -20,7 +20,10 @@ resource "aws_elasticache_replication_group" "this" {
   snapshot_retention_limit   = var.snapshot_retention_limit
 
   at_rest_encryption_enabled = var.at_rest_encryption_enabled
+  auth_token                 = var.transit_encryption_enabled ? var.auth_token : null
+  auth_token_update_strategy = var.transit_encryption_enabled ? var.auth_token_update_strategy : null
   transit_encryption_enabled = var.transit_encryption_enabled
+  transit_encryption_mode    = var.transit_encryption_enabled ? var.transit_encryption_mode : null
 
   log_delivery_configuration {
     destination      = aws_cloudwatch_log_group.slow_lg.name
