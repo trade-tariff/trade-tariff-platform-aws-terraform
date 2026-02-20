@@ -1,7 +1,4 @@
 # https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html
-provider "aws" {
-  region = "us-east-1"
-}
 
 resource "aws_wafv2_web_acl" "this" {
   name        = var.name
@@ -363,6 +360,9 @@ resource "aws_wafv2_web_acl" "this" {
             for_each = rule.value.excluded_rules
             content {
               name = excluded_rule.value
+              action_to_use {
+                count {}
+              }
             }
           }
         }
