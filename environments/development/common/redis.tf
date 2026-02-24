@@ -143,7 +143,7 @@ module "valkey" {
 
   at_rest_encryption_enabled = true
   transit_encryption_enabled = true
-  transit_encryption_mode    = "preferred"
+  transit_encryption_mode    = "required"
   auth_token                 = random_password.valkey_auth.result
   auth_token_update_strategy = "SET"
 }
