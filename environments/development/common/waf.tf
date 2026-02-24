@@ -26,7 +26,7 @@ module "waf" {
   assets_rate_based_rule = {
     name      = "assets-ratelimiting"
     priority  = 2
-    rpm_limit = 1200
+    rpm_limit = 750
     action    = "block"
     custom_response = {
       response_code = 429
