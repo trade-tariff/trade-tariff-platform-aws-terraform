@@ -205,6 +205,7 @@ resource "aws_cloudwatch_metric_alarm" "apigw_p99_latency" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "apigw_cache_hit_ratio" {
+  count               = var.environment == "production" ? 1 : 0
   alarm_name          = "cache-hit-ratio-${module.gateway.rest_api_name}"
   alarm_description   = "Cache hit ratio < 50% for 15 minutes"
   comparison_operator = "LessThanThreshold"
