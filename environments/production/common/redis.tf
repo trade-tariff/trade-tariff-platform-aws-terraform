@@ -16,7 +16,7 @@ module "redis" {
   for_each = local.redis
 
   engine         = "valkey"
-  engine_version = "8.0"
+  engine_version = "8.2"
 
   replication_group_id        = "redis-${each.key}-${var.environment}"
   description                 = "redis-${each.key}-${var.environment}"
@@ -83,7 +83,7 @@ module "redis_sidekiq" {
   for_each = local.redis_sidekiq
 
   engine         = "valkey"
-  engine_version = "8.0"
+  engine_version = "8.2"
 
   replication_group_id        = "redis-${each.key}-${var.environment}"
   description                 = "redis-${each.key}-${var.environment}"
