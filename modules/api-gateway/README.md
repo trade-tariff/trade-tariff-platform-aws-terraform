@@ -82,5 +82,6 @@ No modules.
 |------|-------------|
 | <a name="output_api_gateway_stage_arn"></a> [api\_gateway\_stage\_arn](#output\_api\_gateway\_stage\_arn) | ARN of the API Gateway stage (for WAF association). |
 | <a name="output_rest_api_id"></a> [rest\_api\_id](#output\_rest\_api\_id) | ID of the API Gateway REST API. |
+| <a name="output_rest_api_name"></a> [rest\_api\_name](#output\_rest\_api\_name) | Name of the API Gateway REST API. |
 | <a name="output_stage_name"></a> [stage\_name](#output\_stage\_name) | Name of the deployed stage. |
 <!-- END_TF_DOCS -->
