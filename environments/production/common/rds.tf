@@ -37,7 +37,7 @@ module "postgres_aurora_16_8" {
 
   cluster_name      = "postgres-aurora-${var.environment}-16-8"
   engine            = "aurora-postgresql"
-  engine_version    = "16.8"
+  engine_version    = "16.11"
   engine_mode       = "provisioned"
   cluster_instances = 2
   apply_immediately = true
