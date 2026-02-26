@@ -115,3 +115,56 @@ resource "aws_secretsmanager_secret_version" "redis_sidekiq_connection_string_va
   secret_id     = aws_secretsmanager_secret.redis_sidekiq_connection_string[each.key].id
   secret_string = "redis://${module.redis_sidekiq[each.key].primary_endpoint}:6379"
 }
+
+# Authenticated, encrypted clusters
+module "valkey" {
+  source   = "../../../modules/elasticache/"
+  for_each = merge(local.redis, local.redis_sidekiq)
+
+  engine         = "valkey"
+  engine_version = "8.2"
+
+  replication_group_id        = "valkey-${each.key}-${var.environment}"
+  description                 = "valkey-${each.key}-${var.environment}"
+  parameter_group_name        = strcontains(each.key, "sidekiq") ? aws_elasticache_parameter_group.sidekiq.name : "default.valkey8"
+  num_node_groups             = 1
+  replicas_per_node_group     = 2
+  node_type                   = each.value
+  security_group_ids          = [module.alb-security-group.redis_security_group_id]
+  subnet_group_name           = aws_elasticache_subnet_group.this.name
+  multi_az_enabled            = true
+  automatic_failover_enabled  = true
+  preferred_cache_cluster_azs = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+  auto_minor_version_upgrade  = true
+  maintenance_window          = "sun:04:00-sun:05:00"
+  snapshot_window             = "02:00-04:00"
+  snapshot_retention_limit    = 7
+  apply_immediately           = true
+  log_retention_days          = 14
+
+  at_rest_encryption_enabled = true
+  transit_encryption_enabled = true
+  transit_encryption_mode    = "required"
+  auth_token                 = random_password.valkey_auth[each.key].result
+  auth_token_update_strategy = "SET"
+}
+
+# Generate a password for each cluster, to avoid credential sharing
+resource "random_password" "valkey_auth" {
+  for_each         = merge(local.redis, local.redis_sidekiq)
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>?"
+}
+
+resource "aws_secretsmanager_secret" "valkey_connection_string" {
+  for_each   = merge(local.redis, local.redis_sidekiq)
+  name       = "valkey-${each.key}-connection-string"
+  kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
+}
+
+resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {
+  for_each      = merge(local.redis, local.redis_sidekiq)
+  secret_id     = aws_secretsmanager_secret.valkey_connection_string[each.key].id
+  secret_string = "redis://tariff:${random_password.valkey_auth[each.key].result}@${module.valkey[each.key].primary_endpoint}:6379"
+}
