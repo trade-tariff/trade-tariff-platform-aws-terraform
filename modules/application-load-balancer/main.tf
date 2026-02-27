@@ -28,7 +28,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   for_each             = var.services
   name                 = replace(each.key, "_", "-")
   port                 = var.application_port
-  protocol             = "HTTP"
+  protocol             = "HTTPS"
   target_type          = "ip"
   vpc_id               = var.vpc_id
   deregistration_delay = 20
@@ -41,7 +41,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 6
-    protocol            = "HTTP"
+    protocol            = "HTTPS"
     matcher             = "200"
   }
 }
