@@ -146,15 +146,14 @@ module "valkey" {
   transit_encryption_enabled = true
   transit_encryption_mode    = "required"
   auth_token                 = random_password.valkey_auth[each.key].result
-  auth_token_update_strategy = "SET"
+  auth_token_update_strategy = "ROTATE"
 }
 
 # Generate a password for each cluster, to avoid credential sharing
 resource "random_password" "valkey_auth" {
-  for_each         = merge(local.redis, local.redis_sidekiq)
-  length           = 16
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>?"
+  for_each = merge(local.redis, local.redis_sidekiq)
+  length   = 16
+  special  = false
 }
 
 resource "aws_secretsmanager_secret" "valkey_connection_string" {
@@ -166,5 +165,5 @@ resource "aws_secretsmanager_secret" "valkey_connection_string" {
 resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {
   for_each      = merge(local.redis, local.redis_sidekiq)
   secret_id     = aws_secretsmanager_secret.valkey_connection_string[each.key].id
-  secret_string = "redis://tariff:${urlencode(random_password.valkey_auth[each.key].result)}@${module.valkey[each.key].primary_endpoint}:6379"
+  secret_string = "redis://tariff:${random_password.valkey_auth[each.key].result}@${module.valkey[each.key].primary_endpoint}:6379"
 }
