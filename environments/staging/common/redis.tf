@@ -146,7 +146,7 @@ module "valkey" {
   transit_encryption_enabled = true
   transit_encryption_mode    = "required"
   auth_token                 = random_password.valkey_auth[each.key].result
-  auth_token_update_strategy = "SET"
+  auth_token_update_strategy = "ROTATE"
 }
 
 # Generate a password for each cluster, to avoid credential sharing

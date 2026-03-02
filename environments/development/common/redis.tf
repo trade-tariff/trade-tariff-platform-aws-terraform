@@ -145,7 +145,7 @@ module "valkey" {
   transit_encryption_enabled = true
   transit_encryption_mode    = "required"
   auth_token                 = random_password.valkey_auth.result
-  auth_token_update_strategy = "SET"
+  auth_token_update_strategy = "ROTATE"
 }
 
 resource "random_password" "valkey_auth" {
