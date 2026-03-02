@@ -150,7 +150,7 @@ module "valkey" {
 
 resource "random_password" "valkey_auth" {
   length  = 16
-  special = true
+  special = false
 }
 
 resource "aws_secretsmanager_secret" "valkey_connection_string" {
@@ -162,5 +162,5 @@ resource "aws_secretsmanager_secret" "valkey_connection_string" {
 resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {
   for_each      = local.redis
   secret_id     = aws_secretsmanager_secret.valkey_connection_string[each.key].id
-  secret_string = "valkey://tariff:${urlencode(random_password.valkey_auth.result)}@${module.valkey[each.key].primary_endpoint}:6379"
+  secret_string = "valkey://tariff:${random_password.valkey_auth.result}@${module.valkey[each.key].primary_endpoint}:6379"
 }
