@@ -26,7 +26,7 @@ resource "aws_lb" "application_load_balancer" {
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
   for_each             = var.services
-  name                 = replace(each.key, "_", "-")
+  name                 = "${replace(each.key, "_", "-")}-tsl"
   port                 = var.application_port
   protocol             = "HTTPS"
   target_type          = "ip"
