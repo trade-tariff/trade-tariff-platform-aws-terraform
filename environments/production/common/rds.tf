@@ -108,7 +108,7 @@ module "postgres_admin_aurora" {
 
   cluster_name      = "admin-aurora-${var.environment}"
   engine            = "aurora-postgresql"
-  engine_version    = "13.20"
+  engine_version    = "17.7"
   engine_mode       = "provisioned"
   cluster_instances = 1
   apply_immediately = true
