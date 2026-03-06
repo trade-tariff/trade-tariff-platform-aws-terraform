@@ -3,12 +3,8 @@ locals {
   create_auth_challenge_configuration_secret_map   = jsondecode(local.create_auth_challenge_configuration_secret_value)
 }
 
-data "archive_file" "create_auth_challenge" {
-  type        = "zip"
-  source_dir  = "../../../common/lambda/trade-tariff-identity-create-auth-challenge"
-  output_path = "lambda_create_auth_challenge.zip"
-}
-
+# Create Auth Challenge zip is built in CI (includes vendor/bundle from bundle install).
+# For local apply: from repo root run the same zip step as in .github/workflows, then apply.
 data "archive_file" "define_auth_challenge" {
   type        = "zip"
   source_dir  = "../../../common/lambda/trade-tariff-identity-define-auth-challenge"
@@ -29,10 +25,10 @@ module "create_auth_challenge" {
   source = "../../../modules/lambda"
 
   function_name    = "trade-tariff-identity-create-auth-challenge"
-  filename         = "lambda_create_auth_challenge.zip"
+  filename         = "${path.module}/lambda_create_auth_challenge.zip"
   handler          = "lambda_function.lambda_handler"
   runtime          = "ruby3.4"
-  source_code_hash = data.archive_file.create_auth_challenge.output_base64sha256
+  source_code_hash = filebase64sha256("${path.module}/lambda_create_auth_challenge.zip")
   memory_size      = 512
 
   environment_variables = local.create_auth_challenge_configuration_secret_map

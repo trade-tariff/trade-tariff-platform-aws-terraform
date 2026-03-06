@@ -43,8 +43,11 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
 
-      - run: bundle config set path 'vendor/bundle' && bundle install
-        working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
+      - run: |
+          cd common/lambda/trade-tariff-identity-create-auth-challenge
+          bundle config set path 'vendor/bundle' && bundle install
+          cd $GITHUB_WORKSPACE
+          zip -r environments/production/common/lambda_create_auth_challenge.zip common/lambda/trade-tariff-identity-create-auth-challenge -x "*.git*"
 
       - uses: autero1/action-terragrunt@v3
         with:
