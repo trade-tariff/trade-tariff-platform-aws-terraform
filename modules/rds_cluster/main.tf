@@ -29,10 +29,15 @@ resource "aws_rds_cluster" "this" {
 
   vpc_security_group_ids = var.security_group_ids
   db_subnet_group_name   = aws_db_subnet_group.rds_private_subnet.name
+
   db_cluster_parameter_group_name = try(
-    aws_rds_cluster_parameter_group.aurora_postgres[0].name,
+    aws_rds_cluster_parameter_group.aurora_postgres[0].name_prefix,
     null,
   )
+
+  # db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.this.name
+
+  enabled_cloudwatch_logs_exports = var.cloudwatch_log_exports
 
   apply_immediately = var.apply_immediately
 
@@ -42,6 +47,7 @@ resource "aws_rds_cluster" "this" {
 resource "aws_rds_cluster_parameter_group" "aurora_postgres" {
   count = local.aurora_postgres_cluster_parameter_group_family != null ? 1 : 0
 
+  name_prefix = "${var.cluster_name}-cpg-"
   family      = local.aurora_postgres_cluster_parameter_group_family
   description = "Managed PostgreSQL cluster parameter group for ${var.cluster_name}."
 
@@ -68,6 +74,49 @@ resource "aws_rds_cluster_parameter_group" "aurora_postgres" {
   parameter {
     name  = "rds.allowed_extensions"
     value = "pgcrypto"
+  }
+
+  # Load pgAudit at startup (static -> requires reboot)
+  parameter {
+    name         = "shared_preload_libraries"
+    value        = "pgaudit,pg_stat_statements"
+    apply_method = "pending-reboot"
+  }
+
+  # TODO Starting point (tune later to control log volume)
+  parameter {
+    name         = "pgaudit.log"
+    value        = "WRITE,DDL,ROLE"
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
+    name         = "pgaudit.log_catalog"
+    value        = "1"
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
+    name         = "pgaudit.log_parameter"
+    value        = "1"
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
+    name         = "log_min_duration_statement"
+    value        = "5000" # Log statements that run longer than 5 seconds
+    apply_method = "pending-reboot"
+  }
+
+  # RDS/Aurora require this special role name for object auditing
+  parameter {
+    name         = "pgaudit.role"
+    value        = "rds_pgaudit"
+    apply_method = "pending-reboot"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
   tags = var.tags

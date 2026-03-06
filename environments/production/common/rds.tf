@@ -54,6 +54,8 @@ module "postgres_aurora_16_8" {
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
+  cloudwatch_log_exports = ["postgresql"]
+
   tags = {
     "RDS_Type" = "Aurora"
   }
