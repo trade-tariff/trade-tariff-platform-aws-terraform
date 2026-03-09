@@ -29,8 +29,43 @@ resource "aws_db_instance" "this" {
   performance_insights_enabled          = true
   performance_insights_retention_period = var.performance_insights_retention_period
   performance_insights_kms_key_id       = aws_kms_key.this.arn
+  parameter_group_name                  = try(aws_db_parameter_group.postgres[0].name, null)
 
   vpc_security_group_ids = var.security_group_ids
+
+  tags = local.tags
+}
+
+resource "aws_db_parameter_group" "postgres" {
+  count = local.postgres_parameter_group_family != null ? 1 : 0
+
+  family      = local.postgres_parameter_group_family
+  description = "Managed Postgres parameter group for ${var.name}."
+
+  parameter {
+    name  = "log_connections"
+    value = "1"
+  }
+
+  parameter {
+    name  = "log_disconnections"
+    value = "1"
+  }
+
+  parameter {
+    name  = "log_replication_commands"
+    value = "1"
+  }
+
+  parameter {
+    name  = "ssl_min_protocol_version"
+    value = "TLSv1.3"
+  }
+
+  parameter {
+    name  = "rds.allowed_extensions"
+    value = "pgcrypto"
+  }
 
   tags = local.tags
 }
