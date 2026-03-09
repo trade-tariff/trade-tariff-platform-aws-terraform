@@ -56,6 +56,10 @@ jobs:
         env:
           DISABLE_INIT: true
 
+      - name: Warm provider cache
+        run: terraform init -backend=false
+        working-directory: environments/development/common
+
       - run: pip install pre-commit
 
       - run: pre-commit run --all-files --show-diff-on-failure
@@ -147,8 +151,10 @@ jobs:
         - uses: actions/checkout@v5
         - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
           with:
-            result: ${{ needs.apply-development.result }}
-            slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+            webhook: ${{ secrets.SLACK_WEBHOOK }}
+            color: ${{ needs.apply-development.result }}
+            title: "Development Deploy"
+            message: "Deploy to development ${{ needs.apply-development.result }}"
         - run: if [[ "${{ needs.apply-development.result }}" != "success" ]]; then exit 1; fi
 
   plan-staging:
