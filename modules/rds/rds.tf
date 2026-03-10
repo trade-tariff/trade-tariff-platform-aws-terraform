@@ -44,7 +44,7 @@ resource "aws_db_parameter_group" "postgres" {
 
   parameter {
     name  = "log_connections"
-    value = "1"
+    value = "all"
   }
 
   parameter {

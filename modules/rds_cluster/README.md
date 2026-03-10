@@ -36,6 +36,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apply_immediately"></a> [apply\_immediately](#input\_apply\_immediately) | Whether to apply changes immediately. Set to `true` when required. Defaults to `false`. | `bool` | `false` | no |
+| <a name="input_cloudwatch_log_exports"></a> [cloudwatch\_log\_exports](#input\_cloudwatch\_log\_exports) | A list of log types to export to CloudWatch Logs. Supported values: `postgresql`, `upgrade`, `iam-db-auth-error`. | `list(string)` | `[]` | no |
 | <a name="input_cluster_instances"></a> [cluster\_instances](#input\_cluster\_instances) | n/a | `number` | `0` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | n/a | yes |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database. | `string` | n/a | yes |
