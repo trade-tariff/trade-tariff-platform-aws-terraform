@@ -73,8 +73,8 @@ resource "aws_elasticache_parameter_group" "sidekiq" {
 
 locals {
   redis_sidekiq = {
-    "sidekiq-uk" = "cache.t3.micro",
-    "sidekiq-xi" = "cache.t3.micro",
+    "sidekiq-uk" = "cache.t3.medium",
+    "sidekiq-xi" = "cache.t3.medium",
   }
 }
 
