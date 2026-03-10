@@ -59,27 +59,76 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Sid    = "ECSDeployment",
         Effect = "Allow",
         Action = [
-          "application-autoscaling:*",
-          "cloudwatch:*",
+          # Application Autoscaling - ECS service autoscaling targets and policies
+          "application-autoscaling:DeleteScalingPolicy",
+          "application-autoscaling:DeregisterScalableTarget",
+          "application-autoscaling:DescribeScalableTargets",
+          "application-autoscaling:DescribeScalingActivities",
+          "application-autoscaling:DescribeScalingPolicies",
+          "application-autoscaling:DescribeScheduledActions",
+          "application-autoscaling:ListTagsForResource",
+          "application-autoscaling:PutScalingPolicy",
+          "application-autoscaling:RegisterScalableTarget",
+          # CloudWatch - alarms for service health, dashboards (backend)
+          "cloudwatch:DeleteAlarms",
+          "cloudwatch:DeleteDashboards",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:GetDashboard",
+          "cloudwatch:ListDashboards",
+          "cloudwatch:ListTagsForResource",
+          "cloudwatch:PutDashboard",
+          "cloudwatch:PutMetricAlarm",
+          # Cognito - identity service reads user pool config
           "cognito-idp:DescribeUserPool",
+          # EC2 - read-only data sources for VPC, subnets, security groups
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeSubnets",
           "ec2:DescribeVpcAttribute",
           "ec2:DescribeVpcs",
-          "ecr:*",
-          "ecs:*",
+          # ECR - docker build, push, tag images
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:DescribeImages",
+          "ecr:DescribeRepositories",
+          "ecr:GetAuthorizationToken",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:ListImages",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart",
+          # ECS - task definitions, services, exec
+          "ecs:CreateService",
+          "ecs:DeleteService",
+          "ecs:DeregisterTaskDefinition",
+          "ecs:DescribeClusters",
+          "ecs:DescribeServices",
+          "ecs:DescribeTaskDefinition",
+          "ecs:DescribeTasks",
+          "ecs:ExecuteCommand",
+          "ecs:ListClusters",
+          "ecs:ListServices",
+          "ecs:ListTaskDefinitions",
+          "ecs:ListTasks",
+          "ecs:RegisterTaskDefinition",
+          "ecs:TagResource",
+          "ecs:UpdateService",
+          # ELB - read-only data sources for target groups
           "elasticloadbalancing:DescribeTags",
           "elasticloadbalancing:DescribeTargetGroupAttributes",
           "elasticloadbalancing:DescribeTargetGroups",
-          "events:PutRule",
+          # EventBridge - backend scheduled tasks (db backup, replication)
+          "events:DeleteRule",
           "events:DescribeRule",
           "events:ListTagsForResource",
-          "events:DeleteRule",
-          "events:PutTargets",
           "events:ListTargetsByRule",
+          "events:PutRule",
+          "events:PutTargets",
           "events:RemoveTargets",
+          # IAM - task/execution roles and policies managed by ECS module
           "iam:AttachRolePolicy",
           "iam:CreatePolicy",
           "iam:CreatePolicyVersion",
@@ -87,56 +136,73 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "iam:DeletePolicy",
           "iam:DeletePolicyVersion",
           "iam:DeleteRole",
+          "iam:DeleteRolePolicy",
           "iam:DetachRolePolicy",
           "iam:GetPolicy",
           "iam:GetPolicyVersion",
           "iam:GetRole",
+          "iam:GetRolePolicy",
           "iam:ListAttachedRolePolicies",
-          "iam:ListGroups",
           "iam:ListInstanceProfilesForRole",
           "iam:ListPolicyVersions",
           "iam:ListRolePolicies",
-          "iam:ListRoles",
-          "iam:ListUsers",
-          "iam:PassRole",
-          "iam:UpdatePolicy",
-          "kms:*",
-          "logs:*",
-          "secretsmanager:*",
-          "servicediscovery:*",
-          "sts:AssumeRoleWithWebIdentity",
+          "iam:PutRolePolicy",
+          "iam:TagRole",
+          "iam:UpdateAssumeRolePolicy",
+          # KMS - decrypt secrets, terraform state encryption
+          "kms:Decrypt",
+          "kms:DescribeKey",
+          "kms:GenerateDataKey",
+          # Logs - log groups for ECS containers
+          "logs:CreateLogGroup",
+          "logs:DeleteLogGroup",
+          "logs:DescribeLogGroups",
+          "logs:ListTagsForResource",
+          "logs:PutRetentionPolicy",
+          # Secrets Manager - read secrets for task environment variables
+          "secretsmanager:BatchGetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:ListSecrets",
+          # Service Discovery - Cloud Map for internal service DNS
+          "servicediscovery:CreateService",
+          "servicediscovery:DeleteService",
+          "servicediscovery:GetNamespace",
+          "servicediscovery:GetService",
+          "servicediscovery:ListNamespaces",
+          "servicediscovery:ListServices",
+          "servicediscovery:ListTagsForResource",
+          "servicediscovery:UpdateService",
+          # SNS - read-only for alarm notification topics
+          "sns:GetTopicAttributes",
+          "sns:ListTagsForResource",
           "sns:ListTopics",
-          "sns:ListTagsForResource"
+          # STS - caller identity data source
+          "sts:GetCallerIdentity",
         ],
-        Resource = "*",
-        Condition = {
-          "StringEquals" : {
-            "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
-          }
-        }
+        Resource  = "*",
+        Condition = { "StringEquals" = { "aws:RequestedRegion" = ["eu-west-2", "us-east-1"] } }
       },
       {
+        Sid       = "IAMPassRole",
+        Effect    = "Allow",
+        Action    = ["iam:PassRole"],
+        Resource  = ["arn:aws:iam::${local.account_id}:role/*"],
+        Condition = { "StringEquals" = { "aws:RequestedRegion" = ["eu-west-2", "us-east-1"] } }
+      },
+      {
+        Sid    = "TerraformState",
         Effect = "Allow",
         Action = [
+          "s3:DeleteObject",
           "s3:GetObject",
+          "s3:ListBucket",
           "s3:PutObject",
-          "s3:ListBucket"
         ],
         Resource = [
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}",
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}/*"
-        ]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret",
-          "secretsmanager:BatchGetSecretValue",
-          "secretsmanager:ListSecrets",
-        ],
-        Resource = [
-          "arn:aws:secretsmanager:${var.region}:${local.account_id}:secret:*configuration*"
         ]
       },
     ]
