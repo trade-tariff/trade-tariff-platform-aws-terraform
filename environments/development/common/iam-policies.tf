@@ -714,8 +714,28 @@ resource "aws_iam_policy" "ci_preview_app_policy" {
         ]
       },
       {
-        "Effect"   = "Allow",
-        "Action"   = "lightsail:*",
+        # Preevy Lightsail driver (livecycle/preevy)
+        # https://github.com/livecycle/preevy/blob/main/packages/driver-lightsail/src/driver/client.ts
+        "Effect" = "Allow",
+        "Action" = [
+          "lightsail:CreateInstances",
+          "lightsail:CreateInstancesFromSnapshot",
+          "lightsail:CreateInstanceSnapshot",
+          "lightsail:CreateKeyPair",
+          "lightsail:DeleteInstance",
+          "lightsail:DeleteInstanceSnapshot",
+          "lightsail:DeleteKeyPair",
+          "lightsail:GetInstance",
+          "lightsail:GetInstances",
+          "lightsail:GetInstanceSnapshots",
+          "lightsail:GetKeyPairs",
+          "lightsail:GetOperation",
+          "lightsail:GetRegions",
+          "lightsail:PutInstancePublicPorts",
+          "lightsail:StartInstance",
+          "lightsail:TagResource",
+          "lightsail:UntagResource",
+        ],
         "Resource" = "*"
       },
       {
