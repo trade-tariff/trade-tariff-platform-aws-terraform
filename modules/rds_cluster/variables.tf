@@ -85,3 +85,10 @@ variable "deletion_protection" {
   type        = bool
   default     = true
 }
+
+variable "cloudwatch_log_exports" {
+  description = "A list of log types to export to CloudWatch Logs. Supported values: `postgresql`, `upgrade`, `iam-db-auth-error`."
+  type        = list(string)
+  default     = []
+
+}

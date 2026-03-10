@@ -1,7 +1,14 @@
-module "cloudwatch" {
+module "cloudwatch-ecs-logs" {
   source            = "../../../modules/cloudwatch/"
   name              = "platform-logs-${var.environment}"
   retention_in_days = 30
+}
+
+module "cloudwatch-rds-logs" {
+  source            = "../../../modules/cloudwatch/"
+  name              = "/aws/rds/cluster/postgres-aurora-${var.environment}/postgresql"
+  retention_in_days = 7
+
 }
 
 data "aws_iam_policy_document" "logs_bucket_policy" {

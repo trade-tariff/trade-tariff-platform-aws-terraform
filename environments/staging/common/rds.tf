@@ -4,7 +4,7 @@ module "postgres_commodi_tea" {
   environment    = var.environment
   name           = "PostgresCommodiTea"
   engine         = "postgres"
-  engine_version = "17.6"
+  engine_version = "18.3"
 
   deletion_protection = false
   multi_az            = false
@@ -52,6 +52,8 @@ module "postgres_aurora" {
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
+  cloudwatch_log_exports = ["postgresql"]
+
   tags = {
     "RDS_Type" = "Aurora"
   }
@@ -71,7 +73,7 @@ module "postgres_developer_hub" {
   environment    = var.environment
   name           = "PostgresDeveloperHub"
   engine         = "postgres"
-  engine_version = "17.6"
+  engine_version = "18.3"
 
   deletion_protection = false
   multi_az            = false
