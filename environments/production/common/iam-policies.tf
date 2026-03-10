@@ -254,25 +254,14 @@ resource "aws_iam_policy" "ci_api_docs_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Sid    = "S3Sync",
         Effect = "Allow",
         Action = [
-          "kms:*",
-          "sts:AssumeRoleWithWebIdentity",
-        ],
-        Resource = "*",
-        Condition = {
-          "StringEquals" : {
-            "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
-          }
-        }
-      },
-      {
-        Effect = "Allow",
-        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
           "s3:GetObject",
-          "s3:PutObject",
           "s3:ListBucket",
-          "s3:DeleteObject"
+          "s3:PutObject",
         ],
         Resource = [
           "arn:aws:s3:::trade-tariff-api-docs-${local.account_id}",
@@ -280,15 +269,14 @@ resource "aws_iam_policy" "ci_api_docs_policy" {
         ]
       },
       {
+        Sid    = "KMSDecrypt",
         Effect = "Allow",
         Action = [
-          "cloudfront:ListDistributions",
-          "cloudfront:CreateInvalidation",
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
         ],
-        Resource = [
-          "*"
-        ]
-      }
+        Resource = [aws_kms_alias.s3_kms_alias.target_key_arn]
+      },
     ]
   })
 }
