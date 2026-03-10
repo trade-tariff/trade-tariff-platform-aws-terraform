@@ -29,8 +29,46 @@ resource "aws_rds_cluster" "this" {
 
   vpc_security_group_ids = var.security_group_ids
   db_subnet_group_name   = aws_db_subnet_group.rds_private_subnet.name
+  db_cluster_parameter_group_name = try(
+    aws_rds_cluster_parameter_group.aurora_postgres[0].name,
+    null,
+  )
 
   apply_immediately = var.apply_immediately
+
+  tags = var.tags
+}
+
+resource "aws_rds_cluster_parameter_group" "aurora_postgres" {
+  count = local.aurora_postgres_cluster_parameter_group_family != null ? 1 : 0
+
+  family      = local.aurora_postgres_cluster_parameter_group_family
+  description = "Managed PostgreSQL cluster parameter group for ${var.cluster_name}."
+
+  parameter {
+    name  = "log_connections"
+    value = "1"
+  }
+
+  parameter {
+    name  = "log_disconnections"
+    value = "1"
+  }
+
+  parameter {
+    name  = "log_replication_commands"
+    value = "1"
+  }
+
+  parameter {
+    name  = "ssl_min_protocol_version"
+    value = "TLSv1.3"
+  }
+
+  parameter {
+    name  = "rds.allowed_extensions"
+    value = "pgcrypto"
+  }
 
   tags = var.tags
 }
