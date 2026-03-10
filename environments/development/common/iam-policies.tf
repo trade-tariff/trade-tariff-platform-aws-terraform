@@ -448,7 +448,6 @@ data "aws_iam_policy_document" "ci_build_ami_policy" {
     actions = [
       "ec2:AttachVolume",
       "ec2:AuthorizeSecurityGroupIngress",
-      "ec2:CopyImage",
       "ec2:CreateImage",
       "ec2:CreateKeyPair",
       "ec2:CreateSecurityGroup",
@@ -485,7 +484,8 @@ data "aws_iam_policy_document" "ci_build_ami_policy" {
   }
 
   statement {
-    actions   = ["sts:AssumeRole"]
+    sid       = "CallerIdentity"
+    actions   = ["sts:GetCallerIdentity"]
     resources = ["*"]
   }
 }
