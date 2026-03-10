@@ -30,10 +30,7 @@ resource "aws_rds_cluster" "this" {
   vpc_security_group_ids = var.security_group_ids
   db_subnet_group_name   = aws_db_subnet_group.rds_private_subnet.name
 
-  db_cluster_parameter_group_name = try(
-    aws_rds_cluster_parameter_group.aurora_postgres[0].name_prefix,
-    null,
-  )
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_postgres[0].name
 
   # db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.this.name
 
