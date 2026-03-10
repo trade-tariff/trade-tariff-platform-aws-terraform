@@ -80,6 +80,8 @@ jobs:
         - uses: actions/checkout@v5
         - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
           with:
-            result: ${{ needs.post-apply-staging.result }}
-            slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+            webhook: ${{ secrets.SLACK_WEBHOOK }}
+            color: ${{ needs.post-apply-staging.result }}
+            title: "Staging Deploy"
+            message: "Deploy to staging ${{ needs.post-apply-staging.result }}"
         - run: if [[ "${{ needs.post-apply-staging.result }}" != "success" ]]; then exit 1; fi

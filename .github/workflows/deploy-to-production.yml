@@ -83,7 +83,9 @@ jobs:
         - uses: actions/checkout@v5
         - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
           with:
-            result: ${{ needs.post-apply-production.result }}
-            slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
-            slack_channel: production-deployments
+            webhook: ${{ secrets.SLACK_WEBHOOK }}
+            channel: production-deployments
+            color: ${{ needs.post-apply-production.result }}
+            title: "Production Deploy"
+            message: "Deploy to production ${{ needs.post-apply-production.result }}"
         - run: if [[ "${{ needs.post-apply-production.result }}" != "success" ]]; then exit 1; fi

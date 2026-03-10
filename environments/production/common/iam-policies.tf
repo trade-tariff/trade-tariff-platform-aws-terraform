@@ -60,84 +60,150 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Sid    = "ECSDeployment",
         Effect = "Allow",
         Action = [
-          "application-autoscaling:*",
-          "cloudwatch:*",
+          # Application Autoscaling - ECS service autoscaling targets and policies
+          "application-autoscaling:DeleteScalingPolicy",
+          "application-autoscaling:DeregisterScalableTarget",
+          "application-autoscaling:DescribeScalableTargets",
+          "application-autoscaling:DescribeScalingActivities",
+          "application-autoscaling:DescribeScalingPolicies",
+          "application-autoscaling:DescribeScheduledActions",
+          "application-autoscaling:ListTagsForResource",
+          "application-autoscaling:PutScalingPolicy",
+          "application-autoscaling:RegisterScalableTarget",
+          # CloudWatch - alarms for service health, dashboards (backend)
+          "cloudwatch:DeleteAlarms",
+          "cloudwatch:DeleteDashboards",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:GetDashboard",
+          "cloudwatch:ListDashboards",
+          "cloudwatch:ListTagsForResource",
+          "cloudwatch:PutDashboard",
+          "cloudwatch:PutMetricAlarm",
+          # Cognito - identity service reads user pool config
           "cognito-idp:DescribeUserPool",
+          # EC2 - read-only data sources for VPC, subnets, security groups
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeSubnets",
           "ec2:DescribeVpcAttribute",
           "ec2:DescribeVpcs",
-          "ecr:*",
-          "ecs:*",
+          # ECR - docker build, push, tag images
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:DescribeImages",
+          "ecr:DescribeRepositories",
+          "ecr:GetAuthorizationToken",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:ListImages",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart",
+          # ECS - task definitions, services, exec
+          "ecs:CreateService",
+          "ecs:DeleteService",
+          "ecs:DeregisterTaskDefinition",
+          "ecs:DescribeClusters",
+          "ecs:DescribeServices",
+          "ecs:DescribeTaskDefinition",
+          "ecs:DescribeTasks",
+          "ecs:ExecuteCommand",
+          "ecs:ListClusters",
+          "ecs:ListServices",
+          "ecs:ListTaskDefinitions",
+          "ecs:ListTasks",
+          "ecs:RegisterTaskDefinition",
+          "ecs:TagResource",
+          "ecs:UpdateService",
+          # ELB - read-only data sources for target groups
           "elasticloadbalancing:DescribeTags",
           "elasticloadbalancing:DescribeTargetGroupAttributes",
           "elasticloadbalancing:DescribeTargetGroups",
-          "events:PutRule",
+          # EventBridge - backend scheduled tasks (db backup, replication)
+          "events:DeleteRule",
           "events:DescribeRule",
           "events:ListTagsForResource",
-          "events:DeleteRule",
-          "events:PutTargets",
           "events:ListTargetsByRule",
+          "events:PutRule",
+          "events:PutTargets",
           "events:RemoveTargets",
+          # IAM - task/execution roles and policies managed by ECS module
           "iam:AttachRolePolicy",
           "iam:CreatePolicy",
           "iam:CreatePolicyVersion",
           "iam:CreateRole",
           "iam:DeletePolicy",
           "iam:DeletePolicyVersion",
+          "iam:DeleteRole",
+          "iam:DeleteRolePolicy",
           "iam:DetachRolePolicy",
           "iam:GetPolicy",
           "iam:GetPolicyVersion",
           "iam:GetRole",
+          "iam:GetRolePolicy",
           "iam:ListAttachedRolePolicies",
-          "iam:ListGroups",
           "iam:ListInstanceProfilesForRole",
           "iam:ListPolicyVersions",
           "iam:ListRolePolicies",
-          "iam:ListRoles",
-          "iam:ListUsers",
-          "iam:PassRole",
-          "iam:UpdatePolicy",
-          "kms:*",
-          "logs:*",
-          "secretsmanager:*",
-          "servicediscovery:*",
-          "sts:AssumeRoleWithWebIdentity",
+          "iam:PutRolePolicy",
+          "iam:TagRole",
+          "iam:UpdateAssumeRolePolicy",
+          # KMS - decrypt secrets, terraform state encryption
+          "kms:Decrypt",
+          "kms:DescribeKey",
+          "kms:GenerateDataKey",
+          # Logs - log groups for ECS containers
+          "logs:CreateLogGroup",
+          "logs:DeleteLogGroup",
+          "logs:DescribeLogGroups",
+          "logs:ListTagsForResource",
+          "logs:PutRetentionPolicy",
+          # Secrets Manager - read secrets for task environment variables
+          "secretsmanager:BatchGetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:ListSecrets",
+          # Service Discovery - Cloud Map for internal service DNS
+          "servicediscovery:CreateService",
+          "servicediscovery:DeleteService",
+          "servicediscovery:GetNamespace",
+          "servicediscovery:GetService",
+          "servicediscovery:ListNamespaces",
+          "servicediscovery:ListServices",
+          "servicediscovery:ListTagsForResource",
+          "servicediscovery:UpdateService",
+          # SNS - read-only for alarm notification topics
+          "sns:GetTopicAttributes",
+          "sns:ListTagsForResource",
           "sns:ListTopics",
-          "sns:ListTagsForResource"
+          # STS - caller identity data source
+          "sts:GetCallerIdentity",
         ],
-        Resource = "*",
-        Condition = {
-          "StringEquals" : {
-            "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
-          }
-        }
+        Resource  = "*",
+        Condition = { "StringEquals" = { "aws:RequestedRegion" = ["eu-west-2", "us-east-1"] } }
       },
       {
+        Sid       = "IAMPassRole",
+        Effect    = "Allow",
+        Action    = ["iam:PassRole"],
+        Resource  = ["arn:aws:iam::${local.account_id}:role/*"],
+        Condition = { "StringEquals" = { "aws:RequestedRegion" = ["eu-west-2", "us-east-1"] } }
+      },
+      {
+        Sid    = "TerraformState",
         Effect = "Allow",
         Action = [
+          "s3:DeleteObject",
           "s3:GetObject",
-          "s3:PutObject",
           "s3:ListBucket",
-          "s3:DeleteObject"
+          "s3:PutObject",
         ],
         Resource = [
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}",
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}/*"
-        ]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret",
-          "secretsmanager:BatchGetSecretValue",
-          "secretsmanager:ListSecrets",
-        ],
-        Resource = [
-          "arn:aws:secretsmanager:${var.region}:${local.account_id}:secret:*configuration*"
         ]
       },
     ]
@@ -188,25 +254,14 @@ resource "aws_iam_policy" "ci_api_docs_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Sid    = "S3Sync",
         Effect = "Allow",
         Action = [
-          "kms:*",
-          "sts:AssumeRoleWithWebIdentity",
-        ],
-        Resource = "*",
-        Condition = {
-          "StringEquals" : {
-            "aws:RequestedRegion" : ["eu-west-2", "us-east-1"]
-          }
-        }
-      },
-      {
-        Effect = "Allow",
-        Action = [
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
           "s3:GetObject",
-          "s3:PutObject",
           "s3:ListBucket",
-          "s3:DeleteObject"
+          "s3:PutObject",
         ],
         Resource = [
           "arn:aws:s3:::trade-tariff-api-docs-${local.account_id}",
@@ -214,15 +269,14 @@ resource "aws_iam_policy" "ci_api_docs_policy" {
         ]
       },
       {
+        Sid    = "KMSDecrypt",
         Effect = "Allow",
         Action = [
-          "cloudfront:ListDistributions",
-          "cloudfront:CreateInvalidation",
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
         ],
-        Resource = [
-          "*"
-        ]
-      }
+        Resource = [aws_kms_alias.s3_kms_alias.target_key_arn]
+      },
     ]
   })
 }
@@ -235,6 +289,123 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Sid    = "ServerlessDeployment",
+        Effect = "Allow",
+        Action = [
+          # ACM - serverless-domain-manager looks up certificates
+          "acm:DescribeCertificate",
+          "acm:ListCertificates",
+          # API Gateway - fpo-search REST API, custom domains, usage plans
+          "apigateway:DELETE",
+          "apigateway:GET",
+          "apigateway:PATCH",
+          "apigateway:POST",
+          "apigateway:PUT",
+          # CloudFormation - serverless framework manages all resources via CF
+          "cloudformation:CreateChangeSet",
+          "cloudformation:CreateStack",
+          "cloudformation:DeleteChangeSet",
+          "cloudformation:DeleteStack",
+          "cloudformation:DescribeChangeSet",
+          "cloudformation:DescribeStackEvents",
+          "cloudformation:DescribeStackResource",
+          "cloudformation:DescribeStacks",
+          "cloudformation:ExecuteChangeSet",
+          "cloudformation:GetTemplate",
+          "cloudformation:ListStackResources",
+          "cloudformation:UpdateStack",
+          "cloudformation:ValidateTemplate",
+          # CloudWatch - fpo-search error and duration alarms
+          "cloudwatch:DeleteAlarms",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:PutMetricAlarm",
+          # EC2 - read-only data sources for VPC networking
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeVpcs",
+          # EventBridge - cron schedules for ETF rotations and GC lambdas
+          "events:DeleteRule",
+          "events:DescribeRule",
+          "events:ListRules",
+          "events:ListTagsForResource",
+          "events:ListTargetsByRule",
+          "events:PutRule",
+          "events:PutTargets",
+          "events:RemoveTargets",
+          # Lambda - function lifecycle and provisioned concurrency
+          "lambda:AddPermission",
+          "lambda:CreateAlias",
+          "lambda:CreateFunction",
+          "lambda:DeleteFunction",
+          "lambda:GetAlias",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:GetPolicy",
+          "lambda:GetProvisionedConcurrencyConfig",
+          "lambda:ListAliases",
+          "lambda:ListVersionsByFunction",
+          "lambda:PublishVersion",
+          "lambda:PutProvisionedConcurrencyConfig",
+          "lambda:DeleteProvisionedConcurrencyConfig",
+          "lambda:RemovePermission",
+          "lambda:TagResource",
+          "lambda:UpdateAlias",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+          # Logs - log groups with retention policies
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DeleteLogGroup",
+          "logs:DeleteRetentionPolicy",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:ListTagsForResource",
+          "logs:PutLogEvents",
+          "logs:PutRetentionPolicy",
+          "logs:TagResource",
+          "logs:UntagResource",
+          # Route53 - custom domain DNS records for fpo-search
+          "route53:GetHostedZone",
+          "route53:ListHostedZones",
+          "route53:ListResourceRecordSets",
+          # STS - caller identity
+          "sts:GetCallerIdentity",
+        ],
+        Resource = "*",
+        Condition = {
+          "StringEquals" = { "aws:RequestedRegion" = ["eu-west-2", "us-east-1"] }
+        }
+      },
+      {
+        Sid      = "Route53ChangeRecords",
+        Effect   = "Allow",
+        Action   = ["route53:ChangeResourceRecordSets"],
+        Resource = [data.aws_route53_zone.this.arn]
+      },
+      {
+        Sid    = "IAMRoleManagement",
+        Effect = "Allow",
+        Action = [
+          "iam:AttachRolePolicy",
+          "iam:CreateRole",
+          "iam:CreateServiceLinkedRole",
+          "iam:DeleteRole",
+          "iam:DeleteRolePolicy",
+          "iam:DetachRolePolicy",
+          "iam:GetRole",
+          "iam:GetRolePolicy",
+          "iam:PassRole",
+          "iam:PutRolePolicy",
+          "iam:TagRole",
+        ],
+        Resource = ["arn:aws:iam::${local.account_id}:role/*"],
+        Condition = {
+          "StringEquals" = { "aws:RequestedRegion" = ["eu-west-2", "us-east-1"] }
+        }
+      },
+      {
+        Sid    = "S3DeploymentBuckets",
         Effect = "Allow",
         Action = [
           "s3:DeleteObject",
@@ -248,109 +419,12 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "arn:aws:s3:::${aws_s3_bucket.this["lambda-deployment"].id}/*",
           aws_s3_bucket.deployment-bucket-us-east-1.arn,
           "${aws_s3_bucket.deployment-bucket-us-east-1.arn}/*",
-          "arn:aws:s3:::${aws_s3_bucket.this["database-backups"].id}",
           "arn:aws:s3:::trade-tariff-models-382373577178",
-          "arn:aws:s3:::trade-tariff-models-382373577178/*"
+          "arn:aws:s3:::trade-tariff-models-382373577178/*",
         ]
       },
       {
-        Effect = "Allow",
-        Action = [
-          "kms:GenerateDataKey",
-          "kms:Decrypt"
-        ],
-        Resource = [
-          # Production S3 KMS key
-          "arn:aws:kms:eu-west-2:382373577178:key/7fc9fd19-e970-4877-9b56-3869a02c7b85"
-        ]
-      },
-      {
-        Effect   = "Allow",
-        Action   = ["cloudformation:*"],
-        Resource = "*"
-      },
-      {
-        Effect   = "Allow",
-        Action   = ["lambda:*"],
-        Resource = "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "iam:CreateRole",
-          "iam:CreateServiceLinkedRole",
-          "iam:DeleteRole",
-          "iam:DeleteRolePolicy",
-          "iam:GetRole",
-          "iam:GetRolePolicy",
-          "iam:PassRole",
-          "iam:PutRolePolicy",
-          "iam:TagRole",
-          "iam:AttachRolePolicy",
-          "iam:DetachRolePolicy",
-        ],
-        Resource = "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "logs:DeleteLogGroup",
-          "logs:TagResource",
-          "logs:DescribeLogGroups",
-          "logs:DescribeLogStreams",
-          "logs:PutRetentionPolicy",
-          "logs:DeleteRetentionPolicy",
-          "logs:ListTagsForResource",
-          "logs:UntagResource"
-        ],
-        Resource = "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "cloudwatch:PutMetricAlarm",
-          "cloudwatch:DescribeAlarms",
-          "cloudwatch:DeleteAlarms"
-        ],
-        Resource = "*"
-      },
-      {
-        Effect   = "Allow",
-        Action   = ["events:*"],
-        Resource = "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "kms:GenerateDataKey",
-          "kms:Decrypt"
-        ],
-        Resource = [
-          aws_kms_alias.s3_kms_alias.target_key_arn,
-          aws_kms_alias.secretsmanager_kms_alias.target_key_arn,
-        ]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "secretsmanager:ListSecrets",
-          "secretsmanager:ListSecretVersionIds",
-        ],
-        Resource = ["*"]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "secretsmanager:GetSecretValue",
-        ],
-        Resource = [
-          module.fpo_search_configuration.secret_arn,
-        ]
-      },
-      {
+        Sid    = "ECRImages",
         Effect = "Allow",
         Action = [
           "ecr:BatchCheckLayerAvailability",
@@ -363,68 +437,44 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           "ecr:PutImage",
           "ecr:UploadLayerPart",
         ],
+        Resource = ["arn:aws:ecr:*:*:repository/*"]
+      },
+      {
+        Sid      = "ECRAuth",
+        Effect   = "Allow",
+        Action   = ["ecr:GetAuthorizationToken"],
+        Resource = "*"
+      },
+      {
+        Sid    = "KMSDecrypt",
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
+        ],
         Resource = [
-          "arn:aws:ecr:*:*:repository/*"
+          aws_kms_alias.s3_kms_alias.target_key_arn,
+          aws_kms_alias.secretsmanager_kms_alias.target_key_arn,
+          # Production S3 KMS key (fpo-search reads models from production bucket)
+          "arn:aws:kms:eu-west-2:382373577178:key/7fc9fd19-e970-4877-9b56-3869a02c7b85",
         ]
       },
       {
+        Sid    = "SecretsManagerList",
         Effect = "Allow",
         Action = [
-          "apigateway:*"
+          "secretsmanager:ListSecretVersionIds",
+          "secretsmanager:ListSecrets",
         ],
+        Resource = ["*"]
+      },
+      {
+        Sid    = "SecretsManagerRead",
+        Effect = "Allow",
+        Action = ["secretsmanager:GetSecretValue"],
         Resource = [
-          "*"
+          module.fpo_search_configuration.secret_arn,
         ]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "acm:ListCertificates",
-        ],
-        Resource = ["*"]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "route53:ListHostedZones",
-          "route53:GetHostedZone",
-          "route53:ListResourceRecordSets",
-        ],
-        Resource = ["*"]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "route53:ChangeResourceRecordSets",
-        ],
-        Resource = [data.aws_route53_zone.this.arn]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "ec2:DescribeVpcs",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeRouteTables"
-        ],
-        Resource = ["*"]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "ec2:DescribeVpcs",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeRouteTables"
-        ],
-        Resource = ["*"]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "ecr:*",
-        ],
-        Resource = ["*"]
       },
     ]
   })
