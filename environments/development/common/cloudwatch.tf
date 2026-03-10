@@ -6,7 +6,7 @@ module "cloudwatch-ecs-logs" {
 
 module "cloudwatch-rds-logs" {
   source            = "../../../modules/cloudwatch/"
-  name              = "aws/rds/cluster/postgres-aurora-${var.environment}/postgresql"
+  name              = "/aws/rds/cluster/postgres-aurora-${var.environment}/postgresql"
   retention_in_days = 7
 
 }
