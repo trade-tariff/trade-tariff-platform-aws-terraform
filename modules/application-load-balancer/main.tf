@@ -35,7 +35,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
 
   name                 = "${replace(each.key, "_", "-")}"
   port                 = var.application_port
-  protocol             = each.value.protocol
+  protocol             = upper(each.value.protocol)
   target_type          = "ip"
   vpc_id               = var.vpc_id
   deregistration_delay = 20
@@ -52,7 +52,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 6
-    protocol            = each.value.protocol
+    protocol            = upper(each.value.protocol)
     matcher             = "200"
   }
 }
