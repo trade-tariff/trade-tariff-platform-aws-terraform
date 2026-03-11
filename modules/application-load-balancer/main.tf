@@ -25,10 +25,17 @@ resource "aws_lb" "application_load_balancer" {
 
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
-  for_each             = var.services
-  name                 = "${replace(each.key, "_", "-")}-tls"
+  for_each = {
+    for combo in setproduct(keys(var.services), local.protocols) :
+    "${combo[0]}-${combo[1]}" => {
+      service = combo[0]
+      protocol    = combo[1]
+    }
+  }
+
+  name                 = "${replace(each.key, "_", "-")}"
   port                 = var.application_port
-  protocol             = "HTTPS"
+  protocol             = each.value.protocol
   target_type          = "ip"
   vpc_id               = var.vpc_id
   deregistration_delay = 20
@@ -40,12 +47,12 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   health_check {
     enabled             = true
     interval            = 60
-    path                = each.value.healthcheck_path
+    path                = var.services[each.value.service].healthcheck_path
     port                = "traffic-port"
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 6
-    protocol            = "HTTPS"
+    protocol            = each.value.protocol
     matcher             = "200"
   }
 }
@@ -123,7 +130,7 @@ resource "aws_lb_listener_rule" "this" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["${each.key}-${var.protocol}"].arn
   }
 
   dynamic "condition" {

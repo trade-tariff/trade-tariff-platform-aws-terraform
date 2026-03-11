@@ -13,6 +13,13 @@ resource "tls_self_signed_cert" "ecs_tls" {
 
   validity_period_hours = 8760 # 1 year
 
+  dns_names = [
+    "backend-uk",
+    "backend-xi",
+    "backend-uk.tariff.internal",
+    "backend-xi.tariff.internal",
+  ]
+
   allowed_uses = [
     "key_encipherment",
     "digital_signature",
