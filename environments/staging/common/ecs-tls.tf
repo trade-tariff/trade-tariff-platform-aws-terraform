@@ -7,7 +7,7 @@ resource "tls_self_signed_cert" "ecs_tls" {
   private_key_pem = tls_private_key.ecs_tls.private_key_pem
 
   subject {
-    common_name  = "ecs-tls-certificate"
+    common_name  = "ariff.internal"
     organization = "trade-tariff"
   }
 

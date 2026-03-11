@@ -85,7 +85,7 @@ resource "aws_lb_listener_rule" "redirect_http_rules" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["${each.key}-${var.protocol}"].arn
   }
 
   dynamic "condition" {
