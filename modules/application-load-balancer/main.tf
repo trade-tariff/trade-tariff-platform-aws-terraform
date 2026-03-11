@@ -28,12 +28,12 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   for_each = {
     for combo in setproduct(keys(var.services), local.protocols) :
     "${combo[0]}-${combo[1]}" => {
-      service = combo[0]
-      protocol    = combo[1]
+      service  = combo[0]
+      protocol = combo[1]
     }
   }
 
-  name                 = "${replace(each.key, "_", "-")}"
+  name                 = replace(each.key, "_", "-")
   port                 = var.application_port
   protocol             = upper(each.value.protocol)
   target_type          = "ip"
