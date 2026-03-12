@@ -64,7 +64,7 @@ resource "aws_db_parameter_group" "postgres" {
 
   parameter {
     name  = "rds.allowed_extensions"
-    value = "pgcrypto"
+    value = "citext,pg_trgm,pgcrypto,uuid-ossp,vector"
   }
 
   tags = local.tags
