@@ -70,7 +70,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_postgres" {
 
   parameter {
     name  = "rds.allowed_extensions"
-    value = "pgcrypto"
+    value = "citext,pg_trgm,pgaudit,pgcrypto,pg_stat_statements,uuid-ossp,vector"
   }
 
   # Load pgAudit at startup (static -> requires reboot)
