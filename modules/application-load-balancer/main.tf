@@ -25,7 +25,7 @@ resource "aws_lb" "application_load_balancer" {
 
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
-  for_each             = var.services
+  for_each = var.services
 
   name                 = replace(each.key, "_", "-")
   port                 = var.application_port
@@ -52,7 +52,7 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
 }
 
 resource "aws_lb_target_group" "trade_tariff_https_target_groups" {
-  for_each             = var.services
+  for_each = var.services
 
   name                 = "${replace(each.key, "_", "-")}-https"
   port                 = var.application_port
@@ -105,9 +105,9 @@ resource "aws_lb_listener_rule" "redirect_http_rules" {
   priority = each.value.priority
 
   action {
-    type             = "forward"
+    type = "forward"
     target_group_arn = try(
-      aws_lb_target_group.trade_tariff_https_target_groups["${each.key}-${var.protocol}"].arn
+      aws_lb_target_group.trade_tariff_https_target_groups["${each.key}-${var.protocol}"].arn,
       aws_lb_target_group.trade_tariff_target_groups[each.key].arn,
     )
   }
@@ -153,9 +153,9 @@ resource "aws_lb_listener_rule" "this" {
   priority = each.value.priority
 
   action {
-    type             = "forward"
+    type = "forward"
     target_group_arn = try(
-      aws_lb_target_group.trade_tariff_https_target_groups["${each.key}-${var.protocol}"].arn
+      aws_lb_target_group.trade_tariff_https_target_groups["${each.key}-${var.protocol}"].arn,
       aws_lb_target_group.trade_tariff_target_groups[each.key].arn,
     )
   }
