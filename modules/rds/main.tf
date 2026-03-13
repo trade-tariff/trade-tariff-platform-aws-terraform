@@ -39,7 +39,7 @@ resource "aws_db_instance" "this" {
 resource "aws_db_parameter_group" "postgres" {
   count = local.postgres_parameter_group_family != null ? 1 : 0
 
-  name_prefix = "${var.name}-pg-"
+  name_prefix = "${lower(var.name)}-pg-"
   family      = local.postgres_parameter_group_family
   description = "Managed Postgres parameter group for ${var.name}."
 
