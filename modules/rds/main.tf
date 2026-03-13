@@ -29,7 +29,7 @@ resource "aws_db_instance" "this" {
   performance_insights_enabled          = true
   performance_insights_retention_period = var.performance_insights_retention_period
   performance_insights_kms_key_id       = aws_kms_key.this.arn
-  parameter_group_name                  = try(aws_db_parameter_group.postgres[0].name, null)
+  parameter_group_name                  = aws_db_parameter_group.postgres[0].name
 
   vpc_security_group_ids = var.security_group_ids
 
@@ -39,6 +39,7 @@ resource "aws_db_instance" "this" {
 resource "aws_db_parameter_group" "postgres" {
   count = local.postgres_parameter_group_family != null ? 1 : 0
 
+  name_prefix = "${lower(var.name)}-pg-"
   family      = local.postgres_parameter_group_family
   description = "Managed Postgres parameter group for ${var.name}."
 
@@ -63,8 +64,45 @@ resource "aws_db_parameter_group" "postgres" {
   }
 
   parameter {
-    name  = "rds.allowed_extensions"
-    value = "citext,pg_trgm,pgcrypto,uuid-ossp,vector"
+    name         = "shared_preload_libraries"
+    value        = "pgaudit,pg_stat_statements"
+    apply_method = "pending-reboot"
+  }
+
+  # TODO Starting point (tune later to control log volume)
+  parameter {
+    name         = "pgaudit.log"
+    value        = "WRITE,DDL,ROLE"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "pgaudit.log_catalog"
+    value        = "1"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "pgaudit.log_parameter"
+    value        = "1"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_min_duration_statement"
+    value        = "5000" # Log statements that run longer than 5 seconds
+    apply_method = "immediate"
+  }
+
+  # RDS/Aurora require this special role name for object auditing
+  parameter {
+    name         = "pgaudit.role"
+    value        = "rds_pgaudit"
+    apply_method = "immediate"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
   tags = local.tags
