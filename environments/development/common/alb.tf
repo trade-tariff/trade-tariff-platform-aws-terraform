@@ -86,5 +86,4 @@ module "alb" {
   }
 
   application_port = "8443"
-  protocol         = "https"
 }
