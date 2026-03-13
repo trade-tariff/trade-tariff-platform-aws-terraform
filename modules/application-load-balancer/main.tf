@@ -27,7 +27,7 @@ resource "aws_lb" "application_load_balancer" {
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
   for_each = {
     for combo in setproduct(keys(var.services), local.protocols) :
-      combo[1] == "http" ? combo[0] : "${combo[0]}-${combo[1]}" => {
+    "${combo[0]}-${combo[1]}" => {
       service  = combo[0]
       protocol = combo[1]
     }
@@ -85,7 +85,7 @@ resource "aws_lb_listener_rule" "redirect_http_rules" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[var.protocol == "http" ? each.key : "${each.key}-${var.protocol}"].arn
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["${each.key}-${var.protocol}"].arn
   }
 
   dynamic "condition" {
@@ -130,7 +130,7 @@ resource "aws_lb_listener_rule" "this" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[var.protocol == "http" ? each.key : "${each.key}-${var.protocol}"].arn
+    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["${each.key}-${var.protocol}"].arn
   }
 
   dynamic "condition" {
