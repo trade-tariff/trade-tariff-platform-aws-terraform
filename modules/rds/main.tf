@@ -101,6 +101,10 @@ resource "aws_db_parameter_group" "postgres" {
     apply_method = "immediate"
   }
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tags = local.tags
 }
 
