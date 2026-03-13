@@ -25,17 +25,11 @@ resource "aws_lb" "application_load_balancer" {
 
 /* target group name cannot be longer than 32 chars */
 resource "aws_lb_target_group" "trade_tariff_target_groups" {
-  for_each = {
-    for combo in setproduct(keys(var.services), local.protocols) :
-    "${combo[0]}-${combo[1]}" => {
-      service  = combo[0]
-      protocol = combo[1]
-    }
-  }
+  for_each             = var.services
 
   name                 = replace(each.key, "_", "-")
   port                 = var.application_port
-  protocol             = upper(each.value.protocol)
+  protocol             = "HTTP"
   target_type          = "ip"
   vpc_id               = var.vpc_id
   deregistration_delay = 20
@@ -47,12 +41,39 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
   health_check {
     enabled             = true
     interval            = 60
-    path                = var.services[each.value.service].healthcheck_path
+    path                = each.value.healthcheck_path
     port                = "traffic-port"
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 6
-    protocol            = upper(each.value.protocol)
+    protocol            = "HTTP"
+    matcher             = "200"
+  }
+}
+
+resource "aws_lb_target_group" "trade_tariff_https_target_groups" {
+  for_each             = var.services
+
+  name                 = "${replace(each.key, "_", "-")}-https"
+  port                 = var.application_port
+  protocol             = "HTTPS"
+  target_type          = "ip"
+  vpc_id               = var.vpc_id
+  deregistration_delay = 20
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  health_check {
+    enabled             = true
+    interval            = 60
+    path                = each.value.healthcheck_path
+    port                = "traffic-port"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 6
+    protocol            = "HTTPS"
     matcher             = "200"
   }
 }
@@ -85,7 +106,10 @@ resource "aws_lb_listener_rule" "redirect_http_rules" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["${each.key}-${var.protocol}"].arn
+    target_group_arn = try(
+      aws_lb_target_group.trade_tariff_https_target_groups["${each.key}-${var.protocol}"].arn
+      aws_lb_target_group.trade_tariff_target_groups[each.key].arn,
+    )
   }
 
   dynamic "condition" {
@@ -130,7 +154,10 @@ resource "aws_lb_listener_rule" "this" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups["${each.key}-${var.protocol}"].arn
+    target_group_arn = try(
+      aws_lb_target_group.trade_tariff_https_target_groups["${each.key}-${var.protocol}"].arn
+      aws_lb_target_group.trade_tariff_target_groups[each.key].arn,
+    )
   }
 
   dynamic "condition" {

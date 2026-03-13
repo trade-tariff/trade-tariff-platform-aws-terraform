@@ -30,5 +30,4 @@ locals {
     "us-west-2"      = 797873946194
   }
 
-  protocols = ["http", "https"]
 }
