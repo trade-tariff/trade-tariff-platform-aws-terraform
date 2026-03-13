@@ -44,23 +44,45 @@ resource "aws_db_parameter_group" "postgres" {
   description = "Managed Postgres parameter group for ${var.name}."
 
   parameter {
-    name  = "log_connections"
-    value = "all"
+    name         = "log_connections"
+    value        = "all"
+    apply_method = "immediate"
   }
 
   parameter {
-    name  = "log_disconnections"
-    value = "1"
+    name         = "log_disconnections"
+    value        = "1"
+    apply_method = "immediate"
   }
 
   parameter {
-    name  = "log_replication_commands"
-    value = "1"
+    name         = "log_replication_commands"
+    value        = "1"
+    apply_method = "immediate"
   }
 
   parameter {
-    name  = "ssl_min_protocol_version"
-    value = "TLSv1.3"
+    name         = "log_error_verbosity"
+    value        = "VERBOSE"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_line_prefix"
+    value        = "%m [%r] [%p]: [l-%l] %u@%d,app=%a,e=%e "
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_statement"
+    value        = "ddl"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "ssl_min_protocol_version"
+    value        = "TLSv1.3"
+    apply_method = "immediate"
   }
 
   parameter {

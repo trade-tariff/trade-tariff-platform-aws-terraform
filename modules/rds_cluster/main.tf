@@ -65,6 +65,30 @@ resource "aws_rds_cluster_parameter_group" "aurora_postgres" {
   }
 
   parameter {
+    name         = "log_error_verbosity"
+    value        = "VERBOSE"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_line_prefix"
+    value        = "%m [%r] [%p]: [l-%l] %u@%d,app=%a,e=%e "
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_statement"
+    value        = "ddl"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_min_duration_statement"
+    value        = "5000" # Log statements that run longer than 5 seconds
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
     name         = "ssl_min_protocol_version"
     value        = "TLSv1.3"
     apply_method = "immediate"
