@@ -72,7 +72,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_postgres" {
 
   parameter {
     name         = "log_line_prefix"
-    value        = "%m [%r] [%p]: [l-%l] %u@%d,app=%a,e=%e "
+    value        = "%m:%r:%u@%d:[%p]:%l:%e:%s:%v:%x:%c:%q%a:"
     apply_method = "immediate"
   }
 
@@ -116,12 +116,6 @@ resource "aws_rds_cluster_parameter_group" "aurora_postgres" {
   parameter {
     name         = "pgaudit.log_parameter"
     value        = "1"
-    apply_method = "immediate"
-  }
-
-  parameter {
-    name         = "log_min_duration_statement"
-    value        = "5000" # Log statements that run longer than 5 seconds
     apply_method = "immediate"
   }
 
