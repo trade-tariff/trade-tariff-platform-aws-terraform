@@ -50,6 +50,7 @@ No modules.
 | [aws_lb_listener.trade_tariff_listeners](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_listener_rule.redirect_http_rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
+| [aws_lb_target_group.trade_tariff_https_target_groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_lb_target_group.trade_tariff_target_groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_s3_bucket.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_lifecycle_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
@@ -77,6 +78,7 @@ No modules.
 | <a name="input_gateway_services"></a> [gateway\_services](#input\_gateway\_services) | Map of services to make ALB target groups and listener rules for routable from API Gateway. | <pre>map(<br/>    object({<br/>      healthcheck_path = string<br/>      hosts            = optional(list(string))<br/>      paths            = optional(list(string))<br/>      priority         = number<br/>    })<br/>  )</pre> | `{}` | no |
 | <a name="input_idle_timeout"></a> [idle\_timeout](#input\_idle\_timeout) | The time in seconds that the connection is allowed to be idle. | `string` | `60` | no |
 | <a name="input_listening_port"></a> [listening\_port](#input\_listening\_port) | Port on which the load balancer listens to. | `string` | `443` | no |
+| <a name="input_protocol"></a> [protocol](#input\_protocol) | Protocol the application exposes. | `string` | `"http"` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | Public subnet IDs | `list(any)` | n/a | yes |
 | <a name="input_services"></a> [services](#input\_services) | Map of services to make ALB target groups and listener rules for. | <pre>map(<br/>    object({<br/>      healthcheck_path = string<br/>      hosts            = optional(list(string))<br/>      paths            = optional(list(string))<br/>      priority         = number<br/>    })<br/>  )</pre> | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC to place the load balancer into. | `string` | n/a | yes |
