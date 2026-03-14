@@ -52,9 +52,15 @@ resource "aws_lb_target_group" "trade_tariff_target_groups" {
 }
 
 resource "aws_lb_target_group" "trade_tariff_https_target_groups" {
-  for_each = var.services
+  for_each = {
+    for combo in setproduct(keys(var.services), ["https"]) :
+    "${combo[0]}-${combo[1]}" => {
+      service  = combo[0]
+      protocol = combo[1]
+    }
+  }
 
-  name                 = "${replace(each.key, "_", "-")}-https"
+  name                 = replace(each.key, "_", "-")
   port                 = var.application_port
   protocol             = "HTTPS"
   target_type          = "ip"
@@ -68,7 +74,7 @@ resource "aws_lb_target_group" "trade_tariff_https_target_groups" {
   health_check {
     enabled             = true
     interval            = 60
-    path                = each.value.healthcheck_path
+    path                = var.services[each.value.service].healthcheck_path
     port                = "traffic-port"
     healthy_threshold   = 3
     unhealthy_threshold = 3
