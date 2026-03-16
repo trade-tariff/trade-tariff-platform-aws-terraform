@@ -299,11 +299,10 @@ module "cdn" {
   }
 }
 
-
-module "api_cdn" {
+module "docs_cdn" {
   source = "../../../modules/cloudfront"
 
-  aliases             = ["api.${var.domain_name}"]
+  aliases             = ["docs.${var.domain_name}"]
   create_alias        = true
   route53_zone_id     = data.aws_route53_zone.this.id
   comment             = "API Docs ${title(var.environment)} CDN"
@@ -321,7 +320,7 @@ module "api_cdn" {
   }
 
   origin = {
-    api = {
+    docs = {
       domain_name              = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
       origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     }
@@ -330,7 +329,7 @@ module "api_cdn" {
   cache_behaviors = [
     {
       name                       = "default"
-      target_origin_id           = "api"
+      target_origin_id           = "docs"
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
