@@ -45,7 +45,7 @@ resource "aws_wafv2_web_acl_association" "apigw" {
 
 resource "aws_cloudwatch_log_group" "apigw_waf_logs" {
   name              = "aws-waf-logs-apigw-${var.environment}"
-  retention_in_days = 7
+  retention_in_days = 30
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "apigw_waf_logging" {
