@@ -24,6 +24,11 @@ locals {
       days   = 5
       prefix = "inbound/"
     }
+    persistence = {
+      bucket = local.buckets.persistence
+      days   = 30
+      prefix = "data/export/"
+    }
   }
 }
 
