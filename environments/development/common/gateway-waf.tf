@@ -1,4 +1,3 @@
-
 module "waf_apigw" {
   source = "../../../modules/waf"
 

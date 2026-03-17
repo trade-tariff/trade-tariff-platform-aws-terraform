@@ -1,6 +1,10 @@
 module "waf" {
   source = "../../../modules/waf"
 
+  providers = {
+    aws = aws.us_east_1
+  }
+
   name  = "tariff-waf-${var.environment}"
   scope = "CLOUDFRONT"
 
