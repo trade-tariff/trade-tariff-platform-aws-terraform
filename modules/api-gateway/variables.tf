@@ -105,3 +105,14 @@ variable "cache_key_params" {
     "filter.type",
   ]
 }
+
+variable "cognito_user_pool_arns" {
+  type        = list(string)
+  description = "List of Cognito User Pool ARNs for authorizer"
+}
+
+variable "authorizer_ttl" {
+  type        = number
+  default     = 3600
+  description = "TTL for authorizer result caching"
+}
