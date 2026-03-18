@@ -157,6 +157,23 @@ resource "aws_s3_bucket_lifecycle_configuration" "firehose_backups_rotation" {
   }
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "persistence_rotation" {
+  bucket = aws_s3_bucket.this["persistence"].id
+
+  rule {
+    id     = "rotate-persistence-export"
+    status = "Enabled"
+
+    filter {
+      prefix = "data/export/"
+    }
+
+    expiration {
+      days = 30
+    }
+  }
+}
+
 # NOTE: READONLY cross-account access for persistence bucket to allow backend jobs to replicate exchange rate data
 data "aws_iam_policy_document" "persistence_cross_account_policy" {
   statement {
