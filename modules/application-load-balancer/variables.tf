@@ -9,6 +9,18 @@ variable "application_port" {
   default     = 8080
 }
 
+variable "tls_application_port" {
+  description = "Port the application exposes on HTTPS."
+  type        = string
+  default     = 8443
+}
+
+variable "protocol" {
+  description = "Protocol the application exposes."
+  type        = string
+  default     = "http"
+}
+
 variable "listening_port" {
   description = "Port on which the load balancer listens to."
   type        = string
