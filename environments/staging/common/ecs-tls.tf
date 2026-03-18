@@ -13,6 +13,10 @@ resource "tls_self_signed_cert" "ecs_tls" {
 
   validity_period_hours = 8760 # 1 year
 
+  dns_names = [
+    "*.tariff.internal",
+  ]
+
   allowed_uses = [
     "key_encipherment",
     "digital_signature",

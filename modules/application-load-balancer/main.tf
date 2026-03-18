@@ -77,8 +77,19 @@ resource "aws_lb_listener_rule" "redirect_http_rules" {
   priority = each.value.priority
 
   action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.trade_tariff_https_target_groups["${each.key}-https"].arn
+        weight = lookup(each.value, "target_group_protocol", var.protocol) == "https" ? 100 : 0
+      }
+
+      target_group {
+        arn    = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
+        weight = lookup(each.value, "target_group_protocol", var.protocol) == "https" ? 0 : 100
+      }
+    }
   }
 
   dynamic "condition" {
@@ -122,8 +133,19 @@ resource "aws_lb_listener_rule" "this" {
   priority = each.value.priority
 
   action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.trade_tariff_https_target_groups["${each.key}-https"].arn
+        weight = lookup(each.value, "target_group_protocol", var.protocol) == "https" ? 100 : 0
+      }
+
+      target_group {
+        arn    = aws_lb_target_group.trade_tariff_target_groups[each.key].arn
+        weight = lookup(each.value, "target_group_protocol", var.protocol) == "https" ? 0 : 100
+      }
+    }
   }
 
   dynamic "condition" {
