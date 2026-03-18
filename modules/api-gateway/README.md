@@ -20,6 +20,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_api_gateway_authorizer.cognito](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
 | [aws_api_gateway_base_path_mapping.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
 | [aws_api_gateway_deployment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
 | [aws_api_gateway_domain_name.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_domain_name) | resource |
@@ -61,9 +62,11 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alb_secret_header"></a> [alb\_secret\_header](#input\_alb\_secret\_header) | Secret header name and value to be sent to the ALB on every request. | `list(string)` | n/a | yes |
+| <a name="input_authorizer_ttl"></a> [authorizer\_ttl](#input\_authorizer\_ttl) | TTL for authorizer result caching | `number` | `3600` | no |
 | <a name="input_cache_cluster_enabled"></a> [cache\_cluster\_enabled](#input\_cache\_cluster\_enabled) | Enable or disable the API Gateway cache cluster. | `bool` | `false` | no |
 | <a name="input_cache_cluster_size"></a> [cache\_cluster\_size](#input\_cache\_cluster\_size) | The size of the cache cluster for the API Gateway. | `string` | `"0.5"` | no |
 | <a name="input_cache_key_params"></a> [cache\_key\_params](#input\_cache\_key\_params) | List of query string parameters to include in the cache key. | `list(string)` | <pre>[<br/>  "as_of",<br/>  "country_code",<br/>  "heading_code",<br/>  "include",<br/>  "limit",<br/>  "page",<br/>  "per_page",<br/>  "filter.exclude_none",<br/>  "filter.from_date",<br/>  "filter.geographical_area_id",<br/>  "filter.has_article",<br/>  "filter.meursing_additional_code_id",<br/>  "filter.simplified_procedural_code",<br/>  "filter.to_date",<br/>  "filter.type"<br/>]</pre> | no |
+| <a name="input_cognito_user_pool_arns"></a> [cognito\_user\_pool\_arns](#input\_cognito\_user\_pool\_arns) | List of Cognito User Pool ARNs for authorizer | `list(string)` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The domain name for the application. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The deployment environment (e.g., dev, staging, prod). | `string` | n/a | yes |
 | <a name="input_lb_arn"></a> [lb\_arn](#input\_lb\_arn) | ALB ARN for the V2 VPC Link integrations. | `string` | n/a | yes |
