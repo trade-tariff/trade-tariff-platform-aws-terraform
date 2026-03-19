@@ -65,6 +65,14 @@ module "identity_cognito" {
       description = "Developer Portal user group. See https://portal.trade-tariff.service.gov.uk"
     }
   ]
+  resource_server_name       = "tariff"
+  resource_server_identifier = "tariff"
+
+  resource_server_scopes = [
+    { scope_name = "read", scope_description = "Read tariff data" },
+    { scope_name = "spimm", scope_description = "Access categorisation/green_lanes endpoints" },
+    { scope_name = "fpo", scope_description = "Access freeports/FPO endpoints" }
+  ]
 }
 
 resource "aws_route53_record" "id_cognito_custom_domain" {
