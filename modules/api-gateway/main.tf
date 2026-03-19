@@ -50,23 +50,6 @@ resource "aws_api_gateway_resource" "xi_api" {
   path_part   = "api"
 }
 
-# Update green_lanes once categorisation carveout is no longer needed
-resource "aws_api_gateway_resource" "xi_green_lanes" {
-  count       = var.enable_categorisation_carveout ? 1 : 0
-  rest_api_id = aws_api_gateway_rest_api.this.id
-  parent_id   = aws_api_gateway_resource.xi_api.id
-  path_part   = "green_lanes"
-}
-
-resource "aws_api_gateway_method" "xi_green_lanes_any" {
-  count            = var.enable_categorisation_carveout ? 1 : 0
-  rest_api_id      = aws_api_gateway_rest_api.this.id
-  resource_id      = aws_api_gateway_resource.xi_green_lanes[0].id
-  http_method      = "ANY"
-  authorization    = "NONE"
-  api_key_required = true
-}
-
 resource "aws_api_gateway_resource" "xi_proxy" {
   rest_api_id = aws_api_gateway_rest_api.this.id
   parent_id   = aws_api_gateway_resource.xi_api.id
@@ -106,23 +89,6 @@ resource "aws_api_gateway_integration" "xi_proxy" {
 
   request_parameters = {
     "integration.request.path.proxy"                         = "method.request.path.proxy"
-    "integration.request.header.${var.alb_secret_header[0]}" = "'${var.alb_secret_header[1]}'"
-  }
-}
-
-resource "aws_api_gateway_integration" "xi_green_lanes_any" {
-  count                   = var.enable_categorisation_carveout ? 1 : 0
-  rest_api_id             = aws_api_gateway_rest_api.this.id
-  resource_id             = aws_api_gateway_resource.xi_green_lanes[0].id
-  http_method             = aws_api_gateway_method.xi_green_lanes_any[0].http_method
-  type                    = "HTTP_PROXY"
-  integration_http_method = "ANY"
-
-  uri             = "http://api.${var.domain_name}/xi/api/green_lanes"
-  connection_type = "VPC_LINK"
-  connection_id   = aws_apigatewayv2_vpc_link.this.id
-
-  request_parameters = {
     "integration.request.header.${var.alb_secret_header[0]}" = "'${var.alb_secret_header[1]}'"
   }
 }

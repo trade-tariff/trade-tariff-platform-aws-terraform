@@ -116,9 +116,3 @@ variable "authorizer_ttl" {
   default     = 3600
   description = "TTL for authorizer result caching"
 }
-
-# Remove once Ctegorisation carveout is no longer needed
-variable "enable_categorisation_carveout" {
-  type    = bool
-  default = true
-}
