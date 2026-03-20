@@ -1,6 +1,12 @@
 locals {
   redis = {
     "frontend"   = "cache.r4.large",
+    "backend-uk" = "cache.m7g.large",
+    "backend-xi" = "cache.t3.medium",
+  }
+
+  valkey = {
+    "frontend"   = "cache.r4.large",
     "backend-uk" = "cache.t3.medium",
     "backend-xi" = "cache.t3.medium",
   }
@@ -119,7 +125,7 @@ resource "aws_secretsmanager_secret_version" "redis_sidekiq_connection_string_va
 # Authenticated, encrypted clusters
 module "valkey" {
   source   = "../../../modules/elasticache/"
-  for_each = merge(local.redis, local.redis_sidekiq)
+  for_each = merge(local.valkey, local.redis_sidekiq)
 
   engine         = "valkey"
   engine_version = "8.2"
@@ -151,19 +157,19 @@ module "valkey" {
 
 # Generate a password for each cluster, to avoid credential sharing
 resource "random_password" "valkey_auth" {
-  for_each = merge(local.redis, local.redis_sidekiq)
+  for_each = merge(local.valkey, local.redis_sidekiq)
   length   = 16
   special  = false
 }
 
 resource "aws_secretsmanager_secret" "valkey_connection_string" {
-  for_each   = merge(local.redis, local.redis_sidekiq)
+  for_each   = merge(local.valkey, local.redis_sidekiq)
   name       = "valkey-${each.key}-connection-string"
   kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
 }
 
 resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {
-  for_each      = merge(local.redis, local.redis_sidekiq)
+  for_each      = merge(local.valkey, local.redis_sidekiq)
   secret_id     = aws_secretsmanager_secret.valkey_connection_string[each.key].id
   secret_string = "rediss://:${random_password.valkey_auth[each.key].result}@${module.valkey[each.key].primary_endpoint}:6379"
 }
