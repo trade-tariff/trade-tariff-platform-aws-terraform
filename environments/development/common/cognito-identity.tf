@@ -71,7 +71,7 @@ module "identity_cognito" {
 
   resource_server_scopes = [
     { scope_name = "read", scope_description = "Enables authenticated read access to public apis" },
-    { scope_name = "spimm", scope_description = "Enables authenticated read access to SPIMM apis" },
+    { scope_name = "categorisation", scope_description = "Enables authenticated read access to Categorisation apis" },
     { scope_name = "fpo", scope_description = "Access freeports/FPO endpoints" },
     { scope_name = "write", scope_description = "Enables authenticated write access to admin apis" }
   ]

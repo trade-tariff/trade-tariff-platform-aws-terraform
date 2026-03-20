@@ -113,6 +113,6 @@ variable "cognito_user_pool_arns" {
 
 variable "authorizer_ttl" {
   type        = number
-  default     = 3600
+  default     = 300
   description = "TTL for authorizer result caching"
 }
