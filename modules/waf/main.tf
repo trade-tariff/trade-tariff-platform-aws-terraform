@@ -422,6 +422,80 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
+  dynamic "rule" {
+    for_each = var.query_string_size_constraint_rules
+
+    content {
+      name     = rule.value.name
+      priority = rule.value.priority
+
+      action {
+        dynamic "allow" {
+          for_each = rule.value.action == "allow" ? [1] : []
+          content {}
+        }
+        dynamic "count" {
+          for_each = rule.value.action == "count" ? [1] : []
+          content {}
+        }
+        dynamic "block" {
+          for_each = rule.value.action == "block" ? [1] : []
+          content {}
+        }
+      }
+
+      statement {
+        and_statement {
+          statement {
+            size_constraint_statement {
+              comparison_operator = rule.value.comparison_operator
+              size                = rule.value.size
+
+              field_to_match {
+                query_string {}
+              }
+
+              text_transformation {
+                priority = 0
+                type     = "NONE"
+              }
+            }
+          }
+
+          dynamic "statement" {
+            for_each = try(rule.value.excluded_uri_path_exact, null) != null ? [rule.value.excluded_uri_path_exact] : []
+
+            content {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    positional_constraint = "EXACTLY"
+                    search_string         = statement.value
+
+                    field_to_match {
+                      uri_path {}
+                    }
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = rule.value.name
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
   tags = var.tags
 }
 

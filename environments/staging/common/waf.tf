@@ -46,6 +46,59 @@ module "waf" {
       positional_constraint = "CONTAINS"
     }
   ]
+
+  query_string_size_constraint_rules = [
+    {
+      name                    = "block-oversized-query-strings-except-search"
+      priority                = 8
+      action                  = "block"
+      comparison_operator     = "GT"
+      size                    = 2048
+      excluded_uri_path_exact = "/search"
+    }
+  ]
+
+  managed_rules = {
+    AWSManagedRulesCommonRuleSet = {
+      priority        = 10
+      override_action = "none"
+      excluded_rules = [
+        "NoUserAgent_HEADER",
+        "SizeRestrictions_BODY",
+        # Interactive search encodes the decision tree into the /search query string.
+        # That can legitimately exceed the managed CRS query string limit in staging,
+        # which returns a 403 to real users. We count the managed sub-rule here and
+        # re-implement the size block above for every other path so the exemption is
+        # explicit and limited to /search.
+        "SizeRestrictions_QUERYSTRING"
+      ]
+    }
+    AWSManagedRulesAmazonIpReputationList = {
+      priority        = 20
+      override_action = "none"
+      excluded_rules  = []
+    }
+    AWSManagedRulesKnownBadInputsRuleSet = {
+      priority        = 30
+      override_action = "none"
+      excluded_rules  = []
+    }
+    AWSManagedRulesSQLiRuleSet = {
+      priority        = 40
+      override_action = "none"
+      excluded_rules  = ["SQLi_QUERYARGUMENTS"]
+    }
+    AWSManagedRulesLinuxRuleSet = {
+      priority        = 50
+      override_action = "none"
+      excluded_rules  = []
+    }
+    AWSManagedRulesUnixRuleSet = {
+      priority        = 60
+      override_action = "none"
+      excluded_rules  = []
+    }
+  }
 }
 
 resource "aws_cloudwatch_log_group" "waf_logs" {

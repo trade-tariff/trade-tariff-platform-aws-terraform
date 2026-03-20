@@ -176,3 +176,16 @@ variable "uri_path_match_rules" {
   }))
   default = []
 }
+
+variable "query_string_size_constraint_rules" {
+  description = "Custom query string size constraint rules"
+  type = list(object({
+    name                    = string
+    priority                = number
+    action                  = string # allow | block | count
+    comparison_operator     = string # EQ | NE | LE | LT | GE | GT
+    size                    = number
+    excluded_uri_path_exact = optional(string)
+  }))
+  default = []
+}
