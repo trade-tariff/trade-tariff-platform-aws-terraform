@@ -13,7 +13,7 @@ module "gateway" {
   log_level                 = "INFO"
 
   cognito_user_pool_arns = [module.identity_cognito.user_pool_arn]
-  authorizer_ttl         = 300
+  authorizer_ttl         = 0
 
   alb_secret_header = [
     random_password.origin_header[0].result,
