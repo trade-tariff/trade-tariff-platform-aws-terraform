@@ -17,3 +17,8 @@ output "rest_api_name" {
   description = "Name of the API Gateway REST API."
   value       = aws_api_gateway_rest_api.this.name
 }
+
+output "rest_api_execution_arn" {
+  description = "Execution ARN for use in Lambda permission source_arn"
+  value       = aws_api_gateway_rest_api.this.execution_arn
+}

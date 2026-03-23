@@ -106,13 +106,14 @@ variable "cache_key_params" {
   ]
 }
 
-variable "cognito_user_pool_arns" {
-  type        = list(string)
-  description = "List of Cognito User Pool ARNs for authorizer"
-}
-
 variable "authorizer_ttl" {
   type        = number
   default     = 300
   description = "TTL for authorizer result caching"
+}
+
+variable "lambda_authorizer_invoke_arn" {
+  type        = string
+  default     = null
+  description = "Invoke ARN for Lambda (REQUEST authorizer)."
 }

@@ -14,5 +14,6 @@ locals {
     verify-auth-challenge = "trade-tariff-identity-verify-auth-challenge-response"
     create-auth-challenge = "trade-tariff-identity-create-auth-challenge"
     define-auth-challenge = "trade-tariff-identity-define-auth-challenge"
+    apigw-authorizer      = "trade-tariff-apigw-authorizer-${var.environment}"
   }
 }

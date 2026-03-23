@@ -60,8 +60,8 @@ resource "aws_api_gateway_method" "xi_proxy" {
   rest_api_id      = aws_api_gateway_rest_api.this.id
   resource_id      = aws_api_gateway_resource.xi_proxy.id
   http_method      = "ANY"
-  authorization    = "COGNITO_USER_POOLS"
-  authorizer_id    = aws_api_gateway_authorizer.cognito.id
+  authorization    = "CUSTOM"
+  authorizer_id    = aws_api_gateway_authorizer.lambda[0].id
   api_key_required = true
 
   request_parameters = merge(
@@ -130,8 +130,8 @@ resource "aws_api_gateway_method" "uk_proxy" {
   resource_id = aws_api_gateway_resource.uk_proxy.id
   http_method = "ANY"
 
-  authorization    = "COGNITO_USER_POOLS"
-  authorizer_id    = aws_api_gateway_authorizer.cognito.id
+  authorization    = "CUSTOM"
+  authorizer_id    = aws_api_gateway_authorizer.lambda[0].id
   api_key_required = true
 
 
@@ -369,11 +369,15 @@ resource "aws_api_gateway_integration_response" "proxy_redirect" {
 # ---------------------------------------------------------------------------------------
 # AUTHORIZER
 # ---------------------------------------------------------------------------------------
-resource "aws_api_gateway_authorizer" "cognito" {
-  name                             = "cognito-authorizer"
+resource "aws_api_gateway_authorizer" "lambda" {
+  for_each = var.lambda_authorizer_invoke_arn == null ? {} : {
+    lambda_auth = var.lambda_authorizer_invoke_arn
+  }
+
+  name                             = "lambda-authorizer"
   rest_api_id                      = aws_api_gateway_rest_api.this.id
-  type                             = "COGNITO_USER_POOLS"
+  type                             = "REQUEST"
+  authorizer_uri                   = each.value
   identity_source                  = "method.request.header.Authorization"
-  provider_arns                    = var.cognito_user_pool_arns
   authorizer_result_ttl_in_seconds = var.authorizer_ttl
 }

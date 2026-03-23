@@ -12,8 +12,8 @@ module "gateway" {
   cache_cluster_size        = "0.5"
   log_level                 = "INFO"
 
-  cognito_user_pool_arns = [module.identity_cognito.user_pool_arn]
-  authorizer_ttl         = 0
+  lambda_authorizer_invoke_arn = module.apigw_authorizer.lambda_invoke_arn
+  authorizer_ttl               = 300
 
   alb_secret_header = [
     random_password.origin_header[0].result,

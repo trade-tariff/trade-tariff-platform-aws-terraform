@@ -35,6 +35,12 @@ variable "memory_size" {
   default     = 128
 }
 
+variable "timeout" {
+  description = "Function timeout in seconds"
+  type        = number
+  default     = 3
+}
+
 variable "environment_variables" {
   description = "Environment variables for the Lambda function"
   type        = map(string)
