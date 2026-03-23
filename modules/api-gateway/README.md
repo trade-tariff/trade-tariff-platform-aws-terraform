@@ -20,7 +20,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_api_gateway_authorizer.cognito](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
+| [aws_api_gateway_authorizer.lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
 | [aws_api_gateway_base_path_mapping.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
 | [aws_api_gateway_deployment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
 | [aws_api_gateway_domain_name.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_domain_name) | resource |
@@ -66,9 +66,9 @@ No modules.
 | <a name="input_cache_cluster_enabled"></a> [cache\_cluster\_enabled](#input\_cache\_cluster\_enabled) | Enable or disable the API Gateway cache cluster. | `bool` | `false` | no |
 | <a name="input_cache_cluster_size"></a> [cache\_cluster\_size](#input\_cache\_cluster\_size) | The size of the cache cluster for the API Gateway. | `string` | `"0.5"` | no |
 | <a name="input_cache_key_params"></a> [cache\_key\_params](#input\_cache\_key\_params) | List of query string parameters to include in the cache key. | `list(string)` | <pre>[<br/>  "as_of",<br/>  "country_code",<br/>  "heading_code",<br/>  "include",<br/>  "limit",<br/>  "page",<br/>  "per_page",<br/>  "filter.exclude_none",<br/>  "filter.from_date",<br/>  "filter.geographical_area_id",<br/>  "filter.has_article",<br/>  "filter.meursing_additional_code_id",<br/>  "filter.simplified_procedural_code",<br/>  "filter.to_date",<br/>  "filter.type"<br/>]</pre> | no |
-| <a name="input_cognito_user_pool_arns"></a> [cognito\_user\_pool\_arns](#input\_cognito\_user\_pool\_arns) | List of Cognito User Pool ARNs for authorizer | `list(string)` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The domain name for the application. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The deployment environment (e.g., dev, staging, prod). | `string` | n/a | yes |
+| <a name="input_lambda_authorizer_invoke_arn"></a> [lambda\_authorizer\_invoke\_arn](#input\_lambda\_authorizer\_invoke\_arn) | Invoke ARN for Lambda (REQUEST authorizer). | `string` | `null` | no |
 | <a name="input_lb_arn"></a> [lb\_arn](#input\_lb\_arn) | ALB ARN for the V2 VPC Link integrations. | `string` | n/a | yes |
 | <a name="input_log_level"></a> [log\_level](#input\_log\_level) | The log level for the API Gateway. | `string` | `"INFO"` | no |
 | <a name="input_long_cache_ttl"></a> [long\_cache\_ttl](#input\_long\_cache\_ttl) | The TTL for long cache duration in seconds. | `number` | `3600` | no |
@@ -84,6 +84,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_api_gateway_stage_arn"></a> [api\_gateway\_stage\_arn](#output\_api\_gateway\_stage\_arn) | ARN of the API Gateway stage (for WAF association). |
+| <a name="output_rest_api_execution_arn"></a> [rest\_api\_execution\_arn](#output\_rest\_api\_execution\_arn) | Execution ARN for use in Lambda permission source\_arn |
 | <a name="output_rest_api_id"></a> [rest\_api\_id](#output\_rest\_api\_id) | ID of the API Gateway REST API. |
 | <a name="output_rest_api_name"></a> [rest\_api\_name](#output\_rest\_api\_name) | Name of the API Gateway REST API. |
 | <a name="output_stage_name"></a> [stage\_name](#output\_stage\_name) | Name of the deployed stage. |

@@ -46,6 +46,7 @@ No modules.
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Memory limit in MB | `number` | `128` | no |
 | <a name="input_runtime"></a> [runtime](#input\_runtime) | Function runtime identifier | `string` | n/a | yes |
 | <a name="input_source_code_hash"></a> [source\_code\_hash](#input\_source\_code\_hash) | base64 encoded SHA256 hash of the payload file | `string` | n/a | yes |
+| <a name="input_timeout"></a> [timeout](#input\_timeout) | Function timeout in seconds | `number` | `3` | no |
 
 ## Outputs
 
@@ -53,4 +54,6 @@ No modules.
 |------|-------------|
 | <a name="output_iam_role_arn"></a> [iam\_role\_arn](#output\_iam\_role\_arn) | ARN of the IAM role |
 | <a name="output_lambda_arn"></a> [lambda\_arn](#output\_lambda\_arn) | ARN of the Lambda function |
+| <a name="output_lambda_invoke_arn"></a> [lambda\_invoke\_arn](#output\_lambda\_invoke\_arn) | Invoke ARN for use as API Gateway authorizer URI |
+| <a name="output_lambda_name"></a> [lambda\_name](#output\_lambda\_name) | Lambda function name |
 <!-- END_TF_DOCS -->
