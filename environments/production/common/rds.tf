@@ -303,6 +303,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
   }
 }
 
+# TODO Channge the name to be more generic after upgrade to Aurora Postgres 18.
 resource "aws_rds_cluster_parameter_group" "admin_aurora_pg_17" {
   name        = "admin-aurora-production-cpg-20260310174358017900000001"
   family      = "aurora-postgresql17"
