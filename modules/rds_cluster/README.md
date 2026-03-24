@@ -28,7 +28,6 @@ No modules.
 | [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_rds_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster) | resource |
 | [aws_rds_cluster_instance.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_instance) | resource |
-| [aws_rds_cluster_parameter_group.aurora_postgres](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_parameter_group) | resource |
 | [random_password.master_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 
 ## Inputs
@@ -40,6 +39,7 @@ No modules.
 | <a name="input_cluster_instances"></a> [cluster\_instances](#input\_cluster\_instances) | n/a | `number` | `0` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | n/a | yes |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database. | `string` | n/a | yes |
+| <a name="input_db_cluster_parameter_group_name"></a> [db\_cluster\_parameter\_group\_name](#input\_db\_cluster\_parameter\_group\_name) | The name of the DB cluster parameter group to associate with this cluster. | `string` | n/a | yes |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Whether to enable deletion protection. Defaults to `true`. | `bool` | `true` | no |
 | <a name="input_encryption_at_rest"></a> [encryption\_at\_rest](#input\_encryption\_at\_rest) | Whether to enable encryption at rest. Defaults to `false`. | `bool` | `false` | no |
 | <a name="input_engine"></a> [engine](#input\_engine) | Name of the database engine. One of `aurora-mysql`, `aurora-postgresql`, `mysql`, `postgres`. | `string` | n/a | yes |
