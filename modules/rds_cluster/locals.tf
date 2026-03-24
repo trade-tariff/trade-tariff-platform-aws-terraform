@@ -21,10 +21,4 @@ locals {
   create_kms_key = (
     var.encryption_at_rest == true && var.kms_key_id == null ? 1 : 0
   )
-
-  engine_major_version = split(".", var.engine_version)[0]
-
-  aurora_postgres_cluster_parameter_group_family = (
-    var.engine == "aurora-postgresql" ? "aurora-postgresql${local.engine_major_version}" : null
-  )
 }
