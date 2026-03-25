@@ -250,15 +250,15 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_16" {
     }
   }
 
-  # Uncomment these only during Blue/Green setup
-  # dynamic "parameter" {
-  #   for_each = local.aurora_bluegreen_parameters
-  #   content {
-  #     name         = parameter.value.name
-  #     value        = parameter.value.value
-  #     apply_method = parameter.value.apply_method
-  #   }
-  # }
+  #  Uncomment these only during Blue/Green setup
+  dynamic "parameter" {
+    for_each = local.aurora_bluegreen_parameters
+    content {
+      name         = parameter.value.name
+      value        = parameter.value.value
+      apply_method = parameter.value.apply_method
+    }
+  }
 
   lifecycle {
     create_before_destroy = true
@@ -267,7 +267,6 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_16" {
   tags = {
     "RDS_Type" = "Aurora"
   }
-
 }
 
 resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
@@ -285,6 +284,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
     }
   }
 
+  # Remove these after Blue/Green setup is done and we are ready delete old PG16 and upgrade cluster in terraform.
   dynamic "parameter" {
     for_each = local.aurora_bluegreen_parameters
     content {
