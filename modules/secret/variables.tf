@@ -5,6 +5,12 @@ variable "secret_string" {
   default     = ""
 }
 
+variable "ignore_secret_string_changes" {
+  description = "If true, ignore drift on secret_string after creation (for console-managed configuration secrets)."
+  type        = bool
+  default     = false
+}
+
 variable "name" {
   description = "Name of the secret."
   type        = string

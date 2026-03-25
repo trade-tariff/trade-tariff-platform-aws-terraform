@@ -25,6 +25,10 @@ module "dev_hub_job_configuration" {
   name            = "dev-hub-job-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  # Bootstrap AWSCURRENT so dev-hub Terraform can read the secret; values are managed in the console.
+  secret_string                = "{}"
+  ignore_secret_string_changes = true
 }
 
 module "frontend_configuration" {

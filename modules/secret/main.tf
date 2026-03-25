@@ -4,8 +4,23 @@ resource "aws_secretsmanager_secret" "this" {
   name                    = var.name
 }
 
-resource "aws_secretsmanager_secret_version" "this" {
-  count         = var.secret_string != "" ? 1 : 0
+moved {
+  from = aws_secretsmanager_secret_version.this
+  to   = aws_secretsmanager_secret_version.managed
+}
+
+resource "aws_secretsmanager_secret_version" "managed" {
+  count         = var.secret_string != "" && !var.ignore_secret_string_changes ? 1 : 0
   secret_id     = aws_secretsmanager_secret.this.id
   secret_string = var.secret_string
+}
+
+resource "aws_secretsmanager_secret_version" "bootstrap" {
+  count         = var.secret_string != "" && var.ignore_secret_string_changes ? 1 : 0
+  secret_id     = aws_secretsmanager_secret.this.id
+  secret_string = var.secret_string
+
+  lifecycle {
+    ignore_changes = [secret_string]
+  }
 }
