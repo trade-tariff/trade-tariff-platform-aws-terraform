@@ -1,3 +1,93 @@
+locals {
+  # Common parameters for ALL databases (both RDS and Aurora).
+  common_parameters = [
+    {
+      name         = "log_connections"
+      value        = "1"
+      apply_method = "immediate"
+    },
+    {
+      name         = "log_disconnections"
+      value        = "1"
+      apply_method = "immediate"
+    },
+    {
+      name         = "log_replication_commands"
+      value        = "1"
+      apply_method = "immediate"
+    },
+    {
+      name         = "log_error_verbosity"
+      value        = "VERBOSE"
+      apply_method = "immediate"
+    },
+    {
+      name         = "log_line_prefix"
+      value        = "%m:%r:%u@%d:[%p]:%l:%e:%s:%v:%x:%c:%q%a:"
+      apply_method = "immediate"
+    },
+    {
+      name         = "log_statement"
+      value        = "ddl"
+      apply_method = "immediate"
+    },
+    {
+      name         = "log_min_duration_statement"
+      value        = "5000"
+      apply_method = "immediate"
+    },
+    {
+      name         = "ssl_min_protocol_version"
+      value        = "TLSv1.3"
+      apply_method = "pending-reboot"
+    },
+    {
+      name         = "shared_preload_libraries"
+      value        = "pgaudit,pg_stat_statements"
+      apply_method = "pending-reboot"
+    },
+    {
+      name         = "pgaudit.log"
+      value        = "WRITE,DDL,ROLE"
+      apply_method = "immediate"
+    },
+    {
+      name         = "pgaudit.log_catalog"
+      value        = "1"
+      apply_method = "immediate"
+    },
+    {
+      name         = "pgaudit.log_parameter"
+      value        = "1"
+      apply_method = "immediate"
+    },
+    {
+      name         = "pgaudit.role"
+      value        = "rds_pgaudit"
+      apply_method = "immediate"
+    }
+  ]
+
+  # Extra parameters needed ONLY during Blue/Green deployment
+  aurora_bluegreen_parameters = [
+    {
+      name         = "rds.logical_replication"
+      value        = "1"
+      apply_method = "pending-reboot"
+    },
+    {
+      name         = "max_logical_replication_workers"
+      value        = "8"
+      apply_method = "pending-reboot"
+    },
+    {
+      name         = "max_sync_workers_per_subscription"
+      value        = "4"
+      apply_method = "pending-reboot"
+    }
+  ]
+}
+
 module "postgres_commodi_tea" {
   source = "../../../modules/rds"
 
@@ -54,6 +144,8 @@ module "postgres_aurora_16_8" {
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_16.name
+
   cloudwatch_log_exports = ["postgresql"]
 
   tags = {
@@ -90,6 +182,8 @@ module "postgres_admin_aurora" {
 
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
+
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.admin_aurora_pg_17.name
 
   tags = {
     "RDS_Type" = "Aurora"
@@ -133,5 +227,103 @@ module "postgres_developer_hub" {
   tags = {
     Name       = "DeveloperHubPostgres${title(var.environment)}"
     "RDS_Type" = "Instance"
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////
+# Aurora cluster Parameter Groups
+//////////////////////////////////////////////////////////////////////////
+
+# TODO Remove aurora_pg_16 after upgrade to Aurora Postgres 17 finished.
+resource "aws_rds_cluster_parameter_group" "aurora_pg_16" {
+  name        = "postgres-aurora-production-16-8-cpg-20260310174358035300000002"
+  family      = "aurora-postgresql16"
+  description = "Managed PostgreSQL cluster parameter group for postgres-aurora-production-16-8."
+
+  # Common parameters
+  dynamic "parameter" {
+    for_each = local.common_parameters
+    content {
+      name         = parameter.value.name
+      value        = parameter.value.value
+      apply_method = parameter.value.apply_method
+    }
+  }
+
+  # Uncomment these only during Blue/Green setup
+  # dynamic "parameter" {
+  #   for_each = local.aurora_bluegreen_parameters
+  #   content {
+  #     name         = parameter.value.name
+  #     value        = parameter.value.value
+  #     apply_method = parameter.value.apply_method
+  #   }
+  # }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    "RDS_Type" = "Aurora"
+  }
+
+}
+
+resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
+  name        = "postgres-aurora-17-cpg-${var.environment}"
+  family      = "aurora-postgresql17"
+  description = "Managed PostgreSQL cluster parameter group for Aurora Postgres 17 ${var.environment}."
+
+  # Common parameters
+  dynamic "parameter" {
+    for_each = local.common_parameters
+    content {
+      name         = parameter.value.name
+      value        = parameter.value.value
+      apply_method = parameter.value.apply_method
+    }
+  }
+
+  dynamic "parameter" {
+    for_each = local.aurora_bluegreen_parameters
+    content {
+      name         = parameter.value.name
+      value        = parameter.value.value
+      apply_method = parameter.value.apply_method
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    "RDS_Type" = "Aurora"
+  }
+}
+
+# TODO Channge the name to be more generic after upgrade to Aurora Postgres 18.
+resource "aws_rds_cluster_parameter_group" "admin_aurora_pg_17" {
+  name        = "admin-aurora-production-cpg-20260310174358017900000001"
+  family      = "aurora-postgresql17"
+  description = "Managed PostgreSQL cluster parameter group for admin-aurora-production."
+
+  # Common parameters
+  dynamic "parameter" {
+    for_each = local.common_parameters
+    content {
+      name         = parameter.value.name
+      value        = parameter.value.value
+      apply_method = parameter.value.apply_method
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    "RDS_Type" = "Aurora"
   }
 }

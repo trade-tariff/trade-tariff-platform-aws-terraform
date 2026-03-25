@@ -92,3 +92,8 @@ variable "cloudwatch_log_exports" {
   default     = []
 
 }
+
+variable "db_cluster_parameter_group_name" {
+  description = "The name of the DB cluster parameter group to associate with this cluster."
+  type        = string
+}
