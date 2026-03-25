@@ -34,12 +34,12 @@ locals {
     {
       name         = "log_min_duration_statement"
       value        = "5000"
-      apply_method = "pending-reboot"
+      apply_method = "immediate"
     },
     {
       name         = "ssl_min_protocol_version"
       value        = "TLSv1.3"
-      apply_method = "immediate"
+      apply_method = "pending-reboot"
     },
     {
       name         = "shared_preload_libraries"

@@ -34,7 +34,7 @@ locals {
     {
       name         = "log_min_duration_statement"
       value        = "5000"
-      apply_method = "pending-reboot"
+      apply_method = "immediate"
     },
     {
       name         = "ssl_min_protocol_version"
