@@ -23,12 +23,14 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_secretsmanager_secret.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret_version.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [aws_secretsmanager_secret_version.bootstrap](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [aws_secretsmanager_secret_version.managed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_ignore_secret_string_changes"></a> [ignore\_secret\_string\_changes](#input\_ignore\_secret\_string\_changes) | If true, ignore drift on secret\_string after creation (for console-managed configuration secrets). | `bool` | `false` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | KMS Key ARN with which to encrypt the secret. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the secret. | `string` | n/a | yes |
 | <a name="input_recovery_window"></a> [recovery\_window](#input\_recovery\_window) | Recovery window in days for the secret. | `string` | n/a | yes |
