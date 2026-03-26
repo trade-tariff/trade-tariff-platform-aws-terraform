@@ -67,25 +67,6 @@ locals {
       apply_method = "immediate"
     }
   ]
-
-  # Extra parameters needed ONLY during Blue/Green deployment
-  aurora_bluegreen_parameters = [
-    {
-      name         = "rds.logical_replication"
-      value        = "1"
-      apply_method = "pending-reboot"
-    },
-    {
-      name         = "max_logical_replication_workers"
-      value        = "8"
-      apply_method = "pending-reboot"
-    },
-    {
-      name         = "max_sync_workers_per_subscription"
-      value        = "4"
-      apply_method = "pending-reboot"
-    }
-  ]
 }
 
 module "postgres_commodi_tea" {
@@ -127,7 +108,7 @@ module "postgres_aurora_16_8" {
 
   cluster_name      = "postgres-aurora-${var.environment}-16-8"
   engine            = "aurora-postgresql"
-  engine_version    = "16.11"
+  engine_version    = "17.7"
   engine_mode       = "provisioned"
   cluster_instances = 2
   apply_immediately = true
@@ -144,7 +125,7 @@ module "postgres_aurora_16_8" {
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
-  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_16.name
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_17.name
 
   cloudwatch_log_exports = ["postgresql"]
 
@@ -233,42 +214,6 @@ module "postgres_developer_hub" {
 //////////////////////////////////////////////////////////////////////////
 # Aurora cluster Parameter Groups
 //////////////////////////////////////////////////////////////////////////
-
-# TODO Remove aurora_pg_16 after upgrade to Aurora Postgres 17 finished.
-resource "aws_rds_cluster_parameter_group" "aurora_pg_16" {
-  name        = "postgres-aurora-production-16-8-cpg-20260310174358035300000002"
-  family      = "aurora-postgresql16"
-  description = "Managed PostgreSQL cluster parameter group for postgres-aurora-production-16-8."
-
-  # Common parameters
-  dynamic "parameter" {
-    for_each = local.common_parameters
-    content {
-      name         = parameter.value.name
-      value        = parameter.value.value
-      apply_method = parameter.value.apply_method
-    }
-  }
-
-  #  Uncomment these only during Blue/Green setup
-  dynamic "parameter" {
-    for_each = local.aurora_bluegreen_parameters
-    content {
-      name         = parameter.value.name
-      value        = parameter.value.value
-      apply_method = parameter.value.apply_method
-    }
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  tags = {
-    "RDS_Type" = "Aurora"
-  }
-}
-
 resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
   name        = "postgres-aurora-17-cpg-${var.environment}"
   family      = "aurora-postgresql17"
@@ -277,16 +222,6 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
   # Common parameters
   dynamic "parameter" {
     for_each = local.common_parameters
-    content {
-      name         = parameter.value.name
-      value        = parameter.value.value
-      apply_method = parameter.value.apply_method
-    }
-  }
-
-  # Remove these after Blue/Green setup is done and we are ready delete old PG16 and upgrade cluster in terraform.
-  dynamic "parameter" {
-    for_each = local.aurora_bluegreen_parameters
     content {
       name         = parameter.value.name
       value        = parameter.value.value
