@@ -119,6 +119,8 @@ module "postgres_aurora_16_8" {
 
   encryption_at_rest = true
 
+  performance_insights_enabled = true
+
   min_capacity = 2
   max_capacity = 64
 

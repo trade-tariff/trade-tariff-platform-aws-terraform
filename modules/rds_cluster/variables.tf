@@ -97,3 +97,15 @@ variable "db_cluster_parameter_group_name" {
   description = "The name of the DB cluster parameter group to associate with this cluster."
   type        = string
 }
+
+variable "performance_insights_enabled" {
+  description = "Whether to enable Performance Insights. Defaults to `true`."
+  type        = bool
+  default     = false
+}
+
+variable "performance_insights_retention_period" {
+  description = "The number of days to retain Performance Insights data. Defaults to `7`."
+  type        = number
+  default     = 7
+}
