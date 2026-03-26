@@ -50,6 +50,9 @@ resource "aws_rds_cluster_instance" "this" {
 
   instance_class = var.instance_class
 
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_retention_period = var.performance_insights_retention_period
+
   tags = var.tags
 }
 

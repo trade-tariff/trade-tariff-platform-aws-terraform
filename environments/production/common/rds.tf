@@ -69,6 +69,11 @@ locals {
   ]
 }
 
+resource "aws_kms_key" "rds_kms_key" {
+  description         = "KMS key for RDS and Performance Insights"
+  enable_key_rotation = true
+}
+
 module "postgres_commodi_tea" {
   source = "../../../modules/rds"
 
@@ -118,6 +123,7 @@ module "postgres_aurora_16_8" {
   username       = "tariff"
 
   encryption_at_rest = true
+  kms_key_id         = aws_kms_key.rds_kms_key.arn
 
   min_capacity = 2
   max_capacity = 64
@@ -128,6 +134,9 @@ module "postgres_aurora_16_8" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_17.name
 
   cloudwatch_log_exports = ["postgresql"]
+
+  performance_insights_enabled          = true
+  performance_insights_retention_period = 7
 
   tags = {
     "RDS_Type" = "Aurora"
