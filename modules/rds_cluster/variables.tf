@@ -109,3 +109,14 @@ variable "performance_insights_retention_period" {
   type        = number
   default     = 7
 }
+
+variable "performance_insights_kms_key_id" {
+  description = "KMS key ARN for encrypting Performance Insights data. Required when performance_insights_enabled is true."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = !var.performance_insights_enabled || var.performance_insights_kms_key_id != null
+    error_message = "A performance_insights_kms_key_id must be provided when performance_insights_enabled is true."
+  }
+}
