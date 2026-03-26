@@ -118,10 +118,8 @@ module "postgres_aurora_16_8" {
   username       = "tariff"
 
   encryption_at_rest = true
-  kms_key_id         = aws_kms_key.secretsmanager_kms_key.arn
 
-  performance_insights_enabled          = true
-  performance_insights_retention_period = 14
+  performance_insights_enabled = true
 
   min_capacity = 2
   max_capacity = 64
