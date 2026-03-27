@@ -36,6 +36,10 @@ resource "aws_rds_cluster" "this" {
 
   apply_immediately = var.apply_immediately
 
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
+  performance_insights_kms_key_id       = var.performance_insights_enabled ? try(aws_kms_key.this[0].arn, var.kms_key_id) : null
+
   tags = var.tags
 }
 
@@ -49,10 +53,6 @@ resource "aws_rds_cluster_instance" "this" {
   db_subnet_group_name = aws_db_subnet_group.rds_private_subnet.name
 
   instance_class = var.instance_class
-
-  performance_insights_enabled          = var.performance_insights_enabled
-  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
-  performance_insights_kms_key_id       = var.performance_insights_enabled ? try(aws_kms_key.this[0].arn, var.kms_key_id) : null
 
   tags = var.tags
 }
