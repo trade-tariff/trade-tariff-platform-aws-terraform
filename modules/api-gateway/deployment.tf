@@ -40,6 +40,9 @@ resource "aws_api_gateway_deployment" "this" {
 
       var.cache_key_params,
 
+      aws_api_gateway_gateway_response.unauthorized.response_templates,
+      aws_api_gateway_gateway_response.access_denied.response_templates,
+
       aws_api_gateway_integration.root_redirect.request_templates,
       aws_api_gateway_integration_response.root_redirect.response_parameters
     ]))
