@@ -194,7 +194,7 @@ resource "aws_cognito_user_pool_client" "this" {
 
   allowed_oauth_flows                  = var.client_oauth_grant_types
   allowed_oauth_flows_user_pool_client = var.client_oauth_flow_allowed
-  allowed_oauth_scopes                 = var.resource_server_name != null ? aws_cognito_resource_server.this[0].scope_identifiers : var.client_oauth_scopes
+  allowed_oauth_scopes                 = var.client_oauth_flow_allowed ? var.client_oauth_scopes : []
 
   enable_token_revocation                       = var.client_enable_token_revocation
   enable_propagate_additional_user_context_data = var.client_propagate_user_data
