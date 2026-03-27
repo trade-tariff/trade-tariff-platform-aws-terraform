@@ -8,8 +8,5 @@ terraform {
       "init"
     ]
 
-    arguments = [
-      "-upgrade",
-    ]
   }
 }
