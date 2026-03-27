@@ -67,6 +67,23 @@ locals {
       apply_method = "immediate"
     }
   ]
+
+  aurora_connection_parameters = [
+    # NOTE: Detect dead clients while a query is executing instead of waiting for the
+    # statement to finish. Value is milliseconds.
+    {
+      name         = "client_connection_check_interval"
+      value        = "30000" # 30 seconds (default is 0/off)
+      apply_method = "pending-reboot"
+    },
+    # NOTE: Fail sessions that sit idle inside a transaction for more than 10 minutes
+    # so they do not hold locks or prevent cleanup indefinitely. Not strictly an aurora-only setting
+    {
+      name         = "idle_in_transaction_session_timeout"
+      value        = "600000"
+      apply_method = "immediate"
+    }
+  ]
 }
 
 module "postgres_commodi_tea" {
@@ -221,7 +238,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
 
   # Common parameters
   dynamic "parameter" {
-    for_each = local.common_parameters
+    for_each = concat(local.common_parameters, local.aurora_connection_parameters)
     content {
       name         = parameter.value.name
       value        = parameter.value.value
