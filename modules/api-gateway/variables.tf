@@ -38,6 +38,37 @@ variable "alb_secret_header" {
   type        = list(string)
 }
 
+
+variable "authorizer_enabled" {
+  description = "Enable a custom Lambda authorizer for protected API methods."
+  type        = bool
+  default     = false
+}
+
+variable "authorizer_name" {
+  description = "Name for the API Gateway Lambda authorizer."
+  type        = string
+  default     = null
+}
+
+variable "authorizer_lambda_invoke_arn" {
+  description = "Invoke ARN of the Lambda function used by the authorizer."
+  type        = string
+  default     = null
+}
+
+variable "authorizer_identity_source" {
+  description = "Identity source expression for the Lambda authorizer."
+  type        = string
+  default     = "method.request.header.Authorization"
+}
+
+variable "authorizer_result_ttl_in_seconds" {
+  description = "Authorizer cache TTL in seconds. Set to 0 to disable caching."
+  type        = number
+  default     = 0
+}
+
 variable "cache_cluster_enabled" {
   description = "Enable or disable the API Gateway cache cluster."
   type        = bool

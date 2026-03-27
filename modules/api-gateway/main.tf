@@ -1,7 +1,19 @@
 resource "aws_api_gateway_rest_api" "this" {
-  name        = "api-${var.environment}"
-  description = "Main API Gateway for trade-tariff ${var.environment} (ALB Proxy)"
+  name           = "api-${var.environment}"
+  description    = "Main API Gateway for trade-tariff ${var.environment} (ALB Proxy)"
+  api_key_source = var.authorizer_enabled ? "AUTHORIZER" : "HEADER"
   endpoint_configuration { types = ["REGIONAL"] }
+}
+
+resource "aws_api_gateway_authorizer" "this" {
+  count = var.authorizer_enabled ? 1 : 0
+
+  name                             = coalesce(var.authorizer_name, "api-authorizer-${var.environment}")
+  rest_api_id                      = aws_api_gateway_rest_api.this.id
+  type                             = "REQUEST"
+  authorizer_uri                   = var.authorizer_lambda_invoke_arn
+  identity_source                  = var.authorizer_identity_source
+  authorizer_result_ttl_in_seconds = var.authorizer_result_ttl_in_seconds
 }
 
 resource "aws_api_gateway_stage" "this" {
@@ -60,7 +72,8 @@ resource "aws_api_gateway_method" "xi_proxy" {
   rest_api_id      = aws_api_gateway_rest_api.this.id
   resource_id      = aws_api_gateway_resource.xi_proxy.id
   http_method      = "ANY"
-  authorization    = "NONE"
+  authorization    = var.authorizer_enabled ? "CUSTOM" : "NONE"
+  authorizer_id    = var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].id : null
   api_key_required = true
 
   request_parameters = merge(
@@ -128,7 +141,8 @@ resource "aws_api_gateway_method" "uk_proxy" {
   rest_api_id      = aws_api_gateway_rest_api.this.id
   resource_id      = aws_api_gateway_resource.uk_proxy.id
   http_method      = "ANY"
-  authorization    = "NONE"
+  authorization    = var.authorizer_enabled ? "CUSTOM" : "NONE"
+  authorizer_id    = var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].id : null
   api_key_required = true
 
   request_parameters = merge({
@@ -187,7 +201,8 @@ resource "aws_api_gateway_method" "uk_exceptions" {
   rest_api_id      = aws_api_gateway_rest_api.this.id
   resource_id      = each.value.id
   http_method      = "ANY"
-  authorization    = "NONE"
+  authorization    = var.authorizer_enabled ? "CUSTOM" : "NONE"
+  authorizer_id    = var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].id : null
   api_key_required = true
 
   request_parameters = {
@@ -227,7 +242,8 @@ resource "aws_api_gateway_method" "xi_exceptions" {
   rest_api_id      = aws_api_gateway_rest_api.this.id
   resource_id      = each.value.id
   http_method      = "ANY"
-  authorization    = "NONE"
+  authorization    = var.authorizer_enabled ? "CUSTOM" : "NONE"
+  authorizer_id    = var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].id : null
   api_key_required = true
 
   request_parameters = {
