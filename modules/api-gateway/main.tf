@@ -1,3 +1,9 @@
+data "aws_region" "current" {}
+
+locals {
+  authorizer_uri = var.authorizer_lambda_invoke_arn == null ? null : "arn:aws:apigateway:${data.aws_region.current.region}:lambda:path/2015-03-31/functions/${var.authorizer_lambda_invoke_arn}/invocations"
+}
+
 resource "aws_api_gateway_rest_api" "this" {
   name           = "api-${var.environment}"
   description    = "Main API Gateway for trade-tariff ${var.environment} (ALB Proxy)"
@@ -11,7 +17,7 @@ resource "aws_api_gateway_authorizer" "this" {
   name                             = coalesce(var.authorizer_name, "api-authorizer-${var.environment}")
   rest_api_id                      = aws_api_gateway_rest_api.this.id
   type                             = "REQUEST"
-  authorizer_uri                   = var.authorizer_lambda_invoke_arn
+  authorizer_uri                   = local.authorizer_uri
   identity_source                  = var.authorizer_identity_source
   authorizer_result_ttl_in_seconds = var.authorizer_result_ttl_in_seconds
 }
