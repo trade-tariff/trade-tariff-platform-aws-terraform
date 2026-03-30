@@ -1,7 +1,5 @@
-data "aws_region" "current" {}
-
 locals {
-  authorizer_uri = var.authorizer_lambda_invoke_arn == null ? null : "arn:aws:apigateway:${data.aws_region.current.region}:lambda:path/2015-03-31/functions/${var.authorizer_lambda_invoke_arn}/invocations"
+  authorizer_uri = var.authorizer_lambda_invoke_arn
 }
 
 resource "aws_api_gateway_rest_api" "this" {

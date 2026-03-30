@@ -52,7 +52,7 @@ variable "authorizer_name" {
 }
 
 variable "authorizer_lambda_invoke_arn" {
-  description = "Invoke ARN of the Lambda function used by the authorizer. The module converts this to the API Gateway authorizer URI."
+  description = "API Gateway-compatible invoke ARN for the Lambda function used by the authorizer."
   type        = string
   default     = null
 }
