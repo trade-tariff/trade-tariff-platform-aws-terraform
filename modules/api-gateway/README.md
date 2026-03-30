@@ -58,7 +58,6 @@ No modules.
 | [aws_api_gateway_stage.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage) | resource |
 | [aws_apigatewayv2_vpc_link.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_vpc_link) | resource |
 | [aws_route53_record.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
@@ -67,7 +66,7 @@ No modules.
 | <a name="input_alb_secret_header"></a> [alb\_secret\_header](#input\_alb\_secret\_header) | Secret header name and value to be sent to the ALB on every request. | `list(string)` | n/a | yes |
 | <a name="input_authorizer_enabled"></a> [authorizer\_enabled](#input\_authorizer\_enabled) | Enable a custom Lambda authorizer for protected API methods. | `bool` | `false` | no |
 | <a name="input_authorizer_identity_source"></a> [authorizer\_identity\_source](#input\_authorizer\_identity\_source) | Identity source expression for the Lambda authorizer. | `string` | `"method.request.header.Authorization"` | no |
-| <a name="input_authorizer_lambda_invoke_arn"></a> [authorizer\_lambda\_invoke\_arn](#input\_authorizer\_lambda\_invoke\_arn) | Invoke ARN of the Lambda function used by the authorizer. The module converts this to the API Gateway authorizer URI. | `string` | `null` | no |
+| <a name="input_authorizer_lambda_invoke_arn"></a> [authorizer\_lambda\_invoke\_arn](#input\_authorizer\_lambda\_invoke\_arn) | API Gateway-compatible invoke ARN for the Lambda function used by the authorizer. | `string` | `null` | no |
 | <a name="input_authorizer_name"></a> [authorizer\_name](#input\_authorizer\_name) | Name for the API Gateway Lambda authorizer. | `string` | `null` | no |
 | <a name="input_authorizer_result_ttl_in_seconds"></a> [authorizer\_result\_ttl\_in\_seconds](#input\_authorizer\_result\_ttl\_in\_seconds) | Authorizer cache TTL in seconds. Set to 0 to disable caching. | `number` | `0` | no |
 | <a name="input_cache_cluster_enabled"></a> [cache\_cluster\_enabled](#input\_cache\_cluster\_enabled) | Enable or disable the API Gateway cache cluster. | `bool` | `false` | no |
