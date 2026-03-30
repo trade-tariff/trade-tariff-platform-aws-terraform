@@ -103,10 +103,10 @@ module "postgres_commodi_tea" {
 }
 
 # Aurora cluster
-module "postgres_aurora_16_8" {
+module "postgres_aurora" {
   source = "../../../modules/rds_cluster"
 
-  cluster_name      = "postgres-aurora-${var.environment}-16-8"
+  cluster_name      = "postgres-aurora-${var.environment}"
   engine            = "aurora-postgresql"
   engine_version    = "17.7"
   engine_mode       = "provisioned"
@@ -142,7 +142,7 @@ module "postgres_database_url" {
   name            = "${var.environment}-postgres-database-url"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = module.postgres_aurora_16_8.rw_connection_string
+  secret_string   = module.postgres_aurora.rw_connection_string
 }
 
 module "postgres_admin_aurora" {
