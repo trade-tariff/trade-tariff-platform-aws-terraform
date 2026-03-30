@@ -50,7 +50,7 @@ jobs:
         with:
           terragrunt-version: ${{ env.TERRAGRUNT_VERSION }}
 
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
