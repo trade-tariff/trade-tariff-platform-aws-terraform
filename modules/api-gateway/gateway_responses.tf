@@ -33,3 +33,21 @@ resource "aws_api_gateway_gateway_response" "access_denied" {
     })
   }
 }
+
+resource "aws_api_gateway_gateway_response" "throttled" {
+  rest_api_id   = aws_api_gateway_rest_api.this.id
+  response_type = "THROTTLED"
+  status_code   = "429"
+
+  response_templates = {
+    "application/json" = jsonencode({
+      errors = [
+        {
+          status = "429"
+          title  = "Too Many Requests"
+          detail = "Too many requests were made in a short period. Please wait a moment and try again."
+        }
+      ]
+    })
+  }
+}
