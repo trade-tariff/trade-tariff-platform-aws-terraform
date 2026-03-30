@@ -20,6 +20,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_api_gateway_authorizer.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
 | [aws_api_gateway_base_path_mapping.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
 | [aws_api_gateway_deployment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
 | [aws_api_gateway_domain_name.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_domain_name) | resource |
@@ -63,6 +64,11 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alb_secret_header"></a> [alb\_secret\_header](#input\_alb\_secret\_header) | Secret header name and value to be sent to the ALB on every request. | `list(string)` | n/a | yes |
+| <a name="input_authorizer_enabled"></a> [authorizer\_enabled](#input\_authorizer\_enabled) | Enable a custom Lambda authorizer for protected API methods. | `bool` | `false` | no |
+| <a name="input_authorizer_identity_source"></a> [authorizer\_identity\_source](#input\_authorizer\_identity\_source) | Identity source expression for the Lambda authorizer. | `string` | `"method.request.header.Authorization"` | no |
+| <a name="input_authorizer_lambda_invoke_arn"></a> [authorizer\_lambda\_invoke\_arn](#input\_authorizer\_lambda\_invoke\_arn) | API Gateway-compatible invoke ARN for the Lambda function used by the authorizer. | `string` | `null` | no |
+| <a name="input_authorizer_name"></a> [authorizer\_name](#input\_authorizer\_name) | Name for the API Gateway Lambda authorizer. | `string` | `null` | no |
+| <a name="input_authorizer_result_ttl_in_seconds"></a> [authorizer\_result\_ttl\_in\_seconds](#input\_authorizer\_result\_ttl\_in\_seconds) | Authorizer cache TTL in seconds. Set to 0 to disable caching. | `number` | `0` | no |
 | <a name="input_cache_cluster_enabled"></a> [cache\_cluster\_enabled](#input\_cache\_cluster\_enabled) | Enable or disable the API Gateway cache cluster. | `bool` | `false` | no |
 | <a name="input_cache_cluster_size"></a> [cache\_cluster\_size](#input\_cache\_cluster\_size) | The size of the cache cluster for the API Gateway. | `string` | `"0.5"` | no |
 | <a name="input_cache_key_params"></a> [cache\_key\_params](#input\_cache\_key\_params) | List of query string parameters to include in the cache key. | `list(string)` | <pre>[<br/>  "as_of",<br/>  "country_code",<br/>  "heading_code",<br/>  "include",<br/>  "limit",<br/>  "page",<br/>  "per_page",<br/>  "filter.exclude_none",<br/>  "filter.from_date",<br/>  "filter.geographical_area_id",<br/>  "filter.has_article",<br/>  "filter.meursing_additional_code_id",<br/>  "filter.simplified_procedural_code",<br/>  "filter.to_date",<br/>  "filter.type"<br/>]</pre> | no |
@@ -83,6 +89,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_api_gateway_stage_arn"></a> [api\_gateway\_stage\_arn](#output\_api\_gateway\_stage\_arn) | ARN of the API Gateway stage (for WAF association). |
+| <a name="output_execution_arn"></a> [execution\_arn](#output\_execution\_arn) | Execution ARN of the API Gateway REST API. |
 | <a name="output_rest_api_id"></a> [rest\_api\_id](#output\_rest\_api\_id) | ID of the API Gateway REST API. |
 | <a name="output_rest_api_name"></a> [rest\_api\_name](#output\_rest\_api\_name) | Name of the API Gateway REST API. |
 | <a name="output_stage_name"></a> [stage\_name](#output\_stage\_name) | Name of the deployed stage. |

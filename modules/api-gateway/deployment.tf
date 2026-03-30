@@ -10,6 +10,7 @@ resource "aws_api_gateway_deployment" "this" {
       aws_api_gateway_method.xi_proxy.http_method,
       aws_api_gateway_method.xi_proxy.authorization,
       aws_api_gateway_method.xi_proxy.request_parameters,
+      var.authorizer_enabled ? aws_api_gateway_method.xi_proxy.authorizer_id : null,
 
       aws_api_gateway_integration.xi_proxy.type,
       aws_api_gateway_integration.xi_proxy.uri,
@@ -22,6 +23,7 @@ resource "aws_api_gateway_deployment" "this" {
       aws_api_gateway_method.uk_proxy.http_method,
       aws_api_gateway_method.uk_proxy.authorization,
       aws_api_gateway_method.uk_proxy.request_parameters,
+      var.authorizer_enabled ? aws_api_gateway_method.uk_proxy.authorizer_id : null,
 
       aws_api_gateway_integration.uk_proxy.type,
       aws_api_gateway_integration.uk_proxy.uri,
@@ -39,6 +41,12 @@ resource "aws_api_gateway_deployment" "this" {
       keys(aws_api_gateway_resource.xi_exceptions),
 
       var.cache_key_params,
+      var.authorizer_enabled,
+      var.authorizer_name,
+      var.authorizer_identity_source,
+      var.authorizer_result_ttl_in_seconds,
+      aws_api_gateway_rest_api.this.api_key_source,
+      var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].authorizer_uri : null,
 
       aws_api_gateway_gateway_response.unauthorized.response_templates,
       aws_api_gateway_gateway_response.access_denied.response_templates,
