@@ -65,6 +65,16 @@ module "identity_cognito" {
       description = "Developer Portal user group. See https://portal.trade-tariff.service.gov.uk"
     }
   ]
+
+  resource_server_name       = "tariff-public-apis"
+  resource_server_identifier = "tariff"
+
+  resource_server_scopes = [
+    { scope_name = "read", scope_description = "Enables authenticated read access to public apis" },
+    { scope_name = "categorisation", scope_description = "Enables authenticated read access to Categorisation apis" },
+    { scope_name = "fpo", scope_description = "Access freeports/FPO endpoints" },
+    { scope_name = "write", scope_description = "Enables authenticated write access to admin apis" }
+  ]
 }
 
 resource "aws_route53_record" "id_cognito_custom_domain" {
