@@ -54,6 +54,14 @@ jobs:
         env:
           DISABLE_INIT: true
 
+      - name: Init Terraform modules
+        run: |
+          for module in modules/*; do
+            if [ -d "$module" ]; then
+              terraform -chdir="$module" init
+            fi
+          done
+
       - name: Warm provider cache
         run: terraform init -backend=false
         working-directory: environments/development/common
