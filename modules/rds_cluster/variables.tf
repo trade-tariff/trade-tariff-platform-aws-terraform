@@ -44,6 +44,18 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
+variable "create_subnet_group" {
+  description = "Whether to create a DB subnet group."
+  type        = bool
+  default     = true
+}
+
+variable "db_subnet_group_name" {
+  description = "Existing DB subnet group name to use"
+  type        = string
+  default     = null
+}
+
 variable "max_capacity" {
   description = "Maximum capacity (ACUs). Defaults to `256`."
   type        = number

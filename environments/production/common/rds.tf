@@ -125,8 +125,10 @@ module "postgres_aurora" {
   min_capacity = 2
   max_capacity = 64
 
-  security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
-  private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
+  security_group_ids   = [module.alb-security-group.be_to_rds_security_group_id]
+  create_subnet_group  = false
+  db_subnet_group_name = "postgres-aurora-production-16-8-sg"
+  private_subnet_ids   = data.terraform_remote_state.base.outputs.private_subnet_ids
 
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_17.name
 
