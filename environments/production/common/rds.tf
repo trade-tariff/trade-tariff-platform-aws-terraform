@@ -197,8 +197,7 @@ module "postgres_developer_hub" {
   engine         = "postgres"
   engine_version = "18.3"
 
-  deletion_protection = false
-  multi_az            = false
+  multi_az = false
 
   instance_type           = "db.t3.micro"
   backup_window           = "22:00-23:00"
