@@ -2,13 +2,6 @@ name: Deploy to Production
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - 'Deploy to Staging'
-    types:
-      - completed
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -22,7 +15,6 @@ env:
 
 jobs:
   apply-production:
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     environment: production
     env:
       TERRAGRUNT_NON_INTERACTIVE: true
