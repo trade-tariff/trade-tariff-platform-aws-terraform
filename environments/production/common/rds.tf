@@ -103,10 +103,10 @@ module "postgres_commodi_tea" {
 }
 
 # Aurora cluster
-module "postgres_aurora_16_8" {
+module "postgres_aurora" {
   source = "../../../modules/rds_cluster"
 
-  cluster_name      = "postgres-aurora-${var.environment}-16-8"
+  cluster_name      = "aurora-${var.environment}-cluster-restored-cluster"
   engine            = "aurora-postgresql"
   engine_version    = "17.7"
   engine_mode       = "provisioned"
@@ -125,12 +125,19 @@ module "postgres_aurora_16_8" {
   min_capacity = 2
   max_capacity = 64
 
-  security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
-  private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
+  security_group_ids   = [module.alb-security-group.be_to_rds_security_group_id]
+  create_subnet_group  = false
+  db_subnet_group_name = "postgres-aurora-production-16-8-sg"
+  private_subnet_ids   = data.terraform_remote_state.base.outputs.private_subnet_ids
 
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_17.name
 
   cloudwatch_log_exports = ["postgresql"]
+
+  instance_identifiers = [
+    "aurora-production-cluster-restored",
+    "aurora-production-cluster-restored-1",
+  ]
 
   tags = {
     "RDS_Type" = "Aurora"
@@ -142,7 +149,7 @@ module "postgres_database_url" {
   name            = "${var.environment}-postgres-database-url"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
-  secret_string   = module.postgres_aurora_16_8.rw_connection_string
+  secret_string   = module.postgres_aurora.rw_connection_string
 }
 
 module "postgres_admin_aurora" {

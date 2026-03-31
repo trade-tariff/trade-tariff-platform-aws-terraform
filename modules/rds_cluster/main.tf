@@ -28,7 +28,7 @@ resource "aws_rds_cluster" "this" {
   }
 
   vpc_security_group_ids = var.security_group_ids
-  db_subnet_group_name   = aws_db_subnet_group.rds_private_subnet.name
+  db_subnet_group_name   = var.create_subnet_group ? aws_db_subnet_group.rds_private_subnet[0].name : var.db_subnet_group_name
 
   db_cluster_parameter_group_name = var.db_cluster_parameter_group_name
 
@@ -45,12 +45,12 @@ resource "aws_rds_cluster" "this" {
 
 resource "aws_rds_cluster_instance" "this" {
   count      = var.cluster_instances
-  identifier = "${var.cluster_name}-${count.index}"
+  identifier = length(var.instance_identifiers) > 0 ? var.instance_identifiers[count.index] : "${var.cluster_name}-${count.index}"
 
   cluster_identifier   = aws_rds_cluster.this.id
   engine               = aws_rds_cluster.this.engine
   engine_version       = aws_rds_cluster.this.engine_version
-  db_subnet_group_name = aws_db_subnet_group.rds_private_subnet.name
+  db_subnet_group_name = var.create_subnet_group ? aws_db_subnet_group.rds_private_subnet[0].name : var.db_subnet_group_name
 
   instance_class = var.instance_class
 
@@ -64,6 +64,7 @@ resource "random_password" "master_password" {
 }
 
 resource "aws_db_subnet_group" "rds_private_subnet" {
+  count      = var.create_subnet_group ? 1 : 0
   name       = "${var.cluster_name}-sg"
   subnet_ids = var.private_subnet_ids
   tags       = var.tags

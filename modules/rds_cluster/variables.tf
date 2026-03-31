@@ -44,6 +44,18 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
+variable "create_subnet_group" {
+  description = "Whether to create a DB subnet group."
+  type        = bool
+  default     = true
+}
+
+variable "db_subnet_group_name" {
+  description = "Existing DB subnet group name to use"
+  type        = string
+  default     = null
+}
+
 variable "max_capacity" {
   description = "Maximum capacity (ACUs). Defaults to `256`."
   type        = number
@@ -108,4 +120,10 @@ variable "performance_insights_retention_period" {
   description = "Amount of time, in days, (minimum 7, maximum 731, or any multiple of 31) to retain performance insights data."
   type        = number
   default     = 31
+}
+
+variable "instance_identifiers" {
+  type        = list(string)
+  description = "To avoid renames after a snapshot restore, we manually pass the cluster identifiers to have these identifiers reflected in terraform state and avoid alterations to the writer/reader instances."
+  default     = []
 }
