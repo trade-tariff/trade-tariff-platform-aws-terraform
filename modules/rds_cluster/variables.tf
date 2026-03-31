@@ -121,3 +121,9 @@ variable "performance_insights_retention_period" {
   type        = number
   default     = 31
 }
+
+variable "instance_identifiers" {
+  type        = list(string)
+  description = "To avoid renames after a snapshot restore, we manually pass the cluster identifiers to have these identifiers reflected in terraform state and avoid alterations to the writer/reader instances."
+  default     = []
+}

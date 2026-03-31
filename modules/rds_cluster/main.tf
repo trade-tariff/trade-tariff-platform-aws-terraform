@@ -45,7 +45,7 @@ resource "aws_rds_cluster" "this" {
 
 resource "aws_rds_cluster_instance" "this" {
   count      = var.cluster_instances
-  identifier = "${var.cluster_name}-${count.index}"
+  identifier = length(var.instance_identifiers) > 0 ? var.instance_identifiers[count.index] : "${var.cluster_name}-${count.index}"
 
   cluster_identifier   = aws_rds_cluster.this.id
   engine               = aws_rds_cluster.this.engine

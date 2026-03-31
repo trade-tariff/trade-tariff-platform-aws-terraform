@@ -106,7 +106,7 @@ module "postgres_commodi_tea" {
 module "postgres_aurora" {
   source = "../../../modules/rds_cluster"
 
-  cluster_name      = "postgres-aurora-${var.environment}"
+  cluster_name      = "aurora-${var.environment}-cluster-restored-cluster"
   engine            = "aurora-postgresql"
   engine_version    = "17.7"
   engine_mode       = "provisioned"
@@ -133,6 +133,11 @@ module "postgres_aurora" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_17.name
 
   cloudwatch_log_exports = ["postgresql"]
+
+  instance_identifiers = [
+    "aurora-production-cluster-restored",
+    "aurora-production-cluster-restored-1",
+  ]
 
   tags = {
     "RDS_Type" = "Aurora"
