@@ -10,6 +10,9 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
+        args:
+          - --hook-config=--parallelism-limit=1
+          - --tf-init-args=-lockfile=readonly
       - id: terraform_tflint
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
