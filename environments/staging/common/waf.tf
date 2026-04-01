@@ -22,20 +22,6 @@ module "waf" {
       }
     }
   }
-  assets_rate_based_rule = {
-    name      = "assets-ratelimiting"
-    priority  = 2
-    rpm_limit = 750
-    action    = "block"
-    custom_response = {
-      response_code = 429
-      body_key      = "rate-limit-exceeded"
-      response_header = {
-        name  = "X-RateLimit-Remaining"
-        value = "0"
-      }
-    }
-  }
 
   uri_path_match_rules = [
     {
