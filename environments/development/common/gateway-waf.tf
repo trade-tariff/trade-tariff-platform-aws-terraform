@@ -25,8 +25,6 @@ module "waf_apigw" {
     }
   }
 
-  assets_rate_based_rule = null # not applicable to APIGW
-
   uri_path_match_rules = [
     {
       name                  = "allow-mycommodities-path"
