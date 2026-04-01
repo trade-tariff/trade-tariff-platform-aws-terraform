@@ -54,6 +54,10 @@ resource "aws_rds_cluster_instance" "this" {
 
   instance_class = var.instance_class
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   tags = var.tags
 }
 
