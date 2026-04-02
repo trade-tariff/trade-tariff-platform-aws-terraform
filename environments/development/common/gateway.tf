@@ -30,13 +30,13 @@ module "gateway" {
 variable "apigw_default_rate_limit" {
   description = "Steady-state requests per second for usage plan"
   type        = number
-  default     = 8 # 500 requests / 60 seconds
+  default     = 3 # Requests per second
 }
 
 variable "apigw_default_burst_limit" {
   description = "Burst limit for usage plan"
   type        = number
-  default     = 16
+  default     = 6
 }
 
 # Usage plan linked to THIS environment's deployed stage
