@@ -30,19 +30,19 @@ module "gateway" {
 variable "apigw_default_rate_limit" {
   description = "Steady-state requests per second for usage plan"
   type        = number
-  default     = 50
+  default     = 8
 }
 
 variable "apigw_default_burst_limit" {
   description = "Burst limit for usage plan"
   type        = number
-  default     = 100
+  default     = 16
 }
 
 # Usage plan linked to THIS environment's deployed stage
 resource "aws_api_gateway_usage_plan" "default" {
-  name        = "default-${var.environment}"
-  description = "Default internal usage plan for ${var.environment}"
+  name        = "standard-${var.environment}"
+  description = "Standard usage plan for ${var.environment}"
 
   throttle_settings {
     burst_limit = var.apigw_default_burst_limit
