@@ -39,6 +39,7 @@ No modules.
 | <a name="input_cluster_instances"></a> [cluster\_instances](#input\_cluster\_instances) | n/a | `number` | `0` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | n/a | yes |
 | <a name="input_create_subnet_group"></a> [create\_subnet\_group](#input\_create\_subnet\_group) | Whether to create a DB subnet group. | `bool` | `true` | no |
+| <a name="input_database_insights_mode"></a> [database\_insights\_mode](#input\_database\_insights\_mode) | The mode of Database Insights that is enabled for the instance. Valid values: standard, advanced. | `string` | `"standard"` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database. | `string` | n/a | yes |
 | <a name="input_db_cluster_parameter_group_name"></a> [db\_cluster\_parameter\_group\_name](#input\_db\_cluster\_parameter\_group\_name) | The name of the DB cluster parameter group to associate with this cluster. | `string` | n/a | yes |
 | <a name="input_db_subnet_group_name"></a> [db\_subnet\_group\_name](#input\_db\_subnet\_group\_name) | Existing DB subnet group name to use | `string` | `null` | no |

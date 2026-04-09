@@ -26,10 +26,22 @@ variable "backup_retention_period" {
   default     = 30
 }
 
+variable "performance_insights_enabled" {
+  description = "Whether to enable Performance Insights. Defaults to `true`."
+  type        = bool
+  default     = false
+}
+
 variable "performance_insights_retention_period" {
   description = "Amount of time, in days, (minimum 7, maximum 731, or any multiple of 31) to retain performance insights data."
   type        = number
   default     = 31
+}
+
+variable "database_insights_mode" {
+  description = "The mode of Database Insights that is enabled for the instance. Valid values: standard, advanced."
+  type        = string
+  default     = "standard"
 }
 
 variable "security_group_ids" {
