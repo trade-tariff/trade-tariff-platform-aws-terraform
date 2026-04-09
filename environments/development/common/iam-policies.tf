@@ -114,6 +114,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "ecs:ListTaskDefinitions",
           "ecs:ListTasks",
           "ecs:RegisterTaskDefinition",
+          "ecs:RunTask",
           "ecs:TagResource",
           "ecs:UpdateService",
           # ELB - read-only data sources for target groups
@@ -157,6 +158,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
           "logs:DescribeLogGroups",
+          "logs:GetLogEvents",
           "logs:ListTagsForResource",
           "logs:PutRetentionPolicy",
           # Secrets Manager - read secrets for task environment variables
