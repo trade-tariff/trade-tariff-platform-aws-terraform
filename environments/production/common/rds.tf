@@ -91,6 +91,8 @@ module "postgres_commodi_tea" {
 
   secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
 
+  performance_insights_enabled = true
+
   depends_on = [
     module.alb-security-group
   ]
@@ -120,7 +122,8 @@ module "postgres_aurora" {
   encryption_at_rest = true
 
   performance_insights_enabled          = true
-  performance_insights_retention_period = 465
+  performance_insights_retention_period = 465 # minimum required for Advanced
+  database_insights_mode                = "advanced"
 
   min_capacity = 2
   max_capacity = 64
@@ -168,6 +171,8 @@ module "postgres_admin_aurora" {
 
   encryption_at_rest = true
 
+  performance_insights_enabled = true
+
   min_capacity = 0.5
   max_capacity = 2
 
@@ -209,6 +214,8 @@ module "postgres_developer_hub" {
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
 
   secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
+
+  performance_insights_enabled = true
 
   depends_on = [
     module.alb-security-group

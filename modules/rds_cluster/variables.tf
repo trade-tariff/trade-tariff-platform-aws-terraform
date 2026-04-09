@@ -122,6 +122,12 @@ variable "performance_insights_retention_period" {
   default     = 31
 }
 
+variable "database_insights_mode" {
+  description = "The mode of Database Insights that is enabled for the instance. Valid values: standard, advanced."
+  type        = string
+  default     = "standard"
+}
+
 variable "instance_identifiers" {
   type        = list(string)
   description = "To avoid renames after a snapshot restore, we manually pass the cluster identifiers to have these identifiers reflected in terraform state and avoid alterations to the writer/reader instances."
