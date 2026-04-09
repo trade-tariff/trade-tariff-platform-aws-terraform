@@ -27,7 +27,7 @@ resource "aws_db_instance" "this" {
   iam_database_authentication_enabled = true
 
   performance_insights_enabled          = var.performance_insights_enabled
-  performance_insights_retention_period = var.performance_insights_retention_period
+  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
   performance_insights_kms_key_id       = aws_kms_key.this.arn
   database_insights_mode                = var.database_insights_mode
 
