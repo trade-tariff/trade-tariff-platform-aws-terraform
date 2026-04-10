@@ -1,4 +1,8 @@
 resource "aws_elasticache_replication_group" "this" {
+  lifecycle {
+    prevent_destroy = true
+  }
+
   engine                      = var.engine
   engine_version              = var.engine_version
   port                        = var.port
