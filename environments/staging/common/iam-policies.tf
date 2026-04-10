@@ -6,6 +6,39 @@ resource "aws_iam_policy" "ci_terraform_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Effect = "Deny",
+        Action = [
+          "*:Delete*",
+          "*:Remove*",
+          "*:Destroy*",
+          "*:Delete*Tags",
+
+          # EC2 high-risk actions
+          "ec2:TerminateInstances",
+
+          # IAM privilege escalation
+          "iam:CreateUser",
+          "iam:CreateAccessKey",
+          "iam:AttachUserPolicy",
+          "iam:PutUserPolicy",
+          "iam:DeleteRole",
+          "iam:DeletePolicy",
+          "iam:CreatePolicyVersion",
+
+          # KMS destructive lifecycle
+          "kms:ScheduleKeyDeletion",
+
+          # S3 destructive operations
+          "s3:DeleteBucket",
+          "s3:DeleteObject",
+          "s3:PutBucketPolicy",
+
+          # CloudFormation stack deletion
+          "cloudformation:DeleteStack"
+        ],
+        Resource = "*"
+      },
+      {
         Effect = "Allow",
         Action = [
           "acm:*",
