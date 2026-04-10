@@ -8,33 +8,82 @@ resource "aws_iam_policy" "ci_terraform_policy" {
       {
         Effect = "Deny",
         Action = [
-          "*:Delete*",
-          "*:Remove*",
-          "*:Destroy*",
-          "*:Delete*Tags",
-
-          # EC2 high-risk actions
+          # EC2 (destructive compute)
           "ec2:TerminateInstances",
+          "ec2:DeleteTags",
+          "ec2:DeleteSecurityGroup",
+          "ec2:DeleteKeyPair",
 
-          # IAM privilege escalation
-          "iam:CreateUser",
-          "iam:CreateAccessKey",
-          "iam:AttachUserPolicy",
-          "iam:PutUserPolicy",
-          "iam:DeleteRole",
-          "iam:DeletePolicy",
-          "iam:CreatePolicyVersion",
-
-          # KMS destructive lifecycle
-          "kms:ScheduleKeyDeletion",
-
-          # S3 destructive operations
+          # S3 (data loss + policy hijack)
           "s3:DeleteBucket",
           "s3:DeleteObject",
+          "s3:DeleteObjectVersion",
+          "s3:DeleteBucketPolicy",
           "s3:PutBucketPolicy",
+          "s3:PutBucketAcl",
+          "s3:PutBucketOwnershipControls",
 
-          # CloudFormation stack deletion
-          "cloudformation:DeleteStack"
+          # IAM (privilege escalation)
+          "iam:CreateUser",
+          "iam:DeleteUser",
+          "iam:CreateAccessKey",
+          "iam:DeleteAccessKey",
+          "iam:AttachUserPolicy",
+          "iam:DetachUserPolicy",
+          "iam:PutUserPolicy",
+          "iam:DeleteUserPolicy",
+
+          "iam:CreateRole",
+          "iam:DeleteRole",
+          "iam:AttachRolePolicy",
+          "iam:DetachRolePolicy",
+          "iam:PutRolePolicy",
+          "iam:DeleteRolePolicy",
+
+          "iam:CreatePolicy",
+          "iam:DeletePolicy",
+          "iam:CreatePolicyVersion",
+          "iam:SetDefaultPolicyVersion",
+
+          # KMS (crypto destruction)
+          "kms:ScheduleKeyDeletion",
+          "kms:DisableKey",
+          "kms:DeleteAlias",
+
+          # CloudFormation (stack destruction)
+          "cloudformation:DeleteStack",
+          "cloudformation:DeleteChangeSet",
+
+          # Lambda (function destruction)
+          "lambda:DeleteFunction",
+          "lambda:RemovePermission",
+
+          # RDS (data destruction)
+          "rds:DeleteDBInstance",
+          "rds:DeleteDBCluster",
+          "rds:DeleteDBSnapshot",
+          "rds:DeleteDBClusterSnapshot",
+
+          # DynamoDB (data loss)
+          "dynamodb:DeleteTable",
+
+          # ECR (image destruction)
+          "ecr:DeleteRepository",
+          "ecr:BatchDeleteImage",
+
+          # CloudWatch / Logs (loss of observability)
+          "logs:DeleteLogGroup",
+          "logs:DeleteLogStream",
+
+          # SNS / SQS (messaging destruction)
+          "sns:DeleteTopic",
+          "sns:SetTopicAttributes",
+          "sqs:DeleteQueue",
+          "sqs:SetQueueAttributes",
+
+          # Route53 (DNS hijack / outage risk)
+          "route53:DeleteHostedZone",
+          "route53:ChangeResourceRecordSets"
         ],
         Resource = "*"
       },
