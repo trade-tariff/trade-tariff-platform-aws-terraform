@@ -8,4 +8,6 @@ resource "aws_dynamodb_table" "client_rate_limits" {
     name = "clientId"
     type = "S"
   }
+
+  deletion_protection_enabled = true
 }

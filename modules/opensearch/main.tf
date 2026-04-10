@@ -16,6 +16,10 @@ resource "aws_iam_service_linked_role" "opensearch" {
 }
 
 resource "aws_opensearch_domain" "opensearch" {
+  lifecycle {
+    prevent_destroy = true
+  }
+
   domain_name     = var.cluster_name
   engine_version  = "OpenSearch_${var.cluster_version}"
   access_policies = data.aws_iam_policy_document.access_policy.json
