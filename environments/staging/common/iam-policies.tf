@@ -159,6 +159,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
           "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
           "logs:GetLogEvents",
           "logs:ListTagsForResource",
           "logs:PutRetentionPolicy",
