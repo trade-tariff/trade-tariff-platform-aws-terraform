@@ -6,6 +6,74 @@ resource "aws_iam_policy" "ci_terraform_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Effect = "Deny",
+        Action = [
+          # EC2 (destructive compute)
+          "ec2:TerminateInstances",
+          "ec2:DeleteTags",
+          "ec2:DeleteSecurityGroup",
+          "ec2:DeleteKeyPair",
+
+          # S3 (data loss + policy hijack)
+          "s3:DeleteBucket",
+          "s3:DeleteObject",
+          "s3:DeleteObjectVersion",
+          "s3:DeleteBucketPolicy",
+
+          # IAM (privilege escalation)
+          "iam:CreateUser",
+          "iam:DeleteUser",
+          "iam:CreateAccessKey",
+          "iam:DeleteAccessKey",
+          "iam:AttachUserPolicy",
+          "iam:DetachUserPolicy",
+          "iam:PutUserPolicy",
+          "iam:DeleteUserPolicy",
+
+          # KMS (crypto destruction)
+          "kms:ScheduleKeyDeletion",
+          "kms:DisableKey",
+          "kms:DeleteAlias",
+
+          # CloudFormation (stack destruction)
+          "cloudformation:DeleteStack",
+          "cloudformation:DeleteChangeSet",
+
+          # Lambda (function destruction)
+          "lambda:DeleteFunction",
+          "lambda:RemovePermission",
+
+          # RDS (data destruction)
+          "rds:DeleteDBInstance",
+          "rds:DeleteDBCluster",
+          "rds:DeleteDBSnapshot",
+          "rds:DeleteDBSubnetGroup",
+          "rds:DeleteDBClusterSnapshot",
+          "rds:DeleteDBInstanceAutomatedBackup",
+          "rds:DeleteGlobalCluster",
+
+          # DynamoDB (data loss)
+          "dynamodb:DeleteTable",
+
+          # ECR (image destruction)
+          "ecr:DeleteRepository",
+          "ecr:BatchDeleteImage",
+
+          # CloudWatch / Logs (loss of observability)
+          "logs:DeleteLogGroup",
+          "logs:DeleteLogStream",
+
+          # SNS / SQS (messaging destruction)
+          "sns:DeleteTopic",
+          "sqs:DeleteQueue",
+
+          # Route53 (DNS hijack / outage risk)
+          "route53:DeleteHostedZone",
+          "route53:ChangeResourceRecordSets"
+        ],
+        Resource = "*"
+      },
+      {
         Effect = "Allow",
         Action = [
           "acm:*",
