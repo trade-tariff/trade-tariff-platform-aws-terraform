@@ -1,0 +1,237 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PLAN_JSON="${1:-tfplan.json}"
+# Use unique marker per environment so dev/staging/prod don't overwrite each other
+MARKER="<!-- terraform-plan-${TF_ENV} -->"
+
+DESTROY="🚨"
+DELETE="🔴"
+REPLACE="🟡"
+SAFE="✅"
+
+if [[ ! -f "$PLAN_JSON" ]]; then
+  echo "❌ Plan JSON not found: $PLAN_JSON"
+  exit 1
+fi
+
+if [[ -z "${TF_ENV:-}" ]]; then
+  echo "❌ TF_ENV not set (development/staging/production)"
+  exit 1
+fi
+
+COMMENTS_URL=$(jq -r '.pull_request.comments_url' "$GITHUB_EVENT_PATH")
+
+# ---- Parse plan: Separate pure deletes from replacements -----
+
+# Pure deletes: only "delete" action (NOT "create")
+pure_delete_resources=$(
+  jq -r '
+    .[].resource_changes[]
+    | select(.change.actions | index("delete"))
+    | select(.change.actions | index("create") | not)
+    | .address
+  ' "$PLAN_JSON" | sort -u
+)
+
+# Replacements: both "create" and "delete" actions
+replace_resources=$(
+  jq -r '
+    .[].resource_changes[]
+    | select(.change.actions | sort == ["create","delete"])
+    | .address
+  ' "$PLAN_JSON" | sort -u
+)
+
+# Updates: only "update" action
+update_count=$(jq '[.[].resource_changes[].change.actions[] | select(. == "update")] | length' "$PLAN_JSON")
+
+# Creates (not part of replacement): only "create" action
+create_count=$(jq '[.[].resource_changes[] | select(.change.actions | sort == ["create"])] | length' "$PLAN_JSON")
+
+# Count actual deletes
+delete_count=$(echo "$pure_delete_resources" | grep -c . || echo 0)
+replace_count=$(echo "$replace_resources" | grep -c . || echo 0)
+
+# ---- Build comment with environment-specific context ---
+
+# Add production-specific header warning
+if [[ "$TF_ENV" == "production" ]]; then
+  PROD_WARNING="🚨 **PRODUCTION ENVIRONMENT** — Changes below will affect production"
+  ENV_COLOR="🔴"
+else
+  PROD_WARNING=""
+  ENV_COLOR="🟢"
+fi
+
+body="$MARKER
+## ${ENV_COLOR} Terraform Plan — **${TF_ENV^^}**
+"
+
+# Add production warning if applicable
+if [[ -n "$PROD_WARNING" ]]; then
+  body+="
+$PROD_WARNING
+
+"
+fi
+
+body+="| Action | Count | Status |
+|--------|------:|--------|
+| Create | ${create_count} | ${SAFE} |
+| Update | ${update_count} | ${SAFE} |"
+
+# Only show delete if there are actual deletes
+if [[ "$delete_count" -gt 0 ]]; then
+  body+="
+| Delete | ${delete_count} | ${DELETE} **REVIEW** |"
+else
+  body+="
+| Delete | 0 | ${SAFE} |"
+fi
+
+# Show replace count
+if [[ "$replace_count" -gt 0 ]]; then
+  body+="
+| Replace | ${replace_count} | ${REPLACE} Review |"
+else
+  body+="
+| Replace | 0 | ${SAFE} |"
+fi
+
+body+="
+"
+
+# Only show pure deletes section if there are actual deletes
+if [[ "$delete_count" -gt 0 ]]; then
+  body+="
+### ${DELETE} Resources to be **DELETED** (⚠️ Data Loss)
+"
+  body+="$(printf '%s\n' "$pure_delete_resources" | sed 's/^/- `/' | sed 's/$/`/')"
+
+  # Extra warning for production deletes
+  if [[ "$TF_ENV" == "production" ]]; then
+    body+="
+${DESTROY} **CRITICAL** — Deleting in **PRODUCTION**. This cannot be undone.
+"
+  fi
+fi
+
+# Show replacements section (safer than deletes)
+if [[ "$replace_count" -gt 0 ]]; then
+  body+="
+### ${REPLACE} Resources to be **REPLACED** (will be recreated)
+"
+  body+="$(printf '%s\n' "$replace_resources" | sed 's/^/- `/' | sed 's/$/`/')"
+
+  # Warning for production replacements
+  if [[ "$TF_ENV" == "production" ]]; then
+    body+="
+⚠️ Production replacements may cause downtime. Please review carefully.
+"
+  fi
+fi
+
+# Truncate JSON or show summary
+PLAN_JSON_SIZE=$(wc -c < "$PLAN_JSON")
+if [[ "$PLAN_JSON_SIZE" -lt 50000 ]]; then
+  # Only include full JSON if reasonable size
+  plan_json_content=$(jq '.' "$PLAN_JSON")
+  body+="
+<details>
+<summary><b>📋 Full Terraform Plan (JSON)</b></summary>
+
+\`\`\`json
+${plan_json_content}
+\`\`\`
+</details>
+"
+else
+  # For large files, show summary instead
+  body+="
+<details>
+<summary><b>📋 Plan Summary</b></summary>
+
+- Total Resources Changed: $((create_count + update_count + delete_count + replace_count))
+- To Create: ${create_count}
+- To Update: ${update_count}
+- To Delete: ${delete_count} ${delete_count:+🔴}
+- To Replace: ${replace_count} ${replace_count:+🟡}
+
+*Full JSON too large to display inline. Check workflow logs for details.*
+</details>
+"
+fi
+
+# Add action required notice based on severity and environment
+if [[ "$delete_count" -gt 0 ]]; then
+  # Pure deletes are dangerous
+  if [[ "$TF_ENV" == "production" ]]; then
+    body+="
+---
+${DESTROY} **🚨 CRITICAL ACTION REQUIRED**
+- **PRODUCTION**: $(printf '%s\n' "$pure_delete_resources" | wc -l) resource(s) will be **permanently deleted**
+- This action **cannot be undone** in production
+- **Requires explicit approval**
+- Review the resources above carefully
+"
+  else
+    body+="
+---
+${DESTROY} **⚠️ ACTION REQUIRED** — **Destructive deletions detected**
+- $(printf '%s\n' "$pure_delete_resources" | wc -l) resource(s) will be **permanently deleted**
+- Please review and confirm intention
+"
+  fi
+elif [[ "$replace_count" -gt 0 ]]; then
+  # Replacements are safer but need attention in prod
+  if [[ "$TF_ENV" == "production" ]]; then
+    body+="
+---
+${REPLACE} **⚠️ PRODUCTION REPLACEMENTS** — $(printf '%s\n' "$replace_resources" | wc -l) resource(s) will be replaced
+- May cause temporary service disruption
+- Review to ensure acceptability for production
+"
+  else
+    body+="
+---
+${REPLACE} **Review recommended** — $(printf '%s\n' "$replace_resources" | wc -l) resource(s) will be replaced
+- Resources will be destroyed and recreated
+- Usually safe, but may cause temporary disruption
+"
+  fi
+else
+  # No destructive changes
+  body+="
+---
+${SAFE} **Safe to apply** — No destructive changes detected
+- Only creating, updating, or replacing resources
+"
+fi
+
+# ---- Create or update comment -----------------------------------------------
+
+existing_id=$(curl -s \
+  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github+json" \
+  "$COMMENTS_URL" \
+  | jq -r ".[] | select(.body | contains(\"$MARKER\")) | .id" 2>/dev/null || echo "")
+
+# Encode JSON payload
+payload=$(jq -n --arg body "$body" '{body:$body}')
+
+if [[ -n "$existing_id" && "$existing_id" != "null" ]]; then
+  curl -s -X PATCH \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/comments/${existing_id}" \
+    -d "$payload" >/dev/null 2>&1 || true
+  echo "✅ Updated plan comment for ${TF_ENV}"
+else
+  curl -s -X POST \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github+json" \
+    "$COMMENTS_URL" \
+    -d "$payload" >/dev/null 2>&1 || true
+  echo "✅ Created plan comment for ${TF_ENV}"
+fi

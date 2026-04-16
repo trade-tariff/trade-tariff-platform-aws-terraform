@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   id-token: write
+  pull-requests: write
 
 env:
   AWS_REGION: eu-west-2
@@ -99,8 +100,23 @@ jobs:
       - run: terragrunt init --all
         working-directory: environments/development
 
-      - run: terragrunt plan --all
+      - run: terragrunt plan --all --out=terragrunt.tfplan
         working-directory: environments/development
+
+      - name: Export Plan as JSON
+        run: |
+          terragrunt show --all -json terragrunt.tfplan \
+            | jq -s '.' > tfplan.json
+        working-directory: environments/development
+
+      - name: Post Terraform Plan Comment (JSON-based)
+        if: github.event_name == 'pull_request'
+        env:
+          TF_ENV: development
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x .github/bin/comment-tfplan
+          .github/bin/comment-tfplan environments/development/tfplan.json
 
   apply-development:
     needs: plan-development
@@ -192,8 +208,23 @@ jobs:
       - run: terragrunt init --all
         working-directory: environments/staging
 
-      - run: terragrunt plan --all
+      - run: terragrunt plan --all -out=terragrunt.tfplan
         working-directory: environments/staging
+
+      - name: Export Plan as JSON
+        run: |
+          terragrunt show --all -json terragrunt.tfplan \
+            | jq -s '.' > tfplan.json
+        working-directory: environments/staging
+
+      - name: Post Terraform Plan Comment (JSON-based)
+        if: github.event_name == 'pull_request'
+        env:
+          TF_ENV: staging
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x .github/bin/comment-tfplan
+          .github/bin/comment-tfplan environments/staging/tfplan.json
 
   plan-production:
     environment: production
@@ -221,5 +252,20 @@ jobs:
       - run: terragrunt init --all
         working-directory: environments/production
 
-      - run: terragrunt plan --all
+      - run: terragrunt plan --all -out=terragrunt.tfplan
         working-directory: environments/production
+
+      - name: Export Plan as JSON
+        run: |
+          terragrunt show --all -json terragrunt.tfplan \
+            | jq -s '.' > tfplan.json
+        working-directory: environments/production
+
+      - name: Post Terraform Plan Comment (JSON-based)
+        if: github.event_name == 'pull_request'
+        env:
+          TF_ENV: production
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x .github/bin/comment-tfplan
+          .github/bin/comment-tfplan environments/production/tfplan.json
