@@ -4,6 +4,26 @@ resource "aws_api_gateway_deployment" "this" {
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_resource.xi.path_part,
+
+      aws_api_gateway_method.xi.http_method,
+      aws_api_gateway_method.xi.authorization,
+      var.authorizer_enabled ? aws_api_gateway_method.xi.authorizer_id : null,
+
+      aws_api_gateway_integration.xi.type,
+      aws_api_gateway_integration.xi.uri,
+      aws_api_gateway_integration.xi.request_parameters,
+
+      aws_api_gateway_resource.xi_fallback_proxy.path_part,
+
+      aws_api_gateway_method.xi_fallback_proxy.http_method,
+      aws_api_gateway_method.xi_fallback_proxy.authorization,
+      aws_api_gateway_method.xi_fallback_proxy.request_parameters,
+      var.authorizer_enabled ? aws_api_gateway_method.xi_fallback_proxy.authorizer_id : null,
+
+      aws_api_gateway_integration.xi_fallback_proxy.type,
+      aws_api_gateway_integration.xi_fallback_proxy.uri,
+      aws_api_gateway_integration.xi_fallback_proxy.request_parameters,
+
       aws_api_gateway_resource.xi_api.path_part,
       aws_api_gateway_resource.xi_proxy.path_part,
 
@@ -17,6 +37,26 @@ resource "aws_api_gateway_deployment" "this" {
       aws_api_gateway_integration.xi_proxy.request_parameters,
 
       aws_api_gateway_resource.uk.path_part,
+
+      aws_api_gateway_method.uk.http_method,
+      aws_api_gateway_method.uk.authorization,
+      var.authorizer_enabled ? aws_api_gateway_method.uk.authorizer_id : null,
+
+      aws_api_gateway_integration.uk.type,
+      aws_api_gateway_integration.uk.uri,
+      aws_api_gateway_integration.uk.request_parameters,
+
+      aws_api_gateway_resource.uk_fallback_proxy.path_part,
+
+      aws_api_gateway_method.uk_fallback_proxy.http_method,
+      aws_api_gateway_method.uk_fallback_proxy.authorization,
+      aws_api_gateway_method.uk_fallback_proxy.request_parameters,
+      var.authorizer_enabled ? aws_api_gateway_method.uk_fallback_proxy.authorizer_id : null,
+
+      aws_api_gateway_integration.uk_fallback_proxy.type,
+      aws_api_gateway_integration.uk_fallback_proxy.uri,
+      aws_api_gateway_integration.uk_fallback_proxy.request_parameters,
+
       aws_api_gateway_resource.uk_api.path_part,
       aws_api_gateway_resource.uk_proxy.path_part,
 

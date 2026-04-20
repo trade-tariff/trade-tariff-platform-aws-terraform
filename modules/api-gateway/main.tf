@@ -60,10 +60,73 @@ resource "aws_api_gateway_resource" "xi" {
   path_part   = "xi"
 }
 
+resource "aws_api_gateway_method" "xi" {
+  rest_api_id      = aws_api_gateway_rest_api.this.id
+  resource_id      = aws_api_gateway_resource.xi.id
+  http_method      = "ANY"
+  authorization    = var.authorizer_enabled ? "CUSTOM" : "NONE"
+  authorizer_id    = var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].id : null
+  api_key_required = true
+}
+
+resource "aws_api_gateway_integration" "xi" {
+  rest_api_id             = aws_api_gateway_rest_api.this.id
+  resource_id             = aws_api_gateway_resource.xi.id
+  http_method             = aws_api_gateway_method.xi.http_method
+  type                    = "HTTP_PROXY"
+  integration_http_method = "ANY"
+
+  uri                = "http://api.${var.domain_name}/xi"
+  connection_type    = "VPC_LINK"
+  connection_id      = aws_apigatewayv2_vpc_link.this.id
+  integration_target = var.lb_arn
+
+  request_parameters = {
+    "integration.request.header.${var.alb_secret_header[0]}" = "'${var.alb_secret_header[1]}'"
+  }
+}
+
 resource "aws_api_gateway_resource" "xi_api" {
   rest_api_id = aws_api_gateway_rest_api.this.id
   parent_id   = aws_api_gateway_resource.xi.id
   path_part   = "api"
+}
+
+resource "aws_api_gateway_resource" "xi_fallback_proxy" {
+  rest_api_id = aws_api_gateway_rest_api.this.id
+  parent_id   = aws_api_gateway_resource.xi.id
+  path_part   = "{proxy+}"
+}
+
+resource "aws_api_gateway_method" "xi_fallback_proxy" {
+  rest_api_id      = aws_api_gateway_rest_api.this.id
+  resource_id      = aws_api_gateway_resource.xi_fallback_proxy.id
+  http_method      = "ANY"
+  authorization    = var.authorizer_enabled ? "CUSTOM" : "NONE"
+  authorizer_id    = var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].id : null
+  api_key_required = true
+
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
+}
+
+resource "aws_api_gateway_integration" "xi_fallback_proxy" {
+  rest_api_id             = aws_api_gateway_rest_api.this.id
+  resource_id             = aws_api_gateway_resource.xi_fallback_proxy.id
+  http_method             = aws_api_gateway_method.xi_fallback_proxy.http_method
+  type                    = "HTTP_PROXY"
+  integration_http_method = "ANY"
+
+  uri                = "http://api.${var.domain_name}/xi/{proxy}"
+  connection_type    = "VPC_LINK"
+  connection_id      = aws_apigatewayv2_vpc_link.this.id
+  integration_target = var.lb_arn
+
+  request_parameters = {
+    "integration.request.path.proxy"                         = "method.request.path.proxy"
+    "integration.request.header.${var.alb_secret_header[0]}" = "'${var.alb_secret_header[1]}'"
+  }
 }
 
 resource "aws_api_gateway_resource" "xi_proxy" {
@@ -129,10 +192,73 @@ resource "aws_api_gateway_resource" "uk" {
   path_part   = "uk"
 }
 
+resource "aws_api_gateway_method" "uk" {
+  rest_api_id      = aws_api_gateway_rest_api.this.id
+  resource_id      = aws_api_gateway_resource.uk.id
+  http_method      = "ANY"
+  authorization    = var.authorizer_enabled ? "CUSTOM" : "NONE"
+  authorizer_id    = var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].id : null
+  api_key_required = true
+}
+
+resource "aws_api_gateway_integration" "uk" {
+  rest_api_id             = aws_api_gateway_rest_api.this.id
+  resource_id             = aws_api_gateway_resource.uk.id
+  http_method             = aws_api_gateway_method.uk.http_method
+  type                    = "HTTP_PROXY"
+  integration_http_method = "ANY"
+
+  uri                = "http://api.${var.domain_name}/uk"
+  connection_type    = "VPC_LINK"
+  connection_id      = aws_apigatewayv2_vpc_link.this.id
+  integration_target = var.lb_arn
+
+  request_parameters = {
+    "integration.request.header.${var.alb_secret_header[0]}" = "'${var.alb_secret_header[1]}'"
+  }
+}
+
 resource "aws_api_gateway_resource" "uk_api" {
   rest_api_id = aws_api_gateway_rest_api.this.id
   parent_id   = aws_api_gateway_resource.uk.id
   path_part   = "api"
+}
+
+resource "aws_api_gateway_resource" "uk_fallback_proxy" {
+  rest_api_id = aws_api_gateway_rest_api.this.id
+  parent_id   = aws_api_gateway_resource.uk.id
+  path_part   = "{proxy+}"
+}
+
+resource "aws_api_gateway_method" "uk_fallback_proxy" {
+  rest_api_id      = aws_api_gateway_rest_api.this.id
+  resource_id      = aws_api_gateway_resource.uk_fallback_proxy.id
+  http_method      = "ANY"
+  authorization    = var.authorizer_enabled ? "CUSTOM" : "NONE"
+  authorizer_id    = var.authorizer_enabled ? aws_api_gateway_authorizer.this[0].id : null
+  api_key_required = true
+
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
+}
+
+resource "aws_api_gateway_integration" "uk_fallback_proxy" {
+  rest_api_id             = aws_api_gateway_rest_api.this.id
+  resource_id             = aws_api_gateway_resource.uk_fallback_proxy.id
+  http_method             = aws_api_gateway_method.uk_fallback_proxy.http_method
+  type                    = "HTTP_PROXY"
+  integration_http_method = "ANY"
+
+  uri                = "http://api.${var.domain_name}/uk/{proxy}"
+  connection_type    = "VPC_LINK"
+  connection_id      = aws_apigatewayv2_vpc_link.this.id
+  integration_target = var.lb_arn
+
+  request_parameters = {
+    "integration.request.path.proxy"                         = "method.request.path.proxy"
+    "integration.request.header.${var.alb_secret_header[0]}" = "'${var.alb_secret_header[1]}'"
+  }
 }
 
 resource "aws_api_gateway_resource" "uk_proxy" {
@@ -275,7 +401,7 @@ resource "aws_api_gateway_integration" "xi_exceptions" {
 }
 
 # ---------------------------------------------------------------------------------------
-# REDIRECT OLD REQUESTS TO MOVED DOCS SITE (applies to everything not /uk/api or /xi/api)
+# REDIRECT OLD REQUESTS TO MOVED DOCS SITE (applies to everything not /uk or /xi)
 # ---------------------------------------------------------------------------------------
 resource "aws_api_gateway_method" "root_redirect" {
   rest_api_id   = aws_api_gateway_rest_api.this.id
