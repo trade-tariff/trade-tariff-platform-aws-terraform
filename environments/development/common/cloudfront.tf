@@ -36,7 +36,6 @@ module "cdn" {
     "examples.${var.domain_name}",
     "hub.${var.domain_name}",
     "id.${var.domain_name}",
-    "tea.${var.domain_name}",
   ]
 
   create_alias    = true

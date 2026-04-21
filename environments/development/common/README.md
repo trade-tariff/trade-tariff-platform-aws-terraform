@@ -66,8 +66,6 @@ No outputs.
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | ../../../modules/cloudfront | n/a |
 | <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ../../../modules/cloudwatch/ | n/a |
 | <a name="module_cloudwatch-logs-exporter"></a> [cloudwatch-logs-exporter](#module\_cloudwatch-logs-exporter) | ../../../modules/cloudwatch_log_exporter | n/a |
-| <a name="module_commodi_tea_cognito"></a> [commodi\_tea\_cognito](#module\_commodi\_tea\_cognito) | ../../../modules/cognito | n/a |
-| <a name="module_commodi_tea_configuration"></a> [commodi\_tea\_configuration](#module\_commodi\_tea\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_create_auth_challenge"></a> [create\_auth\_challenge](#module\_create\_auth\_challenge) | ../../../modules/lambda | n/a |
 | <a name="module_db_replicate_configuration"></a> [db\_replicate\_configuration](#module\_db\_replicate\_configuration) | ../../../modules/secret/ | n/a |
 | <a name="module_define_auth_challenge"></a> [define\_auth\_challenge](#module\_define\_auth\_challenge) | ../../../modules/lambda | n/a |
@@ -85,7 +83,6 @@ No outputs.
 | <a name="module_opensearch_packages_bucket"></a> [opensearch\_packages\_bucket](#module\_opensearch\_packages\_bucket) | git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git | v4.6.0 |
 | <a name="module_postgres_admin_aurora"></a> [postgres\_admin\_aurora](#module\_postgres\_admin\_aurora) | ../../../modules/rds_cluster | n/a |
 | <a name="module_postgres_aurora"></a> [postgres\_aurora](#module\_postgres\_aurora) | ../../../modules/rds_cluster | n/a |
-| <a name="module_postgres_commodi_tea"></a> [postgres\_commodi\_tea](#module\_postgres\_commodi\_tea) | ../../../modules/rds | n/a |
 | <a name="module_postgres_developer_hub"></a> [postgres\_developer\_hub](#module\_postgres\_developer\_hub) | ../../../modules/rds | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../../modules/elasticache-redis/ | n/a |
 | <a name="module_reporting_cdn"></a> [reporting\_cdn](#module\_reporting\_cdn) | ../../../modules/cloudfront | n/a |
