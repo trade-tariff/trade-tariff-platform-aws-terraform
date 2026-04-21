@@ -3,22 +3,10 @@ variable "alb_security_group_id" {
   type        = string
 }
 
-variable "application_port" {
-  description = "Port the application exposes."
-  type        = string
-  default     = 8080
-}
-
 variable "tls_application_port" {
   description = "Port the application exposes on HTTPS."
   type        = string
   default     = 8443
-}
-
-variable "protocol" {
-  description = "Protocol the application exposes."
-  type        = string
-  default     = "http"
 }
 
 variable "listening_port" {

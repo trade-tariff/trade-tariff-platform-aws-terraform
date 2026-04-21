@@ -7,7 +7,6 @@ module "alb" {
   vpc_id                = data.terraform_remote_state.base.outputs.vpc_id
   enable_access_logs    = true
   domain_name           = var.domain_name
-  protocol              = "https"
 
   custom_header = {
     name  = random_password.origin_header[0].result
