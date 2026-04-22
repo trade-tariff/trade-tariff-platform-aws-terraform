@@ -4,7 +4,6 @@ module "acm" {
   environment    = var.environment
   hosted_zone_id = data.aws_route53_zone.this.zone_id
   subject_alternative_names = [
-    "auth.tea.${var.domain_name}",
     "auth.id.${var.domain_name}",
   ]
 

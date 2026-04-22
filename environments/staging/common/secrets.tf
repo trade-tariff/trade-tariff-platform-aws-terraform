@@ -5,13 +5,6 @@ module "admin_configuration" {
   recovery_window = 7
 }
 
-module "commodi_tea_configuration" {
-  source          = "../../../modules/secret/"
-  name            = "commodi-tea-configuration"
-  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
-}
-
 # TODO: Correct this secret label -> dev_hub_configuration
 module "dev" {
   source          = "../../../modules/secret/"

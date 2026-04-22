@@ -20,12 +20,6 @@ module "alb" {
       priority         = 1
     }
 
-    tea = {
-      hosts            = ["tea.*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 5
-    }
-
     identity = {
       hosts            = ["id.*"]
       healthcheck_path = "/healthcheckz"
