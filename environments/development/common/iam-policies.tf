@@ -68,10 +68,35 @@ resource "aws_iam_policy" "ci_terraform_policy" {
           "sqs:DeleteQueue",
 
           # Route53 (DNS hijack / outage risk)
-          "route53:DeleteHostedZone",
-          "route53:ChangeResourceRecordSets"
+          "route53:DeleteHostedZone"
         ],
         Resource = "*"
+      },
+      {
+        Sid    = "DenyRoute53RecordDeletes"
+        Effect = "Deny"
+        Action = [
+          "route53:ChangeResourceRecordSets"
+        ]
+        Resource = "*"
+        Condition = {
+          "ForAnyValue:StringEquals" = {
+            "route53:ChangeResourceRecordSetsActions" = ["DELETE"]
+          }
+        }
+      },
+      {
+        Sid    = "AllowRoute53RecordCreateAndUpdate"
+        Effect = "Allow"
+        Action = [
+          "route53:ChangeResourceRecordSets"
+        ]
+        Resource = [data.aws_route53_zone.this.arn]
+        Condition = {
+          "ForAllValues:StringEquals" = {
+            "route53:ChangeResourceRecordSetsActions" = ["CREATE", "UPSERT"]
+          }
+        }
       },
       {
         Effect = "Allow",
