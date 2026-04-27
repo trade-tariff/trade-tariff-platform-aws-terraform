@@ -7,7 +7,7 @@ MARKER="<!-- terraform-plan-${TF_ENV} -->"
 
 DESTROY="🚨"
 DELETE="🔴"
-REPLACE="🟡"
+REPLACE="🟠"
 SAFE="✅"
 
 if [[ ! -f "$PLAN_JSON" ]]; then
