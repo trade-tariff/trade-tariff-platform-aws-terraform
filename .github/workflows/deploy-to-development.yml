@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   id-token: write
+  pull-requests: write
 
 env:
   AWS_REGION: eu-west-2
@@ -99,8 +100,21 @@ jobs:
       - run: terragrunt init --all
         working-directory: environments/development
 
-      - run: terragrunt plan --all
+      - run: terragrunt plan --all --out=terragrunt.tfplan
         working-directory: environments/development
+
+      - name: Export Plan as JSON
+        run: |
+          terragrunt show --all -json terragrunt.tfplan \
+            | jq -s '.' > tfplan.json
+        working-directory: environments/development
+
+      - uses: trade-tariff/trade-tariff-tools/.github/actions/terraform-plan-comment@main
+        if: github.event_name == 'pull_request'
+        with:
+          plan-json-path: environments/development/tfplan.json
+          environment: development
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   apply-development:
     needs: plan-development
@@ -192,8 +206,21 @@ jobs:
       - run: terragrunt init --all
         working-directory: environments/staging
 
-      - run: terragrunt plan --all
+      - run: terragrunt plan --all -out=terragrunt.tfplan
         working-directory: environments/staging
+
+      - name: Export Plan as JSON
+        run: |
+          terragrunt show --all -json terragrunt.tfplan \
+            | jq -s '.' > tfplan.json
+        working-directory: environments/staging
+
+      - uses: trade-tariff/trade-tariff-tools/.github/actions/terraform-plan-comment@main
+        if: github.event_name == 'pull_request'
+        with:
+          plan-json-path: environments/staging/tfplan.json
+          environment: staging
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   plan-production:
     environment: production
@@ -221,5 +248,18 @@ jobs:
       - run: terragrunt init --all
         working-directory: environments/production
 
-      - run: terragrunt plan --all
+      - run: terragrunt plan --all -out=terragrunt.tfplan
         working-directory: environments/production
+
+      - name: Export Plan as JSON
+        run: |
+          terragrunt show --all -json terragrunt.tfplan \
+            | jq -s '.' > tfplan.json
+        working-directory: environments/production
+
+      - uses: trade-tariff/trade-tariff-tools/.github/actions/terraform-plan-comment@main
+        if: github.event_name == 'pull_request'
+        with:
+          plan-json-path: environments/production/tfplan.json
+          environment: production
+          github-token: ${{ secrets.GITHUB_TOKEN }}
