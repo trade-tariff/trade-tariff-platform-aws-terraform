@@ -76,6 +76,10 @@ $PROD_WARNING
 "
 fi
 
+body+="
+**Total Resources Changed:** $((create_count + update_count + delete_count + replace_count))
+"
+
 body+="| Action | Count | Status |
 |--------|------:|--------|
 | Create | ${create_count} | ${SAFE} |
@@ -132,36 +136,13 @@ if [[ "$replace_count" -gt 0 ]]; then
   fi
 fi
 
-# Truncate JSON or show summary
-PLAN_JSON_SIZE=$(wc -c < "$PLAN_JSON")
-if [[ "$PLAN_JSON_SIZE" -lt 50000 ]]; then
-  # Only include full JSON if reasonable size
-  plan_json_content=$(jq '.' "$PLAN_JSON")
-  body+="
-<details>
-<summary><b>📋 Full Terraform Plan (JSON)</b></summary>
+RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
-\`\`\`json
-${plan_json_content}
-\`\`\`
-</details>
+body+="
+
+🔗 **Full Terraform plans (dev / staging / prod)** are available in the workflow run:
+${RUN_URL}
 "
-else
-  # For large files, show summary instead
-  body+="
-<details>
-<summary><b>📋 Plan Summary</b></summary>
-
-- Total Resources Changed: $((create_count + update_count + delete_count + replace_count))
-- To Create: ${create_count}
-- To Update: ${update_count}
-- To Delete: ${delete_count} ${delete_count:+🔴}
-- To Replace: ${replace_count} ${replace_count:+🟡}
-
-*Full JSON too large to display inline. Check workflow logs for details.*
-</details>
-"
-fi
 
 # Add action required notice based on severity and environment
 if [[ "$delete_count" -gt 0 ]]; then
@@ -169,7 +150,7 @@ if [[ "$delete_count" -gt 0 ]]; then
   if [[ "$TF_ENV" == "production" ]]; then
     body+="
 ---
-${DESTROY} **🚨 CRITICAL ACTION REQUIRED**
+${DESTROY} **CRITICAL ACTION REQUIRED**
 - **PRODUCTION**: $(printf '%s\n' "$pure_delete_resources" | wc -l) resource(s) will be **permanently deleted**
 - This action **cannot be undone** in production
 - **Requires explicit approval**
