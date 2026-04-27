@@ -109,14 +109,12 @@ jobs:
             | jq -s '.' > tfplan.json
         working-directory: environments/development
 
-      - name: Post Terraform Plan Comment (JSON-based)
+      - uses: trade-tariff/trade-tariff-tools/.github/actions/terraform-plan-comment@main
         if: github.event_name == 'pull_request'
-        env:
-          TF_ENV: development
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          chmod +x .github/bin/comment-tfplan
-          .github/bin/comment-tfplan environments/development/tfplan.json
+        with:
+          plan-json-path: environments/development/tfplan.json
+          environment: development
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   apply-development:
     needs: plan-development
@@ -217,14 +215,12 @@ jobs:
             | jq -s '.' > tfplan.json
         working-directory: environments/staging
 
-      - name: Post Terraform Plan Comment (JSON-based)
+      - uses: trade-tariff/trade-tariff-tools/.github/actions/terraform-plan-comment@main
         if: github.event_name == 'pull_request'
-        env:
-          TF_ENV: staging
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          chmod +x .github/bin/comment-tfplan
-          .github/bin/comment-tfplan environments/staging/tfplan.json
+        with:
+          plan-json-path: environments/staging/tfplan.json
+          environment: staging
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   plan-production:
     environment: production
@@ -261,11 +257,9 @@ jobs:
             | jq -s '.' > tfplan.json
         working-directory: environments/production
 
-      - name: Post Terraform Plan Comment (JSON-based)
+      - uses: trade-tariff/trade-tariff-tools/.github/actions/terraform-plan-comment@main
         if: github.event_name == 'pull_request'
-        env:
-          TF_ENV: production
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          chmod +x .github/bin/comment-tfplan
-          .github/bin/comment-tfplan environments/production/tfplan.json
+        with:
+          plan-json-path: environments/production/tfplan.json
+          environment: production
+          github-token: ${{ secrets.GITHUB_TOKEN }}
