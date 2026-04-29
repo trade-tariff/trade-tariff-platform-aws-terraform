@@ -106,9 +106,9 @@ module "postgres_developer_hub" {
 module "postgres_aurora" {
   source = "../../../modules/rds_cluster"
 
-  cluster_name      = "aurora-${var.environment}-cluster-restored-cluster"
+  cluster_name      = "postgres-aurora-${var.environment}"
   engine            = "aurora-postgresql"
-  engine_version    = "17.7"
+  engine_version    = "17.9"
   engine_mode       = "provisioned"
   cluster_instances = 2
   apply_immediately = true
@@ -134,11 +134,6 @@ module "postgres_aurora" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_17.name
 
   cloudwatch_log_exports = ["postgresql"]
-
-  instance_identifiers = [
-    "aurora-production-cluster-restored",
-    "aurora-production-cluster-restored-1",
-  ]
 
   tags = {
     "RDS_Type" = "Aurora"
