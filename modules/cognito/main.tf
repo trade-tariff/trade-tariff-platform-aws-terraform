@@ -223,6 +223,14 @@ resource "aws_cognito_user_pool_client" "this" {
     id_token      = var.client_token_validity["id_token"]["units"]
     refresh_token = var.client_token_validity["refresh_token"]["units"]
   }
+
+  dynamic "refresh_token_rotation" {
+    for_each = var.client_enable_refresh_token_rotation ? [true] : []
+    content {
+      feature                    = "ENABLED"
+      retry_grace_period_seconds = 0
+    }
+  }
 }
 
 resource "aws_cognito_resource_server" "this" {

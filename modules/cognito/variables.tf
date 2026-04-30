@@ -292,6 +292,12 @@ variable "client_enable_token_revocation" {
   default     = true
 }
 
+variable "client_enable_refresh_token_rotation" {
+  description = "Whether refresh token rotation is enabled for the app client. Defaults to `false`."
+  type        = bool
+  default     = false
+}
+
 variable "client_prevent_user_existence_errors" {
   description = "Whether the API returns a generic authentication error (default), or indicates whether the user was not found."
   type        = bool
