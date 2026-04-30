@@ -46,6 +46,7 @@ No modules.
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Memory limit in MB | `number` | `128` | no |
 | <a name="input_runtime"></a> [runtime](#input\_runtime) | Function runtime identifier | `string` | n/a | yes |
 | <a name="input_source_code_hash"></a> [source\_code\_hash](#input\_source\_code\_hash) | base64 encoded SHA256 hash of the payload file | `string` | n/a | yes |
+| <a name="input_timeout"></a> [timeout](#input\_timeout) | Timeout in seconds | `number` | `30` | no |
 
 ## Outputs
 
