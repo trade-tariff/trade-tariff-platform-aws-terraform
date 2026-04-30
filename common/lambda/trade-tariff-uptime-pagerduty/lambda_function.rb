@@ -8,6 +8,11 @@ PAGERDUTY_EVENTS_URL = 'https://events.pagerduty.com/v2/enqueue'
 def lambda_handler(event:, context:)
   routing_key = fetch_routing_key
 
+  unless routing_key
+    puts 'PagerDuty routing key not configured — skipping alert'
+    return
+  end
+
   event['Records'].each do |record|
     message    = JSON.parse(record.dig('Sns', 'Message'))
     alarm_name = message['AlarmName']
@@ -39,7 +44,12 @@ def fetch_routing_key
   secret_arn = ENV.fetch('PAGERDUTY_SECRET_ARN')
   client     = Aws::SecretsManager::Client.new
   secret     = client.get_secret_value(secret_id: secret_arn)
-  JSON.parse(secret.secret_string).fetch('routing_key')
+  JSON.parse(secret.secret_string)['routing_key']
+rescue Aws::SecretsManager::Errors::ResourceNotFoundException,
+       Aws::SecretsManager::Errors::InvalidRequestException,
+       JSON::ParserError => e
+  puts "Could not read PagerDuty routing key: #{e.message}"
+  nil
 end
 
 def post_to_pagerduty(payload)
