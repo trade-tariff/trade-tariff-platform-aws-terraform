@@ -78,6 +78,7 @@ No modules.
 | <a name="input_client_auth_flows"></a> [client\_auth\_flows](#input\_client\_auth\_flows) | Authentication flows the client supports. | `list(string)` | `null` | no |
 | <a name="input_client_auth_session_validity"></a> [client\_auth\_session\_validity](#input\_client\_auth\_session\_validity) | Time (in minutes) for session to be valid in authentication flow. Defaults to `3` (minimum). Maximum value is `15`. | `number` | `3` | no |
 | <a name="input_client_callback_urls"></a> [client\_callback\_urls](#input\_client\_callback\_urls) | A list of callback URLs for the client identity providers. | `list(string)` | `null` | no |
+| <a name="input_client_enable_refresh_token_rotation"></a> [client\_enable\_refresh\_token\_rotation](#input\_client\_enable\_refresh\_token\_rotation) | Whether refresh token rotation is enabled for the app client. Defaults to `false`. | `bool` | `false` | no |
 | <a name="input_client_enable_token_revocation"></a> [client\_enable\_token\_revocation](#input\_client\_enable\_token\_revocation) | Whether tokens can be revoked. Defaults to `true`. | `bool` | `true` | no |
 | <a name="input_client_generate_secret"></a> [client\_generate\_secret](#input\_client\_generate\_secret) | Whether to generate a client secret for this application client. | `bool` | `null` | no |
 | <a name="input_client_identity_providers"></a> [client\_identity\_providers](#input\_client\_identity\_providers) | List of `provider_name`s from Cognito Identity Providers. | `list(string)` | `null` | no |
