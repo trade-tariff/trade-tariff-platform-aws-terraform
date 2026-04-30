@@ -8,6 +8,13 @@ locals {
 
   # Number of consecutive 1-minute failures before PagerDuty is alerted
   uptime_failure_threshold = 3
+
+  pagerduty_secret_value = try(data.aws_secretsmanager_secret_version.uptime_pagerduty.secret_string, "{}")
+  pagerduty_secret_map   = jsondecode(local.pagerduty_secret_value)
+}
+
+data "aws_secretsmanager_secret_version" "uptime_pagerduty" {
+  secret_id = module.uptime_pagerduty_secret.secret_arn
 }
 
 # ---------------------------------------------------------------------------
@@ -144,26 +151,9 @@ module "uptime_pagerduty" {
   memory_size      = 128
   timeout          = 30
 
-  additional_policy_arns = [aws_iam_policy.uptime_pagerduty_secrets.arn]
-
   environment_variables = {
-    PAGERDUTY_SECRET_ARN = module.uptime_pagerduty_secret.secret_arn
+    PAGERDUTY_ROUTING_KEY = lookup(local.pagerduty_secret_map, "routing_key", "")
   }
-}
-
-resource "aws_iam_policy" "uptime_pagerduty_secrets" {
-  name = "trade-tariff-uptime-pagerduty-secrets-${var.environment}"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect   = "Allow"
-        Action   = ["secretsmanager:GetSecretValue"]
-        Resource = module.uptime_pagerduty_secret.secret_arn
-      }
-    ]
-  })
 }
 
 resource "aws_lambda_permission" "uptime_pagerduty_sns" {

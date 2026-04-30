@@ -40,6 +40,12 @@ jobs:
       - run: bundle config set path 'vendor/bundle' && bundle install
         working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
 
+      - run: bundle config set path 'vendor/bundle' && bundle install
+        working-directory: common/lambda/trade-tariff-uptime-checker
+
+      - run: bundle config set path 'vendor/bundle' && bundle install
+        working-directory: common/lambda/trade-tariff-uptime-pagerduty
+
       - uses: autero1/action-terragrunt@v3
         with:
           terragrunt-version: ${{ env.TERRAGRUNT_VERSION }}
