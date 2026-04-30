@@ -227,7 +227,8 @@ resource "aws_cognito_user_pool_client" "this" {
   dynamic "refresh_token_rotation" {
     for_each = var.client_enable_refresh_token_rotation ? [true] : []
     content {
-      feature = "ENABLED"
+      feature                    = "ENABLED"
+      retry_grace_period_seconds = 0
     }
   }
 }

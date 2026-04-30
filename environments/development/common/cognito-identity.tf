@@ -32,8 +32,8 @@ module "identity_cognito" {
     "ALLOW_CUSTOM_AUTH"
   ]
 
-  client_auth_session_validity   = 15
-  client_enable_token_revocation = false
+  client_auth_session_validity         = 15
+  client_enable_token_revocation       = false
   client_enable_refresh_token_rotation = true
 
   client_token_validity = {
