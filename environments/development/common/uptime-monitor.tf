@@ -217,6 +217,7 @@ resource "aws_cloudwatch_dashboard" "uptime" {
           height = 6
           properties = {
             title   = "${name} — Availability"
+            region  = var.region
             metrics = [["TradeTariff/Uptime", "Availability", "Endpoint", name]]
             period  = 60
             stat    = "Minimum"
@@ -233,6 +234,7 @@ resource "aws_cloudwatch_dashboard" "uptime" {
           height = 6
           properties = {
             title   = "${name} — Response Time (ms)"
+            region  = var.region
             metrics = [["TradeTariff/Uptime", "ResponseTime", "Endpoint", name]]
             period  = 60
             stat    = "Average"
