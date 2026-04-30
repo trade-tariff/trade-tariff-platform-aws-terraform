@@ -41,6 +41,12 @@ variable "environment_variables" {
   default     = {}
 }
 
+variable "timeout" {
+  description = "Timeout in seconds"
+  type        = number
+  default     = 30
+}
+
 variable "log_retention_days" {
   description = "Number of days to retain CloudWatch logs"
   type        = number
