@@ -52,6 +52,7 @@ resource "aws_iam_role" "serverless_lambda_ci_role" {
               "repo:trade-tariff/trade-tariff-lambdas-electronic-tariff-file-rotations:*",
               "repo:trade-tariff/trade-tariff-lambdas-fpo-model-garbage-collection:*",
               "repo:trade-tariff/trade-tariff-lambdas-fpo-search:*",
+              "repo:trade-tariff/trade-tariff-lambdas-uptime-monitor:*",
             ]
           }
         }
