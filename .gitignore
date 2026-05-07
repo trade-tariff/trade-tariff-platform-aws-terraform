@@ -7,6 +7,8 @@ backend.tf
 environments/production/common/builds/
 /.terraform.lock.hcl
 modules/**/.terraform.lock.hcl
+# Track lockfile so pre-commit `terraform init -lockfile=readonly` succeeds for this module.
+!modules/cognito_app_client_count_monitor/.terraform.lock.hcl
 
 # vim
 [._]*.s[a-v][a-z]
