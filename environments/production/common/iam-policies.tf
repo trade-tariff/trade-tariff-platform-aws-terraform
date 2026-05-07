@@ -573,6 +573,31 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
           module.fpo_search_configuration.secret_arn,
         ]
       },
+      {
+        Sid    = "TradeTariffUptimeMonitorInfra",
+        Effect = "Allow",
+        Action = [
+          "cloudwatch:DeleteDashboards",
+          "cloudwatch:GetDashboard",
+          "cloudwatch:ListDashboards",
+          "cloudwatch:PutDashboard",
+          "sns:CreateTopic",
+          "sns:DeleteTopic",
+          "sns:GetTopicAttributes",
+          "sns:SetTopicAttributes",
+          "sns:Subscribe",
+          "sns:Unsubscribe",
+          "sns:ListSubscriptionsByTopic",
+          "sns:ListTopics",
+          "sns:TagResource",
+          "sns:UntagResource",
+          "lambda:InvokeFunction",
+          "lambda:ListEventSourceMappings",
+          "events:TagResource",
+          "events:UntagResource"
+        ],
+        Resource = "*"
+      }
     ]
   })
 }
