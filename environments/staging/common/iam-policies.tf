@@ -175,6 +175,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "cloudwatch:ListTagsForResource",
           "cloudwatch:PutDashboard",
           "cloudwatch:PutMetricAlarm",
+          "cloudwatch:TagResource",
           # Cognito - identity service reads user pool config
           "cognito-idp:DescribeUserPool",
           # EC2 - read-only data sources for VPC, subnets, security groups
