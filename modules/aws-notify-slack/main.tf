@@ -72,7 +72,7 @@ resource "aws_sns_topic_subscription" "sns_notify_slack" {
 
 module "lambda" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "3.2.0"
+  version = "8.8.0"
 
   create = var.create
 
@@ -82,11 +82,15 @@ module "lambda" {
   handler                        = "${local.lambda_handler}.lambda_handler"
   source_path                    = var.lambda_source_path != null ? "${path.root}/${var.lambda_source_path}" : "${path.module}/functions/notify_slack.py"
   recreate_missing_package       = var.recreate_missing_package
-  runtime                        = "python3.8"
+  runtime                        = "python3.12"
   timeout                        = 30
   kms_key_arn                    = var.kms_key_arn
   reserved_concurrent_executions = var.reserved_concurrent_executions
   ephemeral_storage_size         = var.lambda_function_ephemeral_storage_size
+
+  # Disable timestamp-based triggers so CI runners (which reset file mtimes on
+  # checkout) don't force a replacement on every plan.
+  trigger_on_package_timestamp = false
 
   # If publish is disabled, there will be "Error adding new Lambda Permission for notify_slack:
   # InvalidParameterValueException: We currently do not support adding policies for $LATEST."
@@ -106,7 +110,6 @@ module "lambda" {
   role_permissions_boundary = var.iam_role_boundary_policy_arn
   role_tags                 = var.iam_role_tags
   role_path                 = var.iam_role_path
-  policy_path               = var.iam_policy_path
 
   # Do not use Lambda's policy for cloudwatch logs, because we have to add a policy
   # for KMS conditionally. This way attach_policy_json is always true independenty of
