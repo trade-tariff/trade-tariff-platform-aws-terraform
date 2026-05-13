@@ -352,6 +352,8 @@ module "reporting_cdn" {
   route53_zone_id = data.aws_route53_zone.this.id
   comment         = "${title(var.environment)} Reporting CDN"
 
+  default_root_object = "index.html"
+
   enabled         = true
   is_ipv6_enabled = true
   price_class     = "PriceClass_100"
