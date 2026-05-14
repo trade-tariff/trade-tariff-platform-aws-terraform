@@ -102,3 +102,9 @@ variable "multi_az" {
   type        = bool
   default     = false
 }
+
+variable "allow_major_version_upgrade" {
+  description = "Whether to allow major version upgrades."
+  type        = bool
+  default     = false
+}

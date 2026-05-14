@@ -133,3 +133,16 @@ variable "instance_identifiers" {
   description = "To avoid renames after a snapshot restore, we manually pass the cluster identifiers to have these identifiers reflected in terraform state and avoid alterations to the writer/reader instances."
   default     = []
 }
+
+# Set it to true during the upgrade
+# Set it back to false After upgrade
+variable "allow_major_version_upgrade" {
+  description = "Whether to allow major version upgrades. "
+  type        = bool
+  default     = false
+}
+variable "maintenance_window" {
+  description = "The time window (in UTC) to perform maintenance in. Syntax: `ddd:hh24:mi-ddd:hh24:mi`, eg: `Mon:00:00-Mon:01:30`."
+  type        = string
+  default     = "sun:05:00-sun:06:00"
+}

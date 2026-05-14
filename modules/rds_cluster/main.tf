@@ -5,7 +5,8 @@ resource "aws_rds_cluster" "this" {
   engine_mode    = var.engine_mode
   engine_version = var.engine_version
 
-  allow_major_version_upgrade = true
+  allow_major_version_upgrade  = var.allow_major_version_upgrade
+  preferred_maintenance_window = var.maintenance_window
 
   master_username = var.username
   master_password = random_password.master_password.result
@@ -54,6 +55,11 @@ resource "aws_rds_cluster_instance" "this" {
   db_subnet_group_name = var.create_subnet_group ? aws_db_subnet_group.rds_private_subnet[0].name : var.db_subnet_group_name
 
   instance_class = var.instance_class
+
+  auto_minor_version_upgrade = true
+  # apply db modifications during maintenance windows only
+  # this prevents downtime as the server restarts
+  apply_immediately = false
 
   lifecycle {
     prevent_destroy = true
