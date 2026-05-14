@@ -152,7 +152,7 @@ locals {
 resource "aws_cloudwatch_dashboard" "valkey" {
   dashboard_name = "Valkey-Stats-${title(var.environment)}"
   dashboard_body = jsonencode({
-    widgets = [
+    widgets = flatten([
       {
         type   = "text"
         x      = 0
@@ -169,6 +169,6 @@ resource "aws_cloudwatch_dashboard" "valkey" {
       local.memory_use_widgets,
       local.key_eviction_widgets,
       local.latency_widgets,
-    ]
+    ])
   })
 }
