@@ -74,3 +74,101 @@ resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {
   secret_id     = aws_secretsmanager_secret.valkey_connection_string[each.key].id
   secret_string = "rediss://:${random_password.valkey_auth[each.key].result}@${module.valkey[each.key].primary_endpoint}:6379"
 }
+
+locals {
+  memory_use_widgets = [
+    for k, v in local.redis : {
+      type   = "metric"
+      width  = 12
+      height = 6
+      properties = {
+        metrics = [
+          "AWS/Elasticache",
+          "DatabaseMemoryUsagePercentage",
+          "ReplicationGroupId",
+          "valkey-${k}-${var.environment}"
+        ]
+        period = 3600
+        stat   = "Average"
+        region = var.region
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Memory Usage"
+      }
+    }
+  ]
+  key_count = [
+    for k, v in local.redis : {
+      type   = "metric"
+      width  = 12
+      height = 6
+      properties = {
+        metrics = [
+          "AWS/Elasticache",
+          "CurrItems",
+          "ReplicationGroupId"
+        ]
+      }
+    }
+  ]
+  key_eviction_widgets = [
+    for k, v in local.redis : {
+      type   = "metric"
+      width  = 12
+      height = 6
+      properties = {
+        metrics = [
+          "AWS/Elasticache",
+          "Evictions",
+          "ReplicationGroupId",
+          "valkey-${k}-${var.environment}"
+        ]
+        period = 3600
+        stat   = "Sum"
+        region = var.region
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Key Evictions"
+      }
+    }
+  ]
+  latency_widgets = [
+    for k, v in local.redis : {
+      type   = "metric"
+      width  = 12
+      height = 6
+      properties = {
+        metrics = [
+          "AWS/Elasticache",
+          "KeyBasedCmdsLatency",
+          "ReplicationGroupId",
+          "valkey-${k}-${var.environment}"
+        ]
+        period = 3600
+        stat   = "Average"
+        region = var.region
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Latency (ms)"
+      }
+    }
+  ]
+}
+
+resource "aws_cloudwatch_dashboard" "valkey" {
+  dashboard_name = "Valkey-Stats-${title(var.environment)}"
+  dashboard_body = jsonencode({
+    widgets = [
+      {
+        type   = "text"
+        x      = 0
+        y      = 0
+        width  = 24
+        height = 4
+        properties = {
+          markdown = join("\n", [
+            "## Valkey Cluster Stats",
+            "Surfaces Valkey memory usage, key count, eviction rates, and RTTs (Round-Trip Time)"
+          ])
+        }
+      },
+      local.memory_use_widgets,
+      local.key_eviction_widgets,
+      local.latency_widgets,
+    ]
+  })
+}
