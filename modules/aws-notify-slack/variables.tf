@@ -198,12 +198,6 @@ variable "iam_role_path" {
   default     = null
 }
 
-variable "iam_policy_path" {
-  description = "Path of policies to that should be added to IAM role for Lambda Function"
-  type        = string
-  default     = null
-}
-
 variable "lambda_function_tags" {
   description = "Additional tags for the Lambda function"
   type        = map(string)
