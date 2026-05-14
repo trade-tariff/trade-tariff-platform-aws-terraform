@@ -264,7 +264,7 @@ resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
   alarm_description   = "High memory usage (>80%) on ${each.key} Valkey cluster"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 80
-  evaluation_periods  = 1
+  evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching"
   alarm_actions       = local.alert_actions
@@ -272,7 +272,7 @@ resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
 
   metric_name = "DatabaseMemoryUsagePercentage"
   namespace   = "AWS/Elasticache"
-  period      = 300
+  period      = 120
   statistic   = "Average"
   unit        = "Percent"
 
