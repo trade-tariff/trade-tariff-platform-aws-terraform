@@ -76,17 +76,23 @@ resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {
 }
 
 locals {
+  # There are three nodes in each cluster; therefore we want three metrics for
+  # each graph, to group the nodes
+  cluster_nodes = range(1, 4)
+
   memory_use_widgets = [
     for k, v in local.valkey : {
       type   = "metric"
-      width  = 12
-      height = 6
+      width  = 8
+      height = 4
       properties = {
         metrics = [
-          "AWS/Elasticache",
-          "DatabaseMemoryUsagePercentage",
-          "ReplicationGroupId",
-          "valkey-${k}-${var.environment}"
+          [
+            "AWS/ElastiCache",
+            "DatabaseMemoryUsageCountedForEvictPercentage",
+            "ReplicationGroupId",
+            "valkey-${k}-${var.environment}"
+          ]
         ]
         period = 3600
         stat   = "Average"
@@ -95,55 +101,68 @@ locals {
       }
     }
   ]
-  key_count = [
+
+  key_count_widgets = [
     for k, v in local.valkey : {
       type   = "metric"
-      width  = 12
-      height = 6
+      width  = 8
+      height = 4
       properties = {
         metrics = [
-          "AWS/Elasticache",
-          "CurrItems",
-          "ReplicationGroupId"
+          for i in local.cluster_nodes : [
+            "AWS/ElastiCache",
+            "CurrVolatileItems", # Cache items with a TTL set
+            "CacheClusterId",
+            "valkey-${k}-${var.environment}-00${i}"
+          ]
         ]
+        period = 3600
+        stat   = "Average"
+        region = var.region
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Key Count"
       }
     }
   ]
+
   key_eviction_widgets = [
     for k, v in local.valkey : {
       type   = "metric"
-      width  = 12
-      height = 6
+      width  = 8
+      height = 4
       properties = {
         metrics = [
-          "AWS/Elasticache",
-          "Evictions",
-          "ReplicationGroupId",
-          "valkey-${k}-${var.environment}"
+          for i in local.cluster_nodes : [
+            "AWS/ElastiCache",
+            "Evictions",
+            "CacheClusterId",
+            "valkey-${k}-${var.environment}-00${i}"
+          ]
         ]
         period = 3600
-        stat   = "Sum"
         region = var.region
         title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Key Evictions"
       }
     }
   ]
+
   latency_widgets = [
     for k, v in local.valkey : {
       type   = "metric"
-      width  = 12
-      height = 6
+      width  = 8
+      height = 4
       properties = {
         metrics = [
-          "AWS/Elasticache",
-          "KeyBasedCmdsLatency",
-          "ReplicationGroupId",
-          "valkey-${k}-${var.environment}"
+          for i in local.cluster_nodes : [
+            "AWS/ElastiCache",
+            "SuccessfulReadRequestLatency",
+            "CacheClusterId",
+            "valkey-${k}-${var.environment}-00${i}"
+          ]
         ]
         period = 3600
-        stat   = "Average"
+        stat   = "p99"
         region = var.region
-        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Latency (ms)"
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} p99 Read Latency"
       }
     }
   ]
@@ -152,23 +171,54 @@ locals {
 resource "aws_cloudwatch_dashboard" "valkey" {
   dashboard_name = "Valkey-Stats-${title(var.environment)}"
   dashboard_body = jsonencode({
-    widgets = flatten([
-      {
+    widgets = concat(
+      [{
         type   = "text"
-        x      = 0
-        y      = 0
         width  = 24
-        height = 4
+        height = 2
         properties = {
           markdown = join("\n", [
             "## Valkey Cluster Stats",
-            "Surfaces Valkey memory usage, key count, eviction rates, and RTTs (Round-Trip Time)"
+            "Surfaces Valkey memory usage, key count, eviction rates, and latency"
           ])
         }
-      },
+        },
+        {
+          type   = "text"
+          width  = 24
+          height = 1
+          properties = {
+            markdown = "### Memory Usage Percentage"
+          }
+      }],
       local.memory_use_widgets,
+      [{
+        type   = "text"
+        width  = 24
+        height = 1
+        properties = {
+          markdown = "### Key Count (Cache keys with explicit TTL set)"
+        }
+      }],
+      local.key_count_widgets,
+      [{
+        type   = "text"
+        width  = 24
+        height = 1
+        properties = {
+          markdown = "### Key Evictions Count"
+        }
+      }],
       local.key_eviction_widgets,
+      [{
+        type   = "text"
+        width  = 24
+        height = 1
+        properties = {
+          markdown = "### p99 Read Latency"
+        }
+      }],
       local.latency_widgets,
-    ])
+    )
   })
 }

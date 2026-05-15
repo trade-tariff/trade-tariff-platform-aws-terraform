@@ -126,7 +126,7 @@ resource "aws_cloudwatch_metric_alarm" "slack_notify_self_monitor" {
 
 # Alarms for Valkey clusters
 resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
-  for_each = local.redis
+  for_each = local.valkey
 
   alarm_name          = "valkey-${each.key}-high-memory-usage"
   alarm_description   = "High memory usage (>80%) on ${each.key} Valkey cluster"
