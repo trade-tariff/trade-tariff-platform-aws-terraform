@@ -255,3 +255,28 @@ resource "aws_cloudwatch_metric_alarm" "apigw_cache_hit_ratio" {
     return_data = true
   }
 }
+
+# Alarms for Valkey clusters
+resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
+  for_each = local.valkey
+
+  alarm_name          = "valkey-${each.key}-high-memory-usage"
+  alarm_description   = "High memory usage (>80%) on ${each.key} Valkey cluster"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 80
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = local.alert_actions
+  ok_actions          = local.alert_actions
+
+  metric_name = "DatabaseMemoryUsagePercentage"
+  namespace   = "AWS/Elasticache"
+  period      = 120
+  statistic   = "Average"
+  unit        = "Percent"
+
+  dimensions = {
+    ReplicationGroupId = "valkey-${each.key}-${var.environment}"
+  }
+}

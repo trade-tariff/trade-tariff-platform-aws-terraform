@@ -1,5 +1,5 @@
 locals {
-  redis = {
+  valkey = {
     "frontend"   = "cache.t3.micro",
     "backend-uk" = "cache.t3.micro",
     "backend-xi" = "cache.t3.micro",
@@ -26,7 +26,7 @@ resource "aws_elasticache_parameter_group" "sidekiq" {
 # Authenticated, encrypted clusters
 module "valkey" {
   source   = "../../../modules/elasticache/"
-  for_each = local.redis
+  for_each = local.valkey
 
   engine         = "valkey"
   engine_version = "8.2"
@@ -53,24 +53,172 @@ module "valkey" {
   transit_encryption_enabled = true
   transit_encryption_mode    = "required"
   auth_token                 = random_password.valkey_auth[each.key].result
-  auth_token_update_strategy = "SET"
+  auth_token_update_strategy = "ROTATE"
 }
 
 # Generate a password for each cluster, to avoid credential sharing
 resource "random_password" "valkey_auth" {
-  for_each = local.redis
+  for_each = local.valkey
   length   = 16
   special  = false
 }
 
 resource "aws_secretsmanager_secret" "valkey_connection_string" {
-  for_each   = local.redis
+  for_each   = local.valkey
   name       = "valkey-${each.key}-connection-string"
   kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
 }
 
 resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {
-  for_each      = local.redis
+  for_each      = local.valkey
   secret_id     = aws_secretsmanager_secret.valkey_connection_string[each.key].id
   secret_string = "rediss://:${random_password.valkey_auth[each.key].result}@${module.valkey[each.key].primary_endpoint}:6379"
+}
+
+locals {
+  # There are three nodes in each cluster; therefore we want three metrics for
+  # each graph, to group the nodes
+  cluster_nodes = range(1, 4)
+
+  memory_use_widgets = [
+    for k, v in local.valkey : {
+      type   = "metric"
+      width  = 8
+      height = 4
+      properties = {
+        metrics = [
+          [
+            "AWS/ElastiCache",
+            "DatabaseMemoryUsageCountedForEvictPercentage",
+            "ReplicationGroupId",
+            "valkey-${k}-${var.environment}"
+          ]
+        ]
+        period = 3600
+        stat   = "Average"
+        region = var.region
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Memory Usage"
+      }
+    }
+  ]
+
+  key_count_widgets = [
+    for k, v in local.valkey : {
+      type   = "metric"
+      width  = 8
+      height = 4
+      properties = {
+        metrics = [
+          for i in local.cluster_nodes : [
+            "AWS/ElastiCache",
+            "CurrVolatileItems", # Cache items with a TTL set
+            "CacheClusterId",
+            "valkey-${k}-${var.environment}-00${i}"
+          ]
+        ]
+        period = 3600
+        stat   = "Average"
+        region = var.region
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Key Count"
+      }
+    }
+  ]
+
+  key_eviction_widgets = [
+    for k, v in local.valkey : {
+      type   = "metric"
+      width  = 8
+      height = 4
+      properties = {
+        metrics = [
+          for i in local.cluster_nodes : [
+            "AWS/ElastiCache",
+            "Evictions",
+            "CacheClusterId",
+            "valkey-${k}-${var.environment}-00${i}"
+          ]
+        ]
+        period = 3600
+        region = var.region
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} Key Evictions"
+      }
+    }
+  ]
+
+  latency_widgets = [
+    for k, v in local.valkey : {
+      type   = "metric"
+      width  = 8
+      height = 4
+      properties = {
+        metrics = [
+          for i in local.cluster_nodes : [
+            "AWS/ElastiCache",
+            "SuccessfulReadRequestLatency",
+            "CacheClusterId",
+            "valkey-${k}-${var.environment}-00${i}"
+          ]
+        ]
+        period = 3600
+        stat   = "p99"
+        region = var.region
+        title  = "Valkey ${title(split("-", k)[0])}${length(split("-", k)) > 1 ? " ${upper(split("-", k)[1])}" : ""} p99 Read Latency"
+      }
+    }
+  ]
+}
+
+resource "aws_cloudwatch_dashboard" "valkey" {
+  dashboard_name = "Valkey-Stats-${title(var.environment)}"
+  dashboard_body = jsonencode({
+    widgets = concat(
+      [{
+        type   = "text"
+        width  = 24
+        height = 2
+        properties = {
+          markdown = join("\n", [
+            "## Valkey Cluster Stats",
+            "Surfaces Valkey memory usage, key count, eviction rates, and latency"
+          ])
+        }
+        },
+        {
+          type   = "text"
+          width  = 24
+          height = 1
+          properties = {
+            markdown = "### Memory Usage Percentage"
+          }
+      }],
+      local.memory_use_widgets,
+      [{
+        type   = "text"
+        width  = 24
+        height = 1
+        properties = {
+          markdown = "### Key Count (Cache keys with explicit TTL set)"
+        }
+      }],
+      local.key_count_widgets,
+      [{
+        type   = "text"
+        width  = 24
+        height = 1
+        properties = {
+          markdown = "### Key Evictions Count"
+        }
+      }],
+      local.key_eviction_widgets,
+      [{
+        type   = "text"
+        width  = 24
+        height = 1
+        properties = {
+          markdown = "### p99 Read Latency"
+        }
+      }],
+      local.latency_widgets,
+    )
+  })
 }
