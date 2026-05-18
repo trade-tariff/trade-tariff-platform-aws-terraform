@@ -249,6 +249,17 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "kms:Decrypt",
           "kms:DescribeKey",
           "kms:GenerateDataKey",
+          # Lambda - identity Cognito app client count monitor (Terraform-managed)
+          "lambda:AddPermission",
+          "lambda:CreateFunction",
+          "lambda:DeleteFunction",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:GetPolicy",
+          "lambda:RemovePermission",
+          "lambda:TagResource",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
           # Logs - log groups for ECS containers
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
