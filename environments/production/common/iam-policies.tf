@@ -249,17 +249,6 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "kms:Decrypt",
           "kms:DescribeKey",
           "kms:GenerateDataKey",
-          # Lambda - identity Cognito app client count monitor (Terraform-managed)
-          "lambda:AddPermission",
-          "lambda:CreateFunction",
-          "lambda:DeleteFunction",
-          "lambda:GetFunction",
-          "lambda:GetFunctionConfiguration",
-          "lambda:GetPolicy",
-          "lambda:RemovePermission",
-          "lambda:TagResource",
-          "lambda:UpdateFunctionCode",
-          "lambda:UpdateFunctionConfiguration",
           # Logs - log groups for ECS containers
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
@@ -348,6 +337,36 @@ resource "aws_iam_policy" "ci_terraform_teams_policy" {
         Resource = [
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}",
           "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}/*"
+        ]
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ci_identity_ecs_lambda_policy" {
+  name        = "ci-identity-ecs-lambda-policy"
+  description = "Lambda permissions for identity app Terraform deployments"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "IdentityCognitoAppClientCountLambda"
+        Effect = "Allow"
+        Action = [
+          "lambda:AddPermission",
+          "lambda:CreateFunction",
+          "lambda:DeleteFunction",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:GetPolicy",
+          "lambda:RemovePermission",
+          "lambda:TagResource",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+        ]
+        Resource = [
+          "arn:aws:lambda:${var.region}:${local.account_id}:function:trade-tariff-identity-cognito-app-client-count-*",
         ]
       },
     ]
