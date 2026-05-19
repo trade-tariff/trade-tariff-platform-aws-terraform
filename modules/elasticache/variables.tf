@@ -28,7 +28,7 @@ variable "replication_group_id" {
 variable "apply_immediately" {
   description = "Whether to apply changes to the replication group immediately (`true`), or to wait for the next maintenance window (`false`)."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "multi_az_enabled" {

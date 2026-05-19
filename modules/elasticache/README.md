@@ -31,7 +31,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apply_immediately"></a> [apply\_immediately](#input\_apply\_immediately) | Whether to apply changes to the replication group immediately (`true`), or to wait for the next maintenance window (`false`). | `bool` | `true` | no |
+| <a name="input_apply_immediately"></a> [apply\_immediately](#input\_apply\_immediately) | Whether to apply changes to the replication group immediately (`true`), or to wait for the next maintenance window (`false`). | `bool` | `false` | no |
 | <a name="input_at_rest_encryption_enabled"></a> [at\_rest\_encryption\_enabled](#input\_at\_rest\_encryption\_enabled) | Encryption at rest. | `bool` | `false` | no |
 | <a name="input_auth_token"></a> [auth\_token](#input\_auth\_token) | Password used to access the cluster. Requires `transit_encryption_enabled` to be `true`. Defaults to "", not set. | `string` | `""` | no |
 | <a name="input_auth_token_update_strategy"></a> [auth\_token\_update\_strategy](#input\_auth\_token\_update\_strategy) | Method to use in updating the auth token on a cluster.<br/>Can be one of `SET`, `ROTATE`, or `DELETE`:<br/>  - `SET` should be used when setting a new auth token.<br/>  - `ROTATE` is the default, for changing an auth token.<br/>  - `DELETE` should be used, with an empty auth token, to remove password protection on a cluster. | `string` | `"ROTATE"` | no |
