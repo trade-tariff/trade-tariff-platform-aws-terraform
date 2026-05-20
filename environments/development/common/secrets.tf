@@ -138,3 +138,11 @@ module "ecs_tls_certificate" {
     certificate = tls_self_signed_cert.ecs_tls.cert_pem
   })
 }
+
+# GitHub Actions token owned by bot user to trigger production E2E tests
+module "github_actions_dispatch_token" {
+  source          = "../../../modules/secret/"
+  name            = "github-actions-dispatch-token"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}

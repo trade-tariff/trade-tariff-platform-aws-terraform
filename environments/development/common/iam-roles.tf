@@ -378,6 +378,11 @@ resource "aws_iam_role_policy_attachment" "e2e_testing_ci_policy_attachment" {
   policy_arn = aws_iam_policy.ci_e2e_testing_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "attach_scheduler_deployment" {
+  role       = aws_iam_role.e2e_testing_ci_role.name
+  policy_arn = aws_iam_policy.e2e_infrastructure_scheduler_policy.arn
+}
+
 resource "aws_iam_role" "apigw_cloudwatch_logs" {
   name = "serverlessApiGatewayCloudWatchRole"
 

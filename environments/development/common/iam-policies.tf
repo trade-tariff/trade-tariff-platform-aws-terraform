@@ -867,6 +867,105 @@ resource "aws_iam_policy" "ci_e2e_testing_policy" {
   })
 }
 
+resource "aws_iam_policy" "e2e_infrastructure_scheduler_policy" {
+  name        = "ci-e2e-scheduler-deployment-policy"
+  description = "Allows the E2E repository CI runner to deploy its EventBridge Scheduler infrastructure"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "AllowRemoteStateStorage"
+        Action = [
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+        Resource = [
+          "arn:aws:s3:::terraform-state-development-844815912454",
+          "arn:aws:s3:::terraform-state-development-844815912454/tariff-e2e.tfstate",
+        ]
+        Effect = "Allow"
+      },
+      {
+        Sid = "AllowSchedulerInfrastructureManagement"
+        Action = [
+          "scheduler:CreateSchedule",
+          "scheduler:DeleteSchedule",
+          "scheduler:GetSchedule",
+          "scheduler:UpdateSchedule",
+          "events:CreateConnection",
+          "events:DeleteConnection",
+          "events:DescribeConnection",
+          "events:UpdateConnection",
+          "events:CreateApiDestination",
+          "events:DeleteApiDestination",
+          "events:DescribeApiDestination",
+          "events:UpdateApiDestination",
+        ]
+        Resource = "*"
+        Effect   = "Allow"
+      },
+      {
+        Sid = "AllowSchedulerRoleManagement"
+        Action = [
+          "iam:CreateRole",
+          "iam:DeleteRole",
+          "iam:GetRole",
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:ListInstanceProfilesForRole",
+          "iam:PutRolePolicy",
+          "iam:PassRole",
+          "iam:DeleteRolePolicy",
+          "iam:GetRolePolicy",
+          "iam:TagRole",
+          "iam:UntagRole",
+        ]
+        Resource = [
+          "arn:aws:iam::*:role/trade-tariff-e2e-*-scheduler-role"
+        ]
+        Effect = "Allow"
+      },
+      {
+        Sid = "AllowEventBridgeServiceLinkedRole"
+        Action = [
+          "iam:CreateServiceLinkedRole"
+        ]
+        Resource = "arn:aws:iam::*:role/aws-service-role/apidestinations.events.amazonaws.com/AWSServiceRoleForAmazonEventBridgeApiDestinations"
+        Effect   = "Allow"
+        Condition = {
+          StringEquals = {
+            "iam:AWSServiceName" = "apidestinations.events.amazonaws.com"
+          }
+        }
+      },
+      {
+        Sid = "AllowReadingGitHubTokenSecret"
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:DescribeSecret"
+        ]
+        Resource = [
+          "arn:aws:secretsmanager:*:*:secret:github-actions-dispatch-token-*"
+        ]
+        Effect = "Allow"
+      },
+      {
+        Sid = "AllowSNSDiscoveryAndRead"
+        Action = [
+          "sns:ListTopics",
+          "sns:GetTopicAttributes"
+        ]
+        Resource = ["*"]
+        Effect   = "Allow"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "ci_ecs_task_cleanup_policy" {
   name        = "ci-ecs-task-cleanup-policy"
   description = "Policy for Github Actions to list and deregister old ECS task definitions"
