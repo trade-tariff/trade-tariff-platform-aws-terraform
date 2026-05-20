@@ -1,6 +1,8 @@
 resource "aws_api_gateway_domain_name" "api" {
   domain_name              = "api.${var.domain_name}"
   regional_certificate_arn = var.validated_certificate_arn
+  security_policy          = "SecurityPolicy_TLS13_1_2_2021_06"
+  endpoint_access_mode     = "BASIC" # TODO After you validate your traffic and access logs, set the endpoint access mode to STRICT
 
   endpoint_configuration {
     types = ["REGIONAL"]
