@@ -867,13 +867,28 @@ resource "aws_iam_policy" "ci_e2e_testing_policy" {
   })
 }
 
-resource "aws_iam_policy" "e2e_infrastructure_scheduler_policy" {
+resource "aws_iam_policy" "e2e_scheduler_policy" {
   name        = "ci-e2e-scheduler-deployment-policy"
   description = "Allows the E2E repository CI runner to deploy its EventBridge Scheduler infrastructure"
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
+      {
+        Sid = "AllowCloudWatchAlarmManagement",
+        Action = [
+          "cloudwatch:PutMetricAlarm",
+          "cloudwatch:DeleteAlarms",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:ListTagsForResource",
+          "cloudwatch:TagResource",
+          "cloudwatch:UntagResource"
+        ],
+        Resource = [
+          "arn:aws:cloudwatch:eu-west-2:844815912454:alarm:trade-tariff-e2e-*"
+        ],
+        Effect = "Allow"
+      },
       {
         Sid = "AllowRemoteStateStorage"
         Action = [
@@ -889,8 +904,10 @@ resource "aws_iam_policy" "e2e_infrastructure_scheduler_policy" {
         Effect = "Allow"
       },
       {
-        Sid = "AllowSchedulerInfrastructureManagement"
         Action = [
+          "scheduler:ListTagsForResource",
+          "scheduler:TagResource",
+          "scheduler:UntagResource",
           "scheduler:CreateSchedule",
           "scheduler:DeleteSchedule",
           "scheduler:GetSchedule",
@@ -903,55 +920,88 @@ resource "aws_iam_policy" "e2e_infrastructure_scheduler_policy" {
           "events:DeleteApiDestination",
           "events:DescribeApiDestination",
           "events:UpdateApiDestination",
-        ]
-        Resource = "*"
-        Effect   = "Allow"
+          "events:PutRule",
+          "events:DeleteRule",
+          "events:DescribeRule",
+          "events:EnableRule",
+          "events:DisableRule",
+          "events:ListTargetsByRule",
+          "events:PutTargets",
+          "events:RemoveTargets",
+          "events:TagResource",
+          "events:ListTagsForResource"
+        ],
+        Effect   = "Allow",
+        Resource = "*",
+        Sid      = "AllowSchedulerInfrastructureManagement"
       },
       {
-        Sid = "AllowSchedulerRoleManagement"
         Action = [
+          "iam:AttachRolePolicy",
+          "iam:DetachRolePolicy",
           "iam:CreateRole",
           "iam:DeleteRole",
           "iam:GetRole",
           "iam:ListRolePolicies",
           "iam:ListAttachedRolePolicies",
           "iam:ListInstanceProfilesForRole",
-          "iam:PutRolePolicy",
           "iam:PassRole",
-          "iam:DeleteRolePolicy",
-          "iam:GetRolePolicy",
           "iam:TagRole",
-          "iam:UntagRole",
-        ]
+          "iam:UntagRole"
+        ],
+        Effect = "Allow",
         Resource = [
-          "arn:aws:iam::*:role/trade-tariff-e2e-*-scheduler-role"
-        ]
-        Effect = "Allow"
+          "*"
+        ],
+        Sid = "AllowSchedulerRoleManagement"
+      },
+      {
+        "Sid" : "AllowSchedulerPolicyManagement",
+        "Action" : [
+          "iam:CreatePolicy",
+          "iam:DeletePolicy",
+          "iam:GetPolicy",
+          "iam:GetPolicyVersion",
+          "iam:ListPolicyVersions",
+          "iam:CreatePolicyVersion",
+          "iam:DeletePolicyVersion",
+          "iam:TagPolicy",
+          "iam:UntagPolicy"
+        ],
+        "Resource" : [
+          "arn:aws:iam::*:policy/trade-tariff-e2e-*-scheduler-invoke-policy",
+          "arn:aws:iam::*:policy/trade-tariff-e2e-*-eventbridge-invoke-policy"
+        ],
+        "Effect" : "Allow"
       },
       {
         Sid = "AllowEventBridgeServiceLinkedRole"
         Action = [
           "iam:CreateServiceLinkedRole"
         ]
-        Resource = "arn:aws:iam::*:role/aws-service-role/apidestinations.events.amazonaws.com/AWSServiceRoleForAmazonEventBridgeApiDestinations"
+        Resource = "arn:aws:iam::*:role/aws-service-role/://amazonaws.com",
         Effect   = "Allow"
         Condition = {
           StringEquals = {
-            "iam:AWSServiceName" = "apidestinations.events.amazonaws.com"
+            "iam:AWSServiceName" : "apidestinations.events.amazonaws.com"
           }
         }
       },
       {
         Sid = "AllowReadingGitHubTokenSecret"
         Action = [
+          "secretsmanager:CreateSecret",
+          "secretsmanager:UpdateSecret",
+          "secretsmanager:DeleteSecret",
+          "secretsmanager:PutSecretValue",
+          "secretsmanager:TagResource",
+          "secretsmanager:UntagResource",
+          "secretsmanager:DescribeSecret",
           "secretsmanager:GetSecretValue",
-          "secretsmanager:GetResourcePolicy",
-          "secretsmanager:DescribeSecret"
+          "secretsmanager:GetResourcePolicy"
         ]
-        Resource = [
-          "arn:aws:secretsmanager:*:*:secret:github-actions-dispatch-token-*"
-        ]
-        Effect = "Allow"
+        Resource = ["*"]
+        Effect   = "Allow"
       },
       {
         Sid = "AllowSNSDiscoveryAndRead"
