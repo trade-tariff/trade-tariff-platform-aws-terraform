@@ -343,6 +343,36 @@ resource "aws_iam_policy" "ci_terraform_teams_policy" {
   })
 }
 
+resource "aws_iam_policy" "ci_identity_ecs_lambda_policy" {
+  name        = "ci-identity-ecs-lambda-policy"
+  description = "Lambda permissions for identity app Terraform deployments"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "IdentityCognitoAppClientCountLambda"
+        Effect = "Allow"
+        Action = [
+          "lambda:AddPermission",
+          "lambda:CreateFunction",
+          "lambda:DeleteFunction",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:GetPolicy",
+          "lambda:RemovePermission",
+          "lambda:TagResource",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+        ]
+        Resource = [
+          "arn:aws:lambda:${var.region}:${local.account_id}:function:trade-tariff-identity-cognito-app-client-count-*",
+        ]
+      },
+    ]
+  })
+}
+
 resource "aws_iam_policy" "ci_api_docs_policy" {
   name        = "ci-api-docs-policy"
   description = "Policy for API docs deployments"
