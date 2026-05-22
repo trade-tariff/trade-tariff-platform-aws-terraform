@@ -18,8 +18,9 @@ output "target_groups" {
   value = {
     for tg in aws_lb_target_group.trade_tariff_https_target_groups :
     tg.name => {
-      name = tg.name,
-      arn  = tg.arn
+      name       = tg.name,
+      arn        = tg.arn
+      arn_suffix = tg.arn_suffix
     }
   }
 }
