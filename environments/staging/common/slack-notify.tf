@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   metric_name         = "HTTPCode_Target_5XX_Count"
   namespace           = "AWS/ApplicationELB"
   period              = "300"
-  statistic           = "Average"
+  statistic           = "Sum"
   unit                = "Count"
   threshold           = 10
   alarm_description   = "Too many HTTP 5xx errors in ${var.environment} environment for target group ${each.value.name}"
@@ -39,7 +39,7 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
-    TargetGroup  = each.value.arn
+    TargetGroup  = each.value.arn_suffix
   }
 }
 
@@ -63,7 +63,7 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
-    TargetGroup  = each.value.arn
+    TargetGroup  = each.value.arn_suffix
   }
 }
 
