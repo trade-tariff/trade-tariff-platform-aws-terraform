@@ -47,6 +47,11 @@ variable "managed_rules" {
       priority        = 60
       override_action = "none"
       excluded_rules  = []
+    },
+    AWSManagedRulesBotControlRuleSet = {
+      priority        = 70
+      override_action = "count"
+      excluded_rules  = []
     }
   }
 }
