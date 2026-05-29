@@ -15,8 +15,24 @@ module "notify_slack" {
   cloudwatch_log_group_retention_in_days = 90
 }
 
+module "notify_slack_observability" {
+  source = "../../../modules/aws-notify-slack"
+
+  lambda_function_name = "notify_slack_observability_${var.environment}"
+  sns_topic_name       = "slack-observability-topic"
+
+  slack_webhook_url = data.aws_secretsmanager_secret_version.slack_notify_lambda_slack_webhook_url.secret_string
+  slack_channel     = "production-observability"
+  slack_username    = "AWS"
+
+  lambda_description                     = "Lambda function which sends non-critical notifications to Slack"
+  log_events                             = true
+  cloudwatch_log_group_retention_in_days = 90
+}
+
 locals {
-  alert_actions = var.enable_sns_alerts ? [module.notify_slack.slack_topic_arn] : []
+  alert_actions               = var.enable_sns_alerts ? [module.notify_slack.slack_topic_arn] : []
+  observability_alert_actions = var.enable_sns_alerts ? [module.notify_slack_observability.slack_topic_arn] : []
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
@@ -34,8 +50,8 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   alarm_description   = "Too many HTTP 5xx errors in ${var.environment} environment for target group ${each.value.name}"
   treat_missing_data  = "notBreaching"
 
-  alarm_actions = local.alert_actions
-  ok_actions    = local.alert_actions
+  alarm_actions = local.observability_alert_actions
+  ok_actions    = local.observability_alert_actions
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -58,8 +74,8 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   alarm_description   = "Long response times in ${var.environment} environment for target group ${each.value.name}"
   treat_missing_data  = "notBreaching"
 
-  alarm_actions = local.alert_actions
-  ok_actions    = local.alert_actions
+  alarm_actions = local.observability_alert_actions
+  ok_actions    = local.observability_alert_actions
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
