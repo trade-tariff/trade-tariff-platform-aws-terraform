@@ -24,6 +24,17 @@ terragrunt run --all init
 changes. These keep the Terraform documentation up to date, prevent linting
 errors, and ensure your changes conform to the repository standards.
 
+- Run Terraform module tests when changing module behaviour:
+
+```shell
+scripts/run-terraform-tests
+```
+
+Module tests live in `modules/<module>/tests/*.tftest.hcl`. Prefer fast
+plan-time tests that assert module contracts, defaults, and derived resource
+configuration. Avoid tests that create real AWS infrastructure; deployment
+confidence still comes from the Terragrunt plan and apply workflow.
+
 - Open a Pull Request with your changes. This will deploy the feature over the
 development environment to proof that `terraform apply` runs without failure.
 

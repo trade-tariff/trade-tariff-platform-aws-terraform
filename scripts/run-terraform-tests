@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+found_tests=0
+
+for module in modules/*; do
+  if [ ! -d "$module" ] || ! find "$module/tests" -maxdepth 1 -name "*.tftest.hcl" -print -quit 2> /dev/null | grep -q .; then
+    continue
+  fi
+
+  found_tests=1
+  echo "Running Terraform tests in $module"
+  terraform -chdir="$module" test -no-color
+done
+
+if [ "$found_tests" -eq 0 ]; then
+  echo "No Terraform module tests found"
+fi

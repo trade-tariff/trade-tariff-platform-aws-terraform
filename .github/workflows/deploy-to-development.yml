@@ -69,6 +69,8 @@ jobs:
         run: terraform init -backend=false
         working-directory: environments/development/common
 
+      - run: scripts/run-terraform-tests
+
       - run: pip install pre-commit
 
       - run: pre-commit run --all-files --show-diff-on-failure
