@@ -97,10 +97,14 @@ variable "uk_uncached_paths" {
   description = "List of API paths that should not be cached on the UK service."
   type        = set(string)
   default = [
+    "chemical_substances",
+    "description_intercepts",
     "exchange_rates",
     "healthcheck",
     "live_issues",
     "news",
+    "search",
+    "search_suggestions",
     "search_references"
   ]
 }
@@ -109,8 +113,12 @@ variable "xi_uncached_paths" {
   description = "List of API paths that should not be cached on the XI service."
   type        = set(string)
   default = [
+    "chemical_substances",
+    "description_intercepts",
     "green_lanes",
     "healthcheck",
+    "search",
+    "search_suggestions",
     "search_references",
   ]
 }
@@ -126,12 +134,30 @@ variable "cache_key_params" {
     "limit",
     "page",
     "per_page",
+    "type",
+    "code",
+    "description",
+    "order_number",
+    "year",
+    "month",
+    "day",
+    "name",
+    "cas",
+    "source",
+    "excluded",
+    "q",
+    "query.letter",
+    "filter.cas_rn",
+    "filter.cus",
     "filter.exclude_none",
     "filter.from_date",
     "filter.geographical_area_id",
+    "filter.goods_nomenclature_item_id",
+    "filter.goods_nomenclature_sid",
     "filter.has_article",
     "filter.meursing_additional_code_id",
     "filter.simplified_procedural_code",
+    "filter.status",
     "filter.to_date",
     "filter.type",
   ]
