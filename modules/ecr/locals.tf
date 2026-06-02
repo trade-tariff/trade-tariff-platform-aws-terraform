@@ -68,10 +68,5 @@ locals {
       production_images_to_keep  = 10
       development_images_to_keep = 30
     },
-    "terraform" = {
-      lifecycle_policy           = true
-      production_images_to_keep  = 5
-      development_images_to_keep = 5
-    },
   }
 }
