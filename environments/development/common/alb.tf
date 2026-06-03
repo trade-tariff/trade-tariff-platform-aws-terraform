@@ -65,6 +65,25 @@ module "alb" {
     }
   }
 
+  # Flagsmith serves plain HTTP on 8000 (no in-container TLS), so it uses HTTP
+  # target groups. Deployed from the trade-tariff-flagsmith app repo, which
+  # registers tasks against these target groups by name.
+  http_services = {
+    flagsmith = {
+      hosts            = ["flags.*"]
+      healthcheck_path = "/health/"
+      container_port   = 8000
+      priority         = 30
+    }
+
+    flagsmith_edge = {
+      hosts            = ["flags-edge.*"]
+      healthcheck_path = "/proxy/health"
+      container_port   = 8000
+      priority         = 31
+    }
+  }
+
   gateway_services = {
     backend_xi = {
       paths            = ["/xi/api/*"]
