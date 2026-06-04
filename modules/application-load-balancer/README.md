@@ -48,8 +48,10 @@ No modules.
 | [aws_lb.application_load_balancer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
 | [aws_lb_listener.redirect_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_listener.trade_tariff_listeners](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener_rule.http_services](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.redirect_http_rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
+| [aws_lb_target_group.http_target_groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_lb_target_group.trade_tariff_https_target_groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_s3_bucket.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_lifecycle_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
@@ -74,6 +76,7 @@ No modules.
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | If true, deletion of the load balancer will be disabled via the AWS API. | `bool` | `true` | no |
 | <a name="input_enable_http2"></a> [enable\_http2](#input\_enable\_http2) | Indicates whether HTTP/2 is enabled in application load balancers | `bool` | `true` | no |
 | <a name="input_gateway_services"></a> [gateway\_services](#input\_gateway\_services) | Map of services to make ALB target groups and listener rules for routable from API Gateway. | <pre>map(<br/>    object({<br/>      healthcheck_path = string<br/>      hosts            = optional(list(string))<br/>      paths            = optional(list(string))<br/>      priority         = number<br/>    })<br/>  )</pre> | `{}` | no |
+| <a name="input_http_services"></a> [http\_services](#input\_http\_services) | Map of services whose containers serve plain HTTP (not the in-container TLS<br/>on 8443 that `services` assumes). Used for upstream images that don't<br/>terminate TLS themselves (e.g. self-hosted Flagsmith). The ALB still<br/>listens on HTTPS:443 and terminates TLS; it forwards to an HTTP target<br/>group on `container_port`. | <pre>map(<br/>    object({<br/>      healthcheck_path = string<br/>      container_port   = optional(number, 8000)<br/>      hosts            = optional(list(string))<br/>      paths            = optional(list(string))<br/>      priority         = number<br/>    })<br/>  )</pre> | `{}` | no |
 | <a name="input_idle_timeout"></a> [idle\_timeout](#input\_idle\_timeout) | The time in seconds that the connection is allowed to be idle. | `string` | `60` | no |
 | <a name="input_listening_port"></a> [listening\_port](#input\_listening\_port) | Port on which the load balancer listens to. | `string` | `443` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | Public subnet IDs | `list(any)` | n/a | yes |
@@ -88,6 +91,7 @@ No modules.
 | <a name="output_arn_suffix"></a> [arn\_suffix](#output\_arn\_suffix) | arn\_suffix of the load balancer. |
 | <a name="output_dns_name"></a> [dns\_name](#output\_dns\_name) | DNS name of the load balancer. |
 | <a name="output_http_listener_arn"></a> [http\_listener\_arn](#output\_http\_listener\_arn) | n/a |
+| <a name="output_http_target_groups"></a> [http\_target\_groups](#output\_http\_target\_groups) | Map of HTTP target groups. |
 | <a name="output_https_listener_arn"></a> [https\_listener\_arn](#output\_https\_listener\_arn) | n/a |
 | <a name="output_lb_arn"></a> [lb\_arn](#output\_lb\_arn) | The ARN of the application load balancer. |
 | <a name="output_lb_dns_name"></a> [lb\_dns\_name](#output\_lb\_dns\_name) | The DNS name of the load balancer. |
