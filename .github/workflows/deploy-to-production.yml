@@ -24,7 +24,7 @@ jobs:
       TF_IN_AUTOMATION: 1
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6.0.2
 
       - uses: aws-actions/configure-aws-credentials@v6.1.1
         with:
@@ -74,7 +74,7 @@ jobs:
       needs: post-apply-production
       if: always()
       steps:
-        - uses: actions/checkout@v5
+        - uses: actions/checkout@v6.0.2
         - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
           with:
             webhook: ${{ secrets.SLACK_WEBHOOK }}
