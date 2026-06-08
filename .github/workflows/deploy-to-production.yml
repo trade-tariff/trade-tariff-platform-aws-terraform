@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
 
-      - uses: aws-actions/configure-aws-credentials@v6.1.1
+      - uses: aws-actions/configure-aws-credentials@v6.1.3
         with:
           role-to-assume: arn:aws:iam::382373577178:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
