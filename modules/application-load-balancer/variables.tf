@@ -73,6 +73,26 @@ variable "services" {
   )
 }
 
+variable "http_services" {
+  description = <<-EOT
+    Map of services whose containers serve plain HTTP (not the in-container TLS
+    on 8443 that `services` assumes). Used for upstream images that don't
+    terminate TLS themselves (e.g. self-hosted Flagsmith). The ALB still
+    listens on HTTPS:443 and terminates TLS; it forwards to an HTTP target
+    group on `container_port`.
+  EOT
+  type = map(
+    object({
+      healthcheck_path = string
+      container_port   = optional(number, 8000)
+      hosts            = optional(list(string))
+      paths            = optional(list(string))
+      priority         = number
+    })
+  )
+  default = {}
+}
+
 variable "gateway_services" {
   description = "Map of services to make ALB target groups and listener rules for routable from API Gateway."
   type = map(

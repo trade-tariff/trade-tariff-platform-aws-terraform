@@ -147,6 +147,68 @@ resource "aws_lb_listener_rule" "this" {
   }
 }
 
+# HTTP target groups — for services whose containers serve plain HTTP.
+# The ALB terminates TLS on the HTTPS listener and forwards here over HTTP.
+resource "aws_lb_target_group" "http_target_groups" {
+  for_each = var.http_services
+
+  name                 = "${replace(each.key, "_", "-")}-http"
+  port                 = each.value.container_port
+  protocol             = "HTTP"
+  target_type          = "ip"
+  vpc_id               = var.vpc_id
+  deregistration_delay = 20
+
+  health_check {
+    enabled             = true
+    interval            = 30
+    path                = each.value.healthcheck_path
+    port                = "traffic-port"
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    timeout             = 6
+    protocol            = "HTTP"
+    matcher             = "200"
+  }
+}
+
+resource "aws_lb_listener_rule" "http_services" {
+  for_each     = var.http_services
+  listener_arn = aws_lb_listener.trade_tariff_listeners.arn
+
+  priority = each.value.priority
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.http_target_groups[each.key].arn
+  }
+
+  dynamic "condition" {
+    for_each = lookup(var.http_services[each.key], "hosts", null) != null ? [true] : []
+    content {
+      host_header {
+        values = each.value.hosts
+      }
+    }
+  }
+
+  dynamic "condition" {
+    for_each = lookup(var.http_services[each.key], "paths", null) != null ? [true] : []
+    content {
+      path_pattern {
+        values = each.value.paths
+      }
+    }
+  }
+
+  condition {
+    http_header {
+      http_header_name = var.custom_header.name
+      values           = [var.custom_header.value]
+    }
+  }
+}
+
 resource "aws_s3_bucket" "access_logs" {
   count  = var.enable_access_logs && var.access_logs_bucket == null ? 1 : 0
   bucket = "${var.alb_name}-access-logs-${local.account_id}"

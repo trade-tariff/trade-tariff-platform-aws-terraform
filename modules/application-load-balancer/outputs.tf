@@ -25,6 +25,18 @@ output "target_groups" {
   }
 }
 
+output "http_target_groups" {
+  description = "Map of HTTP target groups."
+  value = {
+    for tg in aws_lb_target_group.http_target_groups :
+    tg.name => {
+      name       = tg.name,
+      arn        = tg.arn
+      arn_suffix = tg.arn_suffix
+    }
+  }
+}
+
 output "lb_arn" {
   description = "The ARN of the application load balancer."
   value       = aws_lb.application_load_balancer.arn

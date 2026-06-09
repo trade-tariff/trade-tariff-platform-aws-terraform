@@ -56,6 +56,22 @@ module "alb" {
       priority         = 99 # Most generic rule for frontend should match last
     }
   }
+  http_services = {
+    flagsmith = {
+      hosts            = ["flags.*"]
+      healthcheck_path = "/health/"
+      container_port   = 8000
+      priority         = 30
+    }
+
+    flagsmith_edge = {
+      hosts            = ["flags-edge.*"]
+      healthcheck_path = "/proxy/health"
+      container_port   = 8000
+      priority         = 31
+    }
+  }
+
   gateway_services = {
     backend_xi = {
       paths            = ["/xi/api/*"]
