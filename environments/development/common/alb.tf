@@ -73,14 +73,14 @@ module "alb" {
       hosts            = ["flags.*"]
       healthcheck_path = "/health/"
       container_port   = 8000
-      priority         = 30
+      priority         = 21
     }
 
     flagsmith_edge = {
       hosts            = ["flags-edge.*"]
       healthcheck_path = "/proxy/health"
       container_port   = 8000
-      priority         = 31
+      priority         = 22
     }
   }
 
