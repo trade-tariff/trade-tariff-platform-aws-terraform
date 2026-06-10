@@ -62,7 +62,7 @@ module "alb" {
   http_services = {
     flagsmith = {
       hosts            = ["flags.*"]
-      healthcheck_path = "/health/"
+      healthcheck_path = "/health"
       container_port   = 8000
       priority         = 21
     }
