@@ -21,6 +21,10 @@ resource "aws_elasticache_parameter_group" "sidekiq" {
     name  = "maxmemory-policy"
     value = "noeviction"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Authenticated, encrypted clusters
