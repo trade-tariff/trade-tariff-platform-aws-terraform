@@ -14,12 +14,16 @@ resource "aws_elasticache_subnet_group" "this" {
 }
 
 resource "aws_elasticache_parameter_group" "sidekiq" {
-  name   = "valkey8-noeviction"
-  family = "valkey8"
+  name   = "valkey9-noeviction"
+  family = "valkey9"
 
   parameter {
     name  = "maxmemory-policy"
     value = "noeviction"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -29,11 +33,11 @@ module "valkey" {
   for_each = local.valkey
 
   engine         = "valkey"
-  engine_version = "8.2"
+  engine_version = "9.0"
 
   replication_group_id        = "valkey-${each.key}-${var.environment}"
   description                 = "valkey-${each.key}-${var.environment}"
-  parameter_group_name        = strcontains(each.key, "sidekiq") ? aws_elasticache_parameter_group.sidekiq.name : "default.valkey8"
+  parameter_group_name        = strcontains(each.key, "sidekiq") ? aws_elasticache_parameter_group.sidekiq.name : "default.valkey9"
   num_node_groups             = 1
   replicas_per_node_group     = 2
   node_type                   = each.value
