@@ -63,7 +63,7 @@ module "opensearch" {
 
   cluster_name    = "tariff-search-${var.environment}"
   cluster_domain  = var.domain_name
-  cluster_version = "2.3"
+  cluster_version = "2.19" # Upgrade to 3.5 with the next PR
 
   master_instance_enabled = false
   warm_instance_enabled   = false
