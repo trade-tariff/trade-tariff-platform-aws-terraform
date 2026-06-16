@@ -58,6 +58,12 @@ module "alb" {
       priority         = 25
     }
 
+    mcp = {
+      hosts            = ["mcp.*"]
+      healthcheck_path = "/up"
+      priority         = 26
+    }
+
     frontend = {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
