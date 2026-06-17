@@ -1,0 +1,12 @@
+name: "Risk Label"
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize]
+
+jobs:
+  risk-label:
+    uses: trade-tariff/trade-tariff-tools/.github/workflows/risk-label-reusable.yml@main
+    permissions:
+      contents: read
+      pull-requests: write
