@@ -52,7 +52,7 @@ module "alb" {
 
     mcp = {
       hosts            = ["mcp.*"]
-      healthcheck_path = "/up"
+      healthcheck_path = "/healthcheckz"
       priority         = 26
     }
 
