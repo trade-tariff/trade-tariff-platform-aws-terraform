@@ -162,3 +162,14 @@ variable "uri_path_match_rules" {
   }))
   default = []
 }
+
+variable "header_allow_rules" {
+  description = "Rules that allow requests presenting an exact header name/value pair. Evaluated before rate limiting — use for trusted internal clients."
+  type = list(object({
+    name         = string
+    priority     = number
+    header_name  = string
+    header_value = string
+  }))
+  default = []
+}
