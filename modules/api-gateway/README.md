@@ -2,14 +2,14 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.0.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.0.0 |
 
 ## Modules
@@ -19,7 +19,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_api_gateway_authorizer.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
 | [aws_api_gateway_base_path_mapping.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
 | [aws_api_gateway_deployment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
@@ -73,7 +73,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_alb_secret_header"></a> [alb\_secret\_header](#input\_alb\_secret\_header) | Secret header name and value to be sent to the ALB on every request. | `list(string)` | n/a | yes |
 | <a name="input_authorizer_enabled"></a> [authorizer\_enabled](#input\_authorizer\_enabled) | Enable a custom Lambda authorizer for protected API methods. | `bool` | `false` | no |
 | <a name="input_authorizer_identity_source"></a> [authorizer\_identity\_source](#input\_authorizer\_identity\_source) | Identity source expression for the Lambda authorizer. | `string` | `"method.request.header.Authorization"` | no |
@@ -82,7 +82,7 @@ No modules.
 | <a name="input_authorizer_result_ttl_in_seconds"></a> [authorizer\_result\_ttl\_in\_seconds](#input\_authorizer\_result\_ttl\_in\_seconds) | Authorizer cache TTL in seconds. Set to 0 to disable caching. | `number` | `0` | no |
 | <a name="input_cache_cluster_enabled"></a> [cache\_cluster\_enabled](#input\_cache\_cluster\_enabled) | Enable or disable the API Gateway cache cluster. | `bool` | `false` | no |
 | <a name="input_cache_cluster_size"></a> [cache\_cluster\_size](#input\_cache\_cluster\_size) | The size of the cache cluster for the API Gateway. | `string` | `"0.5"` | no |
-| <a name="input_cache_key_params"></a> [cache\_key\_params](#input\_cache\_key\_params) | List of query string parameters to include in the cache key. | `list(string)` | <pre>[<br/>  "as_of",<br/>  "country_code",<br/>  "heading_code",<br/>  "include",<br/>  "limit",<br/>  "page",<br/>  "per_page",<br/>  "type",<br/>  "code",<br/>  "description",<br/>  "order_number",<br/>  "year",<br/>  "month",<br/>  "day",<br/>  "name",<br/>  "cas",<br/>  "source",<br/>  "excluded",<br/>  "critical",<br/>  "geographical_area_id",<br/>  "goods_nomenclature_item_id",<br/>  "status",<br/>  "q",<br/>  "query.letter",<br/>  "filter.cas_rn",<br/>  "filter.cus",<br/>  "filter.exclude_none",<br/>  "filter.from_date",<br/>  "filter.geographical_area_id",<br/>  "filter.goods_nomenclature_item_id",<br/>  "filter.goods_nomenclature_sid",<br/>  "filter.has_article",<br/>  "filter.meursing_additional_code_id",<br/>  "filter.simplified_procedural_code",<br/>  "filter.status",<br/>  "filter.to_date",<br/>  "filter.type"<br/>]</pre> | no |
+| <a name="input_cache_key_params"></a> [cache\_key\_params](#input\_cache\_key\_params) | List of query string parameters to include in the cache key. | `list(string)` | <pre>[<br/>  "as_of",<br/>  "country_code",<br/>  "heading_code",<br/>  "include",<br/>  "fields",<br/>  "fields.additional_code",<br/>  "fields.additional_code_type",<br/>  "fields.category_assessment",<br/>  "fields.certificate",<br/>  "fields.certificate_type",<br/>  "fields.change",<br/>  "fields.chapter",<br/>  "fields.chemical",<br/>  "fields.chemical_substance",<br/>  "fields.commodity",<br/>  "fields.definition",<br/>  "fields.description_intercept",<br/>  "fields.duty_expression",<br/>  "fields.exact_search",<br/>  "fields.exchange_rate",<br/>  "fields.exchange_rate_collection",<br/>  "fields.exchange_rate_file",<br/>  "fields.exchange_rate_period",<br/>  "fields.exchange_rate_period_list",<br/>  "fields.exchange_rate_year",<br/>  "fields.footnote",<br/>  "fields.footnote_type",<br/>  "fields.fuzzy_search",<br/>  "fields.geographical_area",<br/>  "fields.goods_nomenclature",<br/>  "fields.green_lanes_faq_feedback",<br/>  "fields.guide",<br/>  "fields.heading",<br/>  "fields.import_trade_summary",<br/>  "fields.legal_act",<br/>  "fields.live_issue",<br/>  "fields.measure",<br/>  "fields.measure_action",<br/>  "fields.measure_component",<br/>  "fields.measure_condition",<br/>  "fields.measure_condition_code",<br/>  "fields.measure_condition_component",<br/>  "fields.measure_condition_permutation",<br/>  "fields.measure_condition_permutation_group",<br/>  "fields.measure_type",<br/>  "fields.measurement_unit",<br/>  "fields.measurement_unit_qualifier",<br/>  "fields.monetary_exchange_rate",<br/>  "fields.national_measurement_unit",<br/>  "fields.news_collection",<br/>  "fields.news_item",<br/>  "fields.news_year",<br/>  "fields.null_search",<br/>  "fields.order_number",<br/>  "fields.preference_code",<br/>  "fields.quota_balance_event",<br/>  "fields.quota_closed_and_transferred_event",<br/>  "fields.quota_definition",<br/>  "fields.quota_order_number",<br/>  "fields.quota_order_number_origin",<br/>  "fields.quota_order_number_origin_exclusion",<br/>  "fields.rules_of_origin_article",<br/>  "fields.rules_of_origin_link",<br/>  "fields.rules_of_origin_origin_reference_document",<br/>  "fields.rules_of_origin_proof",<br/>  "fields.rules_of_origin_rule",<br/>  "fields.rules_of_origin_rule_set",<br/>  "fields.rules_of_origin_scheme",<br/>  "fields.rules_of_origin_v2_rule",<br/>  "fields.search_reference",<br/>  "fields.search_suggestion",<br/>  "fields.section",<br/>  "fields.simplified_procedural_code_measure",<br/>  "fields.subheading",<br/>  "fields.suspension_legal_act",<br/>  "fields.tariff_update",<br/>  "fields.validity_period",<br/>  "limit",<br/>  "page",<br/>  "per_page",<br/>  "type",<br/>  "code",<br/>  "description",<br/>  "order_number",<br/>  "year",<br/>  "month",<br/>  "day",<br/>  "name",<br/>  "cas",<br/>  "source",<br/>  "excluded",<br/>  "critical",<br/>  "geographical_area_id",<br/>  "goods_nomenclature_item_id",<br/>  "status",<br/>  "q",<br/>  "query.letter",<br/>  "filter.cas_rn",<br/>  "filter.cus",<br/>  "filter.exclude_none",<br/>  "filter.from_date",<br/>  "filter.geographical_area_id",<br/>  "filter.goods_nomenclature_item_id",<br/>  "filter.goods_nomenclature_sid",<br/>  "filter.has_article",<br/>  "filter.meursing_additional_code_id",<br/>  "filter.simplified_procedural_code",<br/>  "filter.status",<br/>  "filter.to_date",<br/>  "filter.type"<br/>]</pre> | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The domain name for the application. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The deployment environment (e.g., dev, staging, prod). | `string` | n/a | yes |
 | <a name="input_lb_arn"></a> [lb\_arn](#input\_lb\_arn) | ALB ARN for the V2 VPC Link integrations. | `string` | n/a | yes |
@@ -98,7 +98,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_api_gateway_stage_arn"></a> [api\_gateway\_stage\_arn](#output\_api\_gateway\_stage\_arn) | ARN of the API Gateway stage (for WAF association). |
 | <a name="output_execution_arn"></a> [execution\_arn](#output\_execution\_arn) | Execution ARN of the API Gateway REST API. |
 | <a name="output_rest_api_id"></a> [rest\_api\_id](#output\_rest\_api\_id) | ID of the API Gateway REST API. |
