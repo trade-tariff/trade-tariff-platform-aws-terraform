@@ -105,7 +105,8 @@ module "postgres_developer_hub" {
   allocated_storage  = 10
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
 
-  secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
+  secret_kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  secret_recovery_window = local.development_secret_recovery_window
 
   depends_on = [
     module.alb-security-group
@@ -151,7 +152,7 @@ module "rw_aurora_connection_string" {
   source          = "../../../modules/secret/"
   name            = "aurora-postgres-rw-connection-string"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
+  recovery_window = local.development_secret_recovery_window
   secret_string   = module.postgres_aurora.rw_connection_string
 }
 
@@ -159,7 +160,7 @@ module "ro_aurora_connection_string" {
   source          = "../../../modules/secret/"
   name            = "aurora-postgres-ro-connection-string"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
+  recovery_window = local.development_secret_recovery_window
   secret_string   = module.postgres_aurora.ro_connection_string
 }
 
@@ -196,7 +197,7 @@ module "admin_connection_string" {
   source          = "../../../modules/secret/"
   name            = "admin-connection-string"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
+  recovery_window = local.development_secret_recovery_window
   secret_string   = module.postgres_admin_aurora.rw_connection_string
 }
 
