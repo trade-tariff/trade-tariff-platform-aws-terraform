@@ -77,3 +77,15 @@ resource "aws_route53_record" "origin_wildcard" {
     evaluate_target_health = true
   }
 }
+
+resource "aws_route53_record" "mcp" {
+  zone_id = data.aws_route53_zone.this.zone_id
+  name    = "mcp.${var.domain_name}"
+  type    = "A"
+
+  alias {
+    name                   = module.alb.dns_name
+    zone_id                = module.alb.zone_id
+    evaluate_target_health = true
+  }
+}
