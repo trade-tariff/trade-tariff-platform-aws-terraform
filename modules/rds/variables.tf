@@ -97,6 +97,12 @@ variable "secret_kms_key_arn" {
   type        = string
 }
 
+variable "secret_recovery_window" {
+  description = "Recovery window in days for the connection string secret."
+  type        = number
+  default     = 7
+}
+
 variable "multi_az" {
   description = "If the RDS instance is multi-AZ."
   type        = bool

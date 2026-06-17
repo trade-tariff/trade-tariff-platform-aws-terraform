@@ -68,9 +68,10 @@ resource "random_password" "valkey_auth" {
 }
 
 resource "aws_secretsmanager_secret" "valkey_connection_string" {
-  for_each   = local.valkey
-  name       = "valkey-${each.key}-connection-string"
-  kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
+  for_each                = local.valkey
+  name                    = "valkey-${each.key}-connection-string"
+  kms_key_id              = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window_in_days = local.development_secret_recovery_window
 }
 
 resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {

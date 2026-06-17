@@ -29,7 +29,8 @@ module "postgres_flagsmith" {
   allocated_storage  = 20
   security_group_ids = [aws_security_group.flagsmith_rds.id]
 
-  secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
+  secret_kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  secret_recovery_window = local.development_secret_recovery_window
 
   performance_insights_enabled = true
 
@@ -97,14 +98,14 @@ module "flagsmith_configuration" {
   source          = "../../../modules/secret/"
   name            = "flagsmith-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
+  recovery_window = local.development_secret_recovery_window
 }
 
 module "flagsmith_edge_configuration" {
   source          = "../../../modules/secret/"
   name            = "flagsmith-edge-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
-  recovery_window = 7
+  recovery_window = local.development_secret_recovery_window
 }
 
 # ── CloudFront ────────────────────────────────────────────────────────────────
