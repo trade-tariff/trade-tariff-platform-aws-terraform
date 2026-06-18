@@ -11,6 +11,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+    };
     nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
     nixpkgs-ruby = {
       url = "github:bobvanderlinden/nixpkgs-ruby";
@@ -24,6 +27,7 @@
       self,
       nixpkgs,
       flake-utils,
+      pre-commit-hooks,
       nixpkgs-terraform,
       nixpkgs-ruby,
     }:
@@ -41,7 +45,7 @@
         terraform = nixpkgs-terraform.packages.${system}."terraform-1.13.4";
 
         lint = pkgs.writeShellScriptBin "lint" ''
-          ${pkgs.pre-commit}/bin/pre-commit run -a
+          pre-commit run -a
         '';
 
         clean-terraform = pkgs.writeShellScriptBin "clean-terraform" ''
@@ -64,7 +68,58 @@
           DISABLE_INIT=true terragrunt init --all --provider-cache
         '';
 
-        update-providers = pkgs.writeShellScriptBin "update-providers" ''clean && init && lint'';
+        update-providers = pkgs.writeShellScriptBin "update-providers" "clean && init && lint";
+
+        preCommitCheck = pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          configPath = ".pre-commit-config-nix.yaml";
+          default_stages = [ "pre-commit" ];
+          hooks = {
+            actionlint = {
+              enable = true;
+              stages = [ "pre-commit" ];
+            };
+            check-merge-conflicts = {
+              enable = true;
+              stages = [ "pre-commit" ];
+            };
+            check-yaml = {
+              enable = true;
+              stages = [ "pre-commit" ];
+            };
+            end-of-file-fixer = {
+              enable = true;
+              stages = [ "pre-commit" ];
+            };
+            terraform-format = {
+              enable = true;
+              package = terraform;
+              stages = [ "pre-commit" ];
+            };
+            tflint = {
+              enable = true;
+              stages = [ "pre-commit" ];
+            };
+            terragrunt-hcl-fmt = {
+              enable = true;
+              name = "terragrunt-hcl-fmt";
+              entry = "${pkgs.terragrunt}/bin/terragrunt hcl fmt";
+              files = "\\.hcl$";
+              stages = [ "pre-commit" ];
+            };
+            trim-trailing-whitespace = {
+              enable = true;
+              stages = [ "pre-commit" ];
+            };
+            trufflehog = {
+              enable = true;
+              stages = [
+                "pre-commit"
+                "pre-push"
+              ];
+            };
+          };
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -72,20 +127,44 @@
             export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
             export TG_PROVIDER_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
             export TG_PROVIDER_CACHE=1
+            ${preCommitCheck.shellHook}
+            export PATH=${pkgs.writeShellScriptBin "pre-commit" ''
+              set -euo pipefail
+
+              has_config=false
+              for arg in "$@"; do
+                case "$arg" in
+                  -c|--config|--config=*)
+                    has_config=true
+                    ;;
+                esac
+              done
+
+              if [ "$has_config" = true ]; then
+                exec ${preCommitCheck.config.package}/bin/pre-commit "$@"
+              fi
+
+              if [ "''${1:-}" = "run" ]; then
+                shift
+                exec ${preCommitCheck.config.package}/bin/pre-commit run --config .pre-commit-config-nix.yaml "$@"
+              fi
+
+              exec ${preCommitCheck.config.package}/bin/pre-commit "$@"
+            ''}/bin:$PATH
           '';
 
-          buildInputs = with pkgs; [
-            terraform
-            terragrunt
-            tflint # For terraform_tflint
-            pre-commit
-            lint # Custom lint script
-            init # Custom init script to get all the modules for validation
-            clean-terraform # Custom script to clean up .terraform directories
-            clean # Custom script to clean up .terraform.lock.hcl files and .terraform.lock.hcl
-            update-providers # Custom init script to get all the modules for validation
-            ruby # Ruby interpreter for myott lambdas
-          ];
+          buildInputs =
+            preCommitCheck.enabledPackages
+            ++ (with pkgs; [
+              terraform
+              terragrunt
+              lint # Custom lint script
+              init # Custom init script to get all the modules for validation
+              clean-terraform # Custom script to clean up .terraform directories
+              clean # Custom script to clean up .terraform.lock.hcl files and .terraform.lock.hcl
+              update-providers # Custom init script to get all the modules for validation
+              ruby # Ruby interpreter for myott lambdas
+            ]);
         };
       }
     );

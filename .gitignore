@@ -53,6 +53,7 @@ skip-deprovision
 
 .direnv
 .envrc
+/.pre-commit-config-nix.yaml
 
 *.terraformrc*
 **/builds
