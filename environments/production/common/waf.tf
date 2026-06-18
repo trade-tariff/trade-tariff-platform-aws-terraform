@@ -23,6 +23,15 @@ module "waf" {
     }
   }
 
+  header_allow_rules = var.waf_mcp_secret_token != "" ? [
+    {
+      name         = "allow-mcp-server"
+      priority     = 0
+      header_name  = "x-mcp-token"
+      header_value = var.waf_mcp_secret_token
+    }
+  ] : []
+
   uri_path_match_rules = [
     {
       name                  = "allow-mycommodities-path"

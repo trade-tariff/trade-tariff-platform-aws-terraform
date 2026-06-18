@@ -27,6 +27,13 @@ module "frontend_configuration" {
   recovery_window = 7
 }
 
+module "mcp_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "mcp-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+}
+
 module "backend_uk_worker_configuration" {
   source          = "../../../modules/secret/"
   name            = "backend-uk-worker-configuration"

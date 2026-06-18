@@ -24,7 +24,7 @@ resource "random_string" "private_subnet_suffix" {
 resource "aws_secretsmanager_secret" "this" {
   name                    = "${lower(var.name)}-connection-string"
   kms_key_id              = var.secret_kms_key_arn
-  recovery_window_in_days = 7
+  recovery_window_in_days = var.secret_recovery_window
 }
 
 resource "aws_secretsmanager_secret_version" "this" {

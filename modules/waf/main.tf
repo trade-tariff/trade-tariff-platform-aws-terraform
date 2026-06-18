@@ -365,6 +365,43 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
+  dynamic "rule" {
+    for_each = var.header_allow_rules
+
+    content {
+      name     = rule.value.name
+      priority = rule.value.priority
+
+      action {
+        allow {}
+      }
+
+      statement {
+        byte_match_statement {
+          positional_constraint = "EXACTLY"
+          search_string         = rule.value.header_value
+
+          field_to_match {
+            single_header {
+              name = lower(rule.value.header_name)
+            }
+          }
+
+          text_transformation {
+            priority = 0
+            type     = "NONE"
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = rule.value.name
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
   tags = var.tags
 }
 

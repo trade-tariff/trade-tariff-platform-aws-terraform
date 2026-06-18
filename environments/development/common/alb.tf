@@ -58,6 +58,12 @@ module "alb" {
       priority         = 25
     }
 
+    mcp = {
+      hosts            = ["mcp.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 26
+    }
+
     frontend = {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
@@ -97,4 +103,11 @@ module "alb" {
       priority         = 2
     }
   }
+}
+
+# The ALB's primary cert covers *.origin.domain — attach the wildcard public cert
+# so mcp.domain TLS terminates correctly without going through CloudFront.
+resource "aws_lb_listener_certificate" "mcp" {
+  listener_arn    = module.alb.https_listener_arn
+  certificate_arn = module.acm_london.validated_certificate_arn
 }
