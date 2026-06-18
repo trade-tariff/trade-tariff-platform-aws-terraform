@@ -52,6 +52,12 @@ module "alb" {
       priority         = 25
     }
 
+    mcp = {
+      hosts            = ["mcp.*"]
+      healthcheck_path = "/healthcheckz"
+      priority         = 26
+    }
+
     frontend = {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
@@ -88,4 +94,9 @@ module "alb" {
       priority         = 2
     }
   }
+}
+
+resource "aws_lb_listener_certificate" "mcp" {
+  listener_arn    = module.alb.https_listener_arn
+  certificate_arn = module.acm_london.validated_certificate_arn
 }

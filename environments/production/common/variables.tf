@@ -31,6 +31,13 @@ variable "waf_rpm_limit" {
   default     = 500
 }
 
+variable "waf_mcp_secret_token" {
+  description = "Secret token sent by the MCP server in X-Mcp-Token. Requests presenting this header are allowed through WAF rate limiting."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "enable_sns_alerts" {
   description = "Enable SNS alerts for all CloudWatch alarms"
   type        = bool
