@@ -6,6 +6,7 @@ module "cdn" {
     "admin.${var.domain_name}",
     "hub.${var.domain_name}",
     "id.${var.domain_name}",
+    "mcp.${var.domain_name}",
     "www.${var.domain_name}",
   ]
 
