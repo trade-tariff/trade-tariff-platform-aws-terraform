@@ -16,8 +16,6 @@ resource "aws_iam_policy" "ci_terraform_policy" {
 
           # S3 (data loss + policy hijack)
           "s3:DeleteBucket",
-          "s3:DeleteObject",
-          "s3:DeleteObjectVersion",
           "s3:DeleteBucketPolicy",
 
           # IAM (privilege escalation)
@@ -84,6 +82,17 @@ resource "aws_iam_policy" "ci_terraform_policy" {
             "route53:ChangeResourceRecordSetsActions" = ["DELETE"]
           }
         }
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:DeleteObject",
+          "s3:DeleteObjectVersion"
+        ],
+        Resource = [
+          "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}/*/*.tflock",
+          "arn:aws:s3:::terraform-state-${var.environment}-${local.account_id}/*.tflock"
+        ]
       },
       {
         Sid    = "AllowRoute53RecordCreateAndUpdate"
