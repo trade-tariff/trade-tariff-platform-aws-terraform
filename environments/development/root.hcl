@@ -7,10 +7,11 @@ remote_state {
   }
 
   config = {
-    bucket  = "terraform-state-development-844815912454"
-    key     = "${path_relative_to_include()}/terraform.tfstate"
-    region  = "eu-west-2"
-    encrypt = true
+    bucket       = "terraform-state-development-844815912454"
+    key          = "${path_relative_to_include()}/terraform.tfstate"
+    region       = "eu-west-2"
+    encrypt      = true
+    use_lockfile = true
   }
 
   disable_init = tobool(get_env("DISABLE_INIT", false))
