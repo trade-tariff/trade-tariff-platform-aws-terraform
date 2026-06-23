@@ -279,7 +279,23 @@ module "cdn" {
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     },
-
+    # Preference codes endpoints
+    {
+      name                        = "preference_codes"
+      path_pattern                = "/measure_types/*/preference_codes/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+    },
+    {
+      name                        = "xi_preference_codes"
+      path_pattern                = "/xi/measure_types/*/preference_codes/*"
+      target_origin_id            = "alb"
+      cache_policy_id             = aws_cloudfront_cache_policy.long_cache.id
+      origin_request_policy_id    = aws_cloudfront_origin_request_policy.forward_all_qsa.id
+      response_headers_policy_id  = aws_cloudfront_response_headers_policy.this.id
+    },
     # DEFAULT BEHAVIOR (no path_pattern)
     {
       name                       = "default"
