@@ -23,14 +23,24 @@ module "waf" {
     }
   }
 
-  header_allow_rules = var.waf_mcp_secret_token != "" ? [
-    {
-      name         = "allow-mcp-server"
-      priority     = 0
-      header_name  = "x-mcp-token"
-      header_value = var.waf_mcp_secret_token
-    }
-  ] : []
+  header_allow_rules = concat(
+    var.waf_mcp_secret_token != "" ? [
+      {
+        name         = "allow-mcp-server"
+        priority     = 0
+        header_name  = "x-mcp-token"
+        header_value = var.waf_mcp_secret_token
+      }
+    ] : [],
+    var.WAF_E2E_SECRET_TOKEN != "" ? [
+      {
+        name         = "allow-e2e-tests"
+        priority     = 7
+        header_name  = "x-waf-bypass"
+        header_value = var.WAF_E2E_SECRET_TOKEN
+      }
+    ] : []
+  )
 
   uri_path_match_rules = [
     {
