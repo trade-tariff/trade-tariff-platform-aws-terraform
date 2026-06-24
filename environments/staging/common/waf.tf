@@ -34,6 +34,13 @@ module "waf" {
 
   uri_path_match_rules = [
     {
+      name                  = "allow-healthcheck"
+      priority              = 8
+      action                = "allow"
+      search_string         = "/healthcheck"
+      positional_constraint = "EXACTLY"
+    },
+    {
       name                  = "allow-mycommodities-path"
       priority              = 9
       action                = "allow"
