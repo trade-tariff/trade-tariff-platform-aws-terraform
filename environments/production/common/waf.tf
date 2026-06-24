@@ -32,6 +32,49 @@ module "waf" {
     }
   ] : []
 
+  ip_rate_url_based_rules = [
+    {
+      name                  = "rate-limit-commodity-pages"
+      priority              = 2
+      limit                 = var.waf_page_rpm_limit
+      action                = "block"
+      search_string         = "/commodities/"
+      positional_constraint = "STARTS_WITH"
+    },
+    {
+      name                  = "rate-limit-heading-pages"
+      priority              = 3
+      limit                 = var.waf_page_rpm_limit
+      action                = "block"
+      search_string         = "/headings/"
+      positional_constraint = "STARTS_WITH"
+    },
+    {
+      name                  = "rate-limit-chapter-pages"
+      priority              = 4
+      limit                 = var.waf_page_rpm_limit
+      action                = "block"
+      search_string         = "/chapters/"
+      positional_constraint = "STARTS_WITH"
+    },
+    {
+      name                  = "rate-limit-subheading-pages"
+      priority              = 5
+      limit                 = var.waf_page_rpm_limit
+      action                = "block"
+      search_string         = "/subheadings/"
+      positional_constraint = "STARTS_WITH"
+    },
+    {
+      name                  = "rate-limit-search"
+      priority              = 6
+      limit                 = var.waf_search_rpm_limit
+      action                = "block"
+      search_string         = "/search"
+      positional_constraint = "STARTS_WITH"
+    },
+  ]
+
   uri_path_match_rules = [
     {
       name                  = "allow-mycommodities-path"
