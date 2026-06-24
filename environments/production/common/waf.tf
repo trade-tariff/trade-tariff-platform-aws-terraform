@@ -37,7 +37,7 @@ module "waf" {
     override_action         = "none"
     inspection_level        = "TARGETED"
     enable_machine_learning = true
-    excluded_uri_prefixes   = ["/uk/api/", "/xi/api/", "/api/"]
+    excluded_uri_prefixes   = ["/uk/api/", "/xi/api/", "/api/", "/healthcheck"]
   }
 
   ip_rate_url_based_rules = [
@@ -84,6 +84,13 @@ module "waf" {
   ]
 
   uri_path_match_rules = [
+    {
+      name                  = "allow-healthcheck"
+      priority              = 8
+      action                = "allow"
+      search_string         = "/healthcheck"
+      positional_constraint = "EXACTLY"
+    },
     {
       name                  = "allow-mycommodities-path"
       priority              = 9
