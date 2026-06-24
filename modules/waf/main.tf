@@ -402,6 +402,73 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
+  dynamic "rule" {
+    for_each = var.bot_control_rule != null ? [var.bot_control_rule] : []
+    content {
+      name     = "AWSManagedRulesBotControlRuleSet"
+      priority = rule.value.priority
+
+      override_action {
+        dynamic "none" {
+          for_each = rule.value.override_action == "none" ? [1] : []
+          content {}
+        }
+        dynamic "count" {
+          for_each = rule.value.override_action == "count" ? [1] : []
+          content {}
+        }
+      }
+
+      statement {
+        managed_rule_group_statement {
+          name        = "AWSManagedRulesBotControlRuleSet"
+          vendor_name = "AWS"
+
+          managed_rule_group_configs {
+            aws_managed_rules_bot_control_rule_set {
+              inspection_level        = rule.value.inspection_level
+              enable_machine_learning = rule.value.enable_machine_learning
+            }
+          }
+
+          dynamic "scope_down_statement" {
+            for_each = length(rule.value.excluded_uri_prefixes) > 0 ? [rule.value.excluded_uri_prefixes] : []
+            content {
+              not_statement {
+                statement {
+                  or_statement {
+                    dynamic "statement" {
+                      for_each = scope_down_statement.value
+                      content {
+                        byte_match_statement {
+                          positional_constraint = "STARTS_WITH"
+                          search_string         = statement.value
+                          field_to_match {
+                            uri_path {}
+                          }
+                          text_transformation {
+                            priority = 0
+                            type     = "NONE"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "AWSManagedRulesBotControlRuleSet"
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
   tags = var.tags
 }
 

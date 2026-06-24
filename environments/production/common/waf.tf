@@ -32,6 +32,14 @@ module "waf" {
     }
   ] : []
 
+  bot_control_rule = {
+    priority                = 70
+    override_action         = "none"
+    inspection_level        = "TARGETED"
+    enable_machine_learning = true
+    excluded_uri_prefixes   = ["/uk/api/", "/xi/api/", "/api/"]
+  }
+
   ip_rate_url_based_rules = [
     {
       name                  = "rate-limit-commodity-pages"
