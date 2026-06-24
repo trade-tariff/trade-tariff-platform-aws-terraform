@@ -68,6 +68,8 @@ jobs:
     uses: trade-tariff/trade-tariff-tools/.github/workflows/e2e-tests.yml@main
     with:
       test-environment: production
+    secrets:
+      waf_bypass_token: ${{ secrets.WAF_BYPASS_TOKEN }}
 
   notifications:
       runs-on: ubuntu-latest
