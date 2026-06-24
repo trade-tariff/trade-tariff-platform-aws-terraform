@@ -29,6 +29,13 @@ variable "waf_mcp_secret_token" {
   default     = ""
 }
 
+variable "WAF_E2E_SECRET_TOKEN" {
+  description = "Secret token sent by the e2e test suite in X-WAF-Bypass. Requests presenting this header bypass bot control and are allowed unconditionally."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "enable_sns_alerts" {
   description = "Enable SNS alerts for all CloudWatch alarms"
   type        = bool
