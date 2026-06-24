@@ -48,11 +48,6 @@ variable "managed_rules" {
       override_action = "none"
       excluded_rules  = []
     },
-    AWSManagedRulesBotControlRuleSet = {
-      priority        = 70
-      override_action = "count"
-      excluded_rules  = []
-    }
   }
 }
 
@@ -149,6 +144,23 @@ variable "default_action" {
   type        = string
   description = "The action to perform if none of the rules contained in the WebACL match."
   default     = "allow"
+}
+
+variable "bot_control_rule" {
+  description = "Configuration for the AWS Bot Control managed rule group. Supports targeted inspection with ML and a scope-down statement to exclude URI path prefixes from evaluation. excluded_uri_prefixes must have 0 or at least 2 entries (or_statement requires a minimum of 2 statements)."
+  type = object({
+    priority                = number
+    override_action         = string
+    inspection_level        = string
+    enable_machine_learning = optional(bool, true)
+    excluded_uri_prefixes   = list(string)
+  })
+  default = null
+
+  validation {
+    condition     = var.bot_control_rule == null || length(var.bot_control_rule.excluded_uri_prefixes) != 1
+    error_message = "excluded_uri_prefixes must contain 0 or at least 2 entries — or_statement requires a minimum of 2 statements."
+  }
 }
 
 variable "uri_path_match_rules" {
