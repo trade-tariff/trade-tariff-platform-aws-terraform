@@ -38,6 +38,13 @@ variable "waf_mcp_secret_token" {
   default     = ""
 }
 
+variable "waf_e2e_secret_token" {
+  description = "Secret token sent by the e2e test suite in X-E2E-Bypass. Requests presenting this header bypass bot control and are allowed unconditionally."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "waf_page_rpm_limit" {
   description = "Rate limit per IP per minute for individual tariff page paths (commodities, headings, chapters, subheadings). Lower than the global limit to restrict scrapers walking the hierarchy."
   type        = number
