@@ -32,12 +32,12 @@ module "waf" {
         header_value = var.waf_mcp_secret_token
       }
     ] : [],
-    var.waf_e2e_secret_token != "" ? [
+    var.WAF_E2E_SECRET_TOKEN != "" ? [
       {
         name         = "allow-e2e-tests"
         priority     = 7
         header_name  = "x-waf-bypass"
-        header_value = var.waf_e2e_secret_token
+        header_value = var.WAF_E2E_SECRET_TOKEN
       }
     ] : []
   )
