@@ -59,22 +59,6 @@ module "waf" {
     }
   ]
 
-  host_path_allow_rules = [
-    {
-      name                  = "allow-mcp-oauth-token"
-      priority              = 10
-      host                  = "mcp.${var.domain_name}"
-      path_search_string    = "/token"
-      positional_constraint = "EXACTLY"
-    },
-    {
-      name                  = "allow-mcp-oauth-authorize"
-      priority              = 11
-      host                  = "mcp.${var.domain_name}"
-      path_search_string    = "/authorize"
-      positional_constraint = "STARTS_WITH"
-    },
-  ]
 }
 
 resource "aws_cloudwatch_log_group" "waf_logs" {
