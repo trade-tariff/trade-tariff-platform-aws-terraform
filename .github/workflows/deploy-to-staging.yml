@@ -28,7 +28,7 @@ jobs:
       TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
 
       - uses: aws-actions/configure-aws-credentials@v6.2.0
         with:
@@ -81,7 +81,7 @@ jobs:
       needs: post-apply-staging
       if: always()
       steps:
-        - uses: actions/checkout@v6.0.3
+        - uses: actions/checkout@v7.0.0
         - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
           with:
             webhook: ${{ secrets.SLACK_WEBHOOK }}
