@@ -41,6 +41,27 @@ module "waf" {
       positional_constraint = "CONTAINS"
     }
   ]
+
+  # Allow OAuth endpoints on the MCP domain through managed rules.
+  # Managed rules (priority 10+) can block legitimate OAuth POST requests
+  # (e.g. CommonRuleSet body inspection). These allow rules fire at priority
+  # 2-3, before managed rules, so the OAuth flow is never incorrectly blocked.
+  host_path_allow_rules = [
+    {
+      name                  = "allow-mcp-oauth-token"
+      priority              = 2
+      host                  = "mcp.${var.domain_name}"
+      path_search_string    = "/token"
+      positional_constraint = "EXACTLY"
+    },
+    {
+      name                  = "allow-mcp-oauth-authorize"
+      priority              = 3
+      host                  = "mcp.${var.domain_name}"
+      path_search_string    = "/authorize"
+      positional_constraint = "STARTS_WITH"
+    },
+  ]
 }
 
 resource "aws_cloudwatch_log_group" "waf_logs" {

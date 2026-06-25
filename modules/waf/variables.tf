@@ -173,3 +173,15 @@ variable "header_allow_rules" {
   }))
   default = []
 }
+
+variable "host_path_allow_rules" {
+  description = "Rules that allow requests matching both a specific Host header value and a URI path. Use to grant domain-scoped path exceptions without affecting other domains sharing the same WAF."
+  type = list(object({
+    name                  = string
+    priority              = number
+    host                  = string
+    path_search_string    = string
+    positional_constraint = string # EXACTLY | STARTS_WITH | CONTAINS | ENDS_WITH
+  }))
+  default = []
+}
