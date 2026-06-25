@@ -48,6 +48,14 @@ module "waf" {
     inspection_level        = "TARGETED"
     enable_machine_learning = true
     excluded_uri_prefixes   = ["/uk/api/", "/xi/api/", "/api/", "/healthcheck"]
+    captcha_override_rules = [
+      "TGT_VolumetricIpTokenAbsent",
+      "TGT_VolumetricSession",
+      "TGT_TokenReuseIpDetected",
+      "TGT_ML_CoordinatedActivityLow",
+      "TGT_ML_CoordinatedActivityMedium",
+      "TGT_ML_CoordinatedActivityHigh",
+    ]
   }
 
   ip_rate_url_based_rules = [
