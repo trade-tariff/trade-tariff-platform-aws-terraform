@@ -65,10 +65,11 @@ variable "services" {
   description = "Map of services to make ALB target groups and listener rules for."
   type = map(
     object({
-      healthcheck_path = string
-      hosts            = optional(list(string))
-      paths            = optional(list(string))
-      priority         = number
+      healthcheck_path      = string
+      hosts                 = optional(list(string))
+      paths                 = optional(list(string))
+      priority              = number
+      bypass_custom_header  = optional(bool, false)
     })
   )
 }

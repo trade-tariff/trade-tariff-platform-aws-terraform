@@ -139,10 +139,13 @@ resource "aws_lb_listener_rule" "this" {
     }
   }
 
-  condition {
-    http_header {
-      http_header_name = var.custom_header.name
-      values           = [var.custom_header.value]
+  dynamic "condition" {
+    for_each = lookup(var.services[each.key], "bypass_custom_header", false) ? [] : [true]
+    content {
+      http_header {
+        http_header_name = var.custom_header.name
+        values           = [var.custom_header.value]
+      }
     }
   }
 }
