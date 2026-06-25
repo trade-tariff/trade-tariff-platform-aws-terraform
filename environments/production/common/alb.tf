@@ -51,9 +51,10 @@ module "alb" {
     }
 
     mcp = {
-      hosts            = ["mcp.*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 26
+      hosts                = ["mcp.*"]
+      healthcheck_path     = "/healthcheckz"
+      priority             = 26
+      bypass_custom_header = true
     }
 
     frontend = {
