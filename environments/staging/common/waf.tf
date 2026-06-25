@@ -23,16 +23,33 @@ module "waf" {
     }
   }
 
-  header_allow_rules = var.waf_mcp_secret_token != "" ? [
-    {
-      name         = "allow-mcp-server"
-      priority     = 0
-      header_name  = "x-mcp-token"
-      header_value = var.waf_mcp_secret_token
-    }
-  ] : []
+  header_allow_rules = concat(
+    var.waf_mcp_secret_token != "" ? [
+      {
+        name         = "allow-mcp-server"
+        priority     = 0
+        header_name  = "x-mcp-token"
+        header_value = var.waf_mcp_secret_token
+      }
+    ] : [],
+    var.WAF_E2E_SECRET_TOKEN != "" ? [
+      {
+        name         = "allow-e2e-tests"
+        priority     = 7
+        header_name  = "x-waf-bypass"
+        header_value = var.WAF_E2E_SECRET_TOKEN
+      }
+    ] : []
+  )
 
   uri_path_match_rules = [
+    {
+      name                  = "allow-healthcheck"
+      priority              = 8
+      action                = "allow"
+      search_string         = "/healthcheck"
+      positional_constraint = "EXACTLY"
+    },
     {
       name                  = "allow-mycommodities-path"
       priority              = 9
@@ -45,14 +62,14 @@ module "waf" {
   host_path_allow_rules = [
     {
       name                  = "allow-mcp-oauth-token"
-      priority              = 2
+      priority              = 10
       host                  = "mcp.${var.domain_name}"
       path_search_string    = "/token"
       positional_constraint = "EXACTLY"
     },
     {
       name                  = "allow-mcp-oauth-authorize"
-      priority              = 3
+      priority              = 11
       host                  = "mcp.${var.domain_name}"
       path_search_string    = "/authorize"
       positional_constraint = "STARTS_WITH"

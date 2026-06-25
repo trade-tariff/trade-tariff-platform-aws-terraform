@@ -22,6 +22,7 @@ jobs:
       TERRAGRUNT_NON_INTERACTIVE: true
       TF_INPUT: false
       TF_IN_AUTOMATION: 1
+      TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6.0.3
@@ -68,6 +69,8 @@ jobs:
     uses: trade-tariff/trade-tariff-tools/.github/workflows/e2e-tests.yml@main
     with:
       test-environment: production
+    secrets:
+      waf_bypass_token: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
 
   notifications:
       runs-on: ubuntu-latest

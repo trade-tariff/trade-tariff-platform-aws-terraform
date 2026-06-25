@@ -38,6 +38,25 @@ variable "waf_mcp_secret_token" {
   default     = ""
 }
 
+variable "WAF_E2E_SECRET_TOKEN" {
+  description = "Secret token sent by the e2e test suite in X-WAF-Bypass. Requests presenting this header bypass bot control and are allowed unconditionally."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "waf_page_rpm_limit" {
+  description = "Rate limit per IP per minute for individual tariff page paths (commodities, headings, chapters, subheadings). Lower than the global limit to restrict scrapers walking the hierarchy."
+  type        = number
+  default     = 100
+}
+
+variable "waf_search_rpm_limit" {
+  description = "Rate limit per IP per minute for the /search endpoint. Tighter than the page limit as search hits OpenSearch and is a primary scraper entry point."
+  type        = number
+  default     = 60
+}
+
 variable "enable_sns_alerts" {
   description = "Enable SNS alerts for all CloudWatch alarms"
   type        = bool

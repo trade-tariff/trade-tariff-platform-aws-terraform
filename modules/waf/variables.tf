@@ -19,40 +19,35 @@ variable "managed_rules" {
 
   default = {
     AWSManagedRulesCommonRuleSet = {
-      priority        = 10
+      priority        = 20
       override_action = "none"
       excluded_rules  = ["NoUserAgent_HEADER", "SizeRestrictions_BODY"]
     },
     AWSManagedRulesAmazonIpReputationList = {
-      priority        = 20
-      override_action = "none"
-      excluded_rules  = []
-    },
-    AWSManagedRulesKnownBadInputsRuleSet = {
       priority        = 30
       override_action = "none"
       excluded_rules  = []
     },
-    AWSManagedRulesSQLiRuleSet = {
+    AWSManagedRulesKnownBadInputsRuleSet = {
       priority        = 40
       override_action = "none"
       excluded_rules  = []
     },
-    AWSManagedRulesLinuxRuleSet = {
+    AWSManagedRulesSQLiRuleSet = {
       priority        = 50
       override_action = "none"
       excluded_rules  = []
     },
-    AWSManagedRulesUnixRuleSet = {
+    AWSManagedRulesLinuxRuleSet = {
       priority        = 60
       override_action = "none"
       excluded_rules  = []
     },
-    AWSManagedRulesBotControlRuleSet = {
-      priority        = 70
-      override_action = "count"
+    AWSManagedRulesUnixRuleSet = {
+      priority        = 65
+      override_action = "none"
       excluded_rules  = []
-    }
+    },
   }
 }
 
@@ -149,6 +144,24 @@ variable "default_action" {
   type        = string
   description = "The action to perform if none of the rules contained in the WebACL match."
   default     = "allow"
+}
+
+variable "bot_control_rule" {
+  description = "Configuration for the AWS Bot Control managed rule group. Supports targeted inspection with ML and a scope-down statement to exclude URI path prefixes from evaluation. excluded_uri_prefixes must have 0 or at least 2 entries (or_statement requires a minimum of 2 statements). captcha_override_rules lists rule names whose default CAPTCHA action should be downgraded to a silent JS challenge."
+  type = object({
+    priority                = number
+    override_action         = string
+    inspection_level        = string
+    enable_machine_learning = optional(bool, true)
+    excluded_uri_prefixes   = list(string)
+    captcha_override_rules  = optional(list(string), [])
+  })
+  default = null
+
+  validation {
+    condition     = var.bot_control_rule == null || length(var.bot_control_rule.excluded_uri_prefixes) != 1
+    error_message = "excluded_uri_prefixes must contain 0 or at least 2 entries — or_statement requires a minimum of 2 statements."
+  }
 }
 
 variable "uri_path_match_rules" {

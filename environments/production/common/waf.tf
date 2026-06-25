@@ -23,16 +23,92 @@ module "waf" {
     }
   }
 
-  header_allow_rules = var.waf_mcp_secret_token != "" ? [
+  header_allow_rules = concat(
+    var.waf_mcp_secret_token != "" ? [
+      {
+        name         = "allow-mcp-server"
+        priority     = 0
+        header_name  = "x-mcp-token"
+        header_value = var.waf_mcp_secret_token
+      }
+    ] : [],
+    var.WAF_E2E_SECRET_TOKEN != "" ? [
+      {
+        name         = "allow-e2e-tests"
+        priority     = 7
+        header_name  = "x-waf-bypass"
+        header_value = var.WAF_E2E_SECRET_TOKEN
+      }
+    ] : []
+  )
+
+  bot_control_rule = {
+    priority                = 70
+    override_action         = "none"
+    inspection_level        = "TARGETED"
+    enable_machine_learning = true
+    excluded_uri_prefixes   = ["/uk/api/", "/xi/api/", "/api/", "/healthcheck"]
+    captcha_override_rules = [
+      "TGT_VolumetricIpTokenAbsent",
+      "TGT_VolumetricSession",
+      "TGT_TokenReuseIpDetected",
+      "TGT_ML_CoordinatedActivityLow",
+      "TGT_ML_CoordinatedActivityMedium",
+      "TGT_ML_CoordinatedActivityHigh",
+    ]
+  }
+
+  ip_rate_url_based_rules = [
     {
-      name         = "allow-mcp-server"
-      priority     = 0
-      header_name  = "x-mcp-token"
-      header_value = var.waf_mcp_secret_token
-    }
-  ] : []
+      name                  = "rate-limit-commodity-pages"
+      priority              = 2
+      limit                 = var.waf_page_rpm_limit
+      action                = "block"
+      search_string         = "/commodities/"
+      positional_constraint = "STARTS_WITH"
+    },
+    {
+      name                  = "rate-limit-heading-pages"
+      priority              = 3
+      limit                 = var.waf_page_rpm_limit
+      action                = "block"
+      search_string         = "/headings/"
+      positional_constraint = "STARTS_WITH"
+    },
+    {
+      name                  = "rate-limit-chapter-pages"
+      priority              = 4
+      limit                 = var.waf_page_rpm_limit
+      action                = "block"
+      search_string         = "/chapters/"
+      positional_constraint = "STARTS_WITH"
+    },
+    {
+      name                  = "rate-limit-subheading-pages"
+      priority              = 5
+      limit                 = var.waf_page_rpm_limit
+      action                = "block"
+      search_string         = "/subheadings/"
+      positional_constraint = "STARTS_WITH"
+    },
+    {
+      name                  = "rate-limit-search"
+      priority              = 6
+      limit                 = var.waf_search_rpm_limit
+      action                = "block"
+      search_string         = "/search"
+      positional_constraint = "STARTS_WITH"
+    },
+  ]
 
   uri_path_match_rules = [
+    {
+      name                  = "allow-healthcheck"
+      priority              = 8
+      action                = "allow"
+      search_string         = "/healthcheck"
+      positional_constraint = "EXACTLY"
+    },
     {
       name                  = "allow-mycommodities-path"
       priority              = 9
@@ -49,14 +125,14 @@ module "waf" {
   host_path_allow_rules = [
     {
       name                  = "allow-mcp-oauth-token"
-      priority              = 2
+      priority              = 10
       host                  = "mcp.${var.domain_name}"
       path_search_string    = "/token"
       positional_constraint = "EXACTLY"
     },
     {
       name                  = "allow-mcp-oauth-authorize"
-      priority              = 3
+      priority              = 11
       host                  = "mcp.${var.domain_name}"
       path_search_string    = "/authorize"
       positional_constraint = "STARTS_WITH"
