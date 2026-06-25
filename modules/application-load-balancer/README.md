@@ -80,7 +80,7 @@ No modules.
 | <a name="input_idle_timeout"></a> [idle\_timeout](#input\_idle\_timeout) | The time in seconds that the connection is allowed to be idle. | `string` | `60` | no |
 | <a name="input_listening_port"></a> [listening\_port](#input\_listening\_port) | Port on which the load balancer listens to. | `string` | `443` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | Public subnet IDs | `list(any)` | n/a | yes |
-| <a name="input_services"></a> [services](#input\_services) | Map of services to make ALB target groups and listener rules for. | <pre>map(<br/>    object({<br/>      healthcheck_path = string<br/>      hosts            = optional(list(string))<br/>      paths            = optional(list(string))<br/>      priority         = number<br/>    })<br/>  )</pre> | n/a | yes |
+| <a name="input_services"></a> [services](#input\_services) | Map of services to make ALB target groups and listener rules for. | <pre>map(<br/>    object({<br/>      healthcheck_path      = string<br/>      hosts                 = optional(list(string))<br/>      paths                 = optional(list(string))<br/>      priority              = number<br/>      bypass_custom_header  = optional(bool, false)<br/>    })<br/>  )</pre> | n/a | yes |
 | <a name="input_tls_application_port"></a> [tls\_application\_port](#input\_tls\_application\_port) | Port the application exposes on HTTPS. | `string` | `8443` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC to place the load balancer into. | `string` | n/a | yes |
 
