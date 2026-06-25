@@ -19,32 +19,32 @@ variable "managed_rules" {
 
   default = {
     AWSManagedRulesCommonRuleSet = {
-      priority        = 10
+      priority        = 20
       override_action = "none"
       excluded_rules  = ["NoUserAgent_HEADER", "SizeRestrictions_BODY"]
     },
     AWSManagedRulesAmazonIpReputationList = {
-      priority        = 20
-      override_action = "none"
-      excluded_rules  = []
-    },
-    AWSManagedRulesKnownBadInputsRuleSet = {
       priority        = 30
       override_action = "none"
       excluded_rules  = []
     },
-    AWSManagedRulesSQLiRuleSet = {
+    AWSManagedRulesKnownBadInputsRuleSet = {
       priority        = 40
       override_action = "none"
       excluded_rules  = []
     },
-    AWSManagedRulesLinuxRuleSet = {
+    AWSManagedRulesSQLiRuleSet = {
       priority        = 50
       override_action = "none"
       excluded_rules  = []
     },
-    AWSManagedRulesUnixRuleSet = {
+    AWSManagedRulesLinuxRuleSet = {
       priority        = 60
+      override_action = "none"
+      excluded_rules  = []
+    },
+    AWSManagedRulesUnixRuleSet = {
+      priority        = 65
       override_action = "none"
       excluded_rules  = []
     },
@@ -183,6 +183,18 @@ variable "header_allow_rules" {
     priority     = number
     header_name  = string
     header_value = string
+  }))
+  default = []
+}
+
+variable "host_path_allow_rules" {
+  description = "Rules that allow requests matching both a specific Host header value and a URI path. Use to grant domain-scoped path exceptions without affecting other domains sharing the same WAF."
+  type = list(object({
+    name                  = string
+    priority              = number
+    host                  = string
+    path_search_string    = string
+    positional_constraint = string # EXACTLY | STARTS_WITH | CONTAINS | ENDS_WITH
   }))
   default = []
 }
