@@ -431,6 +431,16 @@ resource "aws_wafv2_web_acl" "this" {
             }
           }
 
+          dynamic "rule_action_override" {
+            for_each = toset(rule.value.captcha_override_rules)
+            content {
+              name = rule_action_override.key
+              action_to_use {
+                challenge {}
+              }
+            }
+          }
+
           dynamic "scope_down_statement" {
             for_each = length(rule.value.excluded_uri_prefixes) > 0 ? [rule.value.excluded_uri_prefixes] : []
             content {

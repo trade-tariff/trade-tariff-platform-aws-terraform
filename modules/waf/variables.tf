@@ -147,13 +147,14 @@ variable "default_action" {
 }
 
 variable "bot_control_rule" {
-  description = "Configuration for the AWS Bot Control managed rule group. Supports targeted inspection with ML and a scope-down statement to exclude URI path prefixes from evaluation. excluded_uri_prefixes must have 0 or at least 2 entries (or_statement requires a minimum of 2 statements)."
+  description = "Configuration for the AWS Bot Control managed rule group. Supports targeted inspection with ML and a scope-down statement to exclude URI path prefixes from evaluation. excluded_uri_prefixes must have 0 or at least 2 entries (or_statement requires a minimum of 2 statements). captcha_override_rules lists rule names whose default CAPTCHA action should be downgraded to a silent JS challenge."
   type = object({
     priority                = number
     override_action         = string
     inspection_level        = string
     enable_machine_learning = optional(bool, true)
     excluded_uri_prefixes   = list(string)
+    captcha_override_rules  = optional(list(string), [])
   })
   default = null
 
