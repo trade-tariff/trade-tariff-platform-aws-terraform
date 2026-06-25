@@ -55,6 +55,7 @@ module "waf" {
       "TGT_ML_CoordinatedActivityLow",
       "TGT_ML_CoordinatedActivityMedium",
       "TGT_ML_CoordinatedActivityHigh",
+      "TGT_SignalAutomatedBrowser",
     ]
   }
 
