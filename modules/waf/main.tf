@@ -540,7 +540,7 @@ resource "aws_wafv2_web_acl" "this" {
 }
 
 resource "aws_wafv2_regex_pattern_set" "this" {
-  name        = "assets"
+  name        = "assets-${var.name}"
   description = "Web application assets regex pattern set"
   scope       = var.scope
 
@@ -550,6 +550,10 @@ resource "aws_wafv2_regex_pattern_set" "this" {
 
   regular_expression {
     regex_string = "^.*\\/(assets|images)\\/.*$"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
