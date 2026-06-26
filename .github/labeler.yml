@@ -1,0 +1,14 @@
+development:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "environments/development/**"
+
+staging:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "environments/staging/**"
+
+production:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "environments/production/**"
