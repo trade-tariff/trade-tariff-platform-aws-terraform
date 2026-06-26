@@ -11,7 +11,7 @@ remote_state {
     key          = "${path_relative_to_include()}/terraform.tfstate"
     region       = "eu-west-2"
     encrypt      = true
-    use_lockfile = true
+    use_lockfile = false
   }
 
   disable_init = tobool(get_env("DISABLE_INIT", false))
