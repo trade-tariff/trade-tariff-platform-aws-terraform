@@ -81,6 +81,6 @@ data "aws_iam_policy_document" "backup_waf_log_group_policy" {
 }
 
 resource "aws_cloudwatch_log_resource_policy" "backup_waf_logs" {
-  policy_document = data.aws_iam_policy_document.apigw_waf_log_group_policy.json
+  policy_document = data.aws_iam_policy_document.backup_waf_log_group_policy.json
   policy_name     = "tariff-backup-waf-logs-policy-${var.environment}"
 }
