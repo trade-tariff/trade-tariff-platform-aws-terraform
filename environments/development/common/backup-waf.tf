@@ -25,6 +25,7 @@ module "waf_backup" {
 }
 
 resource "aws_cloudwatch_log_group" "backup_waf_logs" {
+  provider          = aws.us_east_1
   name              = "aws-waf-logs-backup-${var.environment}"
   retention_in_days = 30
 }
