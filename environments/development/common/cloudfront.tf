@@ -450,7 +450,7 @@ module "backups_cdn" {
   is_ipv6_enabled = true
   price_class     = "PriceClass_100"
 
-  web_acl_id = module.waf_apigw.web_acl_id
+  web_acl_id = module.waf_backup.web_acl_id
 
   logging_config = {
     bucket = module.logs.s3_bucket_bucket_domain_name
