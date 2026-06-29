@@ -45,17 +45,10 @@ module "waf" {
   bot_control_rule = {
     priority                = 70
     override_action         = "none"
-    inspection_level        = "TARGETED"
-    enable_machine_learning = true
+    inspection_level        = "COMMON"
+    enable_machine_learning = false
     excluded_uri_prefixes   = ["/uk/api/", "/xi/api/", "/api/", "/healthcheck"]
-    captcha_override_rules = [
-      "TGT_VolumetricIpTokenAbsent",
-      "TGT_VolumetricSession",
-      "TGT_TokenReuseIpDetected",
-      "TGT_ML_CoordinatedActivityLow",
-      "TGT_ML_CoordinatedActivityMedium",
-      "TGT_ML_CoordinatedActivityHigh",
-    ]
+    captcha_override_rules  = []
   }
 
   ip_rate_url_based_rules = [
