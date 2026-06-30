@@ -90,7 +90,7 @@ module "waf" {
       limit                 = var.waf_search_rpm_limit
       action                = "block"
       search_string         = "/search"
-      positional_constraint = "STARTS_WITH"
+      positional_constraint = "EXACTLY"
     },
   ]
 
