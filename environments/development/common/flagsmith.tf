@@ -60,6 +60,22 @@ resource "aws_security_group" "flagsmith_ecs" {
     security_groups = [module.alb-security-group.alb_security_group_id]
   }
 
+  ingress {
+    description = "HTTP 8000 between Flagsmith ECS tasks"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    self        = true
+  }
+
+  ingress {
+    description     = "HTTP 8000 from shared ECS tasks"
+    from_port       = 8000
+    to_port         = 8000
+    protocol        = "tcp"
+    security_groups = [module.alb-security-group.ecs_security_group_id]
+  }
+
   egress {
     description = "Allow all egress (Docker Hub pulls, RDS, etc.)"
     from_port   = 0
