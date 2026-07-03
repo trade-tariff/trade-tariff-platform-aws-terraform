@@ -173,6 +173,7 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "application-autoscaling:DescribeScheduledActions",
           "application-autoscaling:ListTagsForResource",
           "application-autoscaling:PutScalingPolicy",
+          "application-autoscaling:PutScheduledAction",
           "application-autoscaling:RegisterScalableTarget",
           # CloudWatch - alarms for service health, dashboards (backend)
           "cloudwatch:DeleteAlarms",
