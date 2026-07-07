@@ -1,14 +1,31 @@
 require 'securerandom'
 require 'notifications/client'
-require 'cgi'
 
 def lambda_handler(event:, context:) # rubocop:disable Metrics/MethodLength
+  email = event.dig('request', 'userAttributes', 'email')
+  session = event.dig('request', 'session') || []
+
+  code =
+    if session.empty?
+      generate_and_send_code(email)
+    else
+      session.last['challengeMetadata'][/CODE-(\d+)/, 1]
+    end
+
+  event['response'] = {
+    'publicChallengeParameters' => {},
+    'privateChallengeParameters' => { 'answer' => code },
+    'challengeMetadata' => "CODE-#{code}"
+  }
+
+  event
+end
+
+def generate_and_send_code(email) # rubocop:disable Metrics/MethodLength
   url = ENV['URL']
   api_key = ENV['GOVUK_NOTIFY_API_KEY']
   notify = Notifications::Client.new(api_key)
-  email = event.dig('request', 'userAttributes', 'email')
-  token = SecureRandom.hex(32)
-  auth_link = "#{url}/passwordless/callback?email=#{CGI.escape(email)}&token=#{token}"
+  code = SecureRandom.rand(1_000_000).to_s.rjust(6, '0')
 
   if url.include? 'dev'
     template_id = 'bdb7b23b-177a-4e79-91f4-ab89a4509eea'
@@ -26,15 +43,9 @@ def lambda_handler(event:, context:) # rubocop:disable Metrics/MethodLength
     template_id: template_id,
     email_reply_to_id: email_reply_to_id,
     personalisation: {
-      auth_link: auth_link
+      auth_code: code
     }
   )
 
-  event['response'] = {
-    'publicChallengeParameters' => {},
-    'privateChallengeParameters' => { 'answer' => token },
-    'challengeMetadata' => 'MAGIC_LINK'
-  }
-
-  event
+  code
 end
