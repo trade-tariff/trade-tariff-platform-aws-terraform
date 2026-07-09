@@ -82,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.0
 
-      - uses: aws-actions/configure-aws-credentials@v6.2.0
+      - uses: aws-actions/configure-aws-credentials@v6.2.1
         with:
           role-to-assume: arn:aws:iam::844815912454:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
@@ -131,7 +131,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.0
 
-      - uses: aws-actions/configure-aws-credentials@v6.2.0
+      - uses: aws-actions/configure-aws-credentials@v6.2.1
         with:
           role-to-assume: arn:aws:iam::844815912454:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
@@ -189,7 +189,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.0
 
-      - uses: aws-actions/configure-aws-credentials@v6.2.0
+      - uses: aws-actions/configure-aws-credentials@v6.2.1
         with:
           role-to-assume: arn:aws:iam::451934005581:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
@@ -231,7 +231,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.0
 
-      - uses: aws-actions/configure-aws-credentials@v6.2.0
+      - uses: aws-actions/configure-aws-credentials@v6.2.1
         with:
           role-to-assume: arn:aws:iam::382373577178:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
