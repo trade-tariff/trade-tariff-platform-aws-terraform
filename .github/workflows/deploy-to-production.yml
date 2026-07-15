@@ -38,7 +38,7 @@ jobs:
 
       - uses: ruby/setup-ruby@v1.316.0
 
-      - run: bundle config set path 'vendor/bundle' && bundle install
+      - run: bundle config set path 'vendor/bundle' && bundle config set without 'test' && bundle install
         working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
 
       - uses: autero1/action-terragrunt@v3
