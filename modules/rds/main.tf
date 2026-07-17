@@ -10,11 +10,13 @@ resource "aws_db_instance" "this" {
   db_subnet_group_name  = aws_db_subnet_group.rds_private_subnet.name
   multi_az              = var.multi_az
 
-  deletion_protection     = var.deletion_protection
-  backup_retention_period = var.backup_retention_period
-  backup_window           = var.backup_window
-  maintenance_window      = var.maintenance_window
-  skip_final_snapshot     = true
+  deletion_protection       = var.deletion_protection
+  backup_retention_period   = var.backup_retention_period
+  backup_window             = var.backup_window
+  maintenance_window        = var.maintenance_window
+  skip_final_snapshot       = false
+  copy_tags_to_snapshot     = true
+  final_snapshot_identifier = "${var.name}-final-${formatdate("YYYYMMDDHHmm", timestamp())}"
 
   allow_major_version_upgrade = var.allow_major_version_upgrade
   auto_minor_version_upgrade  = true

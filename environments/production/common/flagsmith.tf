@@ -20,11 +20,8 @@ module "postgres_flagsmith" {
 
   multi_az = true
 
-  instance_type           = "db.t3.small"
-  backup_window           = "22:00-23:00"
-  maintenance_window      = "Fri:23:00-Sat:01:00"
-  backup_retention_period = 7
-  private_subnet_ids      = data.terraform_remote_state.base.outputs.private_subnet_ids
+  instance_type      = "db.t3.small"
+  private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
   allocated_storage  = 20
   security_group_ids = [aws_security_group.flagsmith_rds.id]

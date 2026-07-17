@@ -79,11 +79,8 @@ module "postgres_developer_hub" {
 
   multi_az = false
 
-  instance_type           = "db.t3.micro"
-  backup_window           = "22:00-23:00"
-  maintenance_window      = "Fri:23:00-Sat:01:00"
-  backup_retention_period = 7
-  private_subnet_ids      = data.terraform_remote_state.base.outputs.private_subnet_ids
+  instance_type      = "db.t3.micro"
+  private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
   allocated_storage  = 10
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
@@ -122,6 +119,8 @@ module "postgres_aurora" {
   performance_insights_enabled          = true
   performance_insights_retention_period = 465 # minimum required for Advanced
   database_insights_mode                = "advanced"
+
+  backup_retention_period = 30
 
   min_capacity = 2
   max_capacity = 64
