@@ -16,7 +16,7 @@ resource "aws_db_instance" "this" {
   maintenance_window        = var.maintenance_window
   skip_final_snapshot       = false
   copy_tags_to_snapshot     = true
-  final_snapshot_identifier = "${var.name}-final-${formatdate("YYYYMMDDHHmm", timestamp())}"
+  final_snapshot_identifier = "${var.name}-final-${random_id.final_snapshot.hex}"
 
   allow_major_version_upgrade = var.allow_major_version_upgrade
   auto_minor_version_upgrade  = true
@@ -145,4 +145,12 @@ resource "aws_kms_key" "this" {
   key_usage           = "ENCRYPT_DECRYPT"
   enable_key_rotation = true
   tags                = local.tags
+}
+
+resource "random_id" "final_snapshot" {
+  byte_length = 2
+
+  keepers = {
+    cluster_name = var.name
+  }
 }

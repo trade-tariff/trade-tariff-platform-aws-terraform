@@ -18,7 +18,7 @@ resource "aws_rds_cluster" "this" {
   preferred_backup_window   = var.backup_window
   skip_final_snapshot       = false
   copy_tags_to_snapshot     = true
-  final_snapshot_identifier = "${var.cluster_name}-final-${formatdate("YYYYMMDDHHmm", timestamp())}"
+  final_snapshot_identifier = "${var.cluster_name}-final-${random_id.final_snapshot.hex}"
 
   storage_encrypted = var.encryption_at_rest
   kms_key_id        = try(aws_kms_key.this[0].arn, var.kms_key_id)
@@ -90,4 +90,12 @@ resource "aws_kms_key" "this" {
   key_usage           = "ENCRYPT_DECRYPT"
   enable_key_rotation = true
   tags                = var.tags
+}
+
+resource "random_id" "final_snapshot" {
+  byte_length = 2
+
+  keepers = {
+    cluster_name = var.cluster_name
+  }
 }
