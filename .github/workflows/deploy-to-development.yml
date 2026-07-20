@@ -102,7 +102,17 @@ jobs:
       - run: terragrunt init --all
         working-directory: environments/development
 
+      - name: Locate create_auth_challenge hash
+        run: |
+          grep -R "fRZcRmOsn2rSn5c6iG7yvKEDHgAS3lEtAyv4ykLRsEU" . || true
+
       - run: terragrunt plan --all --out=terragrunt.tfplan
+        working-directory: environments/development
+
+      - name: Inspect lambda change
+        run: |
+          terragrunt show --all terragrunt.tfplan | \
+          sed -n '/create_auth_challenge/,/}/p'
         working-directory: environments/development
 
       - name: Export Plan as JSON
