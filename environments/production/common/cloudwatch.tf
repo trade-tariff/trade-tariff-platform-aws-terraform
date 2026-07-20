@@ -100,7 +100,7 @@ resource "aws_kms_key_policy" "logs_bucket_kms_key_policy" {
 }
 
 module "logs" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v5.1.0"
+  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v5.15.1"
 
   bucket = "trade-tariff-logs-${local.account_id}"
   acl    = "log-delivery-write"
@@ -126,6 +126,7 @@ module "logs" {
     enabled = true
 
     transition = [{
+      days          = 90
       storage_class = "DEEP_ARCHIVE"
     }]
 
