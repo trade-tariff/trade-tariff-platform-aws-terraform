@@ -14,8 +14,11 @@ resource "aws_rds_cluster" "this" {
   database_name = var.database_name
 
   deletion_protection       = var.deletion_protection
+  backup_retention_period   = var.backup_retention_period
+  preferred_backup_window   = var.backup_window
   skip_final_snapshot       = false
-  final_snapshot_identifier = "${var.cluster_name}-final"
+  copy_tags_to_snapshot     = true
+  final_snapshot_identifier = "${var.cluster_name}-final-${formatdate("YYYYMMDDHHmm", timestamp())}"
 
   storage_encrypted = var.encryption_at_rest
   kms_key_id        = try(aws_kms_key.this[0].arn, var.kms_key_id)

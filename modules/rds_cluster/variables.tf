@@ -144,5 +144,17 @@ variable "allow_major_version_upgrade" {
 variable "maintenance_window" {
   description = "The time window (in UTC) to perform maintenance in. Syntax: `ddd:hh24:mi-ddd:hh24:mi`, eg: `Mon:00:00-Mon:01:30`."
   type        = string
-  default     = "sun:05:00-sun:06:00"
+  default     = "Fri:23:00-Sat:01:00"
+}
+
+variable "backup_retention_period" {
+  description = "Amount of time, in days, (between 0 and 35) that backups should be retained for."
+  type        = number
+  default     = 7
+}
+
+variable "backup_window" {
+  description = "The daily time range (in UTC) during which automated backups are created if they are enabled, eg: `09:46-10:16`"
+  type        = string
+  default     = "22:00-23:00"
 }

@@ -43,15 +43,15 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_allocated_storage"></a> [allocated\_storage](#input\_allocated\_storage) | Storage to allocate initially to the instance in gibibytes (i.e. 2^30 bytes). Can autoscale. | `number` | `5` | no |
 | <a name="input_allow_major_version_upgrade"></a> [allow\_major\_version\_upgrade](#input\_allow\_major\_version\_upgrade) | Whether to allow major version upgrades. | `bool` | `false` | no |
-| <a name="input_backup_retention_period"></a> [backup\_retention\_period](#input\_backup\_retention\_period) | Amount of time, in days, (between 0 and 35) that backups should be retained for. | `number` | `30` | no |
-| <a name="input_backup_window"></a> [backup\_window](#input\_backup\_window) | The daily time range (in UTC) during which automated backups are created if they are enabled, eg: `09:46-10:16` | `string` | n/a | yes |
+| <a name="input_backup_retention_period"></a> [backup\_retention\_period](#input\_backup\_retention\_period) | Amount of time, in days, (between 0 and 35) that backups should be retained for. | `number` | `7` | no |
+| <a name="input_backup_window"></a> [backup\_window](#input\_backup\_window) | The daily time range (in UTC) during which automated backups are created if they are enabled, eg: `09:46-10:16` | `string` | `"22:00-23:00"` | no |
 | <a name="input_database_insights_mode"></a> [database\_insights\_mode](#input\_database\_insights\_mode) | The mode of Database Insights that is enabled for the instance. Valid values: standard, advanced. | `string` | `"standard"` | no |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Whether to protect the database from deletion. Defaults to `true`. | `bool` | `true` | no |
 | <a name="input_engine"></a> [engine](#input\_engine) | Database engine to use. | `string` | n/a | yes |
 | <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | Version of the database engine to use. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment. | `string` | n/a | yes |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type for the database. See https://aws.amazon.com/rds/instance-types/ | `string` | n/a | yes |
-| <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | The time window (in UTC) to perform maintenance in. Syntax: `ddd:hh24:mi-ddd:hh24:mi`, eg: `Mon:00:00-Mon:01:30`. | `string` | n/a | yes |
+| <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | The time window (in UTC) to perform maintenance in. Syntax: `ddd:hh24:mi-ddd:hh24:mi`, eg: `Mon:00:00-Mon:01:30`. | `string` | `"Fri:23:00-Sat:01:00"` | no |
 | <a name="input_max_allocated_storage"></a> [max\_allocated\_storage](#input\_max\_allocated\_storage) | Maximum allocated storage for the instance. Defaults to `null` (no autoscaling). | `number` | `1` | no |
 | <a name="input_multi_az"></a> [multi\_az](#input\_multi\_az) | If the RDS instance is multi-AZ. | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the database. | `string` | n/a | yes |
