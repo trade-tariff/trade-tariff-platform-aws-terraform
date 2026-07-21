@@ -100,7 +100,8 @@ resource "aws_kms_key_policy" "logs_bucket_kms_key_policy" {
 }
 
 module "logs" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v5.1.0"
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "5.1.0"
 
   bucket = "trade-tariff-logs-${local.account_id}"
   acl    = "log-delivery-write"
