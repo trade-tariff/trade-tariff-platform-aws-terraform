@@ -68,6 +68,11 @@ locals {
       production_images_to_keep  = 10
       development_images_to_keep = 30
     },
+    "ai-search-evaluation-suite" = {
+      lifecycle_policy           = true
+      production_images_to_keep  = 10
+      development_images_to_keep = 30
+    },
     "mcp" = {
       lifecycle_policy           = true
       production_images_to_keep  = 10
