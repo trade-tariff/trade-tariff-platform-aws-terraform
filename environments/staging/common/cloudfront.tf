@@ -32,6 +32,7 @@ module "cdn" {
   aliases = [
     var.domain_name,
     "admin.${var.domain_name}",
+    "eval.${var.domain_name}",
     "hub.${var.domain_name}",
     "id.${var.domain_name}",
   ]
