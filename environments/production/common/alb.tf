@@ -57,6 +57,13 @@ module "alb" {
       bypass_custom_header = true
     }
 
+    ai_eval = {
+      hosts                = ["eval.*"]
+      healthcheck_path     = "/healthcheckz"
+      priority             = 27
+      bypass_custom_header = true
+    }
+
     frontend = {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
