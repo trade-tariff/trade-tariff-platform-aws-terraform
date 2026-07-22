@@ -411,14 +411,11 @@ resource "aws_wafv2_web_acl_rule" "uri_path_match" {
 }
 
 resource "aws_wafv2_web_acl_rule" "header_allow" {
-  for_each = nonsensitive({
-    for r in var.header_allow_rules : r.name => r
-  })
+  for_each = { for r in var.header_allow_rules : r.name => r }
 
   web_acl_arn = aws_wafv2_web_acl.this.arn
-
-  name     = each.value.name
-  priority = each.value.priority
+  name        = each.value.name
+  priority    = each.value.priority
 
   action {
     allow {}
@@ -427,11 +424,11 @@ resource "aws_wafv2_web_acl_rule" "header_allow" {
   statement {
     byte_match_statement {
       positional_constraint = "EXACTLY"
-      search_string         = each.value.header_value
+      search_string         = var.header_allow_values[each.value.name] # sensitive lookup stays isolated here
 
       field_to_match {
         single_header {
-          name = each.value.header_name
+          name = lower(each.value.header_name)
         }
       }
 
@@ -547,9 +544,8 @@ resource "aws_wafv2_web_acl_rule" "host_path_allow" {
   }
 
   web_acl_arn = aws_wafv2_web_acl.this.arn
-
-  name     = each.value.name
-  priority = each.value.priority
+  name        = each.value.name
+  priority    = each.value.priority
 
   action {
     allow {}

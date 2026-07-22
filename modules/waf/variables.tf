@@ -177,14 +177,20 @@ variable "uri_path_match_rules" {
 }
 
 variable "header_allow_rules" {
-  description = "Rules that allow requests presenting an exact header name/value pair. Evaluated before rate limiting — use for trusted internal clients."
+  description = "Non-sensitive metadata for header-allow rules (name, priority, header_name). Sensitive header values are provided via the header_allow_values variable."
   type = list(object({
-    name         = string
-    priority     = number
-    header_name  = string
-    header_value = string
+    name        = string
+    priority    = number
+    header_name = string
   }))
   default = []
+}
+
+variable "header_allow_values" {
+  description = "Sensitive header values, keyed by rule name"
+  type        = map(string)
+  sensitive   = true
+  default     = {}
 }
 
 variable "host_path_allow_rules" {

@@ -77,6 +77,8 @@ jobs:
 
   plan-development:
     environment: development
+    env:
+      TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
 
     runs-on: ubuntu-latest
     steps:
