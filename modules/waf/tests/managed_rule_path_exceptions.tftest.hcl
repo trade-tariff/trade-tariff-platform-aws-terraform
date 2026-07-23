@@ -77,3 +77,47 @@ run "managed_rule_path_exception_counts_and_reblocks" {
     error_message = "The managed label must be re-blocked everywhere except the exact /search URI path."
   }
 }
+
+run "rejects_unknown_managed_rule_group" {
+  command = plan
+
+  variables {
+    name  = "test-waf"
+    scope = "CLOUDFRONT"
+
+    managed_rule_path_exceptions = [
+      {
+        name               = "invalid-unknown-group"
+        priority           = 55
+        managed_rule_group = "AWSManagedRulesMissingRuleSet"
+        managed_rule       = "SQLi_BODY"
+        label              = "awswaf:managed:aws:sql-database:SQLi_Body"
+        excluded_uri_path  = "/search"
+      },
+    ]
+  }
+
+  expect_failures = [var.managed_rule_path_exceptions]
+}
+
+run "rejects_exception_before_managed_rule_group" {
+  command = plan
+
+  variables {
+    name  = "test-waf"
+    scope = "CLOUDFRONT"
+
+    managed_rule_path_exceptions = [
+      {
+        name               = "invalid-rule-order"
+        priority           = 49
+        managed_rule_group = "AWSManagedRulesSQLiRuleSet"
+        managed_rule       = "SQLi_BODY"
+        label              = "awswaf:managed:aws:sql-database:SQLi_Body"
+        excluded_uri_path  = "/search"
+      },
+    ]
+  }
+
+  expect_failures = [var.managed_rule_path_exceptions]
+}
