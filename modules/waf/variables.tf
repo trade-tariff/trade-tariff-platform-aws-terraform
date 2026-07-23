@@ -63,6 +63,18 @@ variable "managed_rule_path_exceptions" {
 
   description = "Managed rule matches to count and re-block everywhere except one exact URI path."
   default     = []
+
+  validation {
+    condition = alltrue([
+      for exception in var.managed_rule_path_exceptions : try(
+        contains(keys(var.managed_rules), exception.managed_rule_group) &&
+        exception.priority > var.managed_rules[exception.managed_rule_group].priority,
+        false,
+      )
+    ])
+
+    error_message = "Each path exception must reference a configured managed rule group and have a priority greater than that group's priority."
+  }
 }
 
 variable "ip_sets_rule" {
