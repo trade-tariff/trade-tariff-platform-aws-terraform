@@ -157,7 +157,15 @@ resource "aws_s3_bucket_lifecycle_configuration" "firehose_backups_rotation" {
   }
 }
 
-# NOTE: READONLY cross-account access for persistence bucket to allow backend jobs to replicate exchange rate data
+locals {
+  persistence_replication_object_prefixes = [
+    "data/exchange_rates",
+    "data/taric",
+    "data/cds",
+  ]
+}
+
+# NOTE: READONLY cross-account access for persistence bucket to allow backend jobs to replicate data files
 data "aws_iam_policy_document" "persistence_cross_account_policy" {
   statement {
     sid    = "AllowCrossAccountReadAccess"
@@ -175,14 +183,28 @@ data "aws_iam_policy_document" "persistence_cross_account_policy" {
       "s3:GetObject"
     ]
 
-    resources = [
-      aws_s3_bucket.this["persistence"].arn,
-      "${aws_s3_bucket.this["persistence"].arn}/data/exchange_rates/*"
-    ]
+    resources = concat(
+      [aws_s3_bucket.this["persistence"].arn],
+      [
+        for prefix in local.persistence_replication_object_prefixes :
+        "${aws_s3_bucket.this["persistence"].arn}/${prefix}/*"
+      ],
+    )
   }
 }
 
 resource "aws_s3_bucket_policy" "persistence" {
   bucket = aws_s3_bucket.this["persistence"].id
   policy = data.aws_iam_policy_document.persistence_cross_account_policy.json
+}
+
+check "persistence_replication_object_prefixes" {
+  assert {
+    condition = toset(local.persistence_replication_object_prefixes) == toset([
+      "data/exchange_rates",
+      "data/taric",
+      "data/cds",
+    ])
+    error_message = "Production persistence bucket read access must cover exchange rate, TARIC, and CDS objects."
+  }
 }
