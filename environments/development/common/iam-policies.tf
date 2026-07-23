@@ -175,8 +175,10 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams",
           "logs:GetLogEvents",
+          "logs:GetQueryResults",
           "logs:ListTagsForResource",
           "logs:PutRetentionPolicy",
+          "logs:StartQuery",
           # Secrets Manager - read secrets for task environment variables
           "secretsmanager:BatchGetSecretValue",
           "secretsmanager:DescribeSecret",
