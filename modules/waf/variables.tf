@@ -51,6 +51,20 @@ variable "managed_rules" {
   }
 }
 
+variable "managed_rule_path_exceptions" {
+  type = list(object({
+    name               = string
+    priority           = number
+    managed_rule_group = string
+    managed_rule       = string
+    label              = string
+    excluded_uri_path  = string
+  }))
+
+  description = "Managed rule matches to count and re-block everywhere except one exact URI path."
+  default     = []
+}
+
 variable "ip_sets_rule" {
   type = list(object({
     name       = string

@@ -42,6 +42,17 @@ module "waf" {
     ] : []
   )
 
+  managed_rule_path_exceptions = [
+    {
+      name               = "block-sqli-body-except-search"
+      priority           = 55
+      managed_rule_group = "AWSManagedRulesSQLiRuleSet"
+      managed_rule       = "SQLi_BODY"
+      label              = "awswaf:managed:aws:sql-database:SQLi_Body"
+      excluded_uri_path  = "/search"
+    },
+  ]
+
   bot_control_rule = {
     priority                = 70
     override_action         = "none"

@@ -54,7 +54,13 @@ resource "aws_wafv2_web_acl" "this" {
           vendor_name = "AWS"
 
           dynamic "rule_action_override" {
-            for_each = toset(rule.value.excluded_rules)
+            for_each = toset(concat(
+              rule.value.excluded_rules,
+              [
+                for exception in var.managed_rule_path_exceptions : exception.managed_rule
+                if exception.managed_rule_group == rule.key
+              ],
+            ))
             content {
               name = rule_action_override.key
               action_to_use {
@@ -68,6 +74,58 @@ resource "aws_wafv2_web_acl" "this" {
       visibility_config {
         cloudwatch_metrics_enabled = true
         metric_name                = rule.key
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
+    for_each = {
+      for exception in var.managed_rule_path_exceptions : exception.name => exception
+    }
+
+    content {
+      name     = rule.value.name
+      priority = rule.value.priority
+
+      action {
+        block {}
+      }
+
+      statement {
+        and_statement {
+          statement {
+            label_match_statement {
+              key   = rule.value.label
+              scope = "LABEL"
+            }
+          }
+
+          statement {
+            not_statement {
+              statement {
+                byte_match_statement {
+                  positional_constraint = "EXACTLY"
+                  search_string         = rule.value.excluded_uri_path
+
+                  field_to_match {
+                    uri_path {}
+                  }
+
+                  text_transformation {
+                    priority = 0
+                    type     = "NONE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = rule.value.name
         sampled_requests_enabled   = true
       }
     }
