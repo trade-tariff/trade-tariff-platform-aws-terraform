@@ -104,17 +104,37 @@ resource "aws_wafv2_web_acl" "this" {
           statement {
             not_statement {
               statement {
-                byte_match_statement {
-                  positional_constraint = "EXACTLY"
-                  search_string         = rule.value.excluded_uri_path
+                and_statement {
+                  statement {
+                    byte_match_statement {
+                      positional_constraint = "EXACTLY"
+                      search_string         = rule.value.excluded_uri_path
 
-                  field_to_match {
-                    uri_path {}
+                      field_to_match {
+                        uri_path {}
+                      }
+
+                      text_transformation {
+                        priority = 0
+                        type     = "NONE"
+                      }
+                    }
                   }
 
-                  text_transformation {
-                    priority = 0
-                    type     = "NONE"
+                  statement {
+                    byte_match_statement {
+                      positional_constraint = "EXACTLY"
+                      search_string         = rule.value.excluded_http_method
+
+                      field_to_match {
+                        method {}
+                      }
+
+                      text_transformation {
+                        priority = 0
+                        type     = "NONE"
+                      }
+                    }
                   }
                 }
               }
