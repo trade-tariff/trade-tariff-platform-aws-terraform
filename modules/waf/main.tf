@@ -116,6 +116,11 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
+  # Do NOT remove - required permanently as long as any rule is managed
+  # via a standalone aws_wafv2_web_acl_rule resource (see HMRC-2529).
+  # Removing this without first re-adding matching inline `rule` blocks
+  # will cause Terraform to see rule = [] in config and plan to delete
+  # every rule in the Web ACL, not just unmigrated ones.
   lifecycle { ignore_changes = [rule] }
 
   tags = var.tags
@@ -304,11 +309,11 @@ resource "aws_wafv2_web_acl_rule" "filtered_header" {
     byte_match_statement {
       field_to_match {
         single_header {
-          name = each.value.header_value
+          name = each.value.name
         }
       }
       positional_constraint = "EXACTLY"
-      search_string         = each.value.name
+      search_string         = each.value.header_value
       text_transformation {
         priority = each.value.priority
         type     = "COMPRESS_WHITE_SPACE"
@@ -446,14 +451,28 @@ resource "aws_wafv2_web_acl_rule" "header_allow" {
   }
 }
 
+# INVARIANT: This rule's priority MUST remain lower than every other ACL rule.
+#
+# `action { allow {} }` stops WAF evaluation completely. Excluded paths
+# therefore bypass all higher-priority rules, not just Bot Control.
+#
+# This is safe only while Bot Control is the highest-priority rule. If a
+# higher-priority rule is added later, excluded paths will silently bypass
+# it as well. AWS WAFv2 cannot scope this exclusion to Bot Control alone
+# because managed rule group `scope_down_statement` does not support the
+# required logical statements. See HMRC-2529.
+#
+# Enforced by the "bot control remains highest priority rule" test in
+# `modules/waf/tests/bot_control.tftest.hcl`.
 resource "aws_wafv2_web_acl_rule" "allow_bot_control_excluded_paths" {
-  for_each = var.bot_control_rule != null ? {
+  for_each = var.bot_control_rule != null && length(var.bot_control_rule.excluded_uri_prefixes) > 0 ? {
     "allow-bot-control-excluded-paths" = var.bot_control_rule
   } : {}
 
+
   web_acl_arn = aws_wafv2_web_acl.this.arn
   name        = "allow-bot-control-excluded-paths"
-  priority    = 69 # must run immediately before bot_control (70)
+  priority    = var.bot_control_rule.priority - 1
 
   action {
     allow {}

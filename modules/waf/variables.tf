@@ -218,6 +218,13 @@ variable "header_allow_values" {
   type        = map(string)
   sensitive   = true
   default     = {}
+  
+  validation {
+    condition = alltrue([
+      for r in var.header_allow_rules : contains(keys(var.header_allow_values), r.name)
+    ])
+    error_message = "Every header_allow_rules[].name must have a corresponding entry in header_allow_values."
+  }
 }
 
 variable "host_path_allow_rules" {
