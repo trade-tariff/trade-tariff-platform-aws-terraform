@@ -53,15 +53,16 @@ variable "managed_rules" {
 
 variable "managed_rule_path_exceptions" {
   type = list(object({
-    name               = string
-    priority           = number
-    managed_rule_group = string
-    managed_rule       = string
-    label              = string
-    excluded_uri_path  = string
+    name                 = string
+    priority             = number
+    managed_rule_group   = string
+    managed_rule         = string
+    label                = string
+    excluded_uri_path    = string
+    excluded_http_method = string
   }))
 
-  description = "Managed rule matches to count and re-block everywhere except one exact URI path."
+  description = "Managed rule matches to count and re-block everywhere except one exact URI path and HTTP method."
   default     = []
 
   validation {
