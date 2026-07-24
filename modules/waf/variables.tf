@@ -51,6 +51,33 @@ variable "managed_rules" {
   }
 }
 
+variable "managed_rule_path_exceptions" {
+  type = list(object({
+    name                 = string
+    priority             = number
+    managed_rule_group   = string
+    managed_rule         = string
+    label                = string
+    excluded_uri_path    = string
+    excluded_http_method = string
+  }))
+
+  description = "Managed rule matches to count and re-block everywhere except one exact URI path and HTTP method."
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for exception in var.managed_rule_path_exceptions : try(
+        contains(keys(var.managed_rules), exception.managed_rule_group) &&
+        exception.priority > var.managed_rules[exception.managed_rule_group].priority,
+        false,
+      )
+    ])
+
+    error_message = "Each path exception must reference a configured managed rule group and have a priority greater than that group's priority."
+  }
+}
+
 variable "ip_sets_rule" {
   type = list(object({
     name       = string
