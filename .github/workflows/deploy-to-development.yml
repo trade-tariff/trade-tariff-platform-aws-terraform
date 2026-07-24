@@ -140,7 +140,7 @@ jobs:
         with:
           ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
-      - uses: ruby/setup-ruby@v1.316.0
+      - uses: ruby/setup-ruby@v1.319.0
 
       - run: bundle config set path 'vendor/bundle' && bundle config set without 'test' && bundle install
         working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
