@@ -2,9 +2,9 @@
 
 locals {
   filtered_header_rules = {
-    for header_name in var.filtered_header_rule.header_types :
+    for i, header_name in var.filtered_header_rule.header_types :
     replace(header_name, ".", "-") => {
-      priority     = var.filtered_header_rule.priority + index(var.filtered_header_rule.header_types, header_name) + 1
+      priority     = var.filtered_header_rule.priority + i + 1
       name         = header_name
       header_value = var.filtered_header_rule.header_value
       action       = var.filtered_header_rule.action
