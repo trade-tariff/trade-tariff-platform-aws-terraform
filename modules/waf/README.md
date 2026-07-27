@@ -34,6 +34,7 @@ No modules.
 | [aws_wafv2_web_acl_rule.ip_rate_url_based](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
 | [aws_wafv2_web_acl_rule.ip_sets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
 | [aws_wafv2_web_acl_rule.managed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
+| [aws_wafv2_web_acl_rule.managed_rule_path_exceptions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
 | [aws_wafv2_web_acl_rule.uri_path_match](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
 
 ## Inputs
