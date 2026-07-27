@@ -1,3 +1,5 @@
+mock_provider "aws" {}
+
 run "ip_rate_url_based_created_with_expected_shape" {
   command = plan
 

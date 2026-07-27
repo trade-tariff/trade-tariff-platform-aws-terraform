@@ -1,3 +1,5 @@
+mock_provider "aws" {}
+
 run "ip_sets_rule_created_with_expected_shape" {
   command = plan
 

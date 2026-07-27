@@ -1,3 +1,5 @@
+mock_provider "aws" {}
+
 run "bot_control_zero_excluded_prefixes_creates_no_allow_rule" {
   command = plan
 

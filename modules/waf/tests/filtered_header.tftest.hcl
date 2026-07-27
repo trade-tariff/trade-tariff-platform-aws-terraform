@@ -1,3 +1,5 @@
+mock_provider "aws" {}
+
 run "filtered_header_fields_not_inverted" {
   command = plan
 

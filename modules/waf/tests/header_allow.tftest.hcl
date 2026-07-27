@@ -1,3 +1,5 @@
+mock_provider "aws" {}
+
 run "header_allow_matches_values_by_name" {
   command = plan
 

@@ -568,7 +568,7 @@ resource "aws_wafv2_web_acl_rule" "managed" {
           each.value.excluded_rules,
           [
             for exception in var.managed_rule_path_exceptions : exception.managed_rule
-            if exception.managed_rule == each.key
+            if exception.managed_rule_group == each.key
           ],
         ))
         content {

@@ -1,3 +1,5 @@
+mock_provider "aws" {}
+
 run "host_path_allow_created_with_expected_shape" {
   command = plan
 
