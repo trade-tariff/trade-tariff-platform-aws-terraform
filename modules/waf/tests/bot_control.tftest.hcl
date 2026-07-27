@@ -3,7 +3,7 @@ run "bot_control_zero_excluded_prefixes_creates_no_allow_rule" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     bot_control_rule = {
       priority                = 70
@@ -33,10 +33,10 @@ run "bot_control_allow_rule_priority_tracks_bot_control_priority" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     bot_control_rule = {
-      priority                = 55  # deliberately non-default, to prove it's computed not hardcoded
+      priority                = 55 # deliberately non-default, to prove it's computed not hardcoded
       override_action         = "none"
       inspection_level        = "COMMON"
       enable_machine_learning = false

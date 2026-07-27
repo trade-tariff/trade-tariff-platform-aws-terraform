@@ -3,7 +3,7 @@ run "ip_rate_url_based_created_with_expected_shape" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     ip_rate_url_based_rules = [
       {
@@ -38,7 +38,7 @@ run "ip_rate_url_based_multiple_rules_get_distinct_priorities" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     ip_rate_url_based_rules = [
       {
@@ -71,7 +71,7 @@ run "ip_rate_url_based_action_count_omits_block_config" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     ip_rate_url_based_rules = [
       {
@@ -100,9 +100,9 @@ run "ip_rate_url_based_empty_list_creates_nothing" {
   command = plan
 
   variables {
-    name                     = "test-waf"
-    scope                    = "REGIONAL"
-    ip_rate_url_based_rules  = []
+    name                    = "test-waf"
+    scope                   = "CLOUDFRONT"
+    ip_rate_url_based_rules = []
   }
 
   assert {

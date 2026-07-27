@@ -218,7 +218,7 @@ variable "header_allow_values" {
   type        = map(string)
   sensitive   = true
   default     = {}
-  
+
   validation {
     condition = alltrue([
       for r in var.header_allow_rules : contains(keys(var.header_allow_values), r.name)

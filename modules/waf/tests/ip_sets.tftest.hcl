@@ -3,7 +3,7 @@ run "ip_sets_rule_created_with_expected_shape" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     ip_sets_rule = [
       {
@@ -30,9 +30,9 @@ run "ip_sets_rule_empty_list_creates_nothing" {
   command = plan
 
   variables {
-    name          = "test-waf"
-    scope         = "REGIONAL"
-    ip_sets_rule  = []
+    name         = "test-waf"
+    scope        = "CLOUDFRONT"
+    ip_sets_rule = []
   }
 
   assert {

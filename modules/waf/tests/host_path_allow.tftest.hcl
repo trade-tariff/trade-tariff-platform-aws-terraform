@@ -3,7 +3,7 @@ run "host_path_allow_created_with_expected_shape" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     host_path_allow_rules = [
       {
@@ -37,7 +37,7 @@ run "host_path_allow_uses_lowercase_host_header" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     host_path_allow_rules = [
       {
@@ -63,9 +63,9 @@ run "host_path_allow_empty_list_creates_nothing" {
   command = plan
 
   variables {
-    name                   = "test-waf"
-    scope                  = "REGIONAL"
-    host_path_allow_rules  = []
+    name                  = "test-waf"
+    scope                 = "CLOUDFRONT"
+    host_path_allow_rules = []
   }
 
   assert {

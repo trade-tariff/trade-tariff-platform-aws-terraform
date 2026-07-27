@@ -3,7 +3,7 @@ run "filtered_header_fields_not_inverted" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     filtered_header_rule = {
       priority     = 100

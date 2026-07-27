@@ -3,7 +3,7 @@ run "header_allow_matches_values_by_name" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     header_allow_rules = [
       { name = "allow-mcp-server", priority = 0, header_name = "x-mcp-token" }
@@ -24,12 +24,12 @@ run "header_allow_missing_value_fails_validation" {
 
   variables {
     name  = "test-waf"
-    scope = "REGIONAL"
+    scope = "CLOUDFRONT"
 
     header_allow_rules = [
       { name = "allow-mcp-server", priority = 0, header_name = "x-mcp-token" }
     ]
-    header_allow_values = {}  # deliberately missing the matching entry
+    header_allow_values = {} # deliberately missing the matching entry
   }
 
   expect_failures = [

@@ -151,47 +151,13 @@ resource "aws_wafv2_web_acl_association" "this" {
   web_acl_arn  = aws_wafv2_web_acl.this.arn
 }
 
-resource "aws_wafv2_web_acl_rule" "managed" {
-  for_each = var.managed_rules
-
-  web_acl_arn = aws_wafv2_web_acl.this.arn
-  name        = each.key
-  priority    = each.value.priority
-
-  override_action {
-    dynamic "none" {
-      for_each = each.value.override_action == "none" ? [1] : []
-      content {}
-    }
-    dynamic "count" {
-      for_each = each.value.override_action == "count" ? [1] : []
-      content {}
-    }
-  }
-
-  statement {
-    managed_rule_group_statement {
-      name        = each.key
-      vendor_name = "AWS"
-
-      dynamic "rule_action_override" {
-        for_each = toset(each.value.excluded_rules)
-        content {
-          name = rule_action_override.value
-          action_to_use {
-            count {}
-          }
-        }
-      }
-    }
-  }
-
-  visibility_config {
-    cloudwatch_metrics_enabled = true
-    metric_name                = each.key
-    sampled_requests_enabled   = true
-  }
-}
+# ---------------------------------------------------------------------
+# Standalone rule resources for rules migrated from inline Web ACL rules.
+# These are managed independently of the Web ACL resource to allow
+# for more granular control over rule lifecycle and to avoid Terraform
+# attempting to delete and recreate rules unnecessarily when the Web ACL
+# is updated.
+# ---------------------------------------------------------------------
 
 resource "aws_wafv2_web_acl_rule" "ip_sets" {
   for_each = { for r in var.ip_sets_rule : r.name => r }
@@ -451,20 +417,191 @@ resource "aws_wafv2_web_acl_rule" "header_allow" {
   }
 }
 
-# INVARIANT: This rule's priority MUST remain lower than every other ACL rule.
-#
-# `action { allow {} }` stops WAF evaluation completely. Excluded paths
-# therefore bypass all higher-priority rules, not just Bot Control.
-#
-# This is safe only while Bot Control is the highest-priority rule. If a
-# higher-priority rule is added later, excluded paths will silently bypass
-# it as well. AWS WAFv2 cannot scope this exclusion to Bot Control alone
-# because managed rule group `scope_down_statement` does not support the
-# required logical statements. See HMRC-2529.
-#
-# Enforced by the "bot control remains highest priority rule" test in
-# `modules/waf/tests/bot_control.tftest.hcl`.
+resource "aws_wafv2_web_acl_rule" "host_path_allow" {
+  for_each = {
+    for rule in var.host_path_allow_rules : rule.name => rule
+  }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    allow {}
+  }
+
+  statement {
+    and_statement {
+      statement {
+        byte_match_statement {
+          positional_constraint = "EXACTLY"
+          search_string         = each.value.host
+
+          field_to_match {
+            single_header {
+              name = "host"
+            }
+          }
+
+          text_transformation {
+            priority = 0
+            type     = "LOWERCASE"
+          }
+        }
+      }
+
+      statement {
+        byte_match_statement {
+          positional_constraint = each.value.positional_constraint
+          search_string         = each.value.path_search_string
+
+          field_to_match {
+            uri_path {}
+          }
+
+          text_transformation {
+            priority = 0
+            type     = "NONE"
+          }
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
+
+resource "aws_wafv2_web_acl_rule" "managed_rule_path_exceptions" {
+  for_each = {
+    for exception in var.managed_rule_path_exceptions : exception.name => exception
+  }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    block {}
+  }
+
+  statement {
+    and_statement {
+      statement {
+        label_match_statement {
+          key   = each.value.label
+          scope = "LABEL"
+        }
+      }
+      statement {
+        not_statement {
+          statement {
+            and_statement {
+              statement {
+                byte_match_statement {
+                  positional_constraint = "EXACTLY"
+                  search_string         = each.value.excluded_uri_path
+                  field_to_match {
+                    uri_path {}
+                  }
+                  text_transformation {
+                    priority = 0
+                    type     = "NONE"
+                  }
+                }
+              }
+              statement {
+                byte_match_statement {
+                  positional_constraint = "EXACTLY"
+                  search_string         = each.value.excluded_http_method
+                  field_to_match {
+                    method {}
+                  }
+                  text_transformation {
+                    priority = 0
+                    type     = "NONE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
+
+resource "aws_wafv2_web_acl_rule" "managed" {
+  for_each = var.managed_rules
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.key
+  priority    = each.value.priority
+
+  override_action {
+    dynamic "none" {
+      for_each = each.value.override_action == "none" ? [1] : []
+      content {}
+    }
+    dynamic "count" {
+      for_each = each.value.override_action == "count" ? [1] : []
+      content {}
+    }
+  }
+
+  statement {
+    managed_rule_group_statement {
+      name        = each.key
+      vendor_name = "AWS"
+
+      dynamic "rule_action_override" {
+        for_each = toset(concat(
+          each.value.excluded_rules,
+          [
+            for exception in var.managed_rule_path_exceptions : exception.managed_rule
+            if exception.managed_rule == each.key
+          ],
+        ))
+        content {
+          name = rule_action_override.value
+          action_to_use {
+            count {}
+          }
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.key
+    sampled_requests_enabled   = true
+  }
+}
+
 resource "aws_wafv2_web_acl_rule" "allow_bot_control_excluded_paths" {
+  # INVARIANT: This rule's priority MUST remain lower than every other ACL rule.
+  #
+  # `action { allow {} }` stops WAF evaluation completely. Excluded paths
+  # therefore bypass all higher-priority rules, not just Bot Control.
+  #
+  # This is safe only while Bot Control is the highest-priority rule. If a
+  # higher-priority rule is added later, excluded paths will silently bypass
+  # it as well. AWS WAFv2 cannot scope this exclusion to Bot Control alone
+  # because managed rule group `scope_down_statement` does not support the
+  # required logical statements. See HMRC-2529.
+  #
+  # Enforced by the "bot control remains highest priority rule" test in
+  # `modules/waf/tests/bot_control.tftest.hcl`.
   for_each = var.bot_control_rule != null && length(var.bot_control_rule.excluded_uri_prefixes) > 0 ? {
     "allow-bot-control-excluded-paths" = var.bot_control_rule
   } : {}
@@ -553,64 +690,6 @@ resource "aws_wafv2_web_acl_rule" "bot_control" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "AWSManagedRulesBotControlRuleSet"
-    sampled_requests_enabled   = true
-  }
-}
-
-resource "aws_wafv2_web_acl_rule" "host_path_allow" {
-  for_each = {
-    for rule in var.host_path_allow_rules : rule.name => rule
-  }
-
-  web_acl_arn = aws_wafv2_web_acl.this.arn
-  name        = each.value.name
-  priority    = each.value.priority
-
-  action {
-    allow {}
-  }
-
-  statement {
-    and_statement {
-      statement {
-        byte_match_statement {
-          positional_constraint = "EXACTLY"
-          search_string         = each.value.host
-
-          field_to_match {
-            single_header {
-              name = "host"
-            }
-          }
-
-          text_transformation {
-            priority = 0
-            type     = "LOWERCASE"
-          }
-        }
-      }
-
-      statement {
-        byte_match_statement {
-          positional_constraint = each.value.positional_constraint
-          search_string         = each.value.path_search_string
-
-          field_to_match {
-            uri_path {}
-          }
-
-          text_transformation {
-            priority = 0
-            type     = "NONE"
-          }
-        }
-      }
-    }
-  }
-
-  visibility_config {
-    cloudwatch_metrics_enabled = true
-    metric_name                = each.value.name
     sampled_requests_enabled   = true
   }
 }
