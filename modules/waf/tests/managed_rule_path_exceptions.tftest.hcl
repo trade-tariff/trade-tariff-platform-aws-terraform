@@ -1,11 +1,4 @@
-provider "aws" {
-  region                      = "us-east-1"
-  access_key                  = "test"
-  secret_key                  = "test"
-  skip_credentials_validation = true
-  skip_metadata_api_check     = true
-  skip_requesting_account_id  = true
-}
+mock_provider "aws" {}
 
 run "managed_rule_path_exception_counts_and_reblocks" {
   command = plan
@@ -29,10 +22,7 @@ run "managed_rule_path_exception_counts_and_reblocks" {
 
   assert {
     condition = length([
-      for override in one([
-        for rule in aws_wafv2_web_acl.this.rule : rule
-        if rule.name == "AWSManagedRulesSQLiRuleSet"
-      ]).statement[0].managed_rule_group_statement[0].rule_action_override : override
+      for override in aws_wafv2_web_acl_rule.managed["AWSManagedRulesSQLiRuleSet"].statement[0].managed_rule_group_statement[0].rule_action_override : override
       if override.name == "SQLi_BODY" &&
       length(override.action_to_use[0].count) == 1
     ]) == 1
@@ -41,22 +31,17 @@ run "managed_rule_path_exception_counts_and_reblocks" {
   }
 
   assert {
-    condition = length([
-      for rule in aws_wafv2_web_acl.this.rule : rule
-      if rule.name == "block-sqli-body-except-search" &&
-      rule.priority == 55 &&
-      length(rule.action[0].block) == 1
-    ]) == 1
+    condition = (
+      aws_wafv2_web_acl_rule.managed_rule_path_exceptions["block-sqli-body-except-search"].priority == 55 &&
+      length(aws_wafv2_web_acl_rule.managed_rule_path_exceptions["block-sqli-body-except-search"].action[0].block) == 1
+    )
 
     error_message = "The exception must add a blocking rule at priority 55."
   }
 
   assert {
     condition = length([
-      for statement in one([
-        for rule in aws_wafv2_web_acl.this.rule : rule
-        if rule.name == "block-sqli-body-except-search"
-      ]).statement[0].and_statement[0].statement : statement
+      for statement in aws_wafv2_web_acl_rule.managed_rule_path_exceptions["block-sqli-body-except-search"].statement[0].and_statement[0].statement : statement
       if try(statement.label_match_statement[0].scope, null) == "LABEL" &&
       try(statement.label_match_statement[0].key, null) == "awswaf:managed:aws:sql-database:SQLi_Body"
     ]) == 1
@@ -66,10 +51,7 @@ run "managed_rule_path_exception_counts_and_reblocks" {
 
   assert {
     condition = length([
-      for statement in one([
-        for rule in aws_wafv2_web_acl.this.rule : rule
-        if rule.name == "block-sqli-body-except-search"
-      ]).statement[0].and_statement[0].statement : statement
+      for statement in aws_wafv2_web_acl_rule.managed_rule_path_exceptions["block-sqli-body-except-search"].statement[0].and_statement[0].statement : statement
       if length([
         for exception_statement in try(statement.not_statement[0].statement[0].and_statement[0].statement, []) : exception_statement
         if try(exception_statement.byte_match_statement[0].positional_constraint, null) == "EXACTLY" &&
@@ -83,10 +65,7 @@ run "managed_rule_path_exception_counts_and_reblocks" {
 
   assert {
     condition = length([
-      for statement in one([
-        for rule in aws_wafv2_web_acl.this.rule : rule
-        if rule.name == "block-sqli-body-except-search"
-      ]).statement[0].and_statement[0].statement : statement
+      for statement in aws_wafv2_web_acl_rule.managed_rule_path_exceptions["block-sqli-body-except-search"].statement[0].and_statement[0].statement : statement
       if length([
         for exception_statement in try(statement.not_statement[0].statement[0].and_statement[0].statement, []) : exception_statement
         if try(exception_statement.byte_match_statement[0].search_string, null) == "POST" &&
