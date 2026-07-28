@@ -128,6 +128,11 @@ module "waf" {
 
 }
 
+import {
+  to = module.waf.aws_wafv2_web_acl_rule.bot_control["AWSManagedRulesBotControlRuleSet"]
+  id = "${module.waf.web_acl_id},AWSManagedRulesBotControlRuleSet"
+}
+
 resource "aws_cloudwatch_log_group" "waf_logs" {
   provider          = aws.us_east_1
   name              = "aws-waf-logs-tariff-${var.environment}"
