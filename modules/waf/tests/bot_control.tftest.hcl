@@ -11,7 +11,7 @@ run "bot_control_zero_excluded_prefixes_creates_no_allow_rule" {
       priority                = 70
       override_action         = "none"
       inspection_level        = "COMMON"
-      enable_machine_learning = false
+      enable_machine_learning = null
       excluded_uri_prefixes   = []
       captcha_override_rules  = []
     }
@@ -30,6 +30,26 @@ run "bot_control_zero_excluded_prefixes_creates_no_allow_rule" {
   }
 }
 
+run "bot_control_rejects_false_machine_learning" {
+  command = plan
+
+  variables {
+    name  = "test-waf"
+    scope = "CLOUDFRONT"
+
+    bot_control_rule = {
+      priority                = 70
+      override_action         = "none"
+      inspection_level        = "COMMON"
+      enable_machine_learning = false
+      excluded_uri_prefixes   = []
+      captcha_override_rules  = []
+    }
+  }
+
+  expect_failures = [var.bot_control_rule]
+}
+
 run "bot_control_allow_rule_priority_tracks_bot_control_priority" {
   command = plan
 
@@ -41,7 +61,7 @@ run "bot_control_allow_rule_priority_tracks_bot_control_priority" {
       priority                = 55 # deliberately non-default, to prove it's computed not hardcoded
       override_action         = "none"
       inspection_level        = "COMMON"
-      enable_machine_learning = false
+      enable_machine_learning = null
       excluded_uri_prefixes   = ["/api/", "/healthcheck"]
       captcha_override_rules  = []
     }
@@ -69,7 +89,7 @@ run "bot_control_remains_highest_priority_rule_in_defaults" {
       priority                = 70
       override_action         = "none"
       inspection_level        = "COMMON"
-      enable_machine_learning = false
+      enable_machine_learning = null
       excluded_uri_prefixes   = ["/uk/api/", "/xi/api/", "/api/"]
       captcha_override_rules  = []
     }

@@ -61,7 +61,7 @@ module "waf" {
     priority                = 70
     override_action         = "none"
     inspection_level        = "COMMON"
-    enable_machine_learning = false
+    enable_machine_learning = null
     excluded_uri_prefixes   = ["/uk/api/", "/xi/api/", "/api/", "/healthcheck"]
     captcha_override_rules  = []
   }

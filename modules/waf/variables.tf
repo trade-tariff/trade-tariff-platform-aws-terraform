@@ -174,12 +174,12 @@ variable "default_action" {
 }
 
 variable "bot_control_rule" {
-  description = "Configuration for the AWS Bot Control managed rule group. Supports targeted inspection with ML and a scope-down statement to exclude URI path prefixes from evaluation. excluded_uri_prefixes must have 0 or at least 2 entries (or_statement requires a minimum of 2 statements). captcha_override_rules lists rule names whose default CAPTCHA action should be downgraded to a silent JS challenge."
+  description = "Configuration for the AWS Bot Control managed rule group. Set enable_machine_learning to true to enable it or null to disable it; false is rejected because of hashicorp/terraform-provider-aws#48446. excluded_uri_prefixes must have 0 or at least 2 entries (or_statement requires a minimum of 2 statements). captcha_override_rules lists rule names whose default CAPTCHA action should be downgraded to a silent JS challenge."
   type = object({
     priority                = number
     override_action         = string
     inspection_level        = string
-    enable_machine_learning = optional(bool, true)
+    enable_machine_learning = optional(bool)
     excluded_uri_prefixes   = list(string)
     captcha_override_rules  = optional(list(string), [])
   })
@@ -188,6 +188,11 @@ variable "bot_control_rule" {
   validation {
     condition     = var.bot_control_rule == null || length(var.bot_control_rule.excluded_uri_prefixes) != 1
     error_message = "excluded_uri_prefixes must contain 0 or at least 2 entries — or_statement requires a minimum of 2 statements."
+  }
+
+  validation {
+    condition     = var.bot_control_rule == null || var.bot_control_rule.enable_machine_learning != false
+    error_message = "enable_machine_learning must be true or null; false triggers hashicorp/terraform-provider-aws#48446."
   }
 }
 
