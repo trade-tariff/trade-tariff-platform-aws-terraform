@@ -16,6 +16,8 @@ env:
   TERRAGRUNT_VERSION: 0.78.1
   # TODO: Remove this when autero1/action-terragrunt@v3 is updated to use node 24
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  # Required for plan/apply in all environments so the e2e WAF allow rule is not planned for destroy.
+  TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
 
 jobs:
   lint:
@@ -77,9 +79,6 @@ jobs:
 
   plan-development:
     environment: development
-    env:
-      TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.0
@@ -127,8 +126,6 @@ jobs:
       TERRAGRUNT_NON_INTERACTIVE: true
       TF_INPUT: false
       TF_IN_AUTOMATION: 1
-      TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.0
