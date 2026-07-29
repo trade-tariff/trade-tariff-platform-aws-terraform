@@ -32,6 +32,8 @@ resource "aws_lb_target_group" "trade_tariff_https_target_groups" {
   vpc_id               = var.vpc_id
   deregistration_delay = 20
 
+  load_balancing_algorithm_type = "least_outstanding_requests"
+
   health_check {
     enabled             = true
     interval            = 30
