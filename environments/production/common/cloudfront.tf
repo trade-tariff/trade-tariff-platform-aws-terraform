@@ -33,7 +33,8 @@ module "cdn" {
         https_port             = 443
         origin_protocol_policy = "https-only"
         origin_ssl_protocols   = ["TLSv1.2"]
-        origin_read_timeout    = 160
+        # AWS default max response timeout is 120s without a service quota increase.
+        origin_read_timeout = 120
       }
 
       custom_header = [{

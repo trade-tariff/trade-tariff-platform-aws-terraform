@@ -6,9 +6,9 @@ module "alb" {
   public_subnet_ids     = data.terraform_remote_state.base.outputs.public_subnet_ids
   vpc_id                = data.terraform_remote_state.base.outputs.vpc_id
   domain_name           = var.domain_name
-  # Keep above CloudFront origin_read_timeout so the ALB does not close
+  # Keep at/above CloudFront origin_read_timeout so the ALB does not close
   # long-running guided-search responses first.
-  idle_timeout = 160
+  idle_timeout = 120
 
   custom_header = {
     name  = random_password.origin_header[0].result
