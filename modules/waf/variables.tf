@@ -106,6 +106,11 @@ variable "ip_rate_based_rule" {
   })
   description = "A rate-based rule tracks the rate of requests for each originating IP address, and triggers the rule action when the rate exceeds a limit that you specify on the number of requests in any 5-minute time span"
   default     = null
+
+  validation {
+    condition     = var.ip_rate_based_rule == null || var.ip_rate_based_rule.priority >= 1
+    error_message = "ip_rate_based_rule.priority must be >= 1, since allow_assets_from_rate_limit reserves priority - 1 immediately ahead of it."
+  }
 }
 
 variable "ip_rate_url_based_rules" {
