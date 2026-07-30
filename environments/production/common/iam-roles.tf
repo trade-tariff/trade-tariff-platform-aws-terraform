@@ -464,3 +464,25 @@ resource "aws_iam_role_policy_attachment" "ecs_task_cleanup_ci_policy_attachment
   role       = aws_iam_role.ci_ecs_task_cleanup_role.name
   policy_arn = aws_iam_policy.ci_ecs_task_cleanup_policy.arn
 }
+
+resource "aws_iam_role" "rds_enhanced_monitoring" {
+  name = "RDS-Enhanced-Monitoring-Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "://amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "rds_enhanced_monitoring_attach" {
+  role       = aws_iam_role.rds_enhanced_monitoring.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+}

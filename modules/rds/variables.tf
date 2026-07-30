@@ -44,6 +44,19 @@ variable "database_insights_mode" {
   default     = "standard"
 }
 
+variable "monitoring_role_arn" {
+  description = "The ARN for the IAM role that permits RDS to send metrics to CloudWatch Logs."
+  type        = string
+  default     = null
+}
+
+variable "monitoring_interval" {
+  description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. Default is 60 seconds."
+  type        = number
+  default     = 0 # 0 completely disables Enhanced Monitoring
+}
+
+
 variable "security_group_ids" {
   description = "A list of security group IDs to associate with this RDS instance."
   type        = list(string)
