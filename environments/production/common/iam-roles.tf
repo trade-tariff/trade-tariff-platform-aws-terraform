@@ -475,7 +475,7 @@ resource "aws_iam_role" "rds_enhanced_monitoring" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          Service = "://amazonaws.com"
+          Service = "monitoring.rds.amazonaws.com"
         }
       }
     ]
