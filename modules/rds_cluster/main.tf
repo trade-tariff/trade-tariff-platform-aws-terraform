@@ -44,8 +44,6 @@ resource "aws_rds_cluster" "this" {
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
   performance_insights_kms_key_id       = var.performance_insights_enabled ? try(aws_kms_key.this[0].arn, var.kms_key_id) : null
   database_insights_mode                = var.database_insights_mode
-  monitoring_interval                   = var.monitoring_interval
-  monitoring_role_arn                   = var.monitoring_role_arn
 
   tags = var.tags
 }
@@ -60,6 +58,9 @@ resource "aws_rds_cluster_instance" "this" {
   db_subnet_group_name = var.create_subnet_group ? aws_db_subnet_group.rds_private_subnet[0].name : var.db_subnet_group_name
 
   instance_class = var.instance_class
+
+  monitoring_interval = var.monitoring_interval
+  monitoring_role_arn = var.monitoring_role_arn
 
   auto_minor_version_upgrade = true
   # apply db modifications during maintenance windows only
