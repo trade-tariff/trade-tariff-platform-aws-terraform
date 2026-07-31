@@ -10,7 +10,7 @@ module "waf" {
 
   ip_rate_based_rule = {
     name      = "ratelimiting"
-    priority  = 1
+    priority  = 2
     rpm_limit = var.waf_rpm_limit
     action    = "block"
     custom_response = {
@@ -34,7 +34,7 @@ module "waf" {
     nonsensitive(var.WAF_E2E_SECRET_TOKEN != "") ? [
       {
         name        = "allow-e2e-tests"
-        priority    = 7
+        priority    = 8
         header_name = "x-waf-bypass"
       }
     ] : []
@@ -69,7 +69,7 @@ module "waf" {
   ip_rate_url_based_rules = [
     {
       name                  = "rate-limit-commodity-pages"
-      priority              = 2
+      priority              = 3
       limit                 = var.waf_page_rpm_limit
       action                = "block"
       search_string         = "/commodities/"
@@ -77,7 +77,7 @@ module "waf" {
     },
     {
       name                  = "rate-limit-heading-pages"
-      priority              = 3
+      priority              = 4
       limit                 = var.waf_page_rpm_limit
       action                = "block"
       search_string         = "/headings/"
@@ -85,7 +85,7 @@ module "waf" {
     },
     {
       name                  = "rate-limit-chapter-pages"
-      priority              = 4
+      priority              = 5
       limit                 = var.waf_page_rpm_limit
       action                = "block"
       search_string         = "/chapters/"
@@ -93,7 +93,7 @@ module "waf" {
     },
     {
       name                  = "rate-limit-subheading-pages"
-      priority              = 5
+      priority              = 6
       limit                 = var.waf_page_rpm_limit
       action                = "block"
       search_string         = "/subheadings/"
@@ -101,7 +101,7 @@ module "waf" {
     },
     {
       name                  = "rate-limit-search"
-      priority              = 6
+      priority              = 7
       limit                 = var.waf_search_rpm_limit
       action                = "block"
       search_string         = "/search"
@@ -112,14 +112,14 @@ module "waf" {
   uri_path_match_rules = [
     {
       name                  = "allow-healthcheck"
-      priority              = 8
+      priority              = 9
       action                = "allow"
       search_string         = "/healthcheck"
       positional_constraint = "EXACTLY"
     },
     {
       name                  = "allow-mycommodities-path"
-      priority              = 9
+      priority              = 10
       action                = "allow"
       search_string         = "/subscriptions/mycommodities"
       positional_constraint = "CONTAINS"

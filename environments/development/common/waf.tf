@@ -10,7 +10,7 @@ module "waf" {
 
   ip_rate_based_rule = {
     name      = "ratelimiting"
-    priority  = 1
+    priority  = 2
     rpm_limit = var.waf_rpm_limit
     action    = "block"
     custom_response = {
@@ -34,7 +34,7 @@ module "waf" {
     nonsensitive(var.WAF_E2E_SECRET_TOKEN != "") ? [
       {
         name        = "allow-e2e-tests"
-        priority    = 7
+        priority    = 8
         header_name = "x-waf-bypass"
       }
     ] : []
@@ -60,14 +60,14 @@ module "waf" {
   uri_path_match_rules = [
     {
       name                  = "allow-healthcheck"
-      priority              = 8
+      priority              = 9
       action                = "allow"
       search_string         = "/healthcheck"
       positional_constraint = "EXACTLY"
     },
     {
       name                  = "allow-mycommodities-path"
-      priority              = 9
+      priority              = 10
       action                = "allow"
       search_string         = "/subscriptions/mycommodities"
       positional_constraint = "CONTAINS"
