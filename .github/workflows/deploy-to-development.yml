@@ -28,7 +28,7 @@ jobs:
       TG_PROVIDER_CACHE: 1
     steps:
       - run: mkdir -p "$TF_PLUGIN_CACHE_DIR"
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
 
       - uses: actions/cache@v6.1.0
         with:
@@ -81,7 +81,7 @@ jobs:
     environment: development
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
 
       - uses: aws-actions/configure-aws-credentials@v6.2.3
         with:
@@ -128,7 +128,7 @@ jobs:
       TF_IN_AUTOMATION: 1
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
 
       - uses: aws-actions/configure-aws-credentials@v6.2.3
         with:
@@ -172,7 +172,7 @@ jobs:
       needs: apply-development
       if: always()
       steps:
-        - uses: actions/checkout@v7.0.0
+        - uses: actions/checkout@v7.0.1
         - uses: trade-tariff/trade-tariff-tools/.github/actions/slack-notify@main
           with:
             webhook: ${{ secrets.SLACK_WEBHOOK }}
@@ -186,7 +186,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
 
       - uses: aws-actions/configure-aws-credentials@v6.2.3
         with:
@@ -228,7 +228,7 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
 
       - uses: aws-actions/configure-aws-credentials@v6.2.3
         with:
