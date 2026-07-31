@@ -54,6 +54,8 @@ No modules.
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type for the database. See https://aws.amazon.com/rds/instance-types/ | `string` | n/a | yes |
 | <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | The time window (in UTC) to perform maintenance in. Syntax: `ddd:hh24:mi-ddd:hh24:mi`, eg: `Mon:00:00-Mon:01:30`. | `string` | `"Fri:23:00-Sat:01:00"` | no |
 | <a name="input_max_allocated_storage"></a> [max\_allocated\_storage](#input\_max\_allocated\_storage) | Maximum allocated storage for the instance. Defaults to `null` (no autoscaling). | `number` | `1` | no |
+| <a name="input_monitoring_interval"></a> [monitoring\_interval](#input\_monitoring\_interval) | The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. Default is 60 seconds. | `number` | `0` | no |
+| <a name="input_monitoring_role_arn"></a> [monitoring\_role\_arn](#input\_monitoring\_role\_arn) | The ARN for the IAM role that permits RDS to send metrics to CloudWatch Logs. | `string` | `null` | no |
 | <a name="input_multi_az"></a> [multi\_az](#input\_multi\_az) | If the RDS instance is multi-AZ. | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the database. | `string` | n/a | yes |
 | <a name="input_performance_insights_enabled"></a> [performance\_insights\_enabled](#input\_performance\_insights\_enabled) | Whether to enable Performance Insights. Defaults to `true`. | `bool` | `false` | no |

@@ -119,6 +119,8 @@ module "postgres_aurora" {
   performance_insights_enabled          = true
   performance_insights_retention_period = 465 # minimum required for Advanced
   database_insights_mode                = "advanced"
+  monitoring_interval                   = 60
+  monitoring_role_arn                   = aws_iam_role.rds_enhanced_monitoring.arn
 
   backup_retention_period = 30
 

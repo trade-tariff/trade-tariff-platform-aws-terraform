@@ -58,8 +58,10 @@ No modules.
 | <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | The time window (in UTC) to perform maintenance in. Syntax: `ddd:hh24:mi-ddd:hh24:mi`, eg: `Mon:00:00-Mon:01:30`. | `string` | `"Fri:23:00-Sat:01:00"` | no |
 | <a name="input_max_capacity"></a> [max\_capacity](#input\_max\_capacity) | Maximum capacity (ACUs). Defaults to `256`. | `number` | `256` | no |
 | <a name="input_min_capacity"></a> [min\_capacity](#input\_min\_capacity) | Minimum capacity (ACUs). Defaults to `0`. | `number` | `0` | no |
+| <a name="input_monitoring_interval"></a> [monitoring\_interval](#input\_monitoring\_interval) | The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. Default is 60 seconds. | `number` | `0` | no |
+| <a name="input_monitoring_role_arn"></a> [monitoring\_role\_arn](#input\_monitoring\_role\_arn) | The ARN for the IAM role that permits RDS to send metrics to CloudWatch Logs. | `string` | `null` | no |
 | <a name="input_performance_insights_enabled"></a> [performance\_insights\_enabled](#input\_performance\_insights\_enabled) | Whether to enable Performance Insights. Defaults to `true`. | `bool` | `false` | no |
-| <a name="input_performance_insights_retention_period"></a> [performance\_insights\_retention\_period](#input\_performance\_insights\_retention\_period) | Amount of time, in days, (minimum 7, maximum 731, or any multiple of 31) to retain performance insights data. | `number` | `31` | no |
+| <a name="input_performance_insights_retention_period"></a> [performance\_insights\_retention\_period](#input\_performance\_insights\_retention\_period) | Amount of time, in days, (minimum 7, maximum 731, or any multiple of 31) to retain performance insights data. | `number` | `7` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | A list of private subnet IDs to associate with this cluster. | `list(string)` | n/a | yes |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | A list of security group IDs to associate with this cluster. | `list(string)` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources in the module. | `map(any)` | `{}` | no |

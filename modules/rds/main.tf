@@ -32,6 +32,8 @@ resource "aws_db_instance" "this" {
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
   performance_insights_kms_key_id       = aws_kms_key.this.arn
   database_insights_mode                = var.database_insights_mode
+  monitoring_interval                   = var.monitoring_interval
+  monitoring_role_arn                   = var.monitoring_role_arn
 
   parameter_group_name = aws_db_parameter_group.postgres[0].name
 

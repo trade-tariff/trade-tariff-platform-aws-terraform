@@ -28,8 +28,6 @@ module "postgres_flagsmith" {
 
   secret_kms_key_arn = aws_kms_key.secretsmanager_kms_key.arn
 
-  performance_insights_enabled = true
-
   depends_on = [
     aws_security_group.flagsmith_rds
   ]

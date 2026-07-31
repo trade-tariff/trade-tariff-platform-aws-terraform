@@ -119,13 +119,25 @@ variable "performance_insights_enabled" {
 variable "performance_insights_retention_period" {
   description = "Amount of time, in days, (minimum 7, maximum 731, or any multiple of 31) to retain performance insights data."
   type        = number
-  default     = 31
+  default     = 7
 }
 
 variable "database_insights_mode" {
   description = "The mode of Database Insights that is enabled for the instance. Valid values: standard, advanced."
   type        = string
   default     = "standard"
+}
+
+variable "monitoring_role_arn" {
+  description = "The ARN for the IAM role that permits RDS to send metrics to CloudWatch Logs."
+  type        = string
+  default     = null
+}
+
+variable "monitoring_interval" {
+  description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. Default is 60 seconds."
+  type        = number
+  default     = 0 # 0 completely disables Enhanced Monitoring
 }
 
 variable "instance_identifiers" {
