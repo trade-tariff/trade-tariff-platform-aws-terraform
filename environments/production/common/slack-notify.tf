@@ -31,8 +31,7 @@ module "notify_slack_observability" {
 }
 
 locals {
-  alert_actions               = var.enable_sns_alerts ? [module.notify_slack.slack_topic_arn] : []
-  observability_alert_actions = var.enable_sns_alerts ? [module.notify_slack_observability.slack_topic_arn] : []
+  alert_actions = var.enable_sns_alerts ? [module.notify_slack.slack_topic_arn] : []
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
@@ -50,8 +49,8 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   alarm_description   = "Too many HTTP 5xx errors in ${var.environment} environment for target group ${each.value.name}"
   treat_missing_data  = "notBreaching"
 
-  alarm_actions = local.observability_alert_actions
-  ok_actions    = local.observability_alert_actions
+  alarm_actions = local.alert_actions
+  ok_actions    = local.alert_actions
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -74,8 +73,8 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   alarm_description   = "Long response times in ${var.environment} environment for target group ${each.value.name}"
   treat_missing_data  = "notBreaching"
 
-  alarm_actions = local.observability_alert_actions
-  ok_actions    = local.observability_alert_actions
+  alarm_actions = local.alert_actions
+  ok_actions    = local.alert_actions
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
