@@ -50,7 +50,7 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   treat_missing_data  = "notBreaching"
 
   alarm_actions = local.alert_actions
-  ok_actions    = local.alert_actions
+
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   treat_missing_data  = "notBreaching"
 
   alarm_actions = local.alert_actions
-  ok_actions    = local.alert_actions
+
 
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
@@ -105,7 +105,7 @@ resource "aws_cloudwatch_metric_alarm" "lambds_errors" {
   treat_missing_data  = "notBreaching"
 
   alarm_actions = local.alert_actions
-  ok_actions    = local.alert_actions
+
 
   dimensions = {
     FunctionName = each.value
@@ -139,7 +139,6 @@ resource "aws_cloudwatch_metric_alarm" "slack_notify_self_monitor" {
   }
 
   alarm_actions = var.enable_sns_alerts ? [aws_sns_topic.critical_email_alerts.arn] : []
-  ok_actions    = var.enable_sns_alerts ? [aws_sns_topic.critical_email_alerts.arn] : []
 }
 
 #----------------------------------------------------------#
@@ -154,7 +153,7 @@ resource "aws_cloudwatch_metric_alarm" "apigw_5xx_error_rate" {
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching"
   alarm_actions       = local.alert_actions
-  ok_actions          = local.alert_actions
+
 
   metric_query {
     id          = "errors"
@@ -205,7 +204,7 @@ resource "aws_cloudwatch_metric_alarm" "apigw_p99_latency" {
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching"
   alarm_actions       = local.alert_actions
-  ok_actions          = local.alert_actions
+
 
   metric_name        = "Latency"
   namespace          = "AWS/ApiGateway"
@@ -234,7 +233,7 @@ resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching"
   alarm_actions       = local.alert_actions
-  ok_actions          = local.alert_actions
+
 
   metric_name = "DatabaseMemoryUsagePercentage"
   namespace   = "AWS/Elasticache"
