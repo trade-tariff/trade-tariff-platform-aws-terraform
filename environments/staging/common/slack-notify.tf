@@ -204,58 +204,6 @@ resource "aws_cloudwatch_metric_alarm" "apigw_p99_latency" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "apigw_cache_hit_ratio" {
-  count               = var.environment == "production" ? 1 : 0
-  alarm_name          = "cache-hit-ratio-${module.gateway.rest_api_name}"
-  alarm_description   = "Cache hit ratio < 50% for 15 minutes"
-  comparison_operator = "LessThanThreshold"
-  threshold           = 50
-  evaluation_periods  = 15
-  datapoints_to_alarm = 15
-  treat_missing_data  = "breaching"
-  alarm_actions       = local.alert_actions
-  ok_actions          = local.alert_actions
-
-  metric_query {
-    id = "hits"
-
-    metric {
-      namespace   = "AWS/ApiGateway"
-      metric_name = "CacheHitCount"
-      period      = 60
-      stat        = "Sum"
-
-      dimensions = {
-        ApiName = module.gateway.rest_api_name
-        Stage   = module.gateway.stage_name
-      }
-    }
-  }
-
-  metric_query {
-    id = "misses"
-
-    metric {
-      namespace   = "AWS/ApiGateway"
-      metric_name = "CacheMissCount"
-      period      = 60
-      stat        = "Sum"
-
-      dimensions = {
-        ApiName = module.gateway.rest_api_name
-        Stage   = module.gateway.stage_name
-      }
-    }
-  }
-
-  metric_query {
-    id          = "hit_ratio"
-    expression  = "(hits / (hits + misses)) * 100"
-    label       = "Cache Hit Ratio"
-    return_data = true
-  }
-}
-
 # Alarms for Valkey clusters
 resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
   for_each = local.valkey
