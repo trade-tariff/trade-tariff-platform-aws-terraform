@@ -41,81 +41,6 @@ resource "aws_wafv2_web_acl" "this" {
     metric_name                = var.name
   }
 
-  # ---------------------------------------------------------------------
-  # NOTE: Because `ignore_changes = [rule]` applies to the entire Web ACL
-  # rule list, this inline rule is effectively unmanaged by Terraform.
-  # Changes to this block will not be applied until the rule is migrated to
-  # a standalone `aws_wafv2_web_acl_rule` resource (HMRC-2529).
-
-  # Do not remove `ignore_changes` without first reviewing the Terraform
-  # plan, as other rules in this Web ACL are now managed via standalone
-  # resources.
-  # ---------------------------------------------------------------------
-
-  dynamic "rule" {
-    for_each = var.ip_rate_based_rule != null ? [var.ip_rate_based_rule] : []
-    content {
-      name     = rule.value.name
-      priority = rule.value.priority
-
-      action {
-        dynamic "count" {
-          for_each = rule.value.action == "count" ? [1] : []
-          content {
-            # Nothing to do, these go into Cloudwatch
-          }
-        }
-
-        dynamic "block" {
-          for_each = rule.value.action == "block" ? [1] : []
-          content {
-            custom_response {
-              custom_response_body_key = rule.value.custom_response.body_key
-              response_code            = rule.value.custom_response.response_code
-              response_header {
-                name  = rule.value.custom_response.response_header.name
-                value = rule.value.custom_response.response_header.value
-              }
-            }
-          }
-        }
-
-      }
-
-      statement {
-        rate_based_statement {
-          limit                 = rule.value.rpm_limit
-          evaluation_window_sec = 60
-          aggregate_key_type    = "IP"
-
-          # NOTE: This block will exclude assets from the rate limiting rules since these are all cached in the CDN.
-          scope_down_statement {
-            not_statement {
-              statement {
-                regex_pattern_set_reference_statement {
-                  arn = aws_wafv2_regex_pattern_set.this.arn
-                  field_to_match {
-                    uri_path {}
-                  }
-                  text_transformation {
-                    priority = 0
-                    type     = "LOWERCASE"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      visibility_config {
-        cloudwatch_metrics_enabled = true
-        metric_name                = rule.value.name
-        sampled_requests_enabled   = true
-      }
-    }
-  }
-
   # Do NOT remove - required permanently as long as any rule is managed
   # via a standalone aws_wafv2_web_acl_rule resource (see HMRC-2529).
   # Removing this without first re-adding matching inline `rule` blocks
@@ -158,6 +83,82 @@ resource "aws_wafv2_web_acl_association" "this" {
 # attempting to delete and recreate rules unnecessarily when the Web ACL
 # is updated.
 # ---------------------------------------------------------------------
+
+resource "aws_wafv2_web_acl_rule" "allow_assets_from_rate_limit" {
+  for_each = var.ip_rate_based_rule != null ? { "allow-assets-from-rate-limit" = var.ip_rate_based_rule } : {}
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = "allow-assets-from-rate-limit"
+  priority    = each.value.priority - 1
+
+  action {
+    allow {}
+  }
+
+  statement {
+    regex_pattern_set_reference_statement {
+      arn = aws_wafv2_regex_pattern_set.this.arn
+      field_to_match {
+        uri_path {}
+      }
+      text_transformation {
+        priority = 0
+        type     = "LOWERCASE"
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "allow-assets-from-rate-limit"
+    sampled_requests_enabled   = true
+  }
+}
+
+resource "aws_wafv2_web_acl_rule" "ip_rate_based" {
+  for_each = var.ip_rate_based_rule != null ? { (var.ip_rate_based_rule.name) = var.ip_rate_based_rule } : {}
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    dynamic "count" {
+      for_each = each.value.action == "count" ? [1] : []
+      content {}
+    }
+
+    dynamic "block" {
+      for_each = each.value.action == "block" ? [1] : []
+      content {
+        custom_response {
+          custom_response_body_key = each.value.custom_response.body_key
+          response_code            = each.value.custom_response.response_code
+          response_header {
+            name  = each.value.custom_response.response_header.name
+            value = each.value.custom_response.response_header.value
+          }
+        }
+      }
+    }
+  }
+
+  statement {
+    rate_based_statement {
+      limit                 = each.value.rpm_limit
+      evaluation_window_sec = 60
+      aggregate_key_type    = "IP"
+      # scope_down_statement removed - asset exclusion now handled by
+      # allow_assets_from_rate_limit above instead of a not_statement here.
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
 
 resource "aws_wafv2_web_acl_rule" "ip_sets" {
   for_each = { for r in var.ip_sets_rule : r.name => r }
