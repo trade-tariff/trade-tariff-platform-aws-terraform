@@ -86,6 +86,9 @@ data "aws_secretsmanager_secret_version" "slack_notify_lambda_slack_webhook_url"
   secret_id = module.slack_notify_lambda_slack_webhook_url.secret_arn
 }
 
+#----------------------------------------------------------#
+# CloudWatch alarms for Lambda functions
+#----------------------------------------------------------#
 resource "aws_cloudwatch_metric_alarm" "lambds_errors" {
   for_each = local.monitored_lambdas
 
@@ -139,7 +142,87 @@ resource "aws_cloudwatch_metric_alarm" "slack_notify_self_monitor" {
   ok_actions    = var.enable_sns_alerts ? [aws_sns_topic.critical_email_alerts.arn] : []
 }
 
-# Alarms for Valkey clusters
+#----------------------------------------------------------#
+# CloudWatch alarms for API Gateway
+#----------------------------------------------------------#
+resource "aws_cloudwatch_metric_alarm" "apigw_5xx_error_rate" {
+  alarm_name          = "High-5xx-errors-${module.gateway.rest_api_name}"
+  alarm_description   = "API Gateway 5xx error rate > 5% for 5 minutes in ${var.environment}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 5
+  threshold           = 5
+  datapoints_to_alarm = 5
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = local.alert_actions
+  ok_actions          = local.alert_actions
+
+  metric_query {
+    id          = "errors"
+    return_data = false
+
+    metric {
+      metric_name = "5XXError"
+      namespace   = "AWS/ApiGateway"
+      period      = 60
+      stat        = "Sum"
+      dimensions = {
+        ApiName = module.gateway.rest_api_name
+        Stage   = module.gateway.stage_name
+      }
+    }
+  }
+
+  metric_query {
+    id          = "requests"
+    return_data = false
+
+    metric {
+      metric_name = "Count"
+      namespace   = "AWS/ApiGateway"
+      period      = 60
+      stat        = "Sum"
+      dimensions = {
+        ApiName = module.gateway.rest_api_name
+        Stage   = module.gateway.stage_name
+      }
+    }
+  }
+
+  metric_query {
+    id          = "error_rate"
+    label       = "5xx Error Rate (%)"
+    return_data = true
+    expression  = "(errors / requests) * 100"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "apigw_p99_latency" {
+  alarm_name          = "p99-latency-${module.gateway.rest_api_name}"
+  alarm_description   = "P99 latency > 5 seconds for 5 minutes in ${var.environment}"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 5000 # 5 seconds in ms
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = local.alert_actions
+  ok_actions          = local.alert_actions
+
+  metric_name        = "Latency"
+  namespace          = "AWS/ApiGateway"
+  period             = 60
+  extended_statistic = "p99"
+  unit               = "Milliseconds"
+
+  dimensions = {
+    ApiName = module.gateway.rest_api_name
+    Stage   = module.gateway.stage_name
+  }
+}
+
+#----------------------------------------------------------#
+# CloudWatch alarms for Valkey clusters
+#----------------------------------------------------------#
+
 resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
   for_each = local.valkey
 

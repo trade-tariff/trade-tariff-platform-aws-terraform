@@ -204,7 +204,9 @@ resource "aws_cloudwatch_metric_alarm" "apigw_p99_latency" {
   }
 }
 
-# Alarms for Valkey clusters
+#----------------------------------------------------------#
+# CloudWatch alarms for Valkey clusters
+#----------------------------------------------------------#
 resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
   for_each = local.valkey
 
