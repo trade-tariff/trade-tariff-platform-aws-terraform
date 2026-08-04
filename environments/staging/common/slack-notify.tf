@@ -16,7 +16,8 @@ module "notify_slack" {
 }
 
 locals {
-  alert_actions = var.enable_sns_alerts ? [module.notify_slack.slack_topic_arn] : []
+  alert_actions          = var.enable_slack_alerts ? [module.notify_slack.slack_topic_arn] : []
+  critical_alert_actions = var.enable_critical_alerts ? [aws_sns_topic.critical_email_alerts.arn] : []
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
@@ -123,7 +124,7 @@ resource "aws_cloudwatch_metric_alarm" "slack_notify_self_monitor" {
     FunctionName = "notify_slack_${var.environment}"
   }
 
-  alarm_actions = var.enable_sns_alerts ? [aws_sns_topic.critical_email_alerts.arn] : []
+  alarm_actions = local.critical_alert_actions
 }
 
 #----------------------------------------------------------#
@@ -216,7 +217,7 @@ resource "aws_cloudwatch_metric_alarm" "valkey_memory_usage" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching"
-  alarm_actions       = local.alert_actions
+  alarm_actions       = local.critical_alert_actions
 
 
   metric_name = "DatabaseMemoryUsagePercentage"
