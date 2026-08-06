@@ -36,8 +36,14 @@ variable "WAF_E2E_SECRET_TOKEN" {
   default     = ""
 }
 
-variable "enable_sns_alerts" {
-  description = "Enable SNS alerts for all CloudWatch alarms"
+variable "enable_slack_alerts" {
+  description = "Enable Slack notifications for request-path CloudWatch alarms (5xx, latency, Lambda errors)"
+  type        = bool
+  default     = false
+}
+
+variable "enable_critical_alerts" {
+  description = "Enable critical-email notifications for alarms that protect the alerting pipeline and data-tier resources (slack_notify self-monitor, Valkey memory)"
   type        = bool
   default     = true
 }
