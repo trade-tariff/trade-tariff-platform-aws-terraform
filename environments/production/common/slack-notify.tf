@@ -242,6 +242,61 @@ resource "aws_cloudwatch_metric_alarm" "apigw_p99_latency" {
 }
 
 #----------------------------------------------------------#
+# CloudWatch alarms for Sidekiq queue depth and latency
+#----------------------------------------------------------#
+
+locals {
+  sidekiq_queue_depth_thresholds = {
+    sync          = 10
+    default       = 100
+    within_1_hour = 50
+    within_1_day  = 200
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "sidekiq_queue_depth" {
+  for_each = local.sidekiq_queue_depth_thresholds
+
+  alarm_name          = "sidekiq-queue-depth-${each.key}-${var.environment}"
+  alarm_description   = "Sidekiq ${each.key} queue has more than ${each.value} jobs in ${var.environment}. Check Sidekiq Web UI for stuck or failing jobs."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "QueueDepth"
+  namespace           = "TradeTariff/Sidekiq"
+  period              = 300
+  statistic           = "Maximum"
+  threshold           = each.value
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    Queue       = each.key
+    Environment = var.environment
+  }
+
+  alarm_actions = local.alert_actions
+}
+
+resource "aws_cloudwatch_metric_alarm" "sidekiq_sync_queue_latency" {
+  alarm_name          = "sidekiq-sync-queue-latency-${var.environment}"
+  alarm_description   = "Sidekiq sync queue has jobs waiting more than 30 minutes in ${var.environment}. CDS/TARIC sync may be stalled — check Sidekiq Web UI and worker logs."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "QueueLatency"
+  namespace           = "TradeTariff/Sidekiq"
+  period              = 300
+  statistic           = "Maximum"
+  threshold           = 1800
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    Queue       = "sync"
+    Environment = var.environment
+  }
+
+  alarm_actions = local.alert_actions
+}
+
+#----------------------------------------------------------#
 # CloudWatch alarms for Valkey clusters
 #----------------------------------------------------------#
 
