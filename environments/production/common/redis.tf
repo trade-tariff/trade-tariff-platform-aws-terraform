@@ -176,7 +176,7 @@ resource "aws_cloudwatch_metric_alarm" "valkey_evictions" {
   for_each = local.valkey
 
   alarm_name          = "valkey-${each.key}-evictions"
-  alarm_description   = "Valkey ${each.key} is evicting keys — Sidekiq clusters with noeviction policy should never evict"
+  alarm_description   = "Valkey ${each.key} (${var.environment}) is evicting keys. Sidekiq clusters must never evict — any eviction means jobs are being dropped silently. Cache clusters alert above 100 evictions per 5 min. Check the Valkey-Stats-${title(var.environment)} CloudWatch dashboard."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "Evictions"
@@ -195,27 +195,6 @@ resource "aws_cloudwatch_metric_alarm" "valkey_evictions" {
   alarm_actions = local.alert_actions
 }
 
-resource "aws_cloudwatch_metric_alarm" "valkey_replication_lag" {
-  for_each = local.valkey
-
-  alarm_name          = "valkey-${each.key}-replication-lag"
-  alarm_description   = "Valkey ${each.key} replica is falling behind the primary (lag > 5s)"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 2
-  datapoints_to_alarm = 2
-  metric_name         = "ReplicationLag"
-  namespace           = "AWS/ElastiCache"
-  period              = 120
-  statistic           = "Maximum"
-  threshold           = 5
-  treat_missing_data  = "notBreaching"
-
-  dimensions = {
-    ReplicationGroupId = "valkey-${each.key}-${var.environment}"
-  }
-
-  alarm_actions = local.observability_alert_actions
-}
 
 resource "aws_cloudwatch_dashboard" "valkey" {
   dashboard_name = "Valkey-Stats-${title(var.environment)}"

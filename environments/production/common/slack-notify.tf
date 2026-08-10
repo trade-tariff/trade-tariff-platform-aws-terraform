@@ -31,8 +31,7 @@ module "notify_slack_observability" {
 }
 
 locals {
-  alert_actions               = var.enable_sns_alerts ? [module.notify_slack.slack_topic_arn] : []
-  observability_alert_actions = var.enable_sns_alerts ? [module.notify_slack_observability.slack_topic_arn] : []
+  alert_actions = var.enable_sns_alerts ? [module.notify_slack.slack_topic_arn] : []
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
