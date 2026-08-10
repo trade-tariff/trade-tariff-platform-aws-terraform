@@ -75,3 +75,89 @@ module "opensearch" {
   encrypt_kms_key_id = aws_kms_key.opensearch_kms_key.key_id
   ssm_secret_name    = "/${var.environment}/ELASTICSEARCH_URL"
 }
+
+#----------------------------------------------------------#
+# CloudWatch alarms for OpenSearch cluster health
+#----------------------------------------------------------#
+
+resource "aws_cloudwatch_metric_alarm" "opensearch_cluster_red" {
+  alarm_name          = "opensearch-cluster-red-${var.environment}"
+  alarm_description   = "OpenSearch cluster status is RED in ${var.environment} — at least one primary shard is unassigned. Check: AWS Console → OpenSearch → tariff-search-${var.environment} → Cluster health."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "ClusterStatus.red"
+  namespace           = "AWS/ES"
+  period              = 60
+  statistic           = "Maximum"
+  threshold           = 0
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    DomainName = "tariff-search-${var.environment}"
+    ClientId   = local.account_id
+  }
+
+  alarm_actions = local.alert_actions
+}
+
+resource "aws_cloudwatch_metric_alarm" "opensearch_cluster_yellow" {
+  alarm_name          = "opensearch-cluster-yellow-${var.environment}"
+  alarm_description   = "OpenSearch cluster status is YELLOW in ${var.environment} — replica shards unassigned. Check: AWS Console → OpenSearch → tariff-search-${var.environment} → Cluster health."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 3
+  datapoints_to_alarm = 3
+  metric_name         = "ClusterStatus.yellow"
+  namespace           = "AWS/ES"
+  period              = 120
+  statistic           = "Maximum"
+  threshold           = 0
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    DomainName = "tariff-search-${var.environment}"
+    ClientId   = local.account_id
+  }
+
+  alarm_actions = local.observability_alert_actions
+}
+
+resource "aws_cloudwatch_metric_alarm" "opensearch_free_storage" {
+  alarm_name          = "opensearch-low-storage-${var.environment}"
+  alarm_description   = "OpenSearch free storage is below 10GB in ${var.environment}. Check: AWS Console → OpenSearch → tariff-search-${var.environment} → Storage."
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "FreeStorageSpace"
+  namespace           = "AWS/ES"
+  period              = 300
+  statistic           = "Minimum"
+  threshold           = 10000
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    DomainName = "tariff-search-${var.environment}"
+    ClientId   = local.account_id
+  }
+
+  alarm_actions = local.alert_actions
+}
+
+resource "aws_cloudwatch_metric_alarm" "opensearch_jvm_pressure" {
+  alarm_name          = "opensearch-jvm-pressure-${var.environment}"
+  alarm_description   = "OpenSearch JVM memory pressure above 85% in ${var.environment}. Check: AWS Console → OpenSearch → tariff-search-${var.environment} → JVM memory pressure."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 3
+  datapoints_to_alarm = 3
+  metric_name         = "JVMMemoryPressure"
+  namespace           = "AWS/ES"
+  period              = 300
+  statistic           = "Maximum"
+  threshold           = 85
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    DomainName = "tariff-search-${var.environment}"
+    ClientId   = local.account_id
+  }
+
+  alarm_actions = local.observability_alert_actions
+}
