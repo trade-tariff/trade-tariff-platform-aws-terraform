@@ -172,6 +172,30 @@ locals {
   ]
 }
 
+resource "aws_cloudwatch_metric_alarm" "valkey_evictions" {
+  for_each = local.valkey
+
+  alarm_name          = "valkey-${each.key}-evictions"
+  alarm_description   = "Valkey ${each.key} (${var.environment}) is evicting keys. Sidekiq clusters must never evict — any eviction means jobs are being dropped silently. Cache clusters alert above 100 evictions per 5 min. Check the Valkey-Stats-${title(var.environment)} CloudWatch dashboard."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "Evictions"
+  namespace           = "AWS/ElastiCache"
+  period              = 300
+  statistic           = "Sum"
+  # Sidekiq clusters: any eviction means jobs are being dropped silently (noeviction policy).
+  # Cache clusters: tolerate low eviction rates, alert above a reasonable threshold.
+  threshold          = strcontains(each.key, "sidekiq") ? 0 : 100
+  treat_missing_data = "notBreaching"
+
+  dimensions = {
+    ReplicationGroupId = "valkey-${each.key}-${var.environment}"
+  }
+
+  alarm_actions = local.alert_actions
+}
+
+
 resource "aws_cloudwatch_dashboard" "valkey" {
   dashboard_name = "Valkey-Stats-${title(var.environment)}"
   dashboard_body = jsonencode({
