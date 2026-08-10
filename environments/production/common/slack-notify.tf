@@ -161,7 +161,6 @@ resource "aws_cloudwatch_metric_alarm" "notify_delivery_failures" {
   }
 
   alarm_actions = local.alert_actions
-  ok_actions    = local.alert_actions
 }
 
 #----------------------------------------------------------#
