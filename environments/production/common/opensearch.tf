@@ -82,7 +82,7 @@ module "opensearch" {
 
 resource "aws_cloudwatch_metric_alarm" "opensearch_cluster_red" {
   alarm_name          = "opensearch-cluster-red-${var.environment}"
-  alarm_description   = "OpenSearch cluster status is RED — at least one primary shard is unassigned"
+  alarm_description   = "OpenSearch cluster status is RED in ${var.environment} — at least one primary shard is unassigned. Check: AWS Console → OpenSearch → tariff-search-${var.environment} → Cluster health."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "ClusterStatus.red"
@@ -102,7 +102,7 @@ resource "aws_cloudwatch_metric_alarm" "opensearch_cluster_red" {
 
 resource "aws_cloudwatch_metric_alarm" "opensearch_cluster_yellow" {
   alarm_name          = "opensearch-cluster-yellow-${var.environment}"
-  alarm_description   = "OpenSearch cluster status is YELLOW — replica shards unassigned"
+  alarm_description   = "OpenSearch cluster status is YELLOW in ${var.environment} — replica shards unassigned. Check: AWS Console → OpenSearch → tariff-search-${var.environment} → Cluster health."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 3
   datapoints_to_alarm = 3
@@ -123,7 +123,7 @@ resource "aws_cloudwatch_metric_alarm" "opensearch_cluster_yellow" {
 
 resource "aws_cloudwatch_metric_alarm" "opensearch_free_storage" {
   alarm_name          = "opensearch-low-storage-${var.environment}"
-  alarm_description   = "OpenSearch free storage is below 10GB"
+  alarm_description   = "OpenSearch free storage is below 10GB in ${var.environment}. Check: AWS Console → OpenSearch → tariff-search-${var.environment} → Storage."
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 1
   metric_name         = "FreeStorageSpace"
@@ -143,7 +143,7 @@ resource "aws_cloudwatch_metric_alarm" "opensearch_free_storage" {
 
 resource "aws_cloudwatch_metric_alarm" "opensearch_jvm_pressure" {
   alarm_name          = "opensearch-jvm-pressure-${var.environment}"
-  alarm_description   = "OpenSearch JVM memory pressure above 85%"
+  alarm_description   = "OpenSearch JVM memory pressure above 85% in ${var.environment}. Check: AWS Console → OpenSearch → tariff-search-${var.environment} → JVM memory pressure."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 3
   datapoints_to_alarm = 3
