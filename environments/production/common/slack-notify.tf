@@ -142,6 +142,29 @@ resource "aws_cloudwatch_metric_alarm" "slack_notify_self_monitor" {
 }
 
 #----------------------------------------------------------#
+# CloudWatch alarms for GOV.UK Notify delivery failures
+#----------------------------------------------------------#
+resource "aws_cloudwatch_metric_alarm" "notify_delivery_failures" {
+  alarm_name          = "notify-delivery-failures-${var.environment}"
+  alarm_description   = "GOV.UK Notify is reporting permanent or technical delivery failures"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "DeliveryFailures"
+  namespace           = "TradeTariff/Notify"
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 0
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    Environment = var.environment
+  }
+
+  alarm_actions = local.alert_actions
+  ok_actions    = local.alert_actions
+}
+
+#----------------------------------------------------------#
 # CloudWatch alarms for API Gateway
 #----------------------------------------------------------#
 resource "aws_cloudwatch_metric_alarm" "apigw_5xx_error_rate" {
