@@ -198,7 +198,6 @@ resource "aws_cloudwatch_metric_alarm" "scheduled_job_heartbeat" {
   }
 
   alarm_actions = local.alert_actions
-  ok_actions    = local.alert_actions
 }
 
 #----------------------------------------------------------#
