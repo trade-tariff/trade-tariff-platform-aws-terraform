@@ -165,6 +165,43 @@ resource "aws_cloudwatch_metric_alarm" "notify_delivery_failures" {
 }
 
 #----------------------------------------------------------#
+# CloudWatch dead man's switch alarms for scheduled jobs
+#----------------------------------------------------------#
+locals {
+  # period is the expected run interval in seconds; alarm fires if no heartbeat
+  # is seen within one interval. Tune these windows once real run times are known.
+  heartbeat_jobs = {
+    ImportCustomsTariffDocumentWorker     = 86400 # daily
+    ImportXiCnDocumentWorker              = 86400 # daily
+    GoodsNomenclatureReconciliationWorker = 86400 # daily
+    ReportWorker                          = 86400 # post-sync daily
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "scheduled_job_heartbeat" {
+  for_each = local.heartbeat_jobs
+
+  alarm_name          = "scheduled-job-no-heartbeat-${lower(replace(each.key, "Worker", ""))}-${var.environment}"
+  alarm_description   = "${each.key} has not reported a successful completion in the expected window"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "JobSuccess"
+  namespace           = "TradeTariff/ScheduledJobs"
+  period              = each.value
+  statistic           = "Sum"
+  threshold           = 1
+  treat_missing_data  = "breaching"
+
+  dimensions = {
+    Job         = each.key
+    Environment = var.environment
+  }
+
+  alarm_actions = local.alert_actions
+  ok_actions    = local.alert_actions
+}
+
+#----------------------------------------------------------#
 # CloudWatch alarms for API Gateway
 #----------------------------------------------------------#
 resource "aws_cloudwatch_metric_alarm" "apigw_5xx_error_rate" {
