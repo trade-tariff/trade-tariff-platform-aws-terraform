@@ -49,6 +49,19 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
       },
       {
         rulePriority = 2
+        description  = "Expire untagged images older than ${local.untagged_image_expiry_days} days."
+        selection = {
+          tagStatus   = "untagged"
+          countType   = "sinceImagePushed"
+          countUnit   = "days"
+          countNumber = local.untagged_image_expiry_days
+        }
+        action = {
+          type = "expire"
+        }
+      },
+      {
+        rulePriority = 3
         description  = "Keep last ${each.value.development_images_to_keep} development images."
         selection = {
           tagStatus   = "any"

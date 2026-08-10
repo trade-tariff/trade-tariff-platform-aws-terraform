@@ -24,6 +24,14 @@ locals {
   #
   # The lifecycle policy is just a convenience to disable application lifecycles
   # in an emergency.
+  #
+  # Untagged images are dangling layers/manifests left behind by rebuilds
+  # (e.g. a branch re-pushing "latest") -- they can only be referenced by
+  # digest, not deployed, so pruning them by age is safe regardless of the
+  # count-based rules below. This is a backstop against them accumulating
+  # indefinitely between count-threshold breaches.
+  untagged_image_expiry_days = 14
+
   applications = {
     # Manually deployed typical applications
     "admin" = {
