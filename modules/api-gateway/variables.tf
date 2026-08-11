@@ -99,6 +99,12 @@ variable "access_log_retention_days" {
   default     = 90
 }
 
+variable "cloudwatch_role_arn" {
+  description = "ARN of an existing IAM role API Gateway can assume to write to CloudWatch (account-level setting). Required when access_logging_enabled = true."
+  type        = string
+  default     = null
+}
+
 variable "long_cache_ttl" {
   description = "The TTL for long cache duration in seconds."
   type        = number
