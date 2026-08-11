@@ -20,6 +20,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_api_gateway_account.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_account) | resource |
 | [aws_api_gateway_authorizer.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
 | [aws_api_gateway_base_path_mapping.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
 | [aws_api_gateway_deployment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
@@ -68,12 +69,18 @@ No modules.
 | [aws_api_gateway_rest_api.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api) | resource |
 | [aws_api_gateway_stage.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage) | resource |
 | [aws_apigatewayv2_vpc_link.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_vpc_link) | resource |
+| [aws_cloudwatch_log_group.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_cloudwatch_query_definition.active_api_keys](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_query_definition) | resource |
+| [aws_iam_role.cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_route53_record.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_access_log_retention_days"></a> [access\_log\_retention\_days](#input\_access\_log\_retention\_days) | Retention period in days for API Gateway access logs (only used when access\_logging\_enabled = true). | `number` | `90` | no |
+| <a name="input_access_logging_enabled"></a> [access\_logging\_enabled](#input\_access\_logging\_enabled) | Enable CloudWatch access logging and the account-level CloudWatch role for API Gateway. | `bool` | `false` | no |
 | <a name="input_alb_secret_header"></a> [alb\_secret\_header](#input\_alb\_secret\_header) | Secret header name and value to be sent to the ALB on every request. | `list(string)` | n/a | yes |
 | <a name="input_authorizer_enabled"></a> [authorizer\_enabled](#input\_authorizer\_enabled) | Enable a custom Lambda authorizer for protected API methods. | `bool` | `false` | no |
 | <a name="input_authorizer_identity_source"></a> [authorizer\_identity\_source](#input\_authorizer\_identity\_source) | Identity source expression for the Lambda authorizer. | `string` | `"method.request.header.Authorization"` | no |
@@ -99,6 +106,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_access_log_group_name"></a> [access\_log\_group\_name](#output\_access\_log\_group\_name) | Name of the CloudWatch log group receiving API Gateway access logs (null unless access\_logging\_enabled). |
 | <a name="output_api_gateway_stage_arn"></a> [api\_gateway\_stage\_arn](#output\_api\_gateway\_stage\_arn) | ARN of the API Gateway stage (for WAF association). |
 | <a name="output_execution_arn"></a> [execution\_arn](#output\_execution\_arn) | Execution ARN of the API Gateway REST API. |
 | <a name="output_rest_api_id"></a> [rest\_api\_id](#output\_rest\_api\_id) | ID of the API Gateway REST API. |
