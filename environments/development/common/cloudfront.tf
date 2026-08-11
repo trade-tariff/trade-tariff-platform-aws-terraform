@@ -348,7 +348,6 @@ module "cdn" {
   }
 }
 
-
 module "docs_cdn" {
   source = "../../../modules/cloudfront"
 
