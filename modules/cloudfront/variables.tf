@@ -93,8 +93,40 @@ variable "viewer_certificate" {
 
 variable "geo_restriction" {
   description = "The restriction configuration for this distribution (geo_restrictions)"
-  type        = any
-  default     = {}
+
+  type = object({
+    restriction_type = optional(string, "none")
+    locations        = optional(list(string))
+  })
+
+  default = {
+    restriction_type = "none"
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      [
+        var.geo_restriction.restriction_type == "none" ||
+        var.geo_restriction.restriction_type == "whitelist" ||
+        var.geo_restriction.restriction_type == "blacklist"
+      ],
+      [
+        for location in coalesce(var.geo_restriction.locations, []) : try(
+          length(location) == 2,
+          false
+        )
+      ]
+    ]))
+
+    error_message = <<-EOT
+      `restriction_type` must be one of:
+        - `none`
+        - `whitelist`
+        - `blacklist`
+
+      `locations` must be a list of 2-character ISO 3166 country codes.
+    EOT
+  }
 }
 
 variable "logging_config" {
@@ -105,8 +137,13 @@ variable "logging_config" {
 
 variable "custom_error_response" {
   description = "One or more custom error response elements"
-  type        = any
-  default     = {}
+  type = list(object({
+    error_caching_min_ttl = optional(number)
+    error_code            = number
+    response_code         = number
+    response_page_path    = optional(string)
+  }))
+  default = null
 }
 
 variable "cache_behaviors" {
