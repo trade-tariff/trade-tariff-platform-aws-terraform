@@ -348,7 +348,6 @@ module "cdn" {
   }
 }
 
-
 module "docs_cdn" {
   source = "../../../modules/cloudfront"
 
@@ -369,6 +368,21 @@ module "docs_cdn" {
     prefix = "cloudfront/${var.environment}"
   }
 
+  // redirect 403/404 errors to the 404 page
+  // to avoid S3 XML responses
+  custom_error_response = [
+    {
+      error_code         = 403
+      response_code      = 404
+      response_page_path = "/404.html"
+    },
+    {
+      error_code         = 404
+      response_code      = 404
+      response_page_path = "/404.html"
+    }
+  ]
+
   origin = {
     docs = {
       domain_name              = aws_s3_bucket.this["api-docs"].bucket_regional_domain_name
@@ -383,6 +397,12 @@ module "docs_cdn" {
       cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.s3.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+
+      function_association = {
+        "viewer-request" = {
+          function_arn = aws_cloudfront_function.docs_cdn_directory_index_rewrite.arn
+        }
+      }
     },
   ]
 
@@ -393,6 +413,13 @@ module "docs_cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+}
+
+resource "aws_cloudfront_function" "docs_cdn_directory_index_rewrite" {
+  name    = "docs_cdn_directory_index_rewrite"
+  comment = "Allows extensionless URLs on the API docs CDN"
+  runtime = "cloudfront-js-2.0"
+  code    = file("../../../common/directory_index_rewrite.js")
 }
 
 module "reporting_cdn" {
@@ -492,7 +519,7 @@ module "backups_cdn" {
 
 resource "aws_cloudfront_function" "basic_auth" {
   name    = "backups-basic-auth"
-  runtime = "cloudfront-js-1.0"
+  runtime = "cloudfront-js-2.0"
   publish = true
   code    = local.cloudfront_auth
 }

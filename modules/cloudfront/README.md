@@ -34,10 +34,10 @@ No modules.
 | <a name="input_create_alias"></a> [create\_alias](#input\_create\_alias) | Whether to create a Route 53 A record. | `bool` | `false` | no |
 | <a name="input_create_cname"></a> [create\_cname](#input\_create\_cname) | Whether to create a Route 53 CNAME record. | `bool` | `false` | no |
 | <a name="input_create_distribution"></a> [create\_distribution](#input\_create\_distribution) | Controls if CloudFront distribution should be created | `bool` | `true` | no |
-| <a name="input_custom_error_response"></a> [custom\_error\_response](#input\_custom\_error\_response) | One or more custom error response elements | `any` | `{}` | no |
+| <a name="input_custom_error_response"></a> [custom\_error\_response](#input\_custom\_error\_response) | One or more custom error response elements | <pre>list(object({<br/>    error_caching_min_ttl = optional(number)<br/>    error_code            = number<br/>    response_code         = number<br/>    response_page_path    = optional(string)<br/>  }))</pre> | `null` | no |
 | <a name="input_default_root_object"></a> [default\_root\_object](#input\_default\_root\_object) | The object that you want CloudFront to return (for example, index.html) when an end user requests the root URL. | `string` | `null` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Whether the distribution is enabled to accept end user requests for content. | `bool` | `true` | no |
-| <a name="input_geo_restriction"></a> [geo\_restriction](#input\_geo\_restriction) | The restriction configuration for this distribution (geo\_restrictions) | `any` | `{}` | no |
+| <a name="input_geo_restriction"></a> [geo\_restriction](#input\_geo\_restriction) | The restriction configuration for this distribution (geo\_restrictions) | <pre>object({<br/>    restriction_type = optional(string, "none")<br/>    locations        = optional(list(string))<br/>  })</pre> | <pre>{<br/>  "restriction_type": "none"<br/>}</pre> | no |
 | <a name="input_health_check_id"></a> [health\_check\_id](#input\_health\_check\_id) | The health check the record should be associated with. | `string` | `null` | no |
 | <a name="input_http_version"></a> [http\_version](#input\_http\_version) | The maximum HTTP version to support on the distribution. Allowed values are http1.1 and http2. The default is http2. | `string` | `"http2"` | no |
 | <a name="input_is_ipv6_enabled"></a> [is\_ipv6\_enabled](#input\_is\_ipv6\_enabled) | Whether the IPv6 is enabled for the distribution. | `bool` | `null` | no |
