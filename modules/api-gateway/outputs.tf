@@ -22,3 +22,8 @@ output "execution_arn" {
   description = "Execution ARN of the API Gateway REST API."
   value       = aws_api_gateway_rest_api.this.execution_arn
 }
+
+output "access_log_group_name" {
+  description = "Name of the CloudWatch log group receiving API Gateway access logs (null unless access_logging_enabled)."
+  value       = try(aws_cloudwatch_log_group.access_logs[0].name, null)
+}

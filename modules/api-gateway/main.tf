@@ -27,6 +27,26 @@ resource "aws_api_gateway_stage" "this" {
 
   cache_cluster_enabled = var.cache_cluster_enabled
   cache_cluster_size    = var.cache_cluster_size
+
+  dynamic "access_log_settings" {
+    for_each = var.access_logging_enabled ? [1] : []
+    content {
+      destination_arn = aws_cloudwatch_log_group.access_logs[0].arn
+      format = jsonencode({
+        requestId         = "$context.requestId"
+        requestTime       = "$context.requestTime"
+        apiKeyId          = "$context.identity.apiKeyId"
+        sourceIp          = "$context.identity.sourceIp"
+        httpMethod        = "$context.httpMethod"
+        path              = "$context.path"
+        status            = "$context.status"
+        integrationStatus = "$context.integration.integrationStatus"
+        responseLength    = "$context.responseLength"
+      })
+    }
+  }
+
+  depends_on = [aws_api_gateway_account.this]
 }
 
 resource "aws_apigatewayv2_vpc_link" "this" {
@@ -48,6 +68,7 @@ resource "aws_api_gateway_method_settings" "this" {
     caching_enabled      = false
     logging_level        = var.log_level
     cache_data_encrypted = true
+    metrics_enabled      = true
   }
 }
 
