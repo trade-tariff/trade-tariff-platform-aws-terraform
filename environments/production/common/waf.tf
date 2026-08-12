@@ -1,3 +1,12 @@
+resource "aws_wafv2_ip_set" "tss_scraper_cf" {
+  provider           = aws.us_east_1
+  name               = "tss-scraper-cf-${var.environment}"
+  description        = "TSS Tariff Scraper rate limit exception — remove after 2027-01-01 (HMRC-2501)"
+  scope              = "CLOUDFRONT"
+  ip_address_version = "IPV4"
+  addresses          = ["208.127.47.194/32"]
+}
+
 module "waf" {
   source = "../../../modules/waf"
 
@@ -10,7 +19,7 @@ module "waf" {
 
   ip_rate_based_rule = {
     name      = "ratelimiting"
-    priority  = 2
+    priority  = 3
     rpm_limit = var.waf_rpm_limit
     action    = "block"
     custom_response = {
@@ -22,6 +31,15 @@ module "waf" {
       }
     }
   }
+
+  ip_sets_rule = [
+    {
+      name       = "allow-tss-scraper"
+      priority   = 1
+      ip_set_arn = aws_wafv2_ip_set.tss_scraper_cf.arn
+      action     = "allow"
+    }
+  ]
 
   header_allow_rules = concat(
     nonsensitive(var.waf_mcp_secret_token != "") ? [
@@ -69,7 +87,7 @@ module "waf" {
   ip_rate_url_based_rules = [
     {
       name                  = "rate-limit-commodity-pages"
-      priority              = 3
+      priority              = 15
       limit                 = var.waf_page_rpm_limit
       action                = "block"
       search_string         = "/commodities/"
@@ -77,7 +95,7 @@ module "waf" {
     },
     {
       name                  = "rate-limit-heading-pages"
-      priority              = 4
+      priority              = 16
       limit                 = var.waf_page_rpm_limit
       action                = "block"
       search_string         = "/headings/"
@@ -85,7 +103,7 @@ module "waf" {
     },
     {
       name                  = "rate-limit-chapter-pages"
-      priority              = 5
+      priority              = 17
       limit                 = var.waf_page_rpm_limit
       action                = "block"
       search_string         = "/chapters/"
@@ -93,7 +111,7 @@ module "waf" {
     },
     {
       name                  = "rate-limit-subheading-pages"
-      priority              = 6
+      priority              = 18
       limit                 = var.waf_page_rpm_limit
       action                = "block"
       search_string         = "/subheadings/"
@@ -101,7 +119,7 @@ module "waf" {
     },
     {
       name                  = "rate-limit-search"
-      priority              = 7
+      priority              = 19
       limit                 = var.waf_search_rpm_limit
       action                = "block"
       search_string         = "/search"
