@@ -19,7 +19,7 @@ module "waf" {
 
   ip_rate_based_rule = {
     name      = "ratelimiting"
-    priority  = 3
+    priority  = 4
     rpm_limit = var.waf_rpm_limit
     action    = "block"
     custom_response = {
@@ -35,7 +35,7 @@ module "waf" {
   ip_sets_rule = [
     {
       name       = "allow-tss-scraper"
-      priority   = 4
+      priority   = 2
       ip_set_arn = aws_wafv2_ip_set.tss_scraper_cf.arn
       action     = "allow"
     }
@@ -209,4 +209,46 @@ data "aws_iam_policy_document" "waf_log_group_policy" {
 resource "aws_cloudwatch_log_resource_policy" "waf_logs" {
   policy_document = data.aws_iam_policy_document.waf_log_group_policy.json
   policy_name     = "tariff-waf-logs-policy-${var.environment}"
+}
+
+# Pins TSS at exactly 500 RPM regardless of what var.waf_rpm_limit becomes.
+# The allow-tss-scraper rule (priority 2) then bypasses the lower general limit.
+# Remove this rule and allow-tss-scraper after 2027-01-01 (HMRC-2501).
+resource "aws_wafv2_web_acl_rule" "tss_scraper_rate_limit_cf" {
+  provider    = aws.us_east_1
+  web_acl_arn = module.waf.web_acl_id
+  name        = "tss-scraper-rate-limit"
+  priority    = 1
+
+  action {
+    block {
+      custom_response {
+        custom_response_body_key = "rate-limit-exceeded"
+        response_code            = 429
+        response_header {
+          name  = "X-Rate-Limit"
+          value = "1"
+        }
+      }
+    }
+  }
+
+  statement {
+    rate_based_statement {
+      limit                 = 500
+      evaluation_window_sec = 60
+      aggregate_key_type    = "IP"
+      scope_down_statement {
+        ip_set_reference_statement {
+          arn = aws_wafv2_ip_set.tss_scraper_cf.arn
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "tss-scraper-rate-limit"
+    sampled_requests_enabled   = true
+  }
 }
