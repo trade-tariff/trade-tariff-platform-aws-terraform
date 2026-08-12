@@ -35,7 +35,7 @@ module "waf" {
   ip_sets_rule = [
     {
       name       = "allow-tss-scraper"
-      priority   = 1
+      priority   = 4
       ip_set_arn = aws_wafv2_ip_set.tss_scraper_cf.arn
       action     = "allow"
     }
