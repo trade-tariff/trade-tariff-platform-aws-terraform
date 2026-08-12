@@ -36,7 +36,7 @@ module "waf_apigw" {
   ip_sets_rule = [
     {
       name       = "allow-tss-scraper"
-      priority   = 0
+      priority   = 3
       ip_set_arn = aws_wafv2_ip_set.tss_scraper_apigw.arn
       action     = "allow"
     }
