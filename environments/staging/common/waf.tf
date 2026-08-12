@@ -1,3 +1,12 @@
+resource "aws_wafv2_ip_set" "tss_scraper_cf" {
+  provider           = aws.us_east_1
+  name               = "tss-scraper-cf-${var.environment}"
+  description        = "TSS Tariff Scraper rate limit exception — remove after 2027-01-01 (HMRC-2501)"
+  scope              = "CLOUDFRONT"
+  ip_address_version = "IPV4"
+  addresses          = ["208.127.47.194/32"]
+}
+
 module "waf" {
   source = "../../../modules/waf"
 
@@ -10,7 +19,7 @@ module "waf" {
 
   ip_rate_based_rule = {
     name      = "ratelimiting"
-    priority  = 2
+    priority  = 3
     rpm_limit = var.waf_rpm_limit
     action    = "block"
     custom_response = {
@@ -22,6 +31,15 @@ module "waf" {
       }
     }
   }
+
+  ip_sets_rule = [
+    {
+      name       = "allow-tss-scraper"
+      priority   = 1
+      ip_set_arn = aws_wafv2_ip_set.tss_scraper_cf.arn
+      action     = "allow"
+    }
+  ]
 
   header_allow_rules = concat(
     nonsensitive(var.waf_mcp_secret_token != "") ? [

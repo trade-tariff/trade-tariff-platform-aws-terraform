@@ -1,3 +1,11 @@
+resource "aws_wafv2_ip_set" "tss_scraper_apigw" {
+  name               = "tss-scraper-apigw-${var.environment}"
+  description        = "TSS Tariff Scraper rate limit exception — remove after 2027-01-01 (HMRC-2501)"
+  scope              = "REGIONAL"
+  ip_address_version = "IPV4"
+  addresses          = ["208.127.47.194/32"]
+}
+
 module "waf_apigw" {
   source = "../../../modules/waf"
 
@@ -12,7 +20,7 @@ module "waf_apigw" {
 
   ip_rate_based_rule = {
     name      = "ip-rate-limit"
-    priority  = 1
+    priority  = 2
     rpm_limit = var.waf_rpm_limit
     action    = "block"
     custom_response = {
@@ -24,6 +32,15 @@ module "waf_apigw" {
       }
     }
   }
+
+  ip_sets_rule = [
+    {
+      name       = "allow-tss-scraper"
+      priority   = 0
+      ip_set_arn = aws_wafv2_ip_set.tss_scraper_apigw.arn
+      action     = "allow"
+    }
+  ]
 
   uri_path_match_rules = [
     {
