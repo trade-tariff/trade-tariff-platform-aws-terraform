@@ -152,6 +152,34 @@ resource "aws_lb_listener_rule" "this" {
   }
 }
 
+# Blocks paths that must only be reachable via API Gateway's VPC Link (the
+# port-80 redirect_http_rules/gateway_services listener rule below) from also
+# being reachable directly through CloudFront/ALB on this HTTPS listener. The
+# custom_header check above cannot distinguish CloudFront-origin traffic from
+# API-Gateway-origin traffic, since both currently share the same secret.
+resource "aws_lb_listener_rule" "denied_paths" {
+  for_each     = var.denied_paths
+  listener_arn = aws_lb_listener.trade_tariff_listeners.arn
+
+  priority = each.value.priority
+
+  action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Access denied"
+      status_code  = "403"
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = each.value.paths
+    }
+  }
+}
+
 # HTTP target groups — for services whose containers serve plain HTTP.
 # The ALB terminates TLS on the HTTPS listener and forwards here over HTTP.
 resource "aws_lb_target_group" "http_target_groups" {

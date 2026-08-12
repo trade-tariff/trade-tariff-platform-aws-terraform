@@ -107,6 +107,17 @@ variable "gateway_services" {
   default = {}
 }
 
+variable "denied_paths" {
+  description = "Map of path patterns to block with a fixed 403 response on the HTTPS listener, evaluated ahead of `services`. Used for paths that must only be reachable via API Gateway (the port-80 `gateway_services` listener), not directly through CloudFront/ALB on port 443."
+  type = map(
+    object({
+      paths    = list(string)
+      priority = number
+    })
+  )
+  default = {}
+}
+
 variable "enable_access_logs" {
   description = "Whether to enable access logs for ALB."
   type        = bool
