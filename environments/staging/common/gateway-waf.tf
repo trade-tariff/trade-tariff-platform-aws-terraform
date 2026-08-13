@@ -33,6 +33,27 @@ module "waf_apigw" {
     }
   }
 
+  # Pins TSS at exactly 500 RPM regardless of what var.waf_rpm_limit becomes.
+  # allow-tss-scraper (ip_sets_rule below) bypasses the lower general limit.
+  # Remove this rule and allow-tss-scraper after 2027-01-01 (HMRC-2501).
+  ip_set_rate_based_rules = [
+    {
+      name       = "tss-scraper-rate-limit"
+      priority   = 0
+      limit      = 500
+      action     = "block"
+      ip_set_arn = aws_wafv2_ip_set.tss_scraper_apigw.arn
+      custom_response = {
+        response_code = 429
+        body_key      = "rate-limit-exceeded"
+        response_header = {
+          name  = "X-Rate-Limit"
+          value = "1"
+        }
+      }
+    }
+  ]
+
   ip_sets_rule = [
     {
       name       = "allow-tss-scraper"
@@ -121,45 +142,4 @@ data "aws_iam_policy_document" "apigw_waf_log_group_policy" {
 resource "aws_cloudwatch_log_resource_policy" "apigw_waf_logs" {
   policy_name     = "tariff-apigw-waf-logs-policy-${var.environment}"
   policy_document = data.aws_iam_policy_document.apigw_waf_log_group_policy.json
-}
-
-# Pins TSS at exactly 500 RPM regardless of what var.waf_rpm_limit becomes.
-# The allow-tss-scraper rule (priority 1) then bypasses the lower general limit.
-# Remove this rule and allow-tss-scraper after 2027-01-01 (HMRC-2501).
-resource "aws_wafv2_web_acl_rule" "tss_scraper_rate_limit_apigw" {
-  web_acl_arn = module.waf_apigw.web_acl_id
-  name        = "tss-scraper-rate-limit"
-  priority    = 0
-
-  action {
-    block {
-      custom_response {
-        custom_response_body_key = "rate-limit-exceeded"
-        response_code            = 429
-        response_header {
-          name  = "X-Rate-Limit"
-          value = "1"
-        }
-      }
-    }
-  }
-
-  statement {
-    rate_based_statement {
-      limit                 = 500
-      evaluation_window_sec = 60
-      aggregate_key_type    = "IP"
-      scope_down_statement {
-        ip_set_reference_statement {
-          arn = aws_wafv2_ip_set.tss_scraper_apigw.arn
-        }
-      }
-    }
-  }
-
-  visibility_config {
-    cloudwatch_metrics_enabled = true
-    metric_name                = "tss-scraper-rate-limit"
-    sampled_requests_enabled   = true
-  }
 }
