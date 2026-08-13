@@ -112,6 +112,17 @@ module "alb" {
       priority         = 2
     }
   }
+
+  denied_paths = {
+    # Broad on purpose: catches every prefixed/versioned/unprefixed form
+    # (including the legacy VersionedForwarder route, e.g. /api/v2/categorisation/*),
+    # not just the current /uk|xi/api(/v2)/categorisation/* combinations.
+    # "categorisation" is not used as a path segment anywhere else in the app.
+    categorisation = {
+      paths    = ["*categorisation*"]
+      priority = 5
+    }
+  }
 }
 
 # The ALB's primary cert covers *.origin.domain — attach the wildcard public cert

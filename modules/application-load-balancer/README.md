@@ -48,6 +48,7 @@ No modules.
 | [aws_lb.application_load_balancer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
 | [aws_lb_listener.redirect_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_listener.trade_tariff_listeners](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener_rule.denied_paths](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.http_services](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.redirect_http_rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
@@ -71,6 +72,7 @@ No modules.
 | <a name="input_alb_security_group_id"></a> [alb\_security\_group\_id](#input\_alb\_security\_group\_id) | Application load balancer security group ID. | `string` | n/a | yes |
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | ARN of the default SSL server certificate. | `string` | n/a | yes |
 | <a name="input_custom_header"></a> [custom\_header](#input\_custom\_header) | Custom header required in all requests to the load balancer. | <pre>object({<br/>    name  = string<br/>    value = string<br/>  })</pre> | n/a | yes |
+| <a name="input_denied_paths"></a> [denied\_paths](#input\_denied\_paths) | Map of path patterns to block with a fixed 403 response on the HTTPS listener, evaluated ahead of `services`. Used for paths that must only be reachable via API Gateway (the port-80 `gateway_services` listener), not directly through CloudFront/ALB on port 443. | <pre>map(<br/>    object({<br/>      paths    = list(string)<br/>      priority = number<br/>    })<br/>  )</pre> | `{}` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The domain name for the application. | `string` | n/a | yes |
 | <a name="input_enable_access_logs"></a> [enable\_access\_logs](#input\_enable\_access\_logs) | Whether to enable access logs for ALB. | `bool` | `false` | no |
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | If true, deletion of the load balancer will be disabled via the AWS API. | `bool` | `true` | no |
