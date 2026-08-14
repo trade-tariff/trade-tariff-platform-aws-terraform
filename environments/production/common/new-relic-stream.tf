@@ -19,6 +19,7 @@ module "cw_metric_stream" {
     "ECS/ContainerInsights" = [],
     "AWS/ECS"               = [],
     "AWS/RDS"               = [],
-    "AWS/ES"                = []
+    "AWS/ES"                = [],
+    "AWS/ApiGateway"        = []
   }
 }

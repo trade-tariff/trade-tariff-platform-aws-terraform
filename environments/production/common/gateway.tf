@@ -16,6 +16,8 @@ module "gateway" {
   authorizer_lambda_invoke_arn     = data.aws_lambda_function.api_gateway_authorizer.invoke_arn
   authorizer_identity_source       = "method.request.header.Authorization"
   authorizer_result_ttl_in_seconds = 0
+  access_logging_enabled           = true
+  cloudwatch_role_arn              = aws_iam_role.apigw_cloudwatch_logs.arn
 
   alb_secret_header = [
     random_password.origin_header[0].result,

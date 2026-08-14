@@ -87,6 +87,24 @@ variable "log_level" {
   default     = "INFO"
 }
 
+variable "access_logging_enabled" {
+  description = "Enable CloudWatch access logging and the account-level CloudWatch role for API Gateway."
+  type        = bool
+  default     = false
+}
+
+variable "access_log_retention_days" {
+  description = "Retention period in days for API Gateway access logs (only used when access_logging_enabled = true)."
+  type        = number
+  default     = 90
+}
+
+variable "cloudwatch_role_arn" {
+  description = "ARN of an existing IAM role API Gateway can assume to write to CloudWatch (account-level setting). Required when access_logging_enabled = true."
+  type        = string
+  default     = null
+}
+
 variable "long_cache_ttl" {
   description = "The TTL for long cache duration in seconds."
   type        = number
