@@ -2,10 +2,10 @@ resource "aws_lambda_function" "this" {
   function_name = var.function_name
   role          = aws_iam_role.this.arn
 
-  filename         = var.filename
-  handler          = var.handler
-  source_code_hash = var.source_code_hash
-  runtime          = var.runtime
+  filename    = var.filename
+  handler     = var.handler
+  runtime     = var.runtime
+  code_sha256 = var.source_code_hash
 
   memory_size = var.memory_size
 
