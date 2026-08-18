@@ -4,7 +4,7 @@ resource "aws_wafv2_ip_set" "tss_scraper_cf" {
   description        = "TSS Tariff Scraper rate limit exception, remove after 2027-01-01, HMRC-2501"
   scope              = "CLOUDFRONT"
   ip_address_version = "IPV4"
-  addresses          = ["208.127.47.194/32"]
+  addresses          = [var.tss_scraper_ip]
 }
 
 module "waf" {
