@@ -248,6 +248,59 @@ resource "aws_wafv2_web_acl_rule" "ip_rate_url_based" {
   }
 }
 
+resource "aws_wafv2_web_acl_rule" "ip_set_rate_based" {
+  for_each = { for r in var.ip_set_rate_based_rules : r.name => r }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    dynamic "allow" {
+      for_each = each.value.action == "allow" ? [1] : []
+      content {}
+    }
+
+    dynamic "count" {
+      for_each = each.value.action == "count" ? [1] : []
+      content {}
+    }
+
+    dynamic "block" {
+      for_each = each.value.action == "block" ? [1] : []
+      content {
+        custom_response {
+          custom_response_body_key = each.value.custom_response.body_key
+          response_code            = each.value.custom_response.response_code
+          response_header {
+            name  = each.value.custom_response.response_header.name
+            value = each.value.custom_response.response_header.value
+          }
+        }
+      }
+    }
+  }
+
+  statement {
+    rate_based_statement {
+      limit                 = each.value.limit
+      evaluation_window_sec = 60
+      aggregate_key_type    = "IP"
+      scope_down_statement {
+        ip_set_reference_statement {
+          arn = each.value.ip_set_arn
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
+
 resource "aws_wafv2_web_acl_rule" "filtered_header" {
   for_each = local.filtered_header_rules
 

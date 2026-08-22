@@ -126,6 +126,26 @@ variable "ip_rate_url_based_rules" {
   default     = []
 }
 
+variable "ip_set_rate_based_rules" {
+  type = list(object({
+    name       = string
+    priority   = number
+    limit      = number
+    action     = string
+    ip_set_arn = string
+    custom_response = object({
+      response_code = number
+      body_key      = string
+      response_header = object({
+        name  = string
+        value = string
+      })
+    })
+  }))
+  description = "Rate-based rules scoped to a specific IP set, tracking the rate of requests from addresses in that set and triggering the rule action when the rate exceeds the specified limit in any 1-minute window."
+  default     = []
+}
+
 variable "filtered_header_rule" {
   type = object({
     header_types = list(string)
