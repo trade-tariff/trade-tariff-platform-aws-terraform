@@ -60,7 +60,7 @@ variable "waf_search_rpm_limit" {
 variable "tss_scraper_ip" {
   description = "TSS Tariff Scraper source IP (CIDR), exempted from the general WAF rate limit and pinned to its own 500 RPM cap. Remove after 2027-01-01, HMRC-2501."
   type        = string
-  default     = "208.127.47.194/32"
+  default     = "20.49.214.59/32"
 }
 
 variable "enable_sns_alerts" {
