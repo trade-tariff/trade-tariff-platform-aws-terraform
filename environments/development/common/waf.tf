@@ -195,20 +195,3 @@ resource "aws_cloudwatch_log_resource_policy" "waf_logs" {
   policy_document = data.aws_iam_policy_document.waf_log_group_policy.json
   policy_name     = "tariff-waf-logs-policy-${var.environment}"
 }
-
-# These two rules were originally created as standalone resources
-# (aws_wafv2_web_acl_rule.tss_scraper_rate_limit_cf) before HMRC-2501's
-# refactor moved them into the shared waf module. The refactor changed their
-# Terraform addresses without a `moved` block, so state lost track of the
-# live AWS rules development already has at these priorities. Re-adopt them
-# here so apply doesn't try to create duplicates and collide on priority.
-# Safe to delete once applied successfully.
-import {
-  to = module.waf.aws_wafv2_web_acl_rule.ip_set_rate_based["tss-scraper-rate-limit"]
-  id = "${module.waf.web_acl_id},tss-scraper-rate-limit"
-}
-
-import {
-  to = module.waf.aws_wafv2_web_acl_rule.ip_sets["allow-tss-scraper"]
-  id = "${module.waf.web_acl_id},allow-tss-scraper"
-}
