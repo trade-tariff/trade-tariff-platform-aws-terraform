@@ -1,3 +1,12 @@
+resource "aws_wafv2_ip_set" "tss_scraper_cf" {
+  provider           = aws.us_east_1
+  name               = "tss-scraper-cf-${var.environment}"
+  description        = "TSS Tariff Scraper rate limit exception, remove after 2027-01-01, HMRC-2501"
+  scope              = "CLOUDFRONT"
+  ip_address_version = "IPV4"
+  addresses          = [var.tss_scraper_ip]
+}
+
 module "waf" {
   source = "../../../modules/waf"
 
@@ -10,7 +19,7 @@ module "waf" {
 
   ip_rate_based_rule = {
     name      = "ratelimiting"
-    priority  = 2
+    priority  = 4
     rpm_limit = var.waf_rpm_limit
     action    = "block"
     custom_response = {
@@ -22,6 +31,36 @@ module "waf" {
       }
     }
   }
+
+  # Pins TSS at exactly 500 RPM regardless of what var.waf_rpm_limit becomes.
+  # allow-tss-scraper (ip_sets_rule below) bypasses the lower general limit.
+  # Remove this rule and allow-tss-scraper after 2027-01-01 (HMRC-2501).
+  ip_set_rate_based_rules = [
+    {
+      name       = "tss-scraper-rate-limit"
+      priority   = 1
+      limit      = 500
+      action     = "block"
+      ip_set_arn = aws_wafv2_ip_set.tss_scraper_cf.arn
+      custom_response = {
+        response_code = 429
+        body_key      = "rate-limit-exceeded"
+        response_header = {
+          name  = "X-Rate-Limit"
+          value = "1"
+        }
+      }
+    }
+  ]
+
+  ip_sets_rule = [
+    {
+      name       = "allow-tss-scraper"
+      priority   = 2
+      ip_set_arn = aws_wafv2_ip_set.tss_scraper_cf.arn
+      action     = "allow"
+    }
+  ]
 
   header_allow_rules = concat(
     nonsensitive(var.waf_mcp_secret_token != "") ? [
