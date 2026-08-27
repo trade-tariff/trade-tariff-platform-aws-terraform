@@ -19,7 +19,7 @@ variable "region" {
 variable "waf_rpm_limit" {
   description = "Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. "
   type        = number
-  default     = 2000
+  default     = 15 # TEMPORARY: lowered to test allow-api-key WAF bypass, revert to 2000 after
 }
 
 variable "waf_mcp_secret_token" {
