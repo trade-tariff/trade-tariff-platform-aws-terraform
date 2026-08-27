@@ -76,21 +76,27 @@ module "waf" {
         priority    = 8
         header_name = "x-waf-bypass"
       }
-    ] : [],
-    nonsensitive(var.waf_api_key_secret_token != "") ? [
-      {
-        name        = "allow-api-key"
-        priority    = 3
-        header_name = "x-api-key"
-      }
     ] : []
   )
 
   header_allow_values = merge(
     var.waf_mcp_secret_token != "" ? { "allow-mcp-server" = var.waf_mcp_secret_token } : {},
-    var.WAF_E2E_SECRET_TOKEN != "" ? { "allow-e2e-tests" = var.WAF_E2E_SECRET_TOKEN } : {},
-    var.waf_api_key_secret_token != "" ? { "allow-api-key" = var.waf_api_key_secret_token } : {}
+    var.WAF_E2E_SECRET_TOKEN != "" ? { "allow-e2e-tests" = var.WAF_E2E_SECRET_TOKEN } : {}
   )
+
+  # Any currently authorized categorisation X-Api-Key client bypasses WAF rate limiting.
+  # Key list is read live from Secrets Manager (see locals.xi_api_keys), not stored in Terraform state as a variable.
+  header_allow_multi_rules = nonsensitive(length(local.xi_api_keys) > 0) ? [
+    {
+      name        = "allow-api-key"
+      priority    = 3
+      header_name = "x-api-key"
+    }
+  ] : []
+
+  header_allow_multi_values = nonsensitive(length(local.xi_api_keys) > 0) ? {
+    "allow-api-key" = keys(local.xi_api_keys)
+  } : {}
 
   managed_rule_path_exceptions = [
     {

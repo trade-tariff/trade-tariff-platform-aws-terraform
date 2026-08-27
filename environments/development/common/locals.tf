@@ -2,6 +2,10 @@ locals {
   account_id         = data.aws_caller_identity.current.account_id
   origin_domain_name = "origin.${var.domain_name}"
 
+  # Client keys authorized for the legacy categorisation X-Api-Key API.
+  # Kept in sync with the backend's own auth check, which reads the same secret.
+  xi_api_keys = jsondecode(data.aws_secretsmanager_secret_version.xi_api_configuration.secret_string)["api_keys"]
+
   development_secret_recovery_window = 0
 
   cloudfront_auth = templatefile(

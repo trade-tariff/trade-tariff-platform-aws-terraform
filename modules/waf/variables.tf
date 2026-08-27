@@ -257,6 +257,37 @@ variable "header_allow_values" {
   }
 }
 
+variable "header_allow_multi_rules" {
+  description = "Non-sensitive metadata for header-allow rules that accept any one of several possible values (e.g. any currently valid API key), such as name, priority, header_name. Sensitive values are provided via the header_allow_multi_values variable."
+  type = list(object({
+    name        = string
+    priority    = number
+    header_name = string
+  }))
+  default = []
+}
+
+variable "header_allow_multi_values" {
+  description = "Sensitive lists of acceptable header values, keyed by rule name. A request is allowed if the header exactly matches any one value in the list."
+  type        = map(list(string))
+  sensitive   = true
+  default     = {}
+
+  validation {
+    condition = alltrue([
+      for r in var.header_allow_multi_rules : contains(keys(var.header_allow_multi_values), r.name)
+    ])
+    error_message = "Every header_allow_multi_rules[].name must have a corresponding entry in header_allow_multi_values."
+  }
+
+  validation {
+    condition = alltrue([
+      for r in var.header_allow_multi_rules : length(lookup(var.header_allow_multi_values, r.name, [])) >= 1
+    ])
+    error_message = "Each header_allow_multi_values entry must contain at least one value."
+  }
+}
+
 variable "host_path_allow_rules" {
   description = "Rules that allow requests matching both a specific Host header value and a URI path. Use to grant domain-scoped path exceptions without affecting other domains sharing the same WAF."
   type = list(object({

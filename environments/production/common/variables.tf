@@ -45,13 +45,6 @@ variable "WAF_E2E_SECRET_TOKEN" {
   default     = ""
 }
 
-variable "waf_api_key_secret_token" {
-  description = "API key sent by an authorized client in X-Api-Key. Requests presenting this header are allowed through WAF rate limiting."
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
 variable "waf_page_rpm_limit" {
   description = "Rate limit per IP per minute for individual tariff page paths (commodities, headings, chapters, subheadings). Lower than the global limit to restrict scrapers walking the hierarchy."
   type        = number

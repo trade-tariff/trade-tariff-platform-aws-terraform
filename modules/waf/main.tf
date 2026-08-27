@@ -471,6 +471,75 @@ resource "aws_wafv2_web_acl_rule" "header_allow" {
   }
 }
 
+resource "aws_wafv2_web_acl_rule" "header_allow_multi" {
+  for_each = { for r in var.header_allow_multi_rules : r.name => r }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    allow {}
+  }
+
+  statement {
+    # A single value renders as a plain byte_match_statement; or_statement requires >= 2 child statements.
+    dynamic "byte_match_statement" {
+      for_each = length(var.header_allow_multi_values[each.value.name]) == 1 ? var.header_allow_multi_values[each.value.name] : []
+
+      content {
+        positional_constraint = "EXACTLY"
+        search_string         = byte_match_statement.value # sensitive lookup stays isolated here
+
+        field_to_match {
+          single_header {
+            name = lower(each.value.header_name)
+          }
+        }
+
+        text_transformation {
+          priority = 0
+          type     = "NONE"
+        }
+      }
+    }
+
+    dynamic "or_statement" {
+      for_each = length(var.header_allow_multi_values[each.value.name]) > 1 ? [1] : []
+
+      content {
+        dynamic "statement" {
+          for_each = var.header_allow_multi_values[each.value.name] # sensitive lookup stays isolated here
+
+          content {
+            byte_match_statement {
+              positional_constraint = "EXACTLY"
+              search_string         = statement.value
+
+              field_to_match {
+                single_header {
+                  name = lower(each.value.header_name)
+                }
+              }
+
+              text_transformation {
+                priority = 0
+                type     = "NONE"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
+
 resource "aws_wafv2_web_acl_rule" "host_path_allow" {
   for_each = {
     for rule in var.host_path_allow_rules : rule.name => rule
