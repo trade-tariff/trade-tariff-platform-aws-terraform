@@ -36,6 +36,13 @@ variable "WAF_E2E_SECRET_TOKEN" {
   default     = ""
 }
 
+variable "waf_api_key_secret_token" {
+  description = "API key sent by an authorized client in X-Api-Key. Requests presenting this header are allowed through WAF rate limiting."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "tss_scraper_ip" {
   description = "TSS Tariff Scraper source IP (CIDR), exempted from the general WAF rate limit and pinned to its own 500 RPM cap. Remove after 2027-01-01, HMRC-2501."
   type        = string
