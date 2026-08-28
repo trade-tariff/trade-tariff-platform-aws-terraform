@@ -85,9 +85,12 @@ module "waf" {
   # Priorities 11/12 sit after the allow rules at 0-10, so the MCP, TSS, e2e,
   # healthcheck and mycommodities bypasses all keep taking precedence.
   #
-  # ROLLOUT: ratelimiting-no-api-key starts as "count" so it is observable in
-  # CloudWatch without blocking anything. Size var.waf_no_api_key_rpm_limit
-  # against the resulting metrics, then flip the action to "block".
+  # ROLLOUT: development is the proving ground for this rule, so it blocks at a
+  # deliberately tiny limit (var.waf_no_api_key_rpm_limit = 10). Unkeyed traffic
+  # should start returning 429 almost immediately, while requests carrying a
+  # UUID-shaped X-Api-Key keep flowing up to var.waf_rpm_limit. Staging and
+  # production hold this rule at count with the limit level-pegged to
+  # var.waf_rpm_limit until that behaviour is confirmed here.
   header_regex_label_rules = [
     {
       name         = "label-no-api-key"
@@ -104,7 +107,7 @@ module "waf" {
       name     = "ratelimiting-no-api-key"
       priority = 12
       limit    = var.waf_no_api_key_rpm_limit
-      action   = "count"
+      action   = "block"
       label    = "no-api-key"
       custom_response = {
         response_code = 429

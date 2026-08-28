@@ -85,9 +85,11 @@ module "waf" {
   # Priorities 11/12 sit after the allow rules at 0-10, so the MCP, TSS, e2e,
   # healthcheck and mycommodities bypasses all keep taking precedence.
   #
-  # ROLLOUT: ratelimiting-no-api-key starts as "count" so it is observable in
-  # CloudWatch without blocking anything. Size var.waf_no_api_key_rpm_limit
-  # against the resulting metrics, then flip the action to "block".
+  # ROLLOUT: this rule blocks nothing yet - it is in count mode, so unkeyed
+  # traffic above var.waf_no_api_key_rpm_limit is only counted. Development
+  # runs the same rule at limit 10 with action = block to prove the split.
+  # Lowering the limit here and flipping the action to "block" is a separate
+  # change, once that test and the CloudWatch metrics confirm the behaviour.
   header_regex_label_rules = [
     {
       name         = "label-no-api-key"
