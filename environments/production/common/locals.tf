@@ -8,13 +8,12 @@ locals {
   )
 
   monitored_lambdas = {
-    database-backups         = "database-backups-production-backup"
-    fpo-search               = "trade-tariff-lambdas-fpo-search-production-fpo_search"
-    fpo-garbage-collector    = "fpo-model-garbage-collection-production-collector"
-    verify-auth-challenge    = "trade-tariff-identity-verify-auth-challenge-response"
-    create-auth-challenge    = "trade-tariff-identity-create-auth-challenge"
-    define-auth-challenge    = "trade-tariff-identity-define-auth-challenge"
-    e2e-scheduler-dispatcher = "trade-tariff-e2e-scheduler-production-dispatcher"
+    database-backups      = "database-backups-production-backup"
+    fpo-search            = "trade-tariff-lambdas-fpo-search-production-fpo_search"
+    fpo-garbage-collector = "fpo-model-garbage-collection-production-collector"
+    verify-auth-challenge = "trade-tariff-identity-verify-auth-challenge-response"
+    create-auth-challenge = "trade-tariff-identity-create-auth-challenge"
+    define-auth-challenge = "trade-tariff-identity-define-auth-challenge"
   }
 
   newrelic_secret_value = try(
