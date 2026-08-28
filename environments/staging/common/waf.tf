@@ -7,6 +7,16 @@ resource "aws_wafv2_ip_set" "tss_scraper_cf" {
   addresses          = [var.tss_scraper_ip]
 }
 
+locals {
+  # X-Api-Key values are UUIDs (see GREEN_LANES_API_KEYS in the
+  # backend-xi-api-configuration secret). This is a format check, not a
+  # validity check against the real keys: it keeps credential material out of
+  # the WAF entirely, and the application remains the only place that decides
+  # whether a key is genuine and enforces its per-key limit/period. Forging a
+  # UUID-shaped header only buys the higher WAF tier, not access.
+  api_key_header_regex = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+}
+
 module "waf" {
   source = "../../../modules/waf"
 
@@ -59,6 +69,51 @@ module "waf" {
       priority   = 2
       ip_set_arn = aws_wafv2_ip_set.tss_scraper_cf.arn
       action     = "allow"
+    }
+  ]
+
+  # Two-tier rate limiting. Clients presenting a UUID-shaped X-Api-Key stay on
+  # the "ratelimiting" rule above (var.waf_rpm_limit); everyone else is also
+  # held to the lower var.waf_no_api_key_rpm_limit here.
+  #
+  # The negation lives in a separate labelling rule because AWS WAF rejects
+  # not_statement inside a rate-based scope_down_statement. label-no-api-key
+  # uses a non-terminating count action, so it tags the request and evaluation
+  # carries on; a terminating allow would let anyone sending the header skip
+  # the managed rule groups (SQLi, bot control) as well as the rate limit.
+  #
+  # Priorities 11/12 sit after the allow rules at 0-10, so the MCP, TSS, e2e,
+  # healthcheck and mycommodities bypasses all keep taking precedence.
+  #
+  # ROLLOUT: ratelimiting-no-api-key starts as "count" so it is observable in
+  # CloudWatch without blocking anything. Size var.waf_no_api_key_rpm_limit
+  # against the resulting metrics, then flip the action to "block".
+  header_regex_label_rules = [
+    {
+      name         = "label-no-api-key"
+      priority     = 11
+      header_name  = "x-api-key"
+      regex_string = local.api_key_header_regex
+      label        = "no-api-key"
+      negate       = true
+    }
+  ]
+
+  label_rate_based_rules = [
+    {
+      name     = "ratelimiting-no-api-key"
+      priority = 12
+      limit    = var.waf_no_api_key_rpm_limit
+      action   = "count"
+      label    = "no-api-key"
+      custom_response = {
+        response_code = 429
+        body_key      = "rate-limit-exceeded"
+        response_header = {
+          name  = "X-Rate-Limit"
+          value = "1"
+        }
+      }
     }
   ]
 

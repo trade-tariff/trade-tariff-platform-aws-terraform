@@ -22,6 +22,12 @@ variable "waf_rpm_limit" {
   default     = 2000
 }
 
+variable "waf_no_api_key_rpm_limit" {
+  description = "Request per minute limit for requests that do not carry a UUID-shaped X-Api-Key header. Clients that do keep the higher waf_rpm_limit. Placeholder value: size this against the ratelimiting-no-api-key CloudWatch metric while the rule is still in count mode, before switching its action to block."
+  type        = number
+  default     = 100
+}
+
 variable "waf_mcp_secret_token" {
   description = "Secret token sent by the MCP server in X-Mcp-Token. Requests presenting this header are allowed through WAF rate limiting."
   type        = string
