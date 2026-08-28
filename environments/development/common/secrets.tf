@@ -68,6 +68,13 @@ module "backend_job_configuration" {
   recovery_window = local.development_secret_recovery_window
 }
 
+module "eval_api_configuration" {
+  source          = "../../../modules/secret/"
+  name            = "eval-api-configuration"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = local.development_secret_recovery_window
+}
+
 # TODO: Remove me once migrated to consistent naming above
 module "db_replicate_configuration" {
   source          = "../../../modules/secret/"
