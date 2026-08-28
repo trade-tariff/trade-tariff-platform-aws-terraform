@@ -113,6 +113,49 @@ resource "aws_cloudwatch_metric_alarm" "lambds_errors" {
   }
 }
 
+#----------------------------------------------------------#
+# CloudWatch alarms for the e2e scheduler dispatcher
+#----------------------------------------------------------#
+resource "aws_cloudwatch_metric_alarm" "e2e_scheduler_dispatcher_sustained_errors" {
+  alarm_name          = "e2e-scheduler-dispatcher-sustained-errors-${var.environment}"
+  alarm_description   = "trade-tariff-e2e-scheduler-production-dispatcher has errored on 3 consecutive runs (30 minutes) in ${var.environment}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 3
+  datapoints_to_alarm = 3
+  metric_name         = "Errors"
+  namespace           = "AWS/Lambda"
+  period              = 600 # 10 minutes, matches expected run cadence so each period aligns to one invocation
+  statistic           = "Sum"
+  threshold           = 0
+  treat_missing_data  = "notBreaching" # a missing invocation is covered by the no-invocations alarm below, not this one
+
+  dimensions = {
+    FunctionName = "trade-tariff-e2e-scheduler-production-dispatcher"
+  }
+
+  alarm_actions = local.alert_actions
+}
+
+resource "aws_cloudwatch_metric_alarm" "e2e_scheduler_dispatcher_no_invocations" {
+  alarm_name          = "e2e-scheduler-dispatcher-no-invocations-${var.environment}"
+  alarm_description   = "trade-tariff-e2e-scheduler-production-dispatcher has not been invoked for 30 minutes (expected every 10 minutes) - EventBridge trigger may be broken"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = 3
+  datapoints_to_alarm = 3
+  metric_name         = "Invocations"
+  namespace           = "AWS/Lambda"
+  period              = 600 # 10 minutes, matches expected trigger cadence
+  statistic           = "Sum"
+  threshold           = 1
+  treat_missing_data  = "breaching"
+
+  dimensions = {
+    FunctionName = "trade-tariff-e2e-scheduler-production-dispatcher"
+  }
+
+  alarm_actions = local.alert_actions
+}
+
 # Monitor the slack_notify Lambda itself
 resource "aws_sns_topic" "critical_email_alerts" {
   name = "critical-email-alerts-${var.environment}"
