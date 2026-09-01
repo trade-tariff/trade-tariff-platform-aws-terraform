@@ -160,6 +160,132 @@ resource "aws_wafv2_web_acl_rule" "ip_rate_based" {
   }
 }
 
+# Labels requests by whether a header matches a regex, so that a later
+# label_rate_based_rule can rate-limit that class of traffic separately.
+#
+# This indirection exists because AWS WAF does not accept not_statement (or
+# and_statement/or_statement) inside a rate_based_statement's
+# scope_down_statement. Expressing "rate limit everyone EXCEPT requests with a
+# valid-looking API key" therefore needs the negation hoisted out into this
+# rule, where not_statement is allowed, and carried forward as a label.
+#
+# The action is always count: it is non-terminating, so the label is attached
+# and evaluation continues to the remaining rules. An allow would terminate
+# evaluation and skip the managed rule groups (SQLi, bot control, and so on).
+resource "aws_wafv2_web_acl_rule" "header_regex_label" {
+  for_each = { for r in var.header_regex_label_rules : r.name => r }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    count {}
+  }
+
+  rule_label {
+    name = each.value.label
+  }
+
+  statement {
+    dynamic "not_statement" {
+      for_each = each.value.negate ? [1] : []
+      content {
+        statement {
+          regex_match_statement {
+            regex_string = each.value.regex_string
+            field_to_match {
+              single_header {
+                name = lower(each.value.header_name)
+              }
+            }
+            text_transformation {
+              priority = 0
+              type     = "NONE"
+            }
+          }
+        }
+      }
+    }
+
+    dynamic "regex_match_statement" {
+      for_each = each.value.negate ? [] : [1]
+      content {
+        regex_string = each.value.regex_string
+        field_to_match {
+          single_header {
+            name = lower(each.value.header_name)
+          }
+        }
+        text_transformation {
+          priority = 0
+          type     = "NONE"
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
+
+resource "aws_wafv2_web_acl_rule" "label_rate_based" {
+  for_each = { for r in var.label_rate_based_rules : r.name => r }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    dynamic "allow" {
+      for_each = each.value.action == "allow" ? [1] : []
+      content {}
+    }
+
+    dynamic "count" {
+      for_each = each.value.action == "count" ? [1] : []
+      content {}
+    }
+
+    dynamic "block" {
+      for_each = each.value.action == "block" ? [1] : []
+      content {
+        custom_response {
+          custom_response_body_key = each.value.custom_response.body_key
+          response_code            = each.value.custom_response.response_code
+          response_header {
+            name  = each.value.custom_response.response_header.name
+            value = each.value.custom_response.response_header.value
+          }
+        }
+      }
+    }
+  }
+
+  statement {
+    rate_based_statement {
+      limit                 = each.value.limit
+      evaluation_window_sec = 60
+      aggregate_key_type    = "IP"
+      scope_down_statement {
+        label_match_statement {
+          key   = each.value.label
+          scope = "LABEL"
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
+
 resource "aws_wafv2_web_acl_rule" "ip_sets" {
   for_each = { for r in var.ip_sets_rule : r.name => r }
 

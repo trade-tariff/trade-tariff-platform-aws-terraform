@@ -146,6 +146,46 @@ variable "ip_set_rate_based_rules" {
   default     = []
 }
 
+variable "header_regex_label_rules" {
+  type = list(object({
+    name         = string
+    priority     = number
+    header_name  = string
+    regex_string = string
+    label        = string
+    negate       = optional(bool, false)
+  }))
+  description = "Non-terminating (count) rules that attach a label to requests based on whether a header matches a regex. Set negate = true to label requests that do NOT match. Pair with label_rate_based_rules to apply a different rate limit to a class of traffic - AWS WAF does not allow not_statement inside a rate-based scope_down_statement, so the negation has to happen in a separate labelling rule that is evaluated first."
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for r in var.header_regex_label_rules : !can(regex("(?i)^(awswaf|aws|waf|rulegroup|webacl|regexpatternset|ipset|managed)$", r.label))
+    ])
+    error_message = "label must not be one of the strings AWS WAF reserves for its own label namespaces (awswaf, aws, waf, rulegroup, webacl, regexpatternset, ipset, managed)."
+  }
+}
+
+variable "label_rate_based_rules" {
+  type = list(object({
+    name     = string
+    priority = number
+    limit    = number
+    action   = string
+    label    = string
+    custom_response = object({
+      response_code = number
+      body_key      = string
+      response_header = object({
+        name  = string
+        value = string
+      })
+    })
+  }))
+  description = "Rate-based rules scoped to requests carrying a given label, tracking the rate of requests per originating IP among those matches and triggering the rule action when it exceeds the specified limit in any 1-minute window. The labelling rule must have a lower priority number, since a label match only sees labels added earlier in the Web ACL evaluation."
+  default     = []
+}
+
 variable "filtered_header_rule" {
   type = object({
     header_types = list(string)
