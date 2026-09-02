@@ -79,6 +79,9 @@ jobs:
 
   plan-development:
     environment: development
+    concurrency:
+      group: terraform-development
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
@@ -122,6 +125,9 @@ jobs:
   apply-development:
     needs: plan-development
     environment: development
+    concurrency:
+      group: terraform-development
+      cancel-in-progress: false
     env:
       TERRAGRUNT_NON_INTERACTIVE: true
       TF_INPUT: false
@@ -183,7 +189,9 @@ jobs:
 
   plan-staging:
     environment: staging
-
+    concurrency:
+      group: terraform-staging
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
@@ -226,6 +234,9 @@ jobs:
 
   plan-production:
     environment: production
+    concurrency:
+      group: terraform-production
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1

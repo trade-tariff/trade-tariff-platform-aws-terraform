@@ -18,6 +18,9 @@ env:
 jobs:
   apply-production:
     environment: production
+    concurrency:
+      group: terraform-production
+      cancel-in-progress: false
     env:
       TERRAGRUNT_NON_INTERACTIVE: true
       TF_INPUT: false

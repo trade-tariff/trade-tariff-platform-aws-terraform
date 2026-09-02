@@ -21,6 +21,9 @@ env:
 jobs:
   apply-staging:
     environment: staging
+    concurrency:
+      group: terraform-staging
+      cancel-in-progress: false
     env:
       TERRAGRUNT_NON_INTERACTIVE: true
       TF_INPUT: false
