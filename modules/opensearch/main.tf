@@ -79,11 +79,60 @@ resource "aws_opensearch_domain" "opensearch" {
     volume_size = var.ebs_volume_size
   }
 
+  log_publishing_options {
+    log_type                 = "ES_APPLICATION_LOGS"
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_application_logs.arn
+    enabled                  = true
+  }
+
+  log_publishing_options {
+    log_type                 = "AUDIT_LOGS"
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_audit_logs.arn
+    enabled                  = true
+  }
+
   tags = var.tags
 
-  depends_on = [aws_iam_service_linked_role.opensearch]
+  depends_on = [
+    aws_iam_service_linked_role.opensearch,
+    aws_cloudwatch_log_resource_policy.opensearch_log_publishing,
+  ]
 }
 
+
+resource "aws_cloudwatch_log_group" "opensearch_application_logs" {
+  name              = "/aws/opensearch/${var.cluster_name}/application-logs"
+  retention_in_days = 90
+}
+
+resource "aws_cloudwatch_log_group" "opensearch_audit_logs" {
+  name              = "/aws/opensearch/${var.cluster_name}/audit-logs"
+  retention_in_days = 90
+}
+
+data "aws_iam_policy_document" "opensearch_log_publishing" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:PutLogEvents",
+      "logs:CreateLogStream",
+    ]
+    resources = [
+      "${aws_cloudwatch_log_group.opensearch_application_logs.arn}:*",
+      "${aws_cloudwatch_log_group.opensearch_audit_logs.arn}:*",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["es.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_resource_policy" "opensearch_log_publishing" {
+  policy_name     = "${var.cluster_name}-opensearch-log-publishing"
+  policy_document = data.aws_iam_policy_document.opensearch_log_publishing.json
+}
 
 resource "aws_route53_record" "opensearch" {
   zone_id = data.aws_route53_zone.opensearch.id
