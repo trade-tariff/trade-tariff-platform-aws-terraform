@@ -67,12 +67,6 @@ module "alb" {
       priority         = 26
     }
 
-    ai_eval = {
-      hosts            = ["eval.*"]
-      healthcheck_path = "/healthcheckz"
-      priority         = 27
-    }
-
     frontend = {
       paths            = ["/*"]
       healthcheck_path = "/healthcheckz"
