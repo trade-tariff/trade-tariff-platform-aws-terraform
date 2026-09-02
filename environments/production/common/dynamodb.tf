@@ -10,4 +10,8 @@ resource "aws_dynamodb_table" "client_rate_limits" {
   }
 
   deletion_protection_enabled = true
+
+  point_in_time_recovery {
+    enabled = true
+  }
 }
