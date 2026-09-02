@@ -161,7 +161,13 @@ data "aws_iam_policy_document" "deny_insecure_transport" {
 }
 
 resource "aws_s3_bucket_policy" "require_ssl" {
-  for_each = { for k, v in local.buckets : k => v if k != "persistence" }
+  # api-docs, reporting, database-backups, and models already have a bucket policy
+  # defined elsewhere (cloudfront-policy.tf, iam.tf); the deny statement is merged
+  # into those instead, since a bucket can only have one policy attached.
+  for_each = {
+    for k, v in local.buckets : k => v
+    if !contains(["persistence", "api-docs", "reporting", "database-backups", "models"], k)
+  }
 
   bucket = aws_s3_bucket.this[each.key].id
   policy = data.aws_iam_policy_document.deny_insecure_transport[each.key].json
