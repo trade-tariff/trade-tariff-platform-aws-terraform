@@ -23,6 +23,8 @@ resource "aws_rds_cluster" "this" {
   storage_encrypted = var.encryption_at_rest
   kms_key_id        = try(aws_kms_key.this[0].arn, var.kms_key_id)
 
+  iam_database_authentication_enabled = true
+
   dynamic "serverlessv2_scaling_configuration" {
     for_each = var.engine_mode == "provisioned" ? [1] : []
     content {
