@@ -113,6 +113,14 @@ resource "aws_s3_bucket_public_access_block" "this" {
   restrict_public_buckets = true
 }
 
+resource "aws_s3_bucket_logging" "this" {
+  for_each = local.buckets
+
+  bucket        = aws_s3_bucket.this[each.key].id
+  target_bucket = module.logs.s3_bucket_id
+  target_prefix = "log/${each.value}/"
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   for_each = local.buckets
   bucket   = aws_s3_bucket.this[each.key].id
