@@ -11,7 +11,7 @@ resource "aws_kms_alias" "this" {
 resource "aws_ecr_repository" "this" {
   for_each             = local.applications
   name                 = "tariff-${each.key}-${var.environment}"
-  image_tag_mutability = "MUTABLE"
+  image_tag_mutability = "IMMUTABLE"
   force_delete         = false
 
   image_scanning_configuration {
