@@ -8,6 +8,12 @@ locals {
     var.engine == "postgres" ? "postgres${local.engine_major_version}" : null
   )
 
+  cloudwatch_logs_exports = (
+    var.engine == "postgres" ? ["postgresql", "upgrade"] :
+    var.engine == "mysql" ? ["audit", "error", "general", "slowquery"] :
+    []
+  )
+
   tags = merge(
     {
       Relation = "RDS Instance ${var.name}"

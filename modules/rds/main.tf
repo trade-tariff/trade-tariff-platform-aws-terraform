@@ -37,6 +37,8 @@ resource "aws_db_instance" "this" {
 
   parameter_group_name = aws_db_parameter_group.postgres[0].name
 
+  enabled_cloudwatch_logs_exports = local.cloudwatch_logs_exports
+
   vpc_security_group_ids = var.security_group_ids
 
   tags = local.tags
