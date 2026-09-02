@@ -177,6 +177,8 @@ module "postgres_admin_aurora" {
 
   encryption_at_rest = true
 
+  cloudwatch_log_exports = ["postgresql"]
+
   min_capacity = 0.5
   max_capacity = 2
 
