@@ -104,7 +104,10 @@ resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   }
 
   headers_config {
-    header_behavior = "allViewer"
+    header_behavior = "allViewerAndWhitelistCloudFront"
+    headers {
+      items = ["CloudFront-Viewer-Country"]
+    }
   }
 
   query_strings_config {

@@ -124,7 +124,7 @@ module "flagsmith_edge_configuration" {
 # Flagsmith gets its own distributions rather than sharing the main CDN: its
 # /api/v1/* paths would otherwise collide with the tariff API cache behaviours
 # (long cache + auth lambda). Each distribution forwards the viewer Host header
-# (via forward_all_qsa/allViewer) to the ALB origin, which routes flags.* and
+# (via forward_all_qsa) to the ALB origin, which routes flags.* and
 # flags-edge.* to the Flagsmith HTTP target groups by host.
 module "flags_cdn" {
   source = "../../../modules/cloudfront"
