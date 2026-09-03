@@ -80,6 +80,19 @@ resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
   ]
 }
 
+resource "aws_ecr_registry_scanning_configuration" "this" {
+  scan_type = "ENHANCED"
+
+  rule {
+    scan_frequency = "SCAN_ON_PUSH"
+
+    repository_filter {
+      filter      = "*"
+      filter_type = "WILDCARD"
+    }
+  }
+}
+
 output "repository_urls" {
   description = "Map of ECR repository URLs, sorted by service."
   value = {

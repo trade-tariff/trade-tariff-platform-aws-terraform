@@ -57,6 +57,15 @@ module "ecr" {
   environment = var.environment
 }
 
+# REMOVE it after PR is deployed and merged to main branch, as the import will be done automatically by Terraform
+# Enhanced scanning + scan-on-push was already switched on manually in the
+# AWS console; import the existing registry scanning configuration instead
+# of letting Terraform try to create a second one.
+import {
+  to = module.ecr.aws_ecr_registry_scanning_configuration.this
+  id = data.aws_caller_identity.current.account_id
+}
+
 resource "aws_ecr_repository_policy" "ecr_allow_staging_and_development" {
   for_each   = module.ecr.repository_urls
   repository = "tariff-${each.key}-${var.environment}"
