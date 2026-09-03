@@ -50,9 +50,6 @@ resource "aws_iam_policy" "ci_terraform_policy" {
           "rds:DeleteDBInstanceAutomatedBackup",
           "rds:DeleteGlobalCluster",
 
-          # DynamoDB (data loss)
-          "dynamodb:DeleteTable",
-
           # ECR (image destruction)
           "ecr:DeleteRepository",
           "ecr:BatchDeleteImage",
@@ -118,7 +115,6 @@ resource "aws_iam_policy" "ci_terraform_policy" {
           "cloudfront:*",
           "cloudwatch:*",
           "cognito-idp:*",
-          "dynamodb:*",
           "ec2:*",
           "ecr:*",
           "ecs:*",
