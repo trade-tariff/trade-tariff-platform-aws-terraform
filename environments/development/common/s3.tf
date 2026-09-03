@@ -140,11 +140,64 @@ resource "aws_s3_bucket_policy" "ses_policy" {
             "AWS:SourceArn"     = "arn:aws:ses:${var.region}:${local.account_id}:identity/${var.domain_name}"
           }
         }
+      },
+      {
+        Sid       = "DenyInsecureTransport"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.this["ses-inbound"].arn,
+          "${aws_s3_bucket.this["ses-inbound"].arn}/*",
+        ]
+        Condition = {
+          Bool = {
+            "aws:SecureTransport" = "false"
+          }
+        }
       }
     ]
   })
 
   depends_on = [aws_s3_bucket.this]
+}
+
+data "aws_iam_policy_document" "deny_insecure_transport" {
+  for_each = local.buckets
+
+  statement {
+    sid     = "DenyInsecureTransport"
+    effect  = "Deny"
+    actions = ["s3:*"]
+    resources = [
+      aws_s3_bucket.this[each.key].arn,
+      "${aws_s3_bucket.this[each.key].arn}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "require_ssl" {
+  # ses-inbound, api-docs, reporting, and database-backups already have a bucket
+  # policy defined elsewhere (cloudfront-policy.tf); the deny statement is merged
+  # into those instead, since a bucket can only have one policy attached.
+  for_each = {
+    for k, v in local.buckets : k => v
+    if !contains(["ses-inbound", "api-docs", "reporting", "database-backups"], k)
+  }
+
+  bucket = aws_s3_bucket.this[each.key].id
+  policy = data.aws_iam_policy_document.deny_insecure_transport[each.key].json
 }
 
 resource "aws_iam_role" "ses_s3" {

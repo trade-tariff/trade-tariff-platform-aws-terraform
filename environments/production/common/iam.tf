@@ -27,6 +27,8 @@ resource "aws_s3_bucket_policy" "fpo_model_access" {
 }
 
 data "aws_iam_policy_document" "fpo_model_access" {
+  source_policy_documents = [data.aws_iam_policy_document.deny_insecure_transport["models"].json]
+
   statement {
     effect = "Allow"
     actions = [

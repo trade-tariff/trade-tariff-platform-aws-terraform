@@ -186,6 +186,8 @@ resource "aws_s3_bucket_policy" "docs" {
 }
 
 data "aws_iam_policy_document" "docs" {
+  source_policy_documents = [data.aws_iam_policy_document.deny_insecure_transport["api-docs"].json]
+
   statement {
     sid     = "AllowCloudFrontServicePrincipal"
     effect  = "Allow"
@@ -214,6 +216,8 @@ resource "aws_s3_bucket_policy" "reporting" {
 }
 
 data "aws_iam_policy_document" "reporting" {
+  source_policy_documents = [data.aws_iam_policy_document.deny_insecure_transport["reporting"].json]
+
   statement {
     sid       = "AllowCloudFrontServicePrincipal"
     effect    = "Allow"
@@ -239,6 +243,8 @@ resource "aws_s3_bucket_policy" "backups" {
 }
 
 data "aws_iam_policy_document" "backups" {
+  source_policy_documents = [data.aws_iam_policy_document.deny_insecure_transport["database-backups"].json]
+
   statement {
     sid       = "AllowCloudFrontServicePrincipal"
     effect    = "Allow"

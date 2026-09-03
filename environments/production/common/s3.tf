@@ -135,6 +135,44 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   }
 }
 
+data "aws_iam_policy_document" "deny_insecure_transport" {
+  for_each = local.buckets
+
+  statement {
+    sid     = "DenyInsecureTransport"
+    effect  = "Deny"
+    actions = ["s3:*"]
+    resources = [
+      aws_s3_bucket.this[each.key].arn,
+      "${aws_s3_bucket.this[each.key].arn}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "require_ssl" {
+  # api-docs, reporting, database-backups, and models already have a bucket policy
+  # defined elsewhere (cloudfront-policy.tf, iam.tf); the deny statement is merged
+  # into those instead, since a bucket can only have one policy attached.
+  for_each = {
+    for k, v in local.buckets : k => v
+    if !contains(["persistence", "api-docs", "reporting", "database-backups", "models"], k)
+  }
+
+  bucket = aws_s3_bucket.this[each.key].id
+  policy = data.aws_iam_policy_document.deny_insecure_transport[each.key].json
+}
+
 resource "aws_s3_bucket_lifecycle_configuration" "database_backups_rotation" {
   bucket = aws_s3_bucket.this["database-backups"].id
 
@@ -175,6 +213,8 @@ locals {
 
 # NOTE: READONLY cross-account access for persistence bucket to allow backend jobs to replicate data files
 data "aws_iam_policy_document" "persistence_cross_account_policy" {
+  source_policy_documents = [data.aws_iam_policy_document.deny_insecure_transport["persistence"].json]
+
   statement {
     sid    = "AllowCrossAccountReadAccess"
     effect = "Allow"
