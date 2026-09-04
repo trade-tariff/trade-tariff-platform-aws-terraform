@@ -258,10 +258,13 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           # Logs - log groups for ECS containers
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
+          "logs:DeleteMetricFilter",
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams",
+          "logs:DescribeMetricFilters",
           "logs:GetLogEvents",
           "logs:ListTagsForResource",
+          "logs:PutMetricFilter",
           "logs:PutRetentionPolicy",
           # Secrets Manager - read secrets for task environment variables
           "secretsmanager:BatchGetSecretValue",
