@@ -257,13 +257,10 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
           # Logs - log groups for ECS containers
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
-          "logs:DeleteMetricFilter",
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams",
-          "logs:DescribeMetricFilters",
           "logs:GetLogEvents",
           "logs:ListTagsForResource",
-          "logs:PutMetricFilter",
           "logs:PutRetentionPolicy",
           # Secrets Manager - read secrets for task environment variables
           "secretsmanager:BatchGetSecretValue",
@@ -289,6 +286,16 @@ resource "aws_iam_policy" "ci_ecs_deployment_policy" {
         ],
         Resource  = "*",
         Condition = { "StringEquals" = { "aws:RequestedRegion" = ["eu-west-2", "us-east-1"] } }
+      },
+      {
+        Sid    = "SearchMetricFilters",
+        Effect = "Allow",
+        Action = [
+          "logs:DeleteMetricFilter",
+          "logs:DescribeMetricFilters",
+          "logs:PutMetricFilter",
+        ],
+        Resource = module.cloudwatch-ecs-logs.log_group_arn
       },
       {
         Sid       = "IAMPassRole",
