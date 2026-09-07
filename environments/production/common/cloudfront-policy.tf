@@ -104,9 +104,15 @@ resource "aws_cloudfront_origin_request_policy" "forward_all_qsa" {
   }
 
   headers_config {
+    # allViewer only forwards headers the viewer itself sent. Both of these
+    # are CloudFront-synthesized headers, not ones that arrive from the
+    # viewer, so each needs whitelisting explicitly to reach the origin:
+    # - CloudFront-Viewer-Country: viewer country for locale-aware responses
+    # - CloudFront-Viewer-Address: true client IP, used by the backend to
+    #   log the originating IP (see application_controller.rb#append_info_to_payload)
     header_behavior = "allViewerAndWhitelistCloudFront"
     headers {
-      items = ["CloudFront-Viewer-Country"]
+      items = ["CloudFront-Viewer-Country", "CloudFront-Viewer-Address"]
     }
   }
 
