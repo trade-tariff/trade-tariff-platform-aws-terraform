@@ -211,32 +211,78 @@ resource "aws_cloudwatch_metric_alarm" "notify_delivery_failures" {
 # CloudWatch dead man's switch alarms for scheduled jobs
 #----------------------------------------------------------#
 locals {
-  # period is the expected run interval in seconds; alarm fires if no heartbeat
-  # is seen within one interval. Tune these windows once real run times are known.
+  # The backend publishes the JobSuccess metric with THREE dimensions: Job,
+  # Service and Environment (see ScheduledJobHeartbeat in trade-tariff-backend).
+  # CloudWatch matches dimensions exactly, so an alarm must name all three or it
+  # watches a metric that is never published.
+  #
+  # Each entry below is one (job, service) pair that genuinely publishes a
+  # heartbeat. This is deliberately NOT a cross product of jobs and services: a
+  # pair that never runs would have no datapoints and, with
+  # treat_missing_data = "breaching", would sit in ALARM forever.
+  #
+  # Which service each job runs under is set by the SERVICE guards in the
+  # backend's config/sidekiq.yml and by the TradeTariffBackend.uk? / .xi? guards
+  # inside each worker:
+  #   ImportCustomsTariffDocumentWorker     uk only
+  #   ImportXiCnDocumentWorker              xi only
+  #   GoodsNomenclatureReconciliationWorker uk and xi (separate cron entries)
+  #   ReportWorker                          uk and xi (triggered after each
+  #                                         service's CDS/TARIC sync completes)
+  #
+  # period is the expected run interval in seconds; the alarm fires if no
+  # heartbeat is seen within one interval.
   heartbeat_jobs = {
-    ImportCustomsTariffDocumentWorker     = 86400 # daily
-    ImportXiCnDocumentWorker              = 86400 # daily
-    GoodsNomenclatureReconciliationWorker = 86400 # daily
-    ReportWorker                          = 86400 # post-sync daily
+    "importcustomstariffdocument-uk" = {
+      job     = "ImportCustomsTariffDocumentWorker"
+      service = "uk"
+      period  = 86400 # daily
+    }
+    "importxicndocument-xi" = {
+      job     = "ImportXiCnDocumentWorker"
+      service = "xi"
+      period  = 86400 # daily
+    }
+    "goodsnomenclaturereconciliation-uk" = {
+      job     = "GoodsNomenclatureReconciliationWorker"
+      service = "uk"
+      period  = 86400 # daily
+    }
+    "goodsnomenclaturereconciliation-xi" = {
+      job     = "GoodsNomenclatureReconciliationWorker"
+      service = "xi"
+      period  = 86400 # daily
+    }
+    "report-uk" = {
+      job     = "ReportWorker"
+      service = "uk"
+      period  = 86400 # post-sync daily
+    }
+    "report-xi" = {
+      job     = "ReportWorker"
+      service = "xi"
+      period  = 86400 # post-sync daily
+    }
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "scheduled_job_heartbeat" {
   for_each = local.heartbeat_jobs
 
-  alarm_name          = "scheduled-job-no-heartbeat-${lower(replace(each.key, "Worker", ""))}-${var.environment}"
-  alarm_description   = "${each.key} has not reported a successful completion in the expected window"
+  alarm_name          = "scheduled-job-no-heartbeat-${each.key}-${var.environment}"
+  alarm_description   = "${each.value.job} (${each.value.service}) has not reported a successful completion in the expected window"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 1
   metric_name         = "JobSuccess"
   namespace           = "TradeTariff/ScheduledJobs"
-  period              = each.value
+  period              = each.value.period
   statistic           = "Sum"
   threshold           = 1
   treat_missing_data  = "breaching"
 
   dimensions = {
-    Job         = each.key
+    Job         = each.value.job
+    Service     = each.value.service
     Environment = var.environment
   }
 
