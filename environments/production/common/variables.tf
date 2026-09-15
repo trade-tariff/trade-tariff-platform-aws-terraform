@@ -55,6 +55,11 @@ variable "mcp_usage_plan_key" {
   type        = string
   sensitive   = true
   default     = ""
+
+  validation {
+    condition     = var.mcp_usage_plan_key == "" || (length(var.mcp_usage_plan_key) >= 20 && length(var.mcp_usage_plan_key) <= 128)
+    error_message = "mcp_usage_plan_key must be empty (disables the shared MCP usage plan) or 20-128 characters, matching API Gateway's api key value length requirement."
+  }
 }
 
 variable "WAF_E2E_SECRET_TOKEN" {

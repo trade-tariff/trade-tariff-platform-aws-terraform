@@ -65,8 +65,13 @@ resource "aws_api_gateway_usage_plan" "default" {
 # aws_api_gateway_api_key.mcp's value as the usageIdentifierKey for requests
 # presenting a valid X-Mcp-Token, so they land here.
 #
-# 50 rps x 60 = 3,000 rpm. Tunable: mcp-tariff-api-approaching-rate-limit-<env>
-# fires at 80% of it, and the number is meant to be reviewed against real usage.
+# Development's defaults below are 5 rps x 60 = 300 rpm -- deliberately much
+# lower than staging/production's 3,000 rpm -- so a burst of MCP traffic here
+# visibly hits the shared plan instead of blending in with the per-user plan
+# (see Task 7 Step 5 of the rollout plan). Tunable:
+# mcp-tariff-api-approaching-rate-limit-<env> fires at 80% of whatever this
+# environment's limit is, and the production number is meant to be reviewed
+# against real usage.
 variable "mcp_rate_limit" {
   description = "Steady-state requests per second for the shared MCP usage plan. Deliberately low in development so the shared plan is observably different from the per-user one."
   type        = number
