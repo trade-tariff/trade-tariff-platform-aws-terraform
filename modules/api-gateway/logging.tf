@@ -20,10 +20,19 @@ resource "aws_cloudwatch_query_definition" "active_api_keys" {
   name            = "api-${var.environment}/active-api-keys"
   log_group_names = [aws_cloudwatch_log_group.access_logs[0].name]
 
+  # clientId (from $context.authorizer.client_id) is only populated when the
+  # Lambda authorizer ran; other paths carry API Gateway's "-" placeholder
+  # there instead, but still have apiKeyId when a usage-plan key was
+  # presented. `parse` only sets realClientId on rows whose clientId doesn't
+  # start with "-" -- it leaves the field null (not "-" or "") on the rest --
+  # so `coalesce` can fall back to apiKeyId for exactly the rows the
+  # authorizer never touched, instead of dropping them from this view.
   query_string = <<-EOT
     fields @timestamp, clientId, apiKeyId, status
-    | filter clientId != "-" and clientId != ""
-    | stats count(*) as requests by clientId
+    | parse clientId /^(?<realClientId>[^-].*)$/
+    | fields coalesce(realClientId, apiKeyId) as consumer
+    | filter consumer != "-" and consumer != ""
+    | stats count(*) as requests by consumer
     | sort requests desc
   EOT
 }
