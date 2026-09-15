@@ -134,9 +134,13 @@ resource "aws_wafv2_web_acl_rule" "ip_rate_based" {
         custom_response {
           custom_response_body_key = each.value.custom_response.body_key
           response_code            = each.value.custom_response.response_code
-          response_header {
-            name  = each.value.custom_response.response_header.name
-            value = each.value.custom_response.response_header.value
+          dynamic "response_header" {
+            for_each = each.value.custom_response.response_headers
+
+            content {
+              name  = response_header.key
+              value = response_header.value
+            }
           }
         }
       }
@@ -256,9 +260,13 @@ resource "aws_wafv2_web_acl_rule" "label_rate_based" {
         custom_response {
           custom_response_body_key = each.value.custom_response.body_key
           response_code            = each.value.custom_response.response_code
-          response_header {
-            name  = each.value.custom_response.response_header.name
-            value = each.value.custom_response.response_header.value
+          dynamic "response_header" {
+            for_each = each.value.custom_response.response_headers
+
+            content {
+              name  = response_header.key
+              value = response_header.value
+            }
           }
         }
       }
@@ -398,9 +406,13 @@ resource "aws_wafv2_web_acl_rule" "ip_set_rate_based" {
         custom_response {
           custom_response_body_key = each.value.custom_response.body_key
           response_code            = each.value.custom_response.response_code
-          response_header {
-            name  = each.value.custom_response.response_header.name
-            value = each.value.custom_response.response_header.value
+          dynamic "response_header" {
+            for_each = each.value.custom_response.response_headers
+
+            content {
+              name  = response_header.key
+              value = response_header.value
+            }
           }
         }
       }

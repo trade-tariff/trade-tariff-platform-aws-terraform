@@ -39,6 +39,13 @@ resource "aws_api_gateway_gateway_response" "throttled" {
   response_type = "THROTTLED"
   status_code   = "429"
 
+  # The usage plan throttles with a token bucket refilling at the steady-state
+  # rate, so capacity returns within a second rather than at the top of a
+  # fixed window. Static mapping values must be single-quoted.
+  response_parameters = {
+    "gatewayresponse.header.Retry-After" = "'1'"
+  }
+
   response_templates = {
     "application/json" = jsonencode({
       errors = [

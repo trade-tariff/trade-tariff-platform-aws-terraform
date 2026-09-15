@@ -25,9 +25,8 @@ variables {
       custom_response = {
         response_code = 429
         body_key      = "rate-limit-exceeded"
-        response_header = {
-          name  = "X-Rate-Limit"
-          value = "1"
+        response_headers = {
+          "Retry-After" = "60"
         }
       }
     }

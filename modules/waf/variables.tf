@@ -96,12 +96,9 @@ variable "ip_rate_based_rule" {
     rpm_limit = number
     action    = string
     custom_response = object({
-      response_code = number
-      body_key      = string
-      response_header = object({
-        name  = string
-        value = string
-      })
+      response_code    = number
+      body_key         = string
+      response_headers = map(string)
     })
   })
   description = "A rate-based rule tracks the rate of requests for each originating IP address, and triggers the rule action when the rate exceeds a limit that you specify on the number of requests in any 5-minute time span"
@@ -134,12 +131,9 @@ variable "ip_set_rate_based_rules" {
     action     = string
     ip_set_arn = string
     custom_response = object({
-      response_code = number
-      body_key      = string
-      response_header = object({
-        name  = string
-        value = string
-      })
+      response_code    = number
+      body_key         = string
+      response_headers = map(string)
     })
   }))
   description = "Rate-based rules scoped to a specific IP set, tracking the rate of requests from addresses in that set and triggering the rule action when the rate exceeds the specified limit in any 1-minute window."
@@ -174,12 +168,9 @@ variable "label_rate_based_rules" {
     action   = string
     label    = string
     custom_response = object({
-      response_code = number
-      body_key      = string
-      response_header = object({
-        name  = string
-        value = string
-      })
+      response_code    = number
+      body_key         = string
+      response_headers = map(string)
     })
   }))
   description = "Rate-based rules scoped to requests carrying a given label, tracking the rate of requests per originating IP among those matches and triggering the rule action when it exceeds the specified limit in any 1-minute window. The labelling rule must have a lower priority number, since a label match only sees labels added earlier in the Web ACL evaluation."

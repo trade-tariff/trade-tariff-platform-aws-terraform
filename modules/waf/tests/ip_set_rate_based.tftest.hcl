@@ -17,9 +17,8 @@ run "ip_set_rate_based_created_with_expected_shape" {
         custom_response = {
           response_code = 429
           body_key      = "rate-limit-exceeded"
-          response_header = {
-            name  = "X-Rate-Limit"
-            value = "1"
+          response_headers = {
+            "Retry-After" = "60"
           }
         }
       }
@@ -64,9 +63,8 @@ run "ip_set_rate_based_action_count_omits_block_config" {
         custom_response = {
           response_code = 429
           body_key      = "rate-limit-exceeded"
-          response_header = {
-            name  = "X-Rate-Limit"
-            value = "1"
+          response_headers = {
+            "Retry-After" = "60"
           }
         }
       }
