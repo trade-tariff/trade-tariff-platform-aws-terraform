@@ -22,6 +22,12 @@ variable "waf_rpm_limit" {
   default     = 2000
 }
 
+variable "waf_apigw_rpm_limit" {
+  description = "Request per minute limit for the WAF in front of the API Gateway. Split from waf_rpm_limit so the API Gateway limit can diverge from the CDN limit."
+  type        = number
+  default     = 2000
+}
+
 variable "waf_no_api_key_rpm_limit" {
   description = "Request per minute limit for requests that do not carry a UUID-shaped X-Api-Key header. Clients that do keep the higher waf_rpm_limit. Deliberately tiny in development so the two-tier split can be exercised end to end: unkeyed traffic should start returning 429 almost immediately, while requests carrying a UUID-shaped X-Api-Key keep flowing up to waf_rpm_limit."
   type        = number
