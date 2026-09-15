@@ -22,6 +22,12 @@ variable "waf_rpm_limit" {
   default     = 2000
 }
 
+variable "waf_apigw_rpm_limit" {
+  description = "Request per minute limit for the WAF in front of the API Gateway. Split from waf_rpm_limit so the API Gateway limit can diverge from the CDN limit."
+  type        = number
+  default     = 2000
+}
+
 variable "waf_no_api_key_rpm_limit" {
   description = "Request per minute limit for requests that do not carry a UUID-shaped X-Api-Key header. Clients that do keep waf_rpm_limit. Held at 500 while the rule is in count mode, so nothing is blocked: lowering it is a separate change, once the development environment has proven the split and the CloudWatch metrics have been reviewed."
   type        = number
