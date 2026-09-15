@@ -21,9 +21,9 @@ resource "aws_cloudwatch_query_definition" "active_api_keys" {
   log_group_names = [aws_cloudwatch_log_group.access_logs[0].name]
 
   query_string = <<-EOT
-    fields @timestamp, apiKeyId, status
-    | filter apiKeyId != "-"
-    | stats count(*) as requests by apiKeyId
+    fields @timestamp, clientId, apiKeyId, status
+    | filter clientId != "-" and clientId != ""
+    | stats count(*) as requests by clientId
     | sort requests desc
   EOT
 }
