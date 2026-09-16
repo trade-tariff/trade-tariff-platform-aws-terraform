@@ -941,3 +941,25 @@ resource "aws_iam_policy" "ci_ecs_task_cleanup_policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ci_e2e_metrics_policy" {
+  name        = "ci-e2e-metrics-policy"
+  description = "Allows the e2e test suite to publish its own CloudWatch metrics"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "AllowPutMetricDataInE2ENamespace"
+        Action   = ["cloudwatch:PutMetricData"]
+        Resource = ["*"]
+        Effect   = "Allow"
+        Condition = {
+          StringEquals = {
+            "cloudwatch:namespace" = "TradeTariff/E2E"
+          }
+        }
+      }
+    ]
+  })
+}
