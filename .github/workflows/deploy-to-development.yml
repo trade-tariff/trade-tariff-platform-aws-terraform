@@ -19,10 +19,6 @@ env:
   # Required for plan/apply in all environments so the e2e WAF allow rule is not planned for destroy.
   TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
 
-# The Update Terraform Docs workflow pushes a docs commit back to the PR branch, which
-# fires a second pull_request (synchronize) run. Skip the plan/apply jobs on those bot
-# pushes so development is not deployed twice per PR. The lint job still runs so the
-# workflow concludes successfully and auto-merge's required-workflow gate is satisfied.
 jobs:
   lint:
     runs-on: ubuntu-latest
