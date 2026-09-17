@@ -121,7 +121,7 @@ module "postgres_aurora" {
 
   cluster_name      = "postgres-aurora-${var.environment}"
   engine            = "aurora-postgresql"
-  engine_version    = "17.7"
+  engine_version    = "18.4"
   engine_mode       = "provisioned"
   cluster_instances = 2
   apply_immediately = true
@@ -136,7 +136,7 @@ module "postgres_aurora" {
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
-  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_17.name
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_pg_18.name
 
   cloudwatch_log_exports = ["postgresql"]
 
@@ -166,7 +166,7 @@ module "postgres_admin_aurora" {
 
   cluster_name      = "admin-aurora-${var.environment}"
   engine            = "aurora-postgresql"
-  engine_version    = "17.7"
+  engine_version    = "18.4"
   engine_mode       = "provisioned"
   cluster_instances = 1
   apply_immediately = true
@@ -185,7 +185,7 @@ module "postgres_admin_aurora" {
   security_group_ids = [module.alb-security-group.be_to_rds_security_group_id]
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
-  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.admin_aurora_pg_17.name
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.admin_aurora_pg_18.name
 
   tags = {
     "RDS_Type" = "Aurora"
@@ -204,10 +204,9 @@ module "admin_connection_string" {
 # Aurora cluster Parameter Groups
 //////////////////////////////////////////////////////////////////////////
 
-# TODO Channge the name to be more generic after upgrade to Aurora Postgres 18.
-resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
+resource "aws_rds_cluster_parameter_group" "aurora_pg_18" {
   name        = "postgres-aurora-development-cpg-20260310160959037600000001"
-  family      = "aurora-postgresql17"
+  family      = "aurora-postgresql18"
   description = "Managed PostgreSQL cluster parameter group for postgres-aurora-development."
 
   # Common parameters
@@ -229,10 +228,9 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_17" {
   }
 }
 
-# TODO Channge the name to be more generic after upgrade to Aurora Postgres 18.
-resource "aws_rds_cluster_parameter_group" "admin_aurora_pg_17" {
+resource "aws_rds_cluster_parameter_group" "admin_aurora_pg_18" {
   name        = "admin-aurora-development-cpg-20260316131005717500000001"
-  family      = "aurora-postgresql17"
+  family      = "aurora-postgresql18"
   description = "Managed PostgreSQL cluster parameter group for admin-aurora-development."
 
   # Common parameters
