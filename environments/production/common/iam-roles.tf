@@ -486,3 +486,34 @@ resource "aws_iam_role_policy_attachment" "rds_enhanced_monitoring_attach" {
   role       = aws_iam_role.rds_enhanced_monitoring.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
 }
+
+resource "aws_iam_role" "e2e_testing_ci_role" {
+  name = "GithubActions-E2E-Testing-Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud" = "sts.amazonaws.com"
+            # Scoped to main, not the whole repo. check-production.yml is only
+            # ever dispatched against main, and without this any branch in the
+            # e2e repo could assume a role in the production account.
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub" = "repo:trade-tariff/trade-tariff-e2e-tests:ref:refs/heads/main"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "e2e_testing_ci_policy_attachment" {
+  role       = aws_iam_role.e2e_testing_ci_role.name
+  policy_arn = aws_iam_policy.ci_e2e_metrics_policy.arn
+}

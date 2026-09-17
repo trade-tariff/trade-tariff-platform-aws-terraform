@@ -143,3 +143,60 @@ module "cloudwatch-logs-exporter" {
   environment                   = var.environment
   log_retention_days            = 30
 }
+
+resource "aws_cloudwatch_dashboard" "e2e_metrics" {
+  dashboard_name = "trade-tariff-e2e-production"
+
+  dashboard_body = jsonencode({
+    widgets = [
+      {
+        type   = "metric"
+        width  = 12
+        height = 6
+        properties = {
+          title  = "Run outcome"
+          region = "eu-west-2"
+          metrics = [
+            ["TradeTariff/E2E", "TestsPassed", "Environment", "production"],
+            [".", "TestsFailed", ".", "."],
+            [".", "TestsSkipped", ".", "."],
+          ]
+          # 600s matches the scheduler's ten minute cadence. A shorter period
+          # would read as missing data for most of every interval.
+          period = 600
+          stat   = "Maximum"
+          view   = "timeSeries"
+        }
+      },
+      {
+        type   = "metric"
+        width  = 12
+        height = 6
+        properties = {
+          title   = "Run duration (ms)"
+          region  = "eu-west-2"
+          metrics = [["TradeTariff/E2E", "RunDuration", "Environment", "production"]]
+          period  = 600
+          stat    = "Average"
+          view    = "timeSeries"
+          yAxis   = { left = { min = 0 } }
+        }
+      },
+      {
+        type   = "metric"
+        width  = 24
+        height = 8
+        properties = {
+          title  = "Slowest journeys (ms)"
+          region = "eu-west-2"
+          metrics = [
+            [{ expression = "SORT(SEARCH('{TradeTariff/E2E,Environment,Spec,Test} MetricName=\"TestDuration\" Environment=\"production\"', 'Average', 600), AVG, DESC, 15)" }]
+          ]
+          period = 600
+          view   = "timeSeries"
+          yAxis  = { left = { min = 0 } }
+        }
+      },
+    ]
+  })
+}
