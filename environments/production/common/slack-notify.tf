@@ -59,6 +59,7 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   }
 }
 
+# Admin custom-range analytics allow up to five seconds; keep trader-facing targets unchanged.
 resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   for_each = module.alb.target_groups
 
@@ -70,7 +71,7 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   period              = "300"
   statistic           = "Average"
   unit                = "Seconds"
-  threshold           = 1.5
+  threshold           = each.value.name == "admin-https" ? 5 : 1.5
   alarm_description   = "Long response times in ${var.environment} environment for target group ${each.value.name}"
   treat_missing_data  = "notBreaching"
 
