@@ -5,6 +5,7 @@ Requires Terraform on PATH. No provider installation or remote state is used.
 """
 
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -36,7 +37,7 @@ class ResponseTimeAlarmTest(unittest.TestCase):
                       + ' : name => {' + properties + '}})')
         with tempfile.TemporaryDirectory() as directory:
             result = subprocess.run(
-                ['terraform', 'console', '-no-color'], cwd=directory,
+                [os.environ.get('TERRAFORM_BINARY', 'terraform'), 'console', '-no-color'], cwd=directory,
                 input=expression + '\n', capture_output=True, text=True, check=True,
             )
         alarms = json.loads(json.loads(result.stdout.strip()))
