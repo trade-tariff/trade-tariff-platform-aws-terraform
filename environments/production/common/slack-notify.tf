@@ -59,28 +59,23 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "long_response_times" {
-  for_each = module.alb.target_groups
+# Admin custom-range analytics allow up to five seconds; keep trader-facing targets unchanged.
+module "long_response_times" {
+  source = "../../../modules/alb-response-time-alarms"
 
-  alarm_name          = "Long-response-times-${each.value.name}"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "TargetResponseTime"
-  namespace           = "AWS/ApplicationELB"
-  period              = "300"
-  statistic           = "Average"
-  unit                = "Seconds"
-  threshold           = 1.5
-  alarm_description   = "Long response times in ${var.environment} environment for target group ${each.value.name}"
-  treat_missing_data  = "notBreaching"
-
-  alarm_actions = local.alert_actions
-
-
-  dimensions = {
-    LoadBalancer = module.alb.arn_suffix
-    TargetGroup  = each.value.arn_suffix
+  environment              = var.environment
+  load_balancer_arn_suffix = module.alb.arn_suffix
+  target_groups            = module.alb.target_groups
+  alarm_actions            = local.alert_actions
+  default_threshold        = 1.5
+  thresholds = {
+    admin-https = 5
   }
+}
+
+moved {
+  from = aws_cloudwatch_metric_alarm.long_response_times
+  to   = module.long_response_times.aws_cloudwatch_metric_alarm.long_response_times
 }
 
 data "aws_secretsmanager_secret_version" "slack_notify_lambda_slack_webhook_url" {
