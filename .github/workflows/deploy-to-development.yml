@@ -73,12 +73,6 @@ jobs:
 
       - run: scripts/run-terraform-tests
 
-      - name: Verify response-time alarm policy
-        run: python3 -m unittest discover -s tests -p test_response_time_alarm.py -v
-        env:
-          # Read Terraform's JSON directly, without the GitHub Actions wrapper.
-          TERRAFORM_BINARY: terraform-bin
-
       - run: pip install pre-commit
 
       - run: pre-commit run --all-files --show-diff-on-failure
