@@ -204,9 +204,9 @@ module "admin_connection_string" {
 //////////////////////////////////////////////////////////////////////////
 
 resource "aws_rds_cluster_parameter_group" "aurora_pg_18" {
-  name        = "postgres-aurora-staging-cpg-20260313202704249200000001"
+  name        = "postgres-aurora-${var.environment}-cpg"
   family      = "aurora-postgresql18"
-  description = "Managed PostgreSQL cluster parameter group for postgres-aurora-staging."
+  description = "Managed PostgreSQL cluster parameter group for postgres-aurora-${var.environment}."
 
   # Common parameters
   dynamic "parameter" {
@@ -228,9 +228,9 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_18" {
 }
 
 resource "aws_rds_cluster_parameter_group" "admin_aurora_pg_18" {
-  name        = "admin-aurora-staging-cpg-20260316134422903000000002"
+  name        = "admin-aurora-${var.environment}-cpg"
   family      = "aurora-postgresql18"
-  description = "Managed PostgreSQL cluster parameter group for admin-aurora-staging."
+  description = "Managed PostgreSQL cluster parameter group for admin-aurora-${var.environment}."
 
   # Common parameters
   dynamic "parameter" {
