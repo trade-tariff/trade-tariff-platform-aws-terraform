@@ -6,7 +6,7 @@ run "admin_override_does_not_change_other_target_groups" {
   variables {
     environment              = "production"
     load_balancer_arn_suffix = "app/trade-tariff-alb-production/abc123"
-    alarm_actions            = []
+    alarm_actions            = ["arn:aws:sns:eu-west-2:123456789012:slack-topic"]
     default_threshold        = 1.5
     thresholds = {
       admin-https = 5
@@ -80,5 +80,13 @@ run "admin_override_does_not_change_other_target_groups" {
       )
     ])
     error_message = "response-time alarms must keep the existing evaluation policy"
+  }
+
+  assert {
+    condition = alltrue([
+      for alarm in aws_cloudwatch_metric_alarm.long_response_times :
+      alarm.alarm_actions == toset(var.alarm_actions)
+    ])
+    error_message = "response-time alarms must keep the supplied notification actions"
   }
 }
