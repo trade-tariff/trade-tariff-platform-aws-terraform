@@ -6,14 +6,14 @@ CloudWatch average response-time alarms for ALB target groups.
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.37.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.37.0 |
 
 ## Modules
@@ -23,13 +23,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [aws_cloudwatch_metric_alarm.long_response_times](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_alarm_actions"></a> [alarm\_actions](#input\_alarm\_actions) | SNS topic ARNs notified when a response-time alarm fires. | `list(string)` | `[]` | no |
 | <a name="input_default_threshold"></a> [default\_threshold](#input\_default\_threshold) | Average TargetResponseTime threshold in seconds for target groups without an override. | `number` | `1.5` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment name included in alarm descriptions. | `string` | n/a | yes |
