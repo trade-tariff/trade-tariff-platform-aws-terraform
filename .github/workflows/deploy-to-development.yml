@@ -18,6 +18,8 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   # Required for plan/apply in all environments so the e2e WAF allow rule is not planned for destroy.
   TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
+  TF_VAR_mcp_usage_plan_key: ${{ secrets.TF_VAR_MCP_USAGE_PLAN_KEY }}
+  TF_VAR_waf_mcp_secret_token: ${{ secrets.TF_VAR_WAF_MCP_SECRET_TOKEN }}
 
 jobs:
   lint:
