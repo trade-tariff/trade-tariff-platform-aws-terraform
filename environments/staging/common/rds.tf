@@ -118,12 +118,13 @@ module "postgres_developer_hub" {
 module "postgres_aurora" {
   source = "../../../modules/rds_cluster"
 
-  cluster_name      = "postgres-aurora-${var.environment}"
-  engine            = "aurora-postgresql"
-  engine_version    = "18.4"
-  engine_mode       = "provisioned"
-  cluster_instances = 2
-  apply_immediately = true
+  cluster_name                = "postgres-aurora-${var.environment}"
+  engine                      = "aurora-postgresql"
+  engine_version              = "18.4"
+  allow_major_version_upgrade = true
+  engine_mode                 = "provisioned"
+  cluster_instances           = 2
+  apply_immediately           = true
 
   instance_class = "db.serverless"
   database_name  = "TradeTariffPostgres${title(var.environment)}"
@@ -163,12 +164,13 @@ module "ro_aurora_connection_string" {
 module "postgres_admin_aurora" {
   source = "../../../modules/rds_cluster"
 
-  cluster_name      = "admin-aurora-${var.environment}"
-  engine            = "aurora-postgresql"
-  engine_version    = "18.4"
-  engine_mode       = "provisioned"
-  cluster_instances = 1
-  apply_immediately = true
+  cluster_name                = "admin-aurora-${var.environment}"
+  engine                      = "aurora-postgresql"
+  engine_version              = "18.4"
+  allow_major_version_upgrade = true
+  engine_mode                 = "provisioned"
+  cluster_instances           = 1
+  apply_immediately           = true
 
   instance_class = "db.serverless"
   database_name  = "PostgresAdmin"
