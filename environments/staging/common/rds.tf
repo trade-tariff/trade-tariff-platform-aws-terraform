@@ -3,7 +3,7 @@ locals {
   common_parameters = [
     {
       name         = "log_connections"
-      value        = "1"
+      value        = "all"
       apply_method = "immediate"
     },
     {
