@@ -44,7 +44,7 @@ variable "waf_no_api_key_rpm_limit" {
 }
 
 variable "waf_mcp_secret_token" {
-  description = "Secret token sent by the MCP server in X-Mcp-Token. Requests presenting this header are allowed through WAF rate limiting."
+  description = "Secret token sent by the MCP server in X-Mcp-Token. On the API Gateway WAF only, requests carrying exactly this value are exempt from the per-IP rate limit (they are still inspected by the managed rule groups, and are rate-limited by the shared MCP usage plan instead). Also redacted from WAF logs. Empty keeps the plain per-IP limit for all traffic."
   type        = string
   sensitive   = true
   default     = ""

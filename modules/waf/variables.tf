@@ -297,6 +297,31 @@ variable "header_allow_values" {
   }
 }
 
+variable "header_mismatch_label_rules" {
+  description = "Non-terminating (count) rules that attach a label to requests whose header does NOT exactly match a secret value. Pair with label_rate_based_rules to rate-limit everyone except holders of the secret, without an allow that would skip the managed rule groups. Sensitive header values are provided via the header_mismatch_label_values variable."
+  type = list(object({
+    name        = string
+    priority    = number
+    header_name = string
+    label       = string
+  }))
+  default = []
+}
+
+variable "header_mismatch_label_values" {
+  description = "Sensitive header values, keyed by header_mismatch_label_rules name"
+  type        = map(string)
+  sensitive   = true
+  default     = {}
+
+  validation {
+    condition = alltrue([
+      for r in var.header_mismatch_label_rules : contains(keys(var.header_mismatch_label_values), r.name)
+    ])
+    error_message = "Every header_mismatch_label_rules[].name must have a corresponding entry in header_mismatch_label_values."
+  }
+}
+
 variable "host_path_allow_rules" {
   description = "Rules that allow requests matching both a specific Host header value and a URI path. Use to grant domain-scoped path exceptions without affecting other domains sharing the same WAF."
   type = list(object({
