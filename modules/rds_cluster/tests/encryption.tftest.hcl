@@ -24,12 +24,16 @@ variables {
   db_cluster_parameter_group_name = "default.aurora-postgresql16"
 }
 
-run "does_not_encrypt_or_create_a_key_by_default" {
+run "does_not_encrypt_or_create_a_key_when_encryption_is_disabled" {
   command = plan
+
+  variables {
+    encryption_at_rest = false
+  }
 
   assert {
     condition     = aws_rds_cluster.this.storage_encrypted == false
-    error_message = "storage_encrypted must follow encryption_at_rest, which defaults to false."
+    error_message = "storage_encrypted must be false when encryption_at_rest is false."
   }
 
   assert {
