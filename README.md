@@ -34,6 +34,7 @@ Module tests live in `modules/<module>/tests/*.tftest.hcl`. Prefer fast
 plan-time tests that assert module contracts, defaults, and derived resource
 configuration. Avoid tests that create real AWS infrastructure; deployment
 confidence still comes from the Terragrunt plan and apply workflow.
+See [Testing Terraform](docs/terraform-testing.md) for the full approach.
 
 - Open a Pull Request with your changes. This will deploy the feature over the
 development environment to proof that `terraform apply` runs without failure.
