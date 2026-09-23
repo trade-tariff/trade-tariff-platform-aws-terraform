@@ -838,7 +838,7 @@ resource "aws_iam_policy" "ci_preview_app_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:BatchGetSecretValue",
         ],
-        "Resource" : "arn:aws:secretsmanager:eu-west-2:844815912454:secret:*configuration*"
+        "Resource" : "arn:aws:secretsmanager:eu-west-2:${local.account_id}:secret:*configuration*"
       },
       {
         Effect = "Allow",

@@ -47,15 +47,15 @@ data "aws_iam_policy_document" "fpo_model_access" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::844815912454:role/fpo-model-garbage-collection-development-eu-west-2-lambdaRole",
-        "arn:aws:iam::451934005581:role/fpo-model-garbage-collection-staging-eu-west-2-lambdaRole",
-        "arn:aws:iam::382373577178:role/fpo-model-garbage-collection-production-eu-west-2-lambdaRole",
-        "arn:aws:iam::844815912454:role/GithubActions-FPO-Models-Role",
-        "arn:aws:iam::451934005581:role/GithubActions-FPO-Models-Role",
-        "arn:aws:iam::382373577178:role/GithubActions-FPO-Models-Role",
-        "arn:aws:iam::844815912454:role/GithubActions-Serverless-Lambda-Role",
-        "arn:aws:iam::451934005581:role/GithubActions-Serverless-Lambda-Role",
-        "arn:aws:iam::382373577178:role/GithubActions-Serverless-Lambda-Role"
+        "arn:aws:iam::${var.account_ids["development"]}:role/fpo-model-garbage-collection-development-eu-west-2-lambdaRole",
+        "arn:aws:iam::${var.account_ids["staging"]}:role/fpo-model-garbage-collection-staging-eu-west-2-lambdaRole",
+        "arn:aws:iam::${var.account_ids["production"]}:role/fpo-model-garbage-collection-production-eu-west-2-lambdaRole",
+        "arn:aws:iam::${var.account_ids["development"]}:role/GithubActions-FPO-Models-Role",
+        "arn:aws:iam::${var.account_ids["staging"]}:role/GithubActions-FPO-Models-Role",
+        "arn:aws:iam::${var.account_ids["production"]}:role/GithubActions-FPO-Models-Role",
+        "arn:aws:iam::${var.account_ids["development"]}:role/GithubActions-Serverless-Lambda-Role",
+        "arn:aws:iam::${var.account_ids["staging"]}:role/GithubActions-Serverless-Lambda-Role",
+        "arn:aws:iam::${var.account_ids["production"]}:role/GithubActions-Serverless-Lambda-Role"
 
       ]
     }
