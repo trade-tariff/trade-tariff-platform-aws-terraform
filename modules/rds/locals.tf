@@ -4,15 +4,9 @@ locals {
   master_password       = random_password.master_password.result
   engine_major_version  = split(".", var.engine_version)[0]
 
-  postgres_parameter_group_family = (
-    var.engine == "postgres" ? "postgres${local.engine_major_version}" : null
-  )
+  postgres_parameter_group_family = "postgres${local.engine_major_version}"
 
-  cloudwatch_logs_exports = (
-    var.engine == "postgres" ? ["postgresql", "upgrade"] :
-    var.engine == "mysql" ? ["audit", "error", "general", "slowquery"] :
-    []
-  )
+  cloudwatch_logs_exports = ["postgresql", "upgrade"]
 
   tags = merge(
     {
@@ -21,8 +15,6 @@ locals {
     var.tags,
   )
 
-  db_engine        = var.engine == "mysql" ? "mysql2" : var.engine
-  db_options       = var.engine == "mysql" ? "?reconnect=true&useSSL=true" : ""
-  db_admin_string  = "${local.db_engine}://${local.master_username}:${local.master_password}@${aws_db_instance.this.endpoint}/${var.name}${local.db_options}"
-  db_host_and_opts = "${aws_db_instance.this.endpoint}/${var.name}${local.db_options}"
+  db_admin_string  = "postgres://${local.master_username}:${local.master_password}@${aws_db_instance.this.endpoint}/${var.name}"
+  db_host_and_opts = "${aws_db_instance.this.endpoint}/${var.name}"
 }

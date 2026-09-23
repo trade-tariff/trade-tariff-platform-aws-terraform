@@ -49,7 +49,6 @@ No modules.
 | <a name="input_db_subnet_group_name"></a> [db\_subnet\_group\_name](#input\_db\_subnet\_group\_name) | Existing DB subnet group name to use | `string` | `null` | no |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Whether to enable deletion protection. Defaults to `true`. | `bool` | `true` | no |
 | <a name="input_encryption_at_rest"></a> [encryption\_at\_rest](#input\_encryption\_at\_rest) | Whether to enable encryption at rest. Defaults to `false`. | `bool` | `false` | no |
-| <a name="input_engine"></a> [engine](#input\_engine) | Name of the database engine. One of `aurora-mysql`, `aurora-postgresql`, `mysql`, `postgres`. | `string` | n/a | yes |
 | <a name="input_engine_mode"></a> [engine\_mode](#input\_engine\_mode) | n/a | `string` | n/a | yes |
 | <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | n/a | `string` | n/a | yes |
 | <a name="input_instance_class"></a> [instance\_class](#input\_instance\_class) | n/a | `string` | n/a | yes |

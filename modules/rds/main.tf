@@ -1,6 +1,6 @@
 resource "aws_db_instance" "this" {
   db_name        = var.name
-  engine         = var.engine
+  engine         = "postgres"
   engine_version = var.engine_version
   instance_class = var.instance_type
 
@@ -35,7 +35,7 @@ resource "aws_db_instance" "this" {
   monitoring_interval                   = var.monitoring_interval
   monitoring_role_arn                   = var.monitoring_role_arn
 
-  parameter_group_name = aws_db_parameter_group.postgres[0].name
+  parameter_group_name = aws_db_parameter_group.postgres.name
 
   enabled_cloudwatch_logs_exports = local.cloudwatch_logs_exports
 
@@ -44,9 +44,16 @@ resource "aws_db_instance" "this" {
   tags = local.tags
 }
 
-resource "aws_db_parameter_group" "postgres" {
-  count = local.postgres_parameter_group_family != null ? 1 : 0
+# The parameter group had a count so the module could skip it for engines
+# other than Postgres. The module is now Postgres only, so the count is
+# gone. This block keeps
+# the existing parameter group in state, so Terraform does not replace it.
+moved {
+  from = aws_db_parameter_group.postgres[0]
+  to   = aws_db_parameter_group.postgres
+}
 
+resource "aws_db_parameter_group" "postgres" {
   name_prefix = "${lower(var.name)}-pg-"
   family      = local.postgres_parameter_group_family
   description = "Managed Postgres parameter group for ${var.name}."

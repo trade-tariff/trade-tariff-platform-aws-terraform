@@ -48,7 +48,6 @@ No modules.
 | <a name="input_backup_window"></a> [backup\_window](#input\_backup\_window) | The daily time range (in UTC) during which automated backups are created if they are enabled, eg: `09:46-10:16` | `string` | `"22:00-23:00"` | no |
 | <a name="input_database_insights_mode"></a> [database\_insights\_mode](#input\_database\_insights\_mode) | The mode of Database Insights that is enabled for the instance. Valid values: standard, advanced. | `string` | `"standard"` | no |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Whether to protect the database from deletion. Defaults to `true`. | `bool` | `true` | no |
-| <a name="input_engine"></a> [engine](#input\_engine) | Database engine to use. | `string` | n/a | yes |
 | <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | Version of the database engine to use. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment. | `string` | n/a | yes |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type for the database. See https://aws.amazon.com/rds/instance-types/ | `string` | n/a | yes |

@@ -74,7 +74,6 @@ module "postgres_developer_hub" {
 
   environment    = var.environment
   name           = "PostgresDeveloperHub"
-  engine         = "postgres"
   engine_version = "18.3"
 
   multi_az = false
@@ -104,7 +103,6 @@ module "postgres_aurora" {
   source = "../../../modules/rds_cluster"
 
   cluster_name      = "postgres-aurora-${var.environment}"
-  engine            = "aurora-postgresql"
   engine_version    = "17.9"
   engine_mode       = "provisioned"
   cluster_instances = 2
@@ -161,7 +159,6 @@ module "postgres_admin_aurora" {
   source = "../../../modules/rds_cluster"
 
   cluster_name      = "admin-aurora-${var.environment}"
-  engine            = "aurora-postgresql"
   engine_version    = "17.7"
   engine_mode       = "provisioned"
   cluster_instances = 1

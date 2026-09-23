@@ -85,22 +85,6 @@ resource "aws_security_group" "be_to_rds_ingress" {
     cidr_blocks = var.private_subnets
   }
 
-  ingress {
-    description = "Ingress from private subnets to MySQL"
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = var.private_subnets
-  }
-
-  egress {
-    description = "Egress back out from MySQL to private subnets"
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = var.private_subnets
-  }
-
   egress {
     description     = "Egress to S3 via VPC endpoint for database backups."
     from_port       = 443

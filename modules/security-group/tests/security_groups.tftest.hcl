@@ -55,8 +55,8 @@ run "limits_database_traffic_to_the_private_subnets" {
   command = plan
 
   assert {
-    condition     = toset([for rule in aws_security_group.be_to_rds_ingress.ingress : rule.from_port]) == toset([5432, 3306])
-    error_message = "The backend to RDS security group must only allow Postgres and MySQL ingress."
+    condition     = toset([for rule in aws_security_group.be_to_rds_ingress.ingress : rule.from_port]) == toset([5432])
+    error_message = "The backend to RDS security group must only allow Postgres ingress."
   }
 
   assert {
@@ -71,6 +71,11 @@ run "limits_database_traffic_to_the_private_subnets" {
       if rule.from_port != 443
     ])
     error_message = "Database egress on the database ports must only go to the private subnets."
+  }
+
+  assert {
+    condition     = toset([for rule in aws_security_group.be_to_rds_ingress.egress : rule.from_port]) == toset([5432, 443])
+    error_message = "The backend to RDS security group must only allow Postgres egress and HTTPS egress to S3."
   }
 }
 

@@ -14,7 +14,6 @@ mock_provider "random" {}
 variables {
   environment        = "staging"
   name               = "Tariff"
-  engine             = "postgres"
   engine_version     = "16.4"
   instance_type      = "db.t4g.micro"
   private_subnet_ids = ["subnet-00000000000000000", "subnet-11111111111111111"]
@@ -25,17 +24,12 @@ run "creates_a_parameter_group_for_the_postgres_major_version" {
   command = plan
 
   assert {
-    condition     = length(aws_db_parameter_group.postgres) == 1
-    error_message = "A parameter group must be created for postgres."
-  }
-
-  assert {
-    condition     = aws_db_parameter_group.postgres[0].family == "postgres16"
+    condition     = aws_db_parameter_group.postgres.family == "postgres16"
     error_message = "The parameter group family must be postgres<major version>."
   }
 
   assert {
-    condition     = aws_db_parameter_group.postgres[0].name_prefix == "tariff-pg-"
+    condition     = aws_db_parameter_group.postgres.name_prefix == "tariff-pg-"
     error_message = "The parameter group name prefix must be the lower case database name."
   }
 }
@@ -54,7 +48,7 @@ run "requires_tls_1_3" {
 
   assert {
     condition = anytrue([
-      for parameter in aws_db_parameter_group.postgres[0].parameter :
+      for parameter in aws_db_parameter_group.postgres.parameter :
       parameter.name == "ssl_min_protocol_version" && parameter.value == "TLSv1.3"
     ])
     error_message = "The parameter group must require TLS 1.3 or later."
@@ -66,7 +60,7 @@ run "turns_on_pgaudit" {
 
   assert {
     condition = anytrue([
-      for parameter in aws_db_parameter_group.postgres[0].parameter :
+      for parameter in aws_db_parameter_group.postgres.parameter :
       parameter.name == "shared_preload_libraries" && parameter.value == "pgaudit,pg_stat_statements" && parameter.apply_method == "pending-reboot"
     ])
     error_message = "pgaudit and pg_stat_statements must be preloaded (this needs a reboot to apply)."
@@ -74,7 +68,7 @@ run "turns_on_pgaudit" {
 
   assert {
     condition = anytrue([
-      for parameter in aws_db_parameter_group.postgres[0].parameter :
+      for parameter in aws_db_parameter_group.postgres.parameter :
       parameter.name == "pgaudit.role" && parameter.value == "rds_pgaudit"
     ])
     error_message = "pgaudit.role must be rds_pgaudit, the role name that RDS needs for object auditing."

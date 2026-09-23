@@ -1,8 +1,3 @@
-variable "engine" {
-  description = "Name of the database engine. One of `aurora-mysql`, `aurora-postgresql`, `mysql`, `postgres`."
-  type        = string
-}
-
 variable "username" {
   type = string
 }

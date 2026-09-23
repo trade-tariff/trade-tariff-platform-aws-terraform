@@ -1,7 +1,7 @@
 resource "aws_rds_cluster" "this" {
   cluster_identifier = var.cluster_name
 
-  engine         = var.engine
+  engine         = "aurora-postgresql"
   engine_mode    = var.engine_mode
   engine_version = var.engine_version
 
