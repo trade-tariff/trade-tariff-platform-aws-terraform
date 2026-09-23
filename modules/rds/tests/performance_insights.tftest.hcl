@@ -15,7 +15,6 @@ mock_provider "random" {}
 variables {
   environment        = "staging"
   name               = "tariff"
-  engine             = "postgres"
   engine_version     = "16.4"
   instance_type      = "db.t4g.micro"
   private_subnet_ids = ["subnet-00000000000000000", "subnet-11111111111111111"]

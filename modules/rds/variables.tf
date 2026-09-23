@@ -80,11 +80,6 @@ variable "name" {
   type        = string
 }
 
-variable "engine" {
-  description = "Database engine to use."
-  type        = string
-}
-
 variable "engine_version" {
   description = "Version of the database engine to use."
   type        = string

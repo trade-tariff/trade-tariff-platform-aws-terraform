@@ -22,7 +22,6 @@ mock_provider "random" {
 }
 
 variables {
-  engine                          = "aurora-postgresql"
   engine_mode                     = "provisioned"
   engine_version                  = "16.4"
   username                        = "tariff_admin"
