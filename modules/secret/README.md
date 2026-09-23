@@ -31,8 +31,8 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | KMS Key ARN with which to encrypt the secret. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the secret. | `string` | n/a | yes |
-| <a name="input_recovery_window"></a> [recovery\_window](#input\_recovery\_window) | Recovery window in days for the secret. | `string` | n/a | yes |
-| <a name="input_secret_string"></a> [secret\_string](#input\_secret\_string) | Value of the secret. Pass null to not populate a version | `string` | `""` | no |
+| <a name="input_recovery_window"></a> [recovery\_window](#input\_recovery\_window) | Recovery window in days for the secret. | `number` | n/a | yes |
+| <a name="input_secret_string"></a> [secret\_string](#input\_secret\_string) | Value of the secret. Leave empty to not populate a version. | `string` | `""` | no |
 
 ## Outputs
 
