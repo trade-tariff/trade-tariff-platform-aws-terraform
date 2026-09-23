@@ -46,8 +46,8 @@ resource "aws_db_instance" "this" {
 
 # The parameter group had a count so the module could skip it for engines
 # other than Postgres. The module is now Postgres only, so the count is
-# gone. This block keeps
-# the existing parameter group in state, so Terraform does not replace it.
+# gone. This block keeps the existing parameter group in state, so
+# Terraform does not replace it.
 moved {
   from = aws_db_parameter_group.postgres[0]
   to   = aws_db_parameter_group.postgres
