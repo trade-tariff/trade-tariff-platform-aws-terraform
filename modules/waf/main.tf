@@ -37,7 +37,7 @@ resource "aws_wafv2_web_acl" "this" {
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
     metric_name                = var.name
   }
 
@@ -111,7 +111,7 @@ resource "aws_wafv2_web_acl_rule" "allow_assets_from_rate_limit" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "allow-assets-from-rate-limit"
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -156,7 +156,7 @@ resource "aws_wafv2_web_acl_rule" "ip_rate_based" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -228,7 +228,61 @@ resource "aws_wafv2_web_acl_rule" "header_regex_label" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
+  }
+}
+
+# Labels requests whose header does NOT exactly match a secret value, so that
+# a later label_rate_based_rule can rate-limit everyone except holders of the
+# secret.
+#
+# This is header_regex_label with negate = true, but with an exact byte match
+# against a sensitive value. The value lives in a separate sensitive map (as
+# with header_allow) because Terraform rejects sensitive values in for_each.
+#
+# The action is always count, for the same reason as header_regex_label: an
+# allow would terminate evaluation and skip the managed rule groups.
+resource "aws_wafv2_web_acl_rule" "header_mismatch_label" {
+  for_each = { for r in var.header_mismatch_label_rules : r.name => r }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    count {}
+  }
+
+  rule_label {
+    name = each.value.label
+  }
+
+  statement {
+    not_statement {
+      statement {
+        byte_match_statement {
+          positional_constraint = "EXACTLY"
+          search_string         = var.header_mismatch_label_values[each.value.name] # sensitive lookup stays isolated here
+
+          field_to_match {
+            single_header {
+              name = lower(each.value.header_name)
+            }
+          }
+
+          text_transformation {
+            priority = 0
+            type     = "NONE"
+          }
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -282,7 +336,7 @@ resource "aws_wafv2_web_acl_rule" "label_rate_based" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -319,7 +373,7 @@ resource "aws_wafv2_web_acl_rule" "ip_sets" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -370,7 +424,7 @@ resource "aws_wafv2_web_acl_rule" "ip_rate_url_based" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -423,7 +477,7 @@ resource "aws_wafv2_web_acl_rule" "ip_set_rate_based" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -470,7 +524,7 @@ resource "aws_wafv2_web_acl_rule" "filtered_header" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.key
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -512,7 +566,7 @@ resource "aws_wafv2_web_acl_rule" "group_rules" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -557,7 +611,7 @@ resource "aws_wafv2_web_acl_rule" "uri_path_match" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -593,7 +647,7 @@ resource "aws_wafv2_web_acl_rule" "header_allow" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -651,7 +705,7 @@ resource "aws_wafv2_web_acl_rule" "host_path_allow" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -716,7 +770,7 @@ resource "aws_wafv2_web_acl_rule" "managed_rule_path_exceptions" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -764,7 +818,7 @@ resource "aws_wafv2_web_acl_rule" "managed" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.key
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -819,7 +873,7 @@ resource "aws_wafv2_web_acl_rule" "allow_bot_control_excluded_paths" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "allow-bot-control-excluded-paths"
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
@@ -870,6 +924,6 @@ resource "aws_wafv2_web_acl_rule" "bot_control" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "AWSManagedRulesBotControlRuleSet"
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }

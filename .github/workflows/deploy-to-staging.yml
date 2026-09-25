@@ -29,6 +29,8 @@ jobs:
       TF_INPUT: false
       TF_IN_AUTOMATION: 1
       TF_VAR_WAF_E2E_SECRET_TOKEN: ${{ secrets.TF_VAR_WAF_E2E_SECRET_TOKEN }}
+      TF_VAR_mcp_usage_plan_key: ${{ secrets.TF_VAR_MCP_USAGE_PLAN_KEY }}
+      TF_VAR_waf_mcp_secret_token: ${{ secrets.TF_VAR_WAF_MCP_SECRET_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1

@@ -35,10 +35,22 @@ variable "waf_no_api_key_rpm_limit" {
 }
 
 variable "waf_mcp_secret_token" {
-  description = "Secret token sent by the MCP server in X-Mcp-Token. Requests presenting this header are allowed through WAF rate limiting."
+  description = "Secret token sent by the MCP server in X-Mcp-Token. On the API Gateway WAF only, requests carrying exactly this value are exempt from the per-IP rate limit (they are still inspected by the managed rule groups, and are rate-limited by the shared MCP usage plan instead). Also redacted from WAF logs. Empty keeps the plain per-IP limit for all traffic."
   type        = string
   sensitive   = true
   default     = ""
+}
+
+variable "mcp_usage_plan_key" {
+  description = "Value of the API Gateway key tied to the shared MCP usage plan. Returned by the authorizer as usageIdentifierKey for requests carrying a valid X-Mcp-Token, so MCP traffic is throttled globally rather than per end user. Empty disables the plan."
+  type        = string
+  sensitive   = true
+  default     = ""
+
+  validation {
+    condition     = var.mcp_usage_plan_key == "" || (length(var.mcp_usage_plan_key) >= 20 && length(var.mcp_usage_plan_key) <= 128)
+    error_message = "mcp_usage_plan_key must be empty (disables the shared MCP usage plan) or 20-128 characters, matching API Gateway's api key value length requirement."
+  }
 }
 
 variable "WAF_E2E_SECRET_TOKEN" {
