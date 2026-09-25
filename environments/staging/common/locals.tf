@@ -9,7 +9,6 @@ locals {
 
   monitored_lambdas = {
     database-backups      = "database-backups-staging-backup"
-    fpo-search            = "trade-tariff-lambdas-fpo-search-staging-fpo_search"
     fpo-garbage-collector = "fpo-model-garbage-collection-staging-collector"
     verify-auth-challenge = "trade-tariff-identity-verify-auth-challenge-response"
     create-auth-challenge = "trade-tariff-identity-create-auth-challenge"
