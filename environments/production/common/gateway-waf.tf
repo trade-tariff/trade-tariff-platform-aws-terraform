@@ -23,6 +23,12 @@ module "waf_apigw" {
 
   associate_alb = false
 
+  # Sampled requests show all request headers, and WAF cannot redact fields
+  # from them. This WAF sees Authorization and X-Mcp-Token, and the logging
+  # configuration below redacts both, so do not keep samples. Use the WAF logs
+  # and the CloudWatch metrics instead.
+  sampled_requests_enabled = false
+
   # Per-IP rate limit. All MCP traffic leaves through one NAT IP, so a plain
   # per-IP limit would 429 MCP long before the shared MCP usage plan in
   # gateway.tf. When the MCP token is configured, label-non-mcp tags every

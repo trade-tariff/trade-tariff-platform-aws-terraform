@@ -333,3 +333,9 @@ variable "host_path_allow_rules" {
   }))
   default = []
 }
+
+variable "sampled_requests_enabled" {
+  description = "Whether the web ACL and its rules keep sampled requests. Sampled requests show all request headers, and WAF cannot redact fields from them. Set to false on a WAF that sees secret headers."
+  type        = bool
+  default     = true
+}
