@@ -202,7 +202,7 @@ module "admin_connection_string" {
 //////////////////////////////////////////////////////////////////////////
 
 resource "aws_rds_cluster_parameter_group" "aurora_pg_18" {
-  name        = "postgres-aurora-${var.environment}-cpg"
+  name        = "postgres-aurora-${var.environment}-cpg-18"
   family      = "aurora-postgresql18"
   description = "Managed PostgreSQL cluster parameter group for postgres-aurora-${var.environment}."
 
@@ -226,7 +226,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_pg_18" {
 }
 
 resource "aws_rds_cluster_parameter_group" "admin_aurora_pg_18" {
-  name        = "admin-aurora-${var.environment}-cpg"
+  name        = "admin-aurora-${var.environment}-cpg-18"
   family      = "aurora-postgresql18"
   description = "Managed PostgreSQL cluster parameter group for admin-aurora-${var.environment}."
 
