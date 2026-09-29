@@ -118,7 +118,7 @@ module "postgres_aurora" {
   source = "../../../modules/rds_cluster"
 
   cluster_name                = "postgres-aurora-${var.environment}"
-  engine_version              = "18.4"
+  engine_version              = "18.6"
   allow_major_version_upgrade = true
   engine_mode                 = "provisioned"
   cluster_instances           = 2
@@ -163,7 +163,7 @@ module "postgres_admin_aurora" {
   source = "../../../modules/rds_cluster"
 
   cluster_name                = "admin-aurora-${var.environment}"
-  engine_version              = "18.4"
+  engine_version              = "18.6"
   allow_major_version_upgrade = true
   engine_mode                 = "provisioned"
   cluster_instances           = 1
