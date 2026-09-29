@@ -84,6 +84,20 @@ locals {
       apply_method = "immediate"
     }
   ]
+
+  # NOTE: Some parameter VALUES are only valid on certain engine majors, so the PG18
+  # parameter groups cannot reuse common_parameters verbatim while PG17 is still live.
+  # log_connections was a boolean up to PG17; in PG18 it became a list of connection
+  # aspects, and "all" is the equivalent of the old positive boolean.
+  pg18_parameter_overrides = {
+    log_connections = "all"
+  }
+
+  pg18_common_parameters = [
+    for parameter in local.common_parameters : merge(parameter, {
+      value = lookup(local.pg18_parameter_overrides, parameter.name, parameter.value)
+    })
+  ]
 }
 
 module "postgres_developer_hub" {
@@ -234,6 +248,63 @@ resource "aws_rds_cluster_parameter_group" "admin_aurora_pg_17" {
   # Common parameters
   dynamic "parameter" {
     for_each = local.common_parameters
+    content {
+      name         = parameter.value.name
+      value        = parameter.value.value
+      apply_method = parameter.value.apply_method
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    "RDS_Type" = "Aurora"
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////
+# Aurora PostgreSQL 18 cluster parameter groups
+#
+# Created ahead of the Blue/Green major version upgrade: the Create Blue/Green
+# Deployment dialog requires the target-family group to already exist, and an
+# aurora-postgresql18 group cannot be attached to a cluster still running 17.
+# The clusters are re-pointed at these groups in the follow-up cutover PR.
+//////////////////////////////////////////////////////////////////////////
+
+resource "aws_rds_cluster_parameter_group" "aurora_pg_18" {
+  name        = "postgres-aurora-${var.environment}-cpg-18"
+  family      = "aurora-postgresql18"
+  description = "Managed PostgreSQL cluster parameter group for postgres-aurora-${var.environment}."
+
+  # Common parameters
+  dynamic "parameter" {
+    for_each = concat(local.pg18_common_parameters, local.aurora_connection_parameters)
+    content {
+      name         = parameter.value.name
+      value        = parameter.value.value
+      apply_method = parameter.value.apply_method
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    "RDS_Type" = "Aurora"
+  }
+}
+
+resource "aws_rds_cluster_parameter_group" "admin_aurora_pg_18" {
+  name        = "admin-aurora-${var.environment}-cpg-18"
+  family      = "aurora-postgresql18"
+  description = "Managed PostgreSQL cluster parameter group for admin-aurora-${var.environment}."
+
+  # Common parameters
+  dynamic "parameter" {
+    for_each = local.pg18_common_parameters
     content {
       name         = parameter.value.name
       value        = parameter.value.value
