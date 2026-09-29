@@ -1,6 +1,11 @@
 # GOV.UK Online Trade Tariff (OTT) Infrastructure
 
-This repository stores the IaC (Terraform) for the OTT service.
+This repository defines AWS infrastructure for the Online Trade Tariff service.
+Terraform modules live in [modules/](modules/). Terragrunt configurations under
+[environments/](environments/) select resources for each environment.
+
+This is not an application checkout. Planning needs approved AWS access and may
+read remote state. Applying changes affects shared services.
 
 ## Prerequisites
 
@@ -10,10 +15,11 @@ or a compatible version of [OpenTofu](https://github.com/opentofu/opentofu)
 
 ## Making changes
 
-To make changes to the infrastructure, modify files under the relevant `environment`
-subdirectory.
+To make changes to the infrastructure, modify files under the relevant `environments/`
+subdirectory. Read [CONTRIBUTING.md](CONTRIBUTING.md) before starting.
 
-- Initialise all of the modules in the terraform roots
+- After confirming the AWS account and target environment, initialise modules
+  from the intended Terragrunt root, not the repository root
 
 ```shell
 export DISABLE_INIT=true
@@ -36,12 +42,16 @@ configuration. Avoid tests that create real AWS infrastructure; deployment
 confidence still comes from the Terragrunt plan and apply workflow.
 See [Testing Terraform](https://transformuk.atlassian.net/wiki/spaces/HO/pages/23325048844/Testing+Terraform) on Confluence for the full approach.
 
-- Open a Pull Request with your changes. This will deploy the feature over the
-development environment to proof that `terraform apply` runs without failure.
+- Opening a pull request triggers plans and an automatic apply to shared
+  development. Review [the workflow](.github/workflows/deploy-to-development.yml)
+  before opening it. A successful apply is not proof that application behaviour
+  is correct.
 
 - Merges into `main` will deploy the changes into the staging environment, with
 a manual approval step required for production.
 
-## License
+## Licence
 
-[MIT License](LICENSE)
+The repository uses the [MIT licence](LICENSE), with the existing Transform UK
+copyright notice. Preserve that notice. State, credentials and private
+configuration are not covered by permission to reuse this code.
