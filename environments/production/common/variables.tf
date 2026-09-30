@@ -43,34 +43,10 @@ variable "waf_no_api_key_rpm_limit" {
   default     = 500
 }
 
-variable "waf_mcp_secret_token" {
-  description = "Secret token sent by the MCP server in X-Mcp-Token. On the API Gateway WAF only, requests carrying exactly this value are exempt from the per-IP rate limit (they are still inspected by the managed rule groups, and are rate-limited by the shared MCP usage plan instead). Also redacted from WAF logs. Empty keeps the plain per-IP limit for all traffic."
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
-variable "mcp_usage_plan_key" {
-  description = "Value of the API Gateway key tied to the shared MCP usage plan. Returned by the authorizer as usageIdentifierKey for requests carrying a valid X-Mcp-Token, so MCP traffic is throttled globally rather than per end user. Empty disables the plan."
-  type        = string
-  sensitive   = true
-  default     = ""
-
-  validation {
-    condition     = var.mcp_usage_plan_key == "" || (length(var.mcp_usage_plan_key) >= 20 && length(var.mcp_usage_plan_key) <= 128)
-    error_message = "mcp_usage_plan_key must be empty (disables the shared MCP usage plan) or 20-128 characters, matching API Gateway's api key value length requirement."
-  }
-
-  # The WAF exemption (gated on waf_mcp_secret_token) and the shared MCP usage
-  # plan (gated on this key) must go live together. A token without a key
-  # removes the per-IP limit for MCP traffic but creates no usage plan, and the
-  # authenticator then sends an unknown usage key, so each MCP request gets a
-  # 403. A key without a token creates a plan that MCP traffic cannot reach
-  # before the per-IP limit.
-  validation {
-    condition     = (var.mcp_usage_plan_key == "") == (var.waf_mcp_secret_token == "")
-    error_message = "mcp_usage_plan_key and waf_mcp_secret_token must both be set or both be empty. Set both before MCP is rolled out to this environment."
-  }
+variable "mcp_enabled" {
+  description = "Turns on the shared MCP usage plan (HMRC-2699). Terraform then generates the X-Mcp-Token value and the usage plan key, and stores both in the mcp-shared-credentials secret. On the API Gateway WAF only, requests that carry that token are exempt from the per-IP rate limit (the managed rule groups still inspect them, and the shared MCP usage plan limits them). The authenticator and the MCP server read both values from the secret. False keeps the plain per-IP limit for all traffic."
+  type        = bool
+  default     = false
 }
 
 variable "WAF_E2E_SECRET_TOKEN" {

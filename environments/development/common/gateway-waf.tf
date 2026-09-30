@@ -1,6 +1,4 @@
 locals {
-  mcp_apigw_exemption_enabled = nonsensitive(var.waf_mcp_secret_token != "")
-
   apigw_rate_limit_response = {
     response_code = 429
     body_key      = "rate-limit-exceeded"
@@ -31,7 +29,7 @@ module "waf_apigw" {
 
   # Per-IP rate limit. All MCP traffic leaves through one NAT IP, so a plain
   # per-IP limit would 429 MCP long before the shared MCP usage plan in
-  # gateway.tf. When the MCP token is configured, label-non-mcp tags every
+  # gateway.tf. When mcp_enabled is true, label-non-mcp tags every
   # request that does NOT carry the exact X-Mcp-Token value, and the rate limit
   # applies only to that label. MCP traffic is then limited by its usage plan
   # instead.
@@ -39,9 +37,9 @@ module "waf_apigw" {
   # label-non-mcp is a non-terminating count rule, so MCP traffic still goes
   # through the managed rule groups. The authorizer validates the token again.
   #
-  # Without the token, the plain ip-rate-limit rule applies to all traffic, as
+  # When mcp_enabled is false, the plain ip-rate-limit rule applies to all traffic, as
   # before.
-  ip_rate_based_rule = local.mcp_apigw_exemption_enabled ? null : {
+  ip_rate_based_rule = var.mcp_enabled ? null : {
     name            = "ip-rate-limit"
     priority        = 3
     rpm_limit       = var.waf_apigw_rpm_limit
@@ -49,7 +47,7 @@ module "waf_apigw" {
     custom_response = local.apigw_rate_limit_response
   }
 
-  header_mismatch_label_rules = local.mcp_apigw_exemption_enabled ? [
+  header_mismatch_label_rules = var.mcp_enabled ? [
     {
       name        = "label-non-mcp"
       priority    = 2
@@ -58,9 +56,9 @@ module "waf_apigw" {
     }
   ] : []
 
-  header_mismatch_label_values = local.mcp_apigw_exemption_enabled ? { "label-non-mcp" = var.waf_mcp_secret_token } : {}
+  header_mismatch_label_values = var.mcp_enabled ? { "label-non-mcp" = random_password.mcp_secret_token[0].result } : {}
 
-  label_rate_based_rules = local.mcp_apigw_exemption_enabled ? [
+  label_rate_based_rules = var.mcp_enabled ? [
     {
       name            = "ip-rate-limit-non-mcp"
       priority        = 4

@@ -84,15 +84,52 @@ variable "mcp_burst_limit" {
   default     = 10
 }
 
+# Terraform owns both shared MCP values, so they cannot drift between the
+# repos that use them. The authenticator reads MCP_SECRET_TOKEN and
+# MCP_USAGE_KEY from mcp-shared-credentials when it deploys, and the MCP server
+# reads MCP_SECRET_TOKEN from it.
+#
+# To rotate, replace both random_password resources, then deploy the
+# authenticator and the MCP server straight after. Until both are deployed
+# again, the MCP server sends the old token, the authenticator accepts it and
+# returns the old usage key, and that key no longer exists, so each MCP request
+# gets a 403.
+resource "random_password" "mcp_secret_token" {
+  count   = var.mcp_enabled ? 1 : 0
+  length  = 64
+  special = false
+}
+
+# API Gateway accepts key values of 20 to 128 characters.
+resource "random_password" "mcp_usage_plan_key" {
+  count   = var.mcp_enabled ? 1 : 0
+  length  = 40
+  special = false
+}
+
+# The secret exists in each environment, so the consumers can always look it
+# up. It has a value only when mcp_enabled is true.
+module "mcp_shared_credentials" {
+  source          = "../../../modules/secret/"
+  name            = "mcp-shared-credentials"
+  kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
+  recovery_window = 7
+
+  secret_string = var.mcp_enabled ? jsonencode({
+    MCP_SECRET_TOKEN = random_password.mcp_secret_token[0].result
+    MCP_USAGE_KEY    = random_password.mcp_usage_plan_key[0].result
+  }) : ""
+}
+
 resource "aws_api_gateway_api_key" "mcp" {
-  count       = var.mcp_usage_plan_key != "" ? 1 : 0
+  count       = var.mcp_enabled ? 1 : 0
   name        = "mcp-${var.environment}"
   description = "Shared key for MCP server traffic (HMRC-2699)"
-  value       = var.mcp_usage_plan_key
+  value       = random_password.mcp_usage_plan_key[0].result
 }
 
 resource "aws_api_gateway_usage_plan" "mcp" {
-  count       = var.mcp_usage_plan_key != "" ? 1 : 0
+  count       = var.mcp_enabled ? 1 : 0
   name        = "mcp-${var.environment}"
   description = "Global rate limit for all MCP server traffic in ${var.environment}"
 
@@ -108,7 +145,7 @@ resource "aws_api_gateway_usage_plan" "mcp" {
 }
 
 resource "aws_api_gateway_usage_plan_key" "mcp" {
-  count         = var.mcp_usage_plan_key != "" ? 1 : 0
+  count         = var.mcp_enabled ? 1 : 0
   key_id        = aws_api_gateway_api_key.mcp[0].id
   key_type      = "API_KEY"
   usage_plan_id = aws_api_gateway_usage_plan.mcp[0].id
