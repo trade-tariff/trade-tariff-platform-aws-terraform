@@ -8,6 +8,12 @@ module "waf_backup" {
   name  = "tariff-backup-waf-${var.environment}"
   scope = "CLOUDFRONT"
 
+  # Sampled requests show all request headers, and WAF cannot redact fields
+  # from them. This WAF sees X-Waf-Bypass (the e2e token), and the logging
+  # configuration redacts it, so do not keep samples. Use the WAF logs and the
+  # CloudWatch metrics instead.
+  sampled_requests_enabled = false
+
   ip_rate_based_rule = {
     name      = "ip-rate-limit"
     priority  = 1
