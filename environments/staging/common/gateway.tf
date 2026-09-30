@@ -103,8 +103,11 @@ resource "random_password" "mcp_usage_plan_key" {
 }
 
 # The secret always has a value, so the consumers can always read it. When
-# mcp_enabled is false, both values are empty, and the authorizer and the MCP
-# server treat an empty value as "MCP is off".
+# mcp_enabled is false, the token and the key are empty, and the authorizer and
+# the MCP server treat an empty value as "MCP is off".
+#
+# MCP_RATE_LIMIT_RPM is not a secret. It is here so that the MCP server's
+# alarms read the same limit as this usage plan, and do not keep a copy.
 module "mcp_shared_credentials" {
   source          = "../../../modules/secret/"
   name            = "mcp-shared-credentials"
@@ -112,8 +115,9 @@ module "mcp_shared_credentials" {
   recovery_window = 7
 
   secret_string = jsonencode({
-    MCP_SECRET_TOKEN = var.mcp_enabled ? random_password.mcp_secret_token[0].result : ""
-    MCP_USAGE_KEY    = var.mcp_enabled ? random_password.mcp_usage_plan_key[0].result : ""
+    MCP_SECRET_TOKEN   = var.mcp_enabled ? random_password.mcp_secret_token[0].result : ""
+    MCP_USAGE_KEY      = var.mcp_enabled ? random_password.mcp_usage_plan_key[0].result : ""
+    MCP_RATE_LIMIT_RPM = var.mcp_rate_limit * 60
   })
 }
 
