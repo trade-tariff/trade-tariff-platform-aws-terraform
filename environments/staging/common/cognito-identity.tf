@@ -25,6 +25,10 @@ module "identity_cognito" {
   lambda_define_auth_challenge          = module.define_auth_challenge.lambda_arn
   lambda_verify_auth_challenge_response = module.verify_auth_challenge.lambda_arn
 
+  email_configuration_set = aws_ses_configuration_set.identity_passwordless.name
+  from_email_address      = "Online Trade Tariff <no-reply@${var.domain_name}>"
+  ses_identity_source_arn = "arn:aws:ses:${var.region}:${local.account_id}:identity/${var.domain_name}"
+
   # Client options
 
   client_name = "identity-client"
@@ -75,6 +79,10 @@ module "identity_cognito" {
     { scope_name = "fpo", scope_description = "Access freeports/FPO endpoints" },
     { scope_name = "write", scope_description = "Enables authenticated write access to admin apis" }
   ]
+}
+
+resource "aws_ses_configuration_set" "identity_passwordless" {
+  name = "trade-tariff-identity-passwordless"
 }
 
 resource "aws_route53_record" "id_cognito_custom_domain" {
