@@ -67,8 +67,8 @@ resource "aws_api_gateway_usage_plan" "default" {
 #
 # Development's defaults below are 5 rps x 60 = 300 rpm -- deliberately much
 # lower than staging/production's 3,000 rpm -- so a burst of MCP traffic here
-# visibly hits the shared plan instead of blending in with the per-user plan
-# (see Task 7 Step 5 of the rollout plan). Tunable:
+# visibly hits the shared plan instead of blending in with the per-user plan.
+# Tunable:
 # mcp-tariff-api-approaching-rate-limit-<env> fires at 80% of whatever this
 # environment's limit is, and the production number is meant to be reviewed
 # against real usage.
