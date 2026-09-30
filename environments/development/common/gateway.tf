@@ -107,18 +107,19 @@ resource "random_password" "mcp_usage_plan_key" {
   special = false
 }
 
-# The secret exists in each environment, so the consumers can always look it
-# up. It has a value only when mcp_enabled is true.
+# The secret always has a value, so the consumers can always read it. When
+# mcp_enabled is false, both values are empty, and the authorizer and the MCP
+# server treat an empty value as "MCP is off".
 module "mcp_shared_credentials" {
   source          = "../../../modules/secret/"
   name            = "mcp-shared-credentials"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
 
-  secret_string = var.mcp_enabled ? jsonencode({
-    MCP_SECRET_TOKEN = random_password.mcp_secret_token[0].result
-    MCP_USAGE_KEY    = random_password.mcp_usage_plan_key[0].result
-  }) : ""
+  secret_string = jsonencode({
+    MCP_SECRET_TOKEN = var.mcp_enabled ? random_password.mcp_secret_token[0].result : ""
+    MCP_USAGE_KEY    = var.mcp_enabled ? random_password.mcp_usage_plan_key[0].result : ""
+  })
 }
 
 resource "aws_api_gateway_api_key" "mcp" {
