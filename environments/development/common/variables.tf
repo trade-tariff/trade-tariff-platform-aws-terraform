@@ -51,6 +51,17 @@ variable "mcp_usage_plan_key" {
     condition     = var.mcp_usage_plan_key == "" || (length(var.mcp_usage_plan_key) >= 20 && length(var.mcp_usage_plan_key) <= 128)
     error_message = "mcp_usage_plan_key must be empty (disables the shared MCP usage plan) or 20-128 characters, matching API Gateway's api key value length requirement."
   }
+
+  # The WAF exemption (gated on waf_mcp_secret_token) and the shared MCP usage
+  # plan (gated on this key) must go live together. A token without a key
+  # removes the per-IP limit for MCP traffic but creates no usage plan, and the
+  # authenticator then sends an unknown usage key, so each MCP request gets a
+  # 403. A key without a token creates a plan that MCP traffic cannot reach
+  # before the per-IP limit.
+  validation {
+    condition     = (var.mcp_usage_plan_key == "") == (var.waf_mcp_secret_token == "")
+    error_message = "mcp_usage_plan_key and waf_mcp_secret_token must both be set or both be empty. Set both before MCP is rolled out to this environment."
+  }
 }
 
 variable "WAF_E2E_SECRET_TOKEN" {
