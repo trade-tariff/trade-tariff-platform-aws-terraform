@@ -28,7 +28,7 @@ variable "account_ids" {
 variable "waf_rpm_limit" {
   description = "Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. "
   type        = number
-  default     = 250
+  default     = 500
 }
 
 variable "waf_apigw_rpm_limit" {
@@ -38,7 +38,7 @@ variable "waf_apigw_rpm_limit" {
 }
 
 variable "waf_no_api_key_rpm_limit" {
-  description = "Request per minute limit for requests that do not carry a UUID-shaped X-Api-Key header. Clients that do keep waf_rpm_limit. Deliberately set to the same value as waf_rpm_limit for now, so the new rule changes nothing: lowering it is a separate change, once the development environment has proven the split and the count-mode CloudWatch metrics have been reviewed."
+  description = "Request per minute limit for requests that do not carry a UUID-shaped X-Api-Key header. Clients that do keep waf_rpm_limit."
   type        = number
   default     = 250
 }
