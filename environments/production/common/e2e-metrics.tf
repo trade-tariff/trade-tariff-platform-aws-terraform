@@ -11,38 +11,42 @@
 #                 TestsSkipped, TestRetries) carry Environment only
 #   test metrics (TestDuration, TestResult) carry Environment, Spec and Test
 #
-# The two per-journey alarms use SEARCH so that a new test is covered the first
-# time it publishes and a deleted test drops out on its own. A hard-coded list
-# of tests would need a change here for every change to the suite, and would
-# sit in ALARM after a test was renamed.
+# The two per-journey alarms use a Metrics Insights query so that a new test is
+# covered the first time it publishes and a deleted test drops out on its own.
+# A hard-coded list of tests would need a change here for every change to the
+# suite, and would sit in ALARM after a test was renamed. SEARCH would do the
+# same, but CloudWatch rejects SEARCH in alarms.
 #
-# An alarm watches one time series, so each SEARCH is collapsed with MIN or
-# MAX. The per-journey statistic is applied BEFORE that collapse, which is the
-# part that matters: see the pass rate alarm below.
+# Each query groups by journey, so CloudWatch evaluates every journey as a
+# separate contributor and the alarm fires when any one of them breaches. The
+# per-journey statistic is applied before the threshold, which is the part that
+# matters: see the pass rate alarm below. Do not add LIMIT: ORDER BY ranks
+# journeys over the whole query window, so LIMIT 1 can hide a journey that has
+# just broken behind one that has already recovered.
 
 locals {
   # 1800 seconds is three dispatches. A journey is judged over three runs, not
   # over one, so a single flaky run cannot raise an alarm.
   e2e_journey_period = 1800
 
-  e2e_test_metric_schema = "{TradeTariff/E2E,Environment,Spec,Test}"
+  e2e_test_metric_schema = "SCHEMA(\"TradeTariff/E2E\", Environment, Spec, Test)"
 }
 
 # A journey that failed the majority of the last three runs.
 #
 # The per-journey Average over 1800 seconds is a pass rate: a journey that
 # failed one of three runs scores 0.67, one that failed all three scores 0.
-# MIN then takes the worst journey. A threshold of 0.5 therefore fires for one
-# genuinely broken journey and stays quiet for one flaky run. Two DIFFERENT
-# journeys failing once each in the window both score 0.67 and stay quiet,
-# which is the intent — that is flake, not a broken journey.
+# A threshold of 0.5 therefore fires for one genuinely broken journey and
+# stays quiet for one flaky run. Two DIFFERENT journeys failing once each in
+# the window both score 0.67 and stay quiet, which is the intent — that is
+# flake, not a broken journey.
 #
 # A skipped test publishes no TestResult at all (see buildMetricDatums in the
 # e2e suite), so the eight tests skipped against production do not drag the
 # pass rate down.
 resource "aws_cloudwatch_metric_alarm" "e2e_journey_consistently_failing" {
   alarm_name          = "e2e-journey-consistently-failing-${var.environment}"
-  alarm_description   = "An end-to-end journey has failed the majority of the last three production runs. Open the alarm graph to see which journey: CloudWatch → Alarms → this alarm. The alarm cannot name the journey because CloudWatch collapses the per-journey series before it evaluates."
+  alarm_description   = "An end-to-end journey has failed the majority of the last three production runs. See the alarm contributors for which journey: CloudWatch → Alarms → this alarm."
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 1
   threshold           = 0.5
@@ -50,8 +54,8 @@ resource "aws_cloudwatch_metric_alarm" "e2e_journey_consistently_failing" {
 
   metric_query {
     id          = "worst_journey"
-    label       = "Lowest per-journey pass rate"
-    expression  = "MIN(SEARCH('${local.e2e_test_metric_schema} MetricName=\"TestResult\" Environment=\"${var.environment}\"', 'Average', ${local.e2e_journey_period}))"
+    label       = "Per-journey pass rate"
+    expression  = "SELECT AVG(TestResult) FROM ${local.e2e_test_metric_schema} WHERE Environment = '${var.environment}' GROUP BY Spec, Test ORDER BY AVG() ASC"
     period      = local.e2e_journey_period
     return_data = true
   }
@@ -69,7 +73,7 @@ resource "aws_cloudwatch_metric_alarm" "e2e_journey_consistently_failing" {
 # slowness signal; this one catches a single journey degrading on its own.
 resource "aws_cloudwatch_metric_alarm" "e2e_journey_slow" {
   alarm_name          = "e2e-journey-slow-${var.environment}"
-  alarm_description   = "An end-to-end journey has averaged more than 20 seconds over the last three production runs, against a 30 second Playwright timeout. Open the alarm graph to see which journey."
+  alarm_description   = "An end-to-end journey has averaged more than 20 seconds over the last three production runs, against a 30 second Playwright timeout. See the alarm contributors for which journey."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = 20000 # milliseconds
@@ -77,8 +81,8 @@ resource "aws_cloudwatch_metric_alarm" "e2e_journey_slow" {
 
   metric_query {
     id          = "slowest_journey"
-    label       = "Slowest journey (ms)"
-    expression  = "MAX(SEARCH('${local.e2e_test_metric_schema} MetricName=\"TestDuration\" Environment=\"${var.environment}\"', 'Average', ${local.e2e_journey_period}))"
+    label       = "Per-journey duration (ms)"
+    expression  = "SELECT AVG(TestDuration) FROM ${local.e2e_test_metric_schema} WHERE Environment = '${var.environment}' GROUP BY Spec, Test ORDER BY AVG() DESC"
     period      = local.e2e_journey_period
     return_data = true
   }
