@@ -28,7 +28,7 @@ variable "account_ids" {
 variable "waf_rpm_limit" {
   description = "Request per minute limit for the WAF. This limit applies to our main CDN distribution and applies to all aliases on that CDN. "
   type        = number
-  default     = 500
+  default     = 250
 }
 
 variable "waf_apigw_rpm_limit" {
