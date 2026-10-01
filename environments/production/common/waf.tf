@@ -87,7 +87,7 @@ module "waf" {
   #
   # ROLLOUT: this rule changes nothing yet. It is in count mode, and
   # var.waf_no_api_key_rpm_limit is level-pegged to var.waf_rpm_limit, so
-  # unkeyed traffic is held to the same 500 rpm it is today and is only
+  # unkeyed traffic is held to the same 250 rpm as everyone else and is only
   # counted, never blocked. Development runs the same rule at limit 10 with
   # action = block to prove the split. Lowering the limit here and flipping
   # the action to "block" is a separate change, once that test and the
