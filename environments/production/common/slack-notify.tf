@@ -229,9 +229,13 @@ locals {
   #   GoodsNomenclatureReconciliationWorker uk and xi (separate cron entries)
   #   ReportWorker                          uk and xi (triggered after each
   #                                         service's CDS/TARIC sync completes)
+  #   SynchronizerCheckWorker               uk and xi (every 30 minutes)
   #
   # period is the expected run interval in seconds; the alarm fires if no
   # heartbeat is seen within one interval.
+  #
+  # first_action is optional. When it is set, it is added to the alarm
+  # description so the Slack message tells on-call what to do first.
   heartbeat_jobs = {
     "importcustomstariffdocument-uk" = {
       job     = "ImportCustomsTariffDocumentWorker"
@@ -263,6 +267,18 @@ locals {
       service = "xi"
       period  = 86400 # post-sync daily
     }
+    "synchronizercheck-uk" = {
+      job          = "SynchronizerCheckWorker"
+      service      = "uk"
+      period       = 3600 # runs every 30 minutes; one hour allows one late run
+      first_action = "Severity: Critical. Tariff staleness is not being checked, so stale tariff data will not alert. First action: check that the worker-uk ECS service is running and that Sidekiq runs SynchronizerCheckWorker, then look for errors in the CloudWatch log group for ecs/worker-uk/*. Runbook: https://transformuk.atlassian.net/wiki/x/B4AFagU"
+    }
+    "synchronizercheck-xi" = {
+      job          = "SynchronizerCheckWorker"
+      service      = "xi"
+      period       = 3600 # runs every 30 minutes; one hour allows one late run
+      first_action = "Severity: Critical. Tariff staleness is not being checked, so stale tariff data will not alert. First action: check that the worker-xi ECS service is running and that Sidekiq runs SynchronizerCheckWorker, then look for errors in the CloudWatch log group for ecs/worker-xi/*. Runbook: https://transformuk.atlassian.net/wiki/x/B4AFagU"
+    }
   }
 }
 
@@ -270,7 +286,6 @@ resource "aws_cloudwatch_metric_alarm" "scheduled_job_heartbeat" {
   for_each = local.heartbeat_jobs
 
   alarm_name          = "scheduled-job-no-heartbeat-${each.key}-${var.environment}"
-  alarm_description   = "${each.value.job} (${each.value.service}) has not reported a successful completion in the expected window"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 1
   metric_name         = "JobSuccess"
@@ -280,12 +295,65 @@ resource "aws_cloudwatch_metric_alarm" "scheduled_job_heartbeat" {
   threshold           = 1
   treat_missing_data  = "breaching"
 
+  # compact drops the empty string, so entries without first_action keep the
+  # description they had before.
+  alarm_description = join(". ", compact([
+    "${each.value.job} (${each.value.service}) has not reported a successful completion in the expected window",
+    try(each.value.first_action, ""),
+  ]))
+
   dimensions = {
     Job         = each.value.job
     Service     = each.value.service
     Environment = var.environment
   }
 
+  alarm_actions = local.alert_actions
+}
+
+#----------------------------------------------------------#
+# CloudWatch alarms for tariff data staleness
+#----------------------------------------------------------#
+locals {
+  # SynchronizerCheckWorker in the backend sends AgeMinutes (minutes since the
+  # last applied tariff update) every 30 minutes, with the dimensions Service
+  # and Environment. It sends nothing for XI on Sunday to Tuesday, because
+  # TARIC does not publish on those days, so missing data is not breaching. A
+  # checker that stops running is caught by the synchronizercheck-* heartbeat
+  # alarms above, not by these alarms.
+  tariff_staleness = {
+    uk = {
+      threshold   = 1600
+      description = "Severity: Critical. UK tariff data in ${var.environment} has not been refreshed for more than 1600 minutes. Traders may see out-of-date tariff data. First action: check the CloudWatch log group for ecs/worker-uk/* for download_delayed, sync_run_failed or download_retry_exhausted, then check the Admin Updates page for Pending files. A download_delayed loop without errors usually means CDS has not published the file. Do not manually download or apply files unless the HMRC Tariff team tells you to. Report late files to online.tariff.feedback@hmrc.gov.uk. Runbook: https://transformuk.atlassian.net/wiki/x/B4AFagU"
+    }
+    xi = {
+      threshold   = 2000
+      description = "Severity: Critical. XI tariff data in ${var.environment} has not been refreshed for more than 2000 minutes (Sunday to Tuesday are excluded, because TARIC does not publish then). Traders on the XI service may see out-of-date tariff data. First action: check the CloudWatch log group for ecs/worker-xi/* for TARIC sync failures, then check the Admin Updates page for Pending files. Runbook: https://transformuk.atlassian.net/wiki/x/B4AFagU"
+    }
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "tariff_staleness" {
+  for_each = local.tariff_staleness
+
+  alarm_name          = "tariff-staleness-${each.key}-${var.environment}"
+  alarm_description   = each.value.description
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 2
+  datapoints_to_alarm = 2 # two consecutive checks, so one late check does not alert
+  metric_name         = "AgeMinutes"
+  namespace           = "TradeTariff/TariffSync"
+  period              = 1800 # matches the 30 minute checker schedule
+  statistic           = "Maximum"
+  threshold           = each.value.threshold
+  treat_missing_data  = "notBreaching" # XI quiet days send no data; a dead checker is the heartbeat alarm's job
+
+  dimensions = {
+    Service     = each.key
+    Environment = var.environment
+  }
+
+  # No ok_actions: a recovery message is informational (Notification Guidelines).
   alarm_actions = local.alert_actions
 }
 
