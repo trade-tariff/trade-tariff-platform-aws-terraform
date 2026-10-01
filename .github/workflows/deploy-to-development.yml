@@ -73,6 +73,9 @@ jobs:
 
       - run: scripts/run-terraform-tests
 
+      - name: Test CloudFront Functions
+        run: node --test 'common/*.test.js'
+
       - run: pip install pre-commit
 
       - run: pre-commit run --all-files --show-diff-on-failure
