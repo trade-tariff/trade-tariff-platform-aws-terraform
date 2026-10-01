@@ -87,24 +87,37 @@ def format_cloudwatch_alarm(message: Dict[str, Any], region: str) -> Dict[str, A
     cloudwatch_url = get_service_url(region=region, service="cloudwatch")
     alarm_name = message["AlarmName"]
 
+    fields = [{"title": "Alarm Name", "value": f"`{alarm_name}`", "short": True}]
+
+    # Multi time series alarms notify once per contributor and name it here.
+    contributor = message.get("AlarmContributorAttributes")
+    if contributor:
+        fields.append(
+            {
+                "title": "Contributor",
+                "value": "\n".join(f"{k}: `{v}`" for k, v in contributor.items()),
+                "short": False,
+            }
+        )
+
     return {
         "color": CloudWatchAlarmState[message["NewStateValue"]].value,
         "fallback": f"Alarm {alarm_name} triggered",
         "fields": [
-            {"title": "Alarm Name", "value": f"`{alarm_name}`", "short": True},
+            *fields,
             {
                 "title": "Alarm Description",
-                "value": f"`{message['AlarmDescription']}`",
+                "value": f"`{message.get('AlarmDescription', 'N/A')}`",
                 "short": False,
             },
             {
                 "title": "Alarm reason",
-                "value": f"`{message['NewStateReason']}`",
+                "value": f"`{message.get('NewStateReason', 'N/A')}`",
                 "short": False,
             },
             {
                 "title": "Old State",
-                "value": f"`{message['OldStateValue']}`",
+                "value": f"`{message.get('OldStateValue', 'N/A')}`",
                 "short": True,
             },
             {
