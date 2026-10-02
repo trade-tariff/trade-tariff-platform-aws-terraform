@@ -54,6 +54,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
     {
       name                       = "xi_api_spimm_unversioned"
@@ -62,6 +63,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.short_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
 
     # Exchange rate endpoints
@@ -72,6 +74,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
     {
       name                       = "uk_api_exchange_rates_unversioned"
@@ -80,6 +83,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
     {
       name                       = "default_api_exchange_rates"
@@ -88,6 +92,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.medium_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
 
     # Search reference endpoints
@@ -154,6 +159,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
     {
       name                       = "uk_api"
@@ -162,6 +168,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
     {
       name                       = "default_api"
@@ -170,6 +177,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
 
     # V1 API endpoints
@@ -206,6 +214,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
     {
       name                       = "uk_api_unversioned"
@@ -214,6 +223,7 @@ module "cdn" {
       cache_policy_id            = aws_cloudfront_cache_policy.long_cache.id
       origin_request_policy_id   = aws_cloudfront_origin_request_policy.forward_all_qsa.id
       response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+      function_association       = local.normalise_api_accept_header
     },
 
     # Static assets (can be anywhere in order since they're distinct patterns)
@@ -365,6 +375,22 @@ module "docs_cdn" {
     depends_on = [
       module.acm.validated_certificate_arn
     ]
+  }
+}
+
+# Gives equal API requests one cache key. See the comment in the function code.
+resource "aws_cloudfront_function" "normalise_api_accept_header" {
+  name    = "normalise_api_accept_header"
+  comment = "Normalises the Accept header on cached API requests"
+  runtime = "cloudfront-js-2.0"
+  code    = file("../../../common/normalise_api_accept_header.js")
+}
+
+locals {
+  normalise_api_accept_header = {
+    "viewer-request" = {
+      function_arn = aws_cloudfront_function.normalise_api_accept_header.arn
+    }
   }
 }
 
