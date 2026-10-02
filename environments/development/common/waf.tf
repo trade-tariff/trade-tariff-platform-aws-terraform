@@ -85,12 +85,9 @@ module "waf" {
   # Priorities 11/12 sit after the allow rules at 0-10, so the MCP, TSS, e2e,
   # healthcheck and mycommodities bypasses all keep taking precedence.
   #
-  # ROLLOUT: development is the proving ground for this rule, so it blocks at a
-  # deliberately tiny limit (var.waf_no_api_key_rpm_limit = 10). Unkeyed traffic
-  # should start returning 429 almost immediately, while requests carrying a
-  # UUID-shaped X-Api-Key keep flowing up to var.waf_rpm_limit. Staging and
-  # production hold this rule at count with the limit level-pegged to
-  # var.waf_rpm_limit until that behaviour is confirmed here.
+  # Unkeyed traffic is blocked at var.waf_no_api_key_rpm_limit, which is lower
+  # than the var.waf_rpm_limit that keyed clients get from the "ratelimiting"
+  # rule above.
   header_regex_label_rules = [
     {
       name         = "label-no-api-key"
