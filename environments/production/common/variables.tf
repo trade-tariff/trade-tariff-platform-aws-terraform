@@ -75,6 +75,12 @@ variable "tss_scraper_ip" {
   default     = "20.49.214.59/32"
 }
 
+variable "gistworld_ip" {
+  description = "GistWorld source IP (CIDR), added to the TSS rate limit exception set: exempted from the general WAF rate limit and pinned to its own 500 RPM cap. Remove after 2027-01-01, HMRC-2733."
+  type        = string
+  default     = "185.98.182.122/32"
+}
+
 variable "enable_sns_alerts" {
   description = "Enable SNS alerts for all CloudWatch alarms"
   type        = bool
