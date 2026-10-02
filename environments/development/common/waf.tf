@@ -82,7 +82,7 @@ module "waf" {
   # carries on; a terminating allow would let anyone sending the header skip
   # the managed rule groups (SQLi, bot control) as well as the rate limit.
   #
-  # Priorities 11/12 sit after the allow rules at 0-10, so the MCP, TSS, e2e,
+  # Priorities 11/12 sit after the allow rules at 0-10, so the TSS, e2e,
   # healthcheck and mycommodities bypasses all keep taking precedence.
   #
   # ROLLOUT: development is the proving ground for this rule, so it blocks at a
@@ -120,27 +120,18 @@ module "waf" {
     }
   ]
 
-  header_allow_rules = concat(
-    nonsensitive(var.waf_mcp_secret_token != "") ? [
-      {
-        name        = "allow-mcp-server"
-        priority    = 0
-        header_name = "x-mcp-token"
-      }
-    ] : [],
-    nonsensitive(var.WAF_E2E_SECRET_TOKEN != "") ? [
-      {
-        name        = "allow-e2e-tests"
-        priority    = 8
-        header_name = "x-waf-bypass"
-      }
-    ] : []
-  )
+  # No MCP allow rule here. MCP calls api.<domain>, which is a regional API
+  # Gateway domain and does not go through this CloudFront WAF. The MCP
+  # exemption lives on the API Gateway WAF (gateway-waf.tf) instead.
+  header_allow_rules = nonsensitive(var.WAF_E2E_SECRET_TOKEN != "") ? [
+    {
+      name        = "allow-e2e-tests"
+      priority    = 8
+      header_name = "x-waf-bypass"
+    }
+  ] : []
 
-  header_allow_values = merge(
-    var.waf_mcp_secret_token != "" ? { "allow-mcp-server" = var.waf_mcp_secret_token } : {},
-    var.WAF_E2E_SECRET_TOKEN != "" ? { "allow-e2e-tests" = var.WAF_E2E_SECRET_TOKEN } : {}
-  )
+  header_allow_values = var.WAF_E2E_SECRET_TOKEN != "" ? { "allow-e2e-tests" = var.WAF_E2E_SECRET_TOKEN } : {}
 
   managed_rule_path_exceptions = [
     {
@@ -183,6 +174,20 @@ resource "aws_wafv2_web_acl_logging_configuration" "waf_logs" {
 
   log_destination_configs = [aws_cloudwatch_log_group.waf_logs.arn]
   resource_arn            = module.waf.web_acl_id
+
+  # These headers carry secrets that bypass or relax WAF rules. Keep them out
+  # of the logs so a log reader cannot copy them.
+  redacted_fields {
+    single_header {
+      name = "x-waf-bypass"
+    }
+  }
+
+  redacted_fields {
+    single_header {
+      name = "x-mcp-token"
+    }
+  }
 
   logging_filter {
     default_behavior = "DROP"
