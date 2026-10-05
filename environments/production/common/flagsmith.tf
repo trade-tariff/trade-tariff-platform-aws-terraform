@@ -15,7 +15,7 @@ module "postgres_flagsmith" {
 
   environment    = var.environment
   name           = "Flagsmith"
-  engine_version = "18.6"
+  engine_version = "18.3"
 
   multi_az = true
 

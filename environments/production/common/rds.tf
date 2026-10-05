@@ -74,7 +74,7 @@ module "postgres_developer_hub" {
 
   environment    = var.environment
   name           = "PostgresDeveloperHub"
-  engine_version = "18.6"
+  engine_version = "18.3"
 
   multi_az = false
 
