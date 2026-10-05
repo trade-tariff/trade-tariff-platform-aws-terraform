@@ -86,8 +86,9 @@ module "waf" {
   # Priorities 11/12 sit after the allow rules at 0-10, so the MCP, TSS, e2e,
   # healthcheck and mycommodities bypasses all keep taking precedence.
   #
-  # Unkeyed traffic is blocked at var.waf_no_api_key_rpm_limit (250), half the
-  # 500 rpm that keyed clients get from the "ratelimiting" rule above.
+  # Unkeyed traffic is blocked at var.waf_no_api_key_rpm_limit, which is lower
+  # than the var.waf_rpm_limit that keyed clients get from the "ratelimiting"
+  # rule above.
   header_regex_label_rules = [
     {
       name         = "label-no-api-key"
