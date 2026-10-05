@@ -1,10 +1,10 @@
 resource "aws_wafv2_ip_set" "tss_scraper_cf" {
   provider           = aws.us_east_1
   name               = "tss-scraper-cf-${var.environment}"
-  description        = "TSS Tariff Scraper rate limit exception, remove after 2027-01-01, HMRC-2501"
+  description        = "TSS Tariff Scraper (HMRC-2501) and GistWorld (HMRC-2733) rate limit exception, remove after 2027-01-01"
   scope              = "CLOUDFRONT"
   ip_address_version = "IPV4"
-  addresses          = [var.tss_scraper_ip]
+  addresses          = [var.tss_scraper_ip, var.gistworld_ip]
 }
 
 locals {
@@ -42,8 +42,9 @@ module "waf" {
     }
   }
 
-  # Pins TSS at exactly 500 RPM regardless of what var.waf_rpm_limit becomes.
-  # allow-tss-scraper (ip_sets_rule below) bypasses the lower general limit.
+  # Pins each IP in the TSS set (TSS and GistWorld, HMRC-2733) at exactly 500
+  # RPM regardless of what var.waf_rpm_limit becomes. allow-tss-scraper
+  # (ip_sets_rule below) bypasses the lower general limit.
   # Remove this rule and allow-tss-scraper after 2027-01-01 (HMRC-2501).
   ip_set_rate_based_rules = [
     {
