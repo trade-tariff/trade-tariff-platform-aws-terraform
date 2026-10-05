@@ -38,9 +38,9 @@ variable "waf_apigw_rpm_limit" {
 }
 
 variable "waf_no_api_key_rpm_limit" {
-  description = "Request per minute limit for requests that do not carry a UUID-shaped X-Api-Key header. Clients that do keep waf_rpm_limit. Deliberately set to the same value as waf_rpm_limit for now, so the new rule changes nothing: lowering it is a separate change, once the development environment has proven the split and the count-mode CloudWatch metrics have been reviewed."
+  description = "Request per minute limit for requests that do not carry a UUID-shaped X-Api-Key header. Clients that do keep waf_rpm_limit."
   type        = number
-  default     = 500
+  default     = 250
 }
 
 variable "waf_mcp_secret_token" {
@@ -73,6 +73,12 @@ variable "tss_scraper_ip" {
   description = "TSS Tariff Scraper source IP (CIDR), exempted from the general WAF rate limit and pinned to its own 500 RPM cap. Remove after 2027-01-01, HMRC-2501."
   type        = string
   default     = "20.49.214.59/32"
+}
+
+variable "gistworld_ip" {
+  description = "GistWorld source IP (CIDR), added to the TSS rate limit exception set: exempted from the general WAF rate limit and pinned to its own 500 RPM cap. Remove after 2027-01-01, HMRC-2733."
+  type        = string
+  default     = "185.98.182.122/32"
 }
 
 variable "enable_sns_alerts" {
