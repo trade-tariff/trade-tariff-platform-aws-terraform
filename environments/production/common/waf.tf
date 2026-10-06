@@ -1,7 +1,7 @@
 resource "aws_wafv2_ip_set" "tss_scraper_cf" {
   provider           = aws.us_east_1
   name               = "tss-scraper-cf-${var.environment}"
-  description        = "TSS Tariff Scraper (HMRC-2501) and GistWorld (HMRC-2733) rate limit exception, remove after 2027-01-01"
+  description        = "TSS Tariff Scraper and GistWorld rate limit exception, remove after 2027-01-01, HMRC-2501, HMRC-2733"
   scope              = "CLOUDFRONT"
   ip_address_version = "IPV4"
   addresses          = [var.tss_scraper_ip, var.gistworld_ip]
