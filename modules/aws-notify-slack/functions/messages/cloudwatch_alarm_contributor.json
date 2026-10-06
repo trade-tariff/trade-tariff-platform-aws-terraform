@@ -1,0 +1,22 @@
+{
+  "Records": [
+    {
+      "EventSource": "aws:sns",
+      "EventVersion": "1.0",
+      "EventSubscriptionArn": "arn:aws:sns:eu-west-2::ExampleTopic",
+      "Sns": {
+        "Type": "Notification",
+        "MessageId": "0b9e2c1a-7f3d-4e8a-9c6b-2d1f0e3a4b5c",
+        "TopicArn": "arn:aws:sns:eu-west-2:123456789012:ExampleTopic",
+        "Subject": "ALARM: \"e2e-journey-consistently-failing-production\" in EU (London)",
+        "Message": "{\"AlarmName\": \"e2e-journey-consistently-failing-production\", \"NewStateValue\": \"ALARM\", \"NewStateReason\": \"Threshold Crossed: 1 datapoint was less than the threshold (0.5). The most recent datapoint which crossed the threshold: [0.0 (01/10/26 13:30:00)].\", \"StateChangeTime\": \"2026-10-01T13:42:04.919+0000\", \"OldStateValue\": \"OK\", \"AlarmContributorId\": \"6d442278dba546f6\", \"AlarmContributorAttributes\": {\"Spec\": \"find-commodity.spec.js\", \"Test\": \"finds a commodity by code\"}}",
+        "Timestamp": "2026-10-01T13:42:05.091Z",
+        "SignatureVersion": "1",
+        "Signature": "EXAMPLE",
+        "SigningCertUrl": "EXAMPLE",
+        "UnsubscribeUrl": "EXAMPLE",
+        "MessageAttributes": {}
+      }
+    }
+  ]
+}

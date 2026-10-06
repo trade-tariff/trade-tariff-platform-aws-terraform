@@ -432,3 +432,45 @@ Have a ~good~ amazing day! :)""",
         "username": "notify_slack_test",
     }
 ]
+
+snapshots[
+    "test_sns_get_slack_message_payload_snapshots message_cloudwatch_alarm_contributor.json"
+] = [
+    {
+        "channel": "slack_testing_sandbox",
+        "username": "notify_slack_test",
+        "icon_emoji": ":aws:",
+        "attachments": [
+            {
+                "color": "danger",
+                "fallback": "Alarm e2e-journey-consistently-failing-production triggered",
+                "fields": [
+                    {
+                        "title": "Alarm Name",
+                        "value": "`e2e-journey-consistently-failing-production`",
+                        "short": True,
+                    },
+                    {
+                        "title": "Contributor",
+                        "value": "Spec: `find-commodity.spec.js`\nTest: `finds a commodity by code`",
+                        "short": False,
+                    },
+                    {"title": "Alarm Description", "value": "`N/A`", "short": False},
+                    {
+                        "title": "Alarm reason",
+                        "value": "`Threshold Crossed: 1 datapoint was less than the threshold (0.5). The most recent datapoint which crossed the threshold: [0.0 (01/10/26 13:30:00)].`",
+                        "short": False,
+                    },
+                    {"title": "Old State", "value": "`OK`", "short": True},
+                    {"title": "Current State", "value": "`ALARM`", "short": True},
+                    {
+                        "title": "Link to Alarm",
+                        "value": "https://console.aws.amazon.com/cloudwatch/home?region=eu-west-2#alarm:alarmFilter=ANY;name=e2e-journey-consistently-failing-production",
+                        "short": False,
+                    },
+                ],
+                "text": "AWS CloudWatch notification - e2e-journey-consistently-failing-production",
+            }
+        ],
+    }
+]
