@@ -107,17 +107,17 @@ def format_cloudwatch_alarm(message: Dict[str, Any], region: str) -> Dict[str, A
             *fields,
             {
                 "title": "Alarm Description",
-                "value": f"`{message.get('AlarmDescription', 'N/A')}`",
+                "value": f"`{message.get('AlarmDescription') or 'N/A'}`",
                 "short": False,
             },
             {
                 "title": "Alarm reason",
-                "value": f"`{message.get('NewStateReason', 'N/A')}`",
+                "value": f"`{message.get('NewStateReason') or 'N/A'}`",
                 "short": False,
             },
             {
                 "title": "Old State",
-                "value": f"`{message.get('OldStateValue', 'N/A')}`",
+                "value": f"`{message.get('OldStateValue') or 'N/A'}`",
                 "short": True,
             },
             {
