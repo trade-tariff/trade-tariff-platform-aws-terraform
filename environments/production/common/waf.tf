@@ -1,10 +1,10 @@
 resource "aws_wafv2_ip_set" "tss_scraper_cf" {
   provider           = aws.us_east_1
   name               = "tss-scraper-cf-${var.environment}"
-  description        = "TSS Tariff Scraper rate limit exception, remove after 2027-01-01, HMRC-2501"
+  description        = "TSS Tariff Scraper and GistWorld rate limit exception, remove after 2027-01-01, HMRC-2501, HMRC-2733"
   scope              = "CLOUDFRONT"
   ip_address_version = "IPV4"
-  addresses          = [var.tss_scraper_ip]
+  addresses          = [var.tss_scraper_ip, var.gistworld_ip]
 }
 
 locals {
@@ -42,8 +42,9 @@ module "waf" {
     }
   }
 
-  # Pins TSS at exactly 500 RPM regardless of what var.waf_rpm_limit becomes.
-  # allow-tss-scraper (ip_sets_rule below) bypasses the lower general limit.
+  # Pins each IP in the TSS set (TSS and GistWorld, HMRC-2733) at exactly 500
+  # RPM regardless of what var.waf_rpm_limit becomes. allow-tss-scraper
+  # (ip_sets_rule below) bypasses the lower general limit.
   # Remove this rule and allow-tss-scraper after 2027-01-01 (HMRC-2501).
   ip_set_rate_based_rules = [
     {
@@ -85,13 +86,9 @@ module "waf" {
   # Priorities 11/12 sit after the allow rules at 0-10, so the TSS, e2e,
   # healthcheck and mycommodities bypasses all keep taking precedence.
   #
-  # ROLLOUT: this rule changes nothing yet. It is in count mode, and
-  # var.waf_no_api_key_rpm_limit is level-pegged to var.waf_rpm_limit, so
-  # unkeyed traffic is held to the same 500 rpm it is today and is only
-  # counted, never blocked. Development runs the same rule at limit 10 with
-  # action = block to prove the split. Lowering the limit here and flipping
-  # the action to "block" is a separate change, once that test and the
-  # CloudWatch metrics confirm the behaviour.
+  # Unkeyed traffic is blocked at var.waf_no_api_key_rpm_limit, which is lower
+  # than the var.waf_rpm_limit that keyed clients get from the "ratelimiting"
+  # rule above.
   header_regex_label_rules = [
     {
       name         = "label-no-api-key"
@@ -108,7 +105,7 @@ module "waf" {
       name     = "ratelimiting-no-api-key"
       priority = 12
       limit    = var.waf_no_api_key_rpm_limit
-      action   = "count"
+      action   = "block"
       label    = "no-api-key"
       custom_response = {
         response_code = 429

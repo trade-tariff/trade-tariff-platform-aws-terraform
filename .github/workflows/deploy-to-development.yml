@@ -73,6 +73,9 @@ jobs:
 
       - run: scripts/run-terraform-tests
 
+      - name: Test CloudFront Functions
+        run: node --test 'common/*.test.js'
+
       - run: pip install pre-commit
 
       - run: pre-commit run --all-files --show-diff-on-failure
@@ -96,7 +99,7 @@ jobs:
         with:
           ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
-      - uses: ruby/setup-ruby@v1.325.0
+      - uses: ruby/setup-ruby@v1.326.0
 
       - run: bundle config set path 'vendor/bundle' && bundle config set without 'test' && bundle install
         working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
@@ -152,7 +155,7 @@ jobs:
         with:
           ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
-      - uses: ruby/setup-ruby@v1.325.0
+      - uses: ruby/setup-ruby@v1.326.0
 
       - run: bundle config set path 'vendor/bundle' && bundle config set without 'test' && bundle install
         working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
@@ -213,7 +216,7 @@ jobs:
         with:
           ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
-      - uses: ruby/setup-ruby@v1.325.0
+      - uses: ruby/setup-ruby@v1.326.0
 
       - run: bundle config set path 'vendor/bundle' && bundle config set without 'test' && bundle install
         working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
@@ -264,7 +267,7 @@ jobs:
         with:
           ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
-      - uses: ruby/setup-ruby@v1.325.0
+      - uses: ruby/setup-ruby@v1.326.0
 
       - run: bundle config set path 'vendor/bundle' && bundle config set without 'test' && bundle install
         working-directory: common/lambda/trade-tariff-identity-create-auth-challenge
