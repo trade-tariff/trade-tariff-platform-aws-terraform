@@ -13,7 +13,7 @@ module "waf_apigw" {
   ip_rate_based_rule = {
     name      = "ip-rate-limit"
     priority  = 3
-    rpm_limit = var.waf_apigw_rpm_limit
+    rpm_limit = local.waf_apigw_rpm_limit
     action    = "block"
     custom_response = {
       response_code = 429
