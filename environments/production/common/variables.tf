@@ -31,12 +31,6 @@ variable "waf_rpm_limit" {
   default     = 500
 }
 
-variable "waf_apigw_rpm_limit" {
-  description = "Request per minute limit for the WAF in front of the API Gateway. Split from waf_rpm_limit so the API Gateway limit can diverge from the CDN limit; advertised API rate limit is 750 RPM."
-  type        = number
-  default     = 750
-}
-
 variable "waf_no_api_key_rpm_limit" {
   description = "Request per minute limit for requests that do not carry a UUID-shaped X-Api-Key header. Clients that do keep waf_rpm_limit."
   type        = number
