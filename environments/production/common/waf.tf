@@ -162,6 +162,13 @@ module "waf" {
   # API paths) to learn the normal traffic baseline. Before you set
   # override_action = "none", examine its CloudWatch metrics and check the
   # effect on /api/, /uk/api/ and /xi/api/ requests.
+  #
+  # Also before you set override_action = "none": allow-e2e-tests (8),
+  # allow-healthcheck (9) and allow-mycommodities-path (10) come after this
+  # group. In count mode this has no effect. With "none", a flood event can
+  # block e2e, healthcheck and mycommodities requests before those allow
+  # rules run. Move those allow rules to a priority lower than 5, or make
+  # sure that their requests are not blocked.
   anti_ddos_rule = {
     priority             = 5
     override_action      = "count"
