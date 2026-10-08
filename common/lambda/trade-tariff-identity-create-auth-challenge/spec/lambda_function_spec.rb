@@ -39,6 +39,32 @@ RSpec.describe "lambda_handler" do
     expect(Notifications::Client).to have_received(:new).with("test-key", "http://identity-inbox:8080")
   end
 
+  it "accepts localhost as a local Notify endpoint" do
+    allow(ENV).to receive(:[]).and_call_original
+    allow(ENV).to receive(:[]).with("GOVUK_NOTIFY_API_URL").and_return("http://localhost:8080")
+
+    lambda_handler(event:, context: nil)
+
+    expect(Notifications::Client).to have_received(:new).with("test-key", "http://localhost:8080")
+  end
+
+  [
+    "https://attacker.example.com",
+    "http://identity-inbox.attacker.example",
+    "http://16909060:8080",
+    "http://[2001:db8::1]:8080",
+    "not a url",
+  ].each do |override|
+    it "ignores a Notify endpoint that is not a local inbox: #{override}" do
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with("GOVUK_NOTIFY_API_URL").and_return(override)
+
+      lambda_handler(event:, context: nil)
+
+      expect(Notifications::Client).to have_received(:new).with("test-key", nil)
+    end
+  end
+
   context "with the actual locked Notify client" do
     let(:http) { instance_double(Net::HTTP) }
     let(:http_response) { instance_double(Net::HTTPCreated, body: '{"id":"fixture-notification"}') }
@@ -56,6 +82,12 @@ RSpec.describe "lambda_handler" do
 
     it "sends to the original production endpoint when the override is absent" do
       allow(ENV).to receive(:[]).with("GOVUK_NOTIFY_API_URL").and_return(nil)
+      lambda_handler(event:, context: nil)
+      expect(Net::HTTP).to have_received(:start).with("api.notifications.service.gov.uk", 443, :ENV, use_ssl: true)
+    end
+
+    it "sends to the original production endpoint when the override is not a local inbox" do
+      allow(ENV).to receive(:[]).with("GOVUK_NOTIFY_API_URL").and_return("https://attacker.example.com")
       lambda_handler(event:, context: nil)
       expect(Net::HTTP).to have_received(:start).with("api.notifications.service.gov.uk", 443, :ENV, use_ssl: true)
     end
