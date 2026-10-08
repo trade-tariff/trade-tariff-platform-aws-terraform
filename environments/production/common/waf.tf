@@ -177,46 +177,46 @@ module "waf" {
     captcha_override_rules  = []
   }
 
+  # Page paths can have an optional /uk/ or /xi/ service prefix (see the
+  # frontend service_path_prefix_handler route filter). Each regex covers the
+  # unprefixed, UK and XI paths, so one counter per IP applies to all three.
+  # The anchor at the start stops the rules matching API paths such as
+  # /uk/api/commodities/. HMRC-2724.
   ip_rate_url_based_rules = [
     {
-      name                  = "rate-limit-commodity-pages"
-      priority              = 15
-      limit                 = var.waf_page_rpm_limit
-      action                = "block"
-      search_string         = "/commodities/"
-      positional_constraint = "STARTS_WITH"
+      name         = "rate-limit-commodity-pages"
+      priority     = 15
+      limit        = var.waf_page_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?commodities/"
     },
     {
-      name                  = "rate-limit-heading-pages"
-      priority              = 16
-      limit                 = var.waf_page_rpm_limit
-      action                = "block"
-      search_string         = "/headings/"
-      positional_constraint = "STARTS_WITH"
+      name         = "rate-limit-heading-pages"
+      priority     = 16
+      limit        = var.waf_page_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?headings/"
     },
     {
-      name                  = "rate-limit-chapter-pages"
-      priority              = 17
-      limit                 = var.waf_page_rpm_limit
-      action                = "block"
-      search_string         = "/chapters/"
-      positional_constraint = "STARTS_WITH"
+      name         = "rate-limit-chapter-pages"
+      priority     = 17
+      limit        = var.waf_page_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?chapters/"
     },
     {
-      name                  = "rate-limit-subheading-pages"
-      priority              = 18
-      limit                 = var.waf_page_rpm_limit
-      action                = "block"
-      search_string         = "/subheadings/"
-      positional_constraint = "STARTS_WITH"
+      name         = "rate-limit-subheading-pages"
+      priority     = 18
+      limit        = var.waf_page_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?subheadings/"
     },
     {
-      name                  = "rate-limit-search"
-      priority              = 19
-      limit                 = var.waf_search_rpm_limit
-      action                = "block"
-      search_string         = "/search"
-      positional_constraint = "EXACTLY"
+      name         = "rate-limit-search"
+      priority     = 19
+      limit        = var.waf_search_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?search$"
     },
   ]
 

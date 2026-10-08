@@ -119,11 +119,28 @@ variable "ip_rate_url_based_rules" {
     priority              = number
     limit                 = number
     action                = string
-    search_string         = string
-    positional_constraint = string
+    search_string         = optional(string)
+    positional_constraint = optional(string)
+    regex_string          = optional(string)
   }))
-  description = "A rate and url based rules tracks the rate of requests for each originating IP address, and triggers the rule action when the rate exceeds a limit that you specify on the number of requests in any 5-minute time span"
+  description = "A rate and url based rules tracks the rate of requests for each originating IP address, and triggers the rule action when the rate exceeds a limit that you specify on the number of requests in any 5-minute time span. Match the URI path with either search_string and positional_constraint (byte match), or regex_string (regex match). Use regex_string when one rule must cover the optional /uk/ and /xi/ service prefixes."
   default     = []
+
+  validation {
+    condition = alltrue([
+      for r in var.ip_rate_url_based_rules :
+      (r.regex_string != null) != (r.search_string != null || r.positional_constraint != null)
+    ])
+    error_message = "Each ip_rate_url_based_rules entry must set either regex_string, or search_string and positional_constraint, but not both."
+  }
+
+  validation {
+    condition = alltrue([
+      for r in var.ip_rate_url_based_rules :
+      (r.search_string != null) == (r.positional_constraint != null)
+    ])
+    error_message = "Each ip_rate_url_based_rules entry must set search_string and positional_constraint together."
+  }
 }
 
 variable "ip_set_rate_based_rules" {
