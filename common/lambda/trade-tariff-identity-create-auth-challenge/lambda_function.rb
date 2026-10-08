@@ -24,7 +24,7 @@ end
 def generate_and_send_code(email) # rubocop:disable Metrics/MethodLength
   url = ENV['URL']
   api_key = ENV['GOVUK_NOTIFY_API_KEY']
-  notify = Notifications::Client.new(api_key)
+  notify = Notifications::Client.new(api_key, ENV['GOVUK_NOTIFY_API_URL'])
   code = SecureRandom.rand(1_000_000).to_s.rjust(6, '0')
 
   if url.include? 'dev'
