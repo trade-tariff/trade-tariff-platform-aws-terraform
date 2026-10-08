@@ -873,3 +873,53 @@ resource "aws_wafv2_web_acl_rule" "bot_control" {
     sampled_requests_enabled   = true
   }
 }
+
+# AWS Anti-DDoS managed rule group. It learns a traffic baseline and labels
+# or blocks requests that are part of a sudden flood, across all IPs.
+#
+# The challenge action is always DISABLED, so this group never shows a
+# challenge interstitial page to real users (HMRC-2724). With
+# override_action = count the group only labels and counts requests.
+resource "aws_wafv2_web_acl_rule" "anti_ddos" {
+  for_each = var.anti_ddos_rule != null ? { "AWSManagedRulesAntiDDoSRuleSet" = var.anti_ddos_rule } : {}
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = "AWSManagedRulesAntiDDoSRuleSet"
+  priority    = each.value.priority
+
+  override_action {
+    dynamic "none" {
+      for_each = each.value.override_action == "none" ? [1] : []
+      content {}
+    }
+    dynamic "count" {
+      for_each = each.value.override_action == "count" ? [1] : []
+      content {}
+    }
+  }
+
+  statement {
+    managed_rule_group_statement {
+      name        = "AWSManagedRulesAntiDDoSRuleSet"
+      vendor_name = "AWS"
+
+      managed_rule_group_configs {
+        aws_managed_rules_anti_ddos_rule_set {
+          sensitivity_to_block = each.value.sensitivity_to_block
+
+          client_side_action_config {
+            challenge {
+              usage_of_action = "DISABLED"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "AWSManagedRulesAntiDDoSRuleSet"
+    sampled_requests_enabled   = true
+  }
+}

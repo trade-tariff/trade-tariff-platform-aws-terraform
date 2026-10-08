@@ -12,7 +12,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.37.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.68.0 |
 
 ## Modules
 
@@ -27,6 +27,7 @@ No modules.
 | [aws_wafv2_web_acl_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_association) | resource |
 | [aws_wafv2_web_acl_rule.allow_assets_from_rate_limit](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
 | [aws_wafv2_web_acl_rule.allow_bot_control_excluded_paths](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
+| [aws_wafv2_web_acl_rule.anti_ddos](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
 | [aws_wafv2_web_acl_rule.bot_control](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
 | [aws_wafv2_web_acl_rule.filtered_header](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
 | [aws_wafv2_web_acl_rule.group_rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_rule) | resource |
@@ -47,6 +48,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alb_arn"></a> [alb\_arn](#input\_alb\_arn) | ARN of the ALB to be associated with the WAFv2 ACL. | `string` | `""` | no |
+| <a name="input_anti_ddos_rule"></a> [anti\_ddos\_rule](#input\_anti\_ddos\_rule) | Configuration for the AWS Anti-DDoS managed rule group (AWSManagedRulesAntiDDoSRuleSet). Set to null to disable it. Use override\_action = count to measure it before you set none. sensitivity\_to\_block is LOW, MEDIUM or HIGH. The module always disables the group's challenge action, so the group can block requests but never shows an interstitial page to users. | <pre>object({<br/>    priority             = number<br/>    override_action      = string<br/>    sensitivity_to_block = string<br/>  })</pre> | `null` | no |
 | <a name="input_associate_alb"></a> [associate\_alb](#input\_associate\_alb) | Whether to associate an ALB with the WAFv2 ACL. | `bool` | `false` | no |
 | <a name="input_bot_control_rule"></a> [bot\_control\_rule](#input\_bot\_control\_rule) | Configuration for the AWS Bot Control managed rule group. Set enable\_machine\_learning to true to enable it or null to disable it; false is rejected because of hashicorp/terraform-provider-aws#48446. excluded\_uri\_prefixes must have 0 or at least 2 entries (or\_statement requires a minimum of 2 statements). captcha\_override\_rules lists rule names whose default CAPTCHA action should be downgraded to a silent JS challenge. | <pre>object({<br/>    priority                = number<br/>    override_action         = string<br/>    inspection_level        = string<br/>    enable_machine_learning = optional(bool)<br/>    excluded_uri_prefixes   = list(string)<br/>    captcha_override_rules  = optional(list(string), [])<br/>  })</pre> | `null` | no |
 | <a name="input_default_action"></a> [default\_action](#input\_default\_action) | The action to perform if none of the rules contained in the WebACL match. | `string` | `"allow"` | no |

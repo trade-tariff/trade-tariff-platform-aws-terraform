@@ -152,6 +152,22 @@ module "waf" {
     },
   ]
 
+  # AWS Anti-DDoS managed rule group (HMRC-2724). It is in count mode, so it
+  # only labels and counts requests. The module disables its challenge
+  # action, so it never shows an interstitial page to real users.
+  #
+  # Priority 5 puts it after the TSS, MCP and asset allow rules (0-3) and
+  # the general rate limit (4), and before the other rules. AWS recommends
+  # that this group runs early, and it must inspect all traffic (including
+  # API paths) to learn the normal traffic baseline. Before you set
+  # override_action = "none", examine its CloudWatch metrics and check the
+  # effect on /api/, /uk/api/ and /xi/api/ requests.
+  anti_ddos_rule = {
+    priority             = 5
+    override_action      = "count"
+    sensitivity_to_block = "LOW"
+  }
+
   bot_control_rule = {
     priority                = 70
     override_action         = "none"
