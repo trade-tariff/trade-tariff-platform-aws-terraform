@@ -209,3 +209,68 @@ run "ip_rate_url_based_rejects_neither_search_string_nor_regex_string" {
 
   expect_failures = [var.ip_rate_url_based_rules]
 }
+
+run "ip_rate_url_based_rejects_regex_string_with_search_string_only" {
+  command = plan
+
+  variables {
+    name  = "test-waf"
+    scope = "CLOUDFRONT"
+
+    ip_rate_url_based_rules = [
+      {
+        name          = "regex-and-partial-byte-match"
+        priority      = 6
+        limit         = 300
+        action        = "block"
+        search_string = "/search"
+        regex_string  = "^/search$"
+      }
+    ]
+  }
+
+  expect_failures = [var.ip_rate_url_based_rules]
+}
+
+run "ip_rate_url_based_rejects_regex_string_with_positional_constraint_only" {
+  command = plan
+
+  variables {
+    name  = "test-waf"
+    scope = "CLOUDFRONT"
+
+    ip_rate_url_based_rules = [
+      {
+        name                  = "regex-and-partial-byte-match"
+        priority              = 6
+        limit                 = 300
+        action                = "block"
+        positional_constraint = "EXACTLY"
+        regex_string          = "^/search$"
+      }
+    ]
+  }
+
+  expect_failures = [var.ip_rate_url_based_rules]
+}
+
+run "ip_rate_url_based_rejects_search_string_without_positional_constraint" {
+  command = plan
+
+  variables {
+    name  = "test-waf"
+    scope = "CLOUDFRONT"
+
+    ip_rate_url_based_rules = [
+      {
+        name          = "partial-byte-match"
+        priority      = 6
+        limit         = 300
+        action        = "block"
+        search_string = "/search"
+      }
+    ]
+  }
+
+  expect_failures = [var.ip_rate_url_based_rules]
+}

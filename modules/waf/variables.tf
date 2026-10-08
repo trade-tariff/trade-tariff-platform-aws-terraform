@@ -129,9 +129,17 @@ variable "ip_rate_url_based_rules" {
   validation {
     condition = alltrue([
       for r in var.ip_rate_url_based_rules :
-      (r.regex_string != null) != (r.search_string != null && r.positional_constraint != null)
+      (r.regex_string != null) != (r.search_string != null || r.positional_constraint != null)
     ])
-    error_message = "Each ip_rate_url_based_rules entry must set either regex_string, or both search_string and positional_constraint, but not both."
+    error_message = "Each ip_rate_url_based_rules entry must set either regex_string, or search_string and positional_constraint, but not both."
+  }
+
+  validation {
+    condition = alltrue([
+      for r in var.ip_rate_url_based_rules :
+      (r.search_string != null) == (r.positional_constraint != null)
+    ])
+    error_message = "Each ip_rate_url_based_rules entry must set search_string and positional_constraint together."
   }
 }
 
