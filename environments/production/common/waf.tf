@@ -143,8 +143,15 @@ module "waf" {
         }
       }
     },
-    # Starts in count mode. Check the CloudWatch metric and sampled requests
-    # for this rule, then change action to "block" (HMRC-2724).
+    # Starts in count mode (HMRC-2724).
+    #
+    # The counter is per JA4 fingerprint, not per client. Every client with
+    # the same fingerprint shares one budget of
+    # var.waf_no_alpn_page_rpm_limit, including real users behind a
+    # TLS-inspection proxy. Before you change action to "block", examine the
+    # sampled requests and WAF logs for each fingerprint that goes above the
+    # limit. Confirm that the fingerprint is used only by scrapers, not by
+    # other clients (for example many IPs from corporate networks).
     {
       name          = "ratelimiting-no-alpn-pages"
       priority      = 14
