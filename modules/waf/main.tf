@@ -352,15 +352,32 @@ resource "aws_wafv2_web_acl_rule" "ip_rate_url_based" {
       limit              = each.value.limit
       aggregate_key_type = "IP"
       scope_down_statement {
-        byte_match_statement {
-          positional_constraint = each.value.positional_constraint
-          search_string         = each.value.search_string
-          field_to_match {
-            uri_path {}
+        dynamic "byte_match_statement" {
+          for_each = each.value.regex_string == null ? [1] : []
+          content {
+            positional_constraint = each.value.positional_constraint
+            search_string         = each.value.search_string
+            field_to_match {
+              uri_path {}
+            }
+            text_transformation {
+              priority = 0
+              type     = "URL_DECODE"
+            }
           }
-          text_transformation {
-            priority = 0
-            type     = "URL_DECODE"
+        }
+
+        dynamic "regex_match_statement" {
+          for_each = each.value.regex_string != null ? [1] : []
+          content {
+            regex_string = each.value.regex_string
+            field_to_match {
+              uri_path {}
+            }
+            text_transformation {
+              priority = 0
+              type     = "URL_DECODE"
+            }
           }
         }
       }
