@@ -126,6 +126,25 @@ variable "ip_rate_url_based_rules" {
   default     = []
 }
 
+variable "ja4_path_label_rules" {
+  type = list(object({
+    name              = string
+    priority          = number
+    ja4_regex_string  = string
+    path_regex_string = string
+    label             = string
+  }))
+  description = "Non-terminating (count) rules that attach a label to requests when the JA4 TLS fingerprint matches ja4_regex_string AND the URI path matches path_regex_string. When WAF cannot compute a JA4 fingerprint, the rule does not match. Pair with label_rate_based_rules (aggregate_key = \"JA4\") to rate limit each matching fingerprint."
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for r in var.ja4_path_label_rules : !can(regex("(?i)^(awswaf|aws|waf|rulegroup|webacl|regexpatternset|ipset|managed)$", r.label))
+    ])
+    error_message = "label must not be one of the strings AWS WAF reserves for its own label namespaces (awswaf, aws, waf, rulegroup, webacl, regexpatternset, ipset, managed)."
+  }
+}
+
 variable "ip_set_rate_based_rules" {
   type = list(object({
     name       = string
@@ -168,11 +187,12 @@ variable "header_regex_label_rules" {
 
 variable "label_rate_based_rules" {
   type = list(object({
-    name     = string
-    priority = number
-    limit    = number
-    action   = string
-    label    = string
+    name          = string
+    priority      = number
+    limit         = number
+    action        = string
+    label         = string
+    aggregate_key = optional(string, "IP")
     custom_response = object({
       response_code = number
       body_key      = string
@@ -182,8 +202,13 @@ variable "label_rate_based_rules" {
       })
     })
   }))
-  description = "Rate-based rules scoped to requests carrying a given label, tracking the rate of requests per originating IP among those matches and triggering the rule action when it exceeds the specified limit in any 1-minute window. The labelling rule must have a lower priority number, since a label match only sees labels added earlier in the Web ACL evaluation."
+  description = "Rate-based rules scoped to requests carrying a given label, tracking the rate of requests per aggregate_key among those matches and triggering the rule action when it exceeds the specified limit in any 1-minute window. aggregate_key is \"IP\" (default) for the originating IP, or \"JA4\" for the JA4 TLS fingerprint. The labelling rule must have a lower priority number, since a label match only sees labels added earlier in the Web ACL evaluation."
   default     = []
+
+  validation {
+    condition     = alltrue([for r in var.label_rate_based_rules : contains(["IP", "JA4"], r.aggregate_key)])
+    error_message = "label_rate_based_rules aggregate_key must be IP or JA4."
+  }
 }
 
 variable "filtered_header_rule" {

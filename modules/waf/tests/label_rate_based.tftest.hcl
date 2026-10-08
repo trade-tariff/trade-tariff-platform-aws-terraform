@@ -167,3 +167,79 @@ run "reserved_label_names_are_rejected" {
 
   expect_failures = [var.header_regex_label_rules]
 }
+
+run "rate_based_aggregates_by_ip_by_default" {
+  command = plan
+
+  assert {
+    condition     = aws_wafv2_web_acl_rule.label_rate_based["ratelimiting-no-api-key"].statement[0].rate_based_statement[0].aggregate_key_type == "IP"
+    error_message = "label_rate_based rules must aggregate by IP when aggregate_key is not set"
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl_rule.label_rate_based["ratelimiting-no-api-key"].statement[0].rate_based_statement[0].custom_keys) == 0
+    error_message = "IP aggregation must not add custom keys"
+  }
+}
+
+run "rate_based_aggregates_by_ja4_when_requested" {
+  command = plan
+
+  variables {
+    label_rate_based_rules = [
+      {
+        name          = "ratelimiting-no-alpn-pages"
+        priority      = 14
+        limit         = 300
+        action        = "count"
+        label         = "no-alpn-page"
+        aggregate_key = "JA4"
+        custom_response = {
+          response_code = 429
+          body_key      = "rate-limit-exceeded"
+          response_header = {
+            name  = "X-Rate-Limit"
+            value = "1"
+          }
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition     = aws_wafv2_web_acl_rule.label_rate_based["ratelimiting-no-alpn-pages"].statement[0].rate_based_statement[0].aggregate_key_type == "CUSTOM_KEYS"
+    error_message = "aggregate_key = JA4 must use CUSTOM_KEYS aggregation"
+  }
+
+  assert {
+    condition     = aws_wafv2_web_acl_rule.label_rate_based["ratelimiting-no-alpn-pages"].statement[0].rate_based_statement[0].custom_keys[0].ja4_fingerprint[0].fallback_behavior == "NO_MATCH"
+    error_message = "aggregate_key = JA4 must use the JA4 fingerprint as the only custom key"
+  }
+}
+
+run "rate_based_rejects_unknown_aggregate_key" {
+  command = plan
+
+  variables {
+    label_rate_based_rules = [
+      {
+        name          = "ratelimiting-unknown"
+        priority      = 14
+        limit         = 300
+        action        = "count"
+        label         = "no-alpn-page"
+        aggregate_key = "JA3"
+        custom_response = {
+          response_code = 429
+          body_key      = "rate-limit-exceeded"
+          response_header = {
+            name  = "X-Rate-Limit"
+            value = "1"
+          }
+        }
+      }
+    ]
+  }
+
+  expect_failures = [var.label_rate_based_rules]
+}

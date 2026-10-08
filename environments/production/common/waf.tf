@@ -100,6 +100,33 @@ module "waf" {
     }
   ]
 
+  # Non-browser TLS clients on HTML page paths (HMRC-2724).
+  #
+  # Characters 9 and 10 of the first JA4 part (t13d1811"00") are the ALPN
+  # value. "00" means that the client sent no ALPN. Real browsers always send
+  # ALPN (h2), so a client with "00" that claims a browser User-Agent is a
+  # script. The 1 Oct 2026 scraper used t13d181100_85036bcba153_d41ae481755e
+  # from 31 IPs.
+  #
+  # label-no-alpn-pages labels these requests. ratelimiting-no-alpn-pages
+  # (below) then counts them per JA4 fingerprint, not per IP, so the limit
+  # applies however many IPs a bot uses. Real users never see a CAPTCHA or
+  # challenge from this: the only action is a 429 above the limit.
+  #
+  # The path regex covers the tariff browse and search pages, with the
+  # optional /uk/ or /xi/ prefix. It does not match /api/, /uk/api/,
+  # /xi/api/ or /healthcheck. The allow rules at priorities 0-10 (MCP, TSS,
+  # assets, e2e, healthcheck, mycommodities) come first, so they still apply.
+  ja4_path_label_rules = [
+    {
+      name              = "label-no-alpn-pages"
+      priority          = 13
+      ja4_regex_string  = "^[tqd][0-9a-z]{2}[di][0-9]{4}00_"
+      path_regex_string = "^/(uk/|xi/)?(sections|chapters|headings|subheadings|commodities|search|find_commodity|browse)(/|$)"
+      label             = "no-alpn-page"
+    }
+  ]
+
   label_rate_based_rules = [
     {
       name     = "ratelimiting-no-api-key"
@@ -107,6 +134,24 @@ module "waf" {
       limit    = var.waf_no_api_key_rpm_limit
       action   = "block"
       label    = "no-api-key"
+      custom_response = {
+        response_code = 429
+        body_key      = "rate-limit-exceeded"
+        response_header = {
+          name  = "X-Rate-Limit"
+          value = "1"
+        }
+      }
+    },
+    # Starts in count mode. Check the CloudWatch metric and sampled requests
+    # for this rule, then change action to "block" (HMRC-2724).
+    {
+      name          = "ratelimiting-no-alpn-pages"
+      priority      = 14
+      limit         = var.waf_no_alpn_page_rpm_limit
+      action        = "count"
+      label         = "no-alpn-page"
+      aggregate_key = "JA4"
       custom_response = {
         response_code = 429
         body_key      = "rate-limit-exceeded"
