@@ -60,7 +60,8 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_codes" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "long_response_times" {
-  for_each = module.alb.target_groups
+  # admin-https has its own alarm below because its traffic is very low.
+  for_each = { for name, target_group in module.alb.target_groups : name => target_group if name != "admin-https" }
 
   alarm_name          = "Long-response-times-${each.value.name}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -80,6 +81,69 @@ resource "aws_cloudwatch_metric_alarm" "long_response_times" {
   dimensions = {
     LoadBalancer = module.alb.arn_suffix
     TargetGroup  = each.value.arn_suffix
+  }
+}
+
+# Admin has very little traffic: half of the 5-minute windows that have any
+# requests have 7 or fewer. With so few requests, one or two slow page loads
+# move the average or p95 over the threshold. This alarm only uses windows with
+# at least 20 requests. Every window gets a value (0 when traffic is low or
+# missing), so "2 datapoints" means 10 consecutive minutes. Without the fill,
+# CloudWatch skips empty windows and can join two slow requests that are far
+# apart in time.
+moved {
+  from = aws_cloudwatch_metric_alarm.long_response_times["admin-https"]
+  to   = aws_cloudwatch_metric_alarm.admin_long_response_times
+}
+
+resource "aws_cloudwatch_metric_alarm" "admin_long_response_times" {
+  alarm_name          = "Long-response-times-${module.alb.target_groups["admin-https"].name}"
+  alarm_description   = "Admin p95 response time is 1.5 seconds or more for 10 minutes, with at least 20 requests in each 5 minutes, in ${var.environment} for target group ${module.alb.target_groups["admin-https"].name}"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  datapoints_to_alarm = 2
+  threshold           = 1.5
+  treat_missing_data  = "notBreaching"
+
+  alarm_actions = local.alert_actions
+
+  metric_query {
+    id          = "requests"
+    return_data = false
+
+    metric {
+      metric_name = "RequestCount"
+      namespace   = "AWS/ApplicationELB"
+      period      = 300
+      stat        = "Sum"
+      dimensions = {
+        LoadBalancer = module.alb.arn_suffix
+        TargetGroup  = module.alb.target_groups["admin-https"].arn_suffix
+      }
+    }
+  }
+
+  metric_query {
+    id          = "p95"
+    return_data = false
+
+    metric {
+      metric_name = "TargetResponseTime"
+      namespace   = "AWS/ApplicationELB"
+      period      = 300
+      stat        = "p95"
+      dimensions = {
+        LoadBalancer = module.alb.arn_suffix
+        TargetGroup  = module.alb.target_groups["admin-https"].arn_suffix
+      }
+    }
+  }
+
+  metric_query {
+    id          = "p95_with_traffic"
+    label       = "p95 response time (seconds) when there are 20 or more requests"
+    return_data = true
+    expression  = "IF(FILL(requests, 0) >= 20, FILL(p95, 0), 0)"
   }
 }
 
@@ -453,7 +517,12 @@ resource "aws_cloudwatch_metric_alarm" "sidekiq_queue_depth" {
   alarm_name          = "sidekiq-queue-depth-${each.key}-${var.environment}"
   alarm_description   = "Sidekiq ${each.key} queue has more than ${each.value} jobs in ${var.environment}. Check Sidekiq Web UI for stuck or failing jobs."
   comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
+  # QueueDepth is sent every 5 minutes. 2 of 3 datapoints ignores a short
+  # burst, such as the daily search index rebuild at about 05:00 UTC that adds
+  # about 1,700 jobs and clears in under 5 minutes. A queue that stays full for
+  # 10 minutes still alarms.
+  evaluation_periods  = 3
+  datapoints_to_alarm = 2
   metric_name         = "QueueDepth"
   namespace           = "TradeTariff/Sidekiq"
   period              = 300
