@@ -20,7 +20,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_acm"></a> [acm](#module\_acm) | git@github.com:terraform-aws-modules/terraform-aws-acm | v6.0.0 |
+| <a name="module_acm"></a> [acm](#module\_acm) | git::https://github.com/terraform-aws-modules/terraform-aws-acm | v6.0.0 |
 
 ## Resources
 
