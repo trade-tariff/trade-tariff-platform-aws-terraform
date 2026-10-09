@@ -515,7 +515,7 @@ resource "aws_cloudwatch_metric_alarm" "sidekiq_queue_depth" {
   for_each = local.sidekiq_queue_depth_thresholds
 
   alarm_name          = "sidekiq-queue-depth-${each.key}-${var.environment}"
-  alarm_description   = "Sidekiq ${each.key} queue has more than ${each.value} jobs in ${var.environment}. Check Sidekiq Web UI for stuck or failing jobs."
+  alarm_description   = "Sidekiq ${each.key} queue has more than ${each.value} jobs in ${var.environment}. Check Sidekiq Web for stuck or failing jobs: https://admin.${var.domain_name}/sidekiq/uk (UK) or https://admin.${var.domain_name}/sidekiq/xi (XI)."
   comparison_operator = "GreaterThanThreshold"
   # QueueDepth is sent every 5 minutes. 2 of 3 datapoints ignores a short
   # burst, such as the daily search index rebuild at about 05:00 UTC that adds
@@ -540,7 +540,7 @@ resource "aws_cloudwatch_metric_alarm" "sidekiq_queue_depth" {
 
 resource "aws_cloudwatch_metric_alarm" "sidekiq_sync_queue_latency" {
   alarm_name          = "sidekiq-sync-queue-latency-${var.environment}"
-  alarm_description   = "Sidekiq sync queue has jobs waiting more than 30 minutes in ${var.environment}. CDS/TARIC sync may be stalled — check Sidekiq Web UI and worker logs."
+  alarm_description   = "Sidekiq sync queue has jobs waiting more than 30 minutes in ${var.environment}. CDS/TARIC sync may be stalled. Check Sidekiq Web (https://admin.${var.domain_name}/sidekiq/uk for UK, https://admin.${var.domain_name}/sidekiq/xi for XI) and worker logs."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "QueueLatency"
