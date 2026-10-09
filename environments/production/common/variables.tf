@@ -37,11 +37,10 @@ variable "waf_no_api_key_rpm_limit" {
   default     = 250
 }
 
-variable "waf_mcp_secret_token" {
-  description = "Secret token sent by the MCP server in X-Mcp-Token. Requests presenting this header are allowed through WAF rate limiting."
-  type        = string
-  sensitive   = true
-  default     = ""
+variable "mcp_enabled" {
+  description = "Turns on the shared MCP usage plan (HMRC-2699). Terraform then generates the X-Mcp-Token value and the usage plan key, and stores both in the mcp-shared-credentials secret. On the API Gateway WAF only, requests that carry that token are exempt from the per-IP rate limit (the managed rule groups still inspect them, and the shared MCP usage plan limits them). The authenticator and the MCP server read both values from the secret. False keeps the plain per-IP limit for all traffic."
+  type        = bool
+  default     = false
 }
 
 variable "WAF_E2E_SECRET_TOKEN" {

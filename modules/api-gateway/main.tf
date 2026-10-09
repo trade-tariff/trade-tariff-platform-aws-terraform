@@ -36,6 +36,7 @@ resource "aws_api_gateway_stage" "this" {
         requestId         = "$context.requestId"
         requestTime       = "$context.requestTime"
         apiKeyId          = "$context.identity.apiKeyId"
+        clientId          = "$context.authorizer.client_id"
         sourceIp          = "$context.identity.sourceIp"
         httpMethod        = "$context.httpMethod"
         path              = "$context.path"

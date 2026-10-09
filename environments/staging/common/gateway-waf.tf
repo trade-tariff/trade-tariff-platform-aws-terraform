@@ -1,3 +1,14 @@
+locals {
+  apigw_rate_limit_response = {
+    response_code = 429
+    body_key      = "rate-limit-exceeded"
+    response_header = {
+      name  = "X-Rate-Limit"
+      value = "1"
+    }
+  }
+}
+
 module "waf_apigw" {
   source = "../../../modules/waf"
 
@@ -10,20 +21,47 @@ module "waf_apigw" {
 
   associate_alb = false
 
-  ip_rate_based_rule = {
-    name      = "ip-rate-limit"
-    priority  = 3
-    rpm_limit = local.waf_apigw_rpm_limit
-    action    = "block"
-    custom_response = {
-      response_code = 429
-      body_key      = "rate-limit-exceeded"
-      response_header = {
-        name  = "X-Rate-Limit"
-        value = "1"
-      }
-    }
+  # Per-IP rate limit. All MCP traffic leaves through one NAT IP, so a plain
+  # per-IP limit would 429 MCP long before the shared MCP usage plan in
+  # gateway.tf. When mcp_enabled is true, label-non-mcp tags every
+  # request that does NOT carry the exact X-Mcp-Token value, and the rate limit
+  # applies only to that label. MCP traffic is then limited by its usage plan
+  # instead.
+  #
+  # label-non-mcp is a non-terminating count rule, so MCP traffic still goes
+  # through the managed rule groups. The authorizer validates the token again.
+  #
+  # When mcp_enabled is false, the plain ip-rate-limit rule applies to all traffic, as
+  # before.
+  ip_rate_based_rule = var.mcp_enabled ? null : {
+    name            = "ip-rate-limit"
+    priority        = 3
+    rpm_limit       = local.waf_apigw_rpm_limit
+    action          = "block"
+    custom_response = local.apigw_rate_limit_response
   }
+
+  header_mismatch_label_rules = var.mcp_enabled ? [
+    {
+      name        = "label-non-mcp"
+      priority    = 2
+      header_name = "x-mcp-token"
+      label       = "non-mcp"
+    }
+  ] : []
+
+  header_mismatch_label_values = var.mcp_enabled ? { "label-non-mcp" = random_password.mcp_secret_token[0].result } : {}
+
+  label_rate_based_rules = var.mcp_enabled ? [
+    {
+      name            = "ip-rate-limit-non-mcp"
+      priority        = 4
+      limit           = local.waf_apigw_rpm_limit
+      action          = "block"
+      label           = "non-mcp"
+      custom_response = local.apigw_rate_limit_response
+    }
+  ] : []
 
   uri_path_match_rules = [
     {
@@ -60,6 +98,14 @@ resource "aws_wafv2_web_acl_logging_configuration" "apigw_waf_logging" {
 
   redacted_fields {
     method {}
+  }
+
+  # X-Mcp-Token exempts a request from the per-IP rate limit above. Keep it
+  # out of the logs so a log reader cannot copy it.
+  redacted_fields {
+    single_header {
+      name = "x-mcp-token"
+    }
   }
 }
 

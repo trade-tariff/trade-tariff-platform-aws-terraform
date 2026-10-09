@@ -582,6 +582,8 @@ resource "aws_iam_policy" "ci_lambda_deployment_policy" {
         Action = ["secretsmanager:GetSecretValue"],
         Resource = [
           module.fpo_search_configuration.secret_arn,
+          # The authenticator reads the shared MCP values when it deploys (HMRC-2699).
+          module.mcp_shared_credentials.secret_arn,
         ]
       },
       {

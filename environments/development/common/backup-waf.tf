@@ -38,6 +38,20 @@ resource "aws_wafv2_web_acl_logging_configuration" "backup_waf_logging" {
 
   depends_on = [aws_cloudwatch_log_resource_policy.backup_waf_logs]
 
+  # These headers carry secrets that bypass or relax WAF rules. Keep them out
+  # of the logs so a log reader cannot copy them.
+  redacted_fields {
+    single_header {
+      name = "x-waf-bypass"
+    }
+  }
+
+  redacted_fields {
+    single_header {
+      name = "x-mcp-token"
+    }
+  }
+
   logging_filter {
     default_behavior = "DROP"
 
