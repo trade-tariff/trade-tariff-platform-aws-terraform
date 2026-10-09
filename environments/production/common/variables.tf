@@ -57,6 +57,12 @@ variable "waf_page_rpm_limit" {
   default     = 100
 }
 
+variable "waf_no_alpn_page_rpm_limit" {
+  description = "Rate limit per JA4 TLS fingerprint per minute for tariff page requests from clients that send no ALPN (non-browser clients). Counts across all IPs that share the fingerprint."
+  type        = number
+  default     = 300
+}
+
 variable "waf_search_rpm_limit" {
   description = "Rate limit per IP per minute for the /search endpoint. Tighter than the page limit as search hits OpenSearch and is a primary scraper entry point."
   type        = number
