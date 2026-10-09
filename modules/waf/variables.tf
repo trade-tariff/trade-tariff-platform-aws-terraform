@@ -119,11 +119,47 @@ variable "ip_rate_url_based_rules" {
     priority              = number
     limit                 = number
     action                = string
-    search_string         = string
-    positional_constraint = string
+    search_string         = optional(string)
+    positional_constraint = optional(string)
+    regex_string          = optional(string)
   }))
-  description = "A rate and url based rules tracks the rate of requests for each originating IP address, and triggers the rule action when the rate exceeds a limit that you specify on the number of requests in any 5-minute time span"
+  description = "A rate and url based rules tracks the rate of requests for each originating IP address, and triggers the rule action when the rate exceeds a limit that you specify on the number of requests in any 5-minute time span. Match the URI path with either search_string and positional_constraint (byte match), or regex_string (regex match). Use regex_string when one rule must cover the optional /uk/ and /xi/ service prefixes."
   default     = []
+
+  validation {
+    condition = alltrue([
+      for r in var.ip_rate_url_based_rules :
+      (r.regex_string != null) != (r.search_string != null || r.positional_constraint != null)
+    ])
+    error_message = "Each ip_rate_url_based_rules entry must set either regex_string, or search_string and positional_constraint, but not both."
+  }
+
+  validation {
+    condition = alltrue([
+      for r in var.ip_rate_url_based_rules :
+      (r.search_string != null) == (r.positional_constraint != null)
+    ])
+    error_message = "Each ip_rate_url_based_rules entry must set search_string and positional_constraint together."
+  }
+}
+
+variable "ja4_path_label_rules" {
+  type = list(object({
+    name              = string
+    priority          = number
+    ja4_regex_string  = string
+    path_regex_string = string
+    label             = string
+  }))
+  description = "Non-terminating (count) rules that attach a label to requests when the JA4 TLS fingerprint matches ja4_regex_string AND the URI path matches path_regex_string. When WAF cannot compute a JA4 fingerprint, the rule does not match. Pair with label_rate_based_rules (aggregate_key = \"JA4\") to rate limit each matching fingerprint."
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for r in var.ja4_path_label_rules : !can(regex("(?i)^(awswaf|aws|waf|rulegroup|webacl|regexpatternset|ipset|managed)$", r.label))
+    ])
+    error_message = "label must not be one of the strings AWS WAF reserves for its own label namespaces (awswaf, aws, waf, rulegroup, webacl, regexpatternset, ipset, managed)."
+  }
 }
 
 variable "ip_set_rate_based_rules" {
@@ -168,11 +204,12 @@ variable "header_regex_label_rules" {
 
 variable "label_rate_based_rules" {
   type = list(object({
-    name     = string
-    priority = number
-    limit    = number
-    action   = string
-    label    = string
+    name          = string
+    priority      = number
+    limit         = number
+    action        = string
+    label         = string
+    aggregate_key = optional(string, "IP")
     custom_response = object({
       response_code = number
       body_key      = string
@@ -182,8 +219,13 @@ variable "label_rate_based_rules" {
       })
     })
   }))
-  description = "Rate-based rules scoped to requests carrying a given label, tracking the rate of requests per originating IP among those matches and triggering the rule action when it exceeds the specified limit in any 1-minute window. The labelling rule must have a lower priority number, since a label match only sees labels added earlier in the Web ACL evaluation."
+  description = "Rate-based rules scoped to requests carrying a given label, tracking the rate of requests per aggregate_key among those matches and triggering the rule action when it exceeds the specified limit in any 1-minute window. aggregate_key is \"IP\" (default) for the originating IP, or \"JA4\" for the JA4 TLS fingerprint. The labelling rule must have a lower priority number, since a label match only sees labels added earlier in the Web ACL evaluation."
   default     = []
+
+  validation {
+    condition     = alltrue([for r in var.label_rate_based_rules : contains(["IP", "JA4"], r.aggregate_key)])
+    error_message = "label_rate_based_rules aggregate_key must be IP or JA4."
+  }
 }
 
 variable "filtered_header_rule" {
@@ -258,6 +300,26 @@ variable "bot_control_rule" {
   validation {
     condition     = var.bot_control_rule == null || var.bot_control_rule.enable_machine_learning != false
     error_message = "enable_machine_learning must be true or null; false triggers hashicorp/terraform-provider-aws#48446."
+  }
+}
+
+variable "anti_ddos_rule" {
+  description = "Configuration for the AWS Anti-DDoS managed rule group (AWSManagedRulesAntiDDoSRuleSet). Set to null to disable it. Use override_action = count to measure it before you set none. sensitivity_to_block is LOW, MEDIUM or HIGH. The module always disables the group's challenge action, so the group can block requests but never shows an interstitial page to users."
+  type = object({
+    priority             = number
+    override_action      = string
+    sensitivity_to_block = string
+  })
+  default = null
+
+  validation {
+    condition     = var.anti_ddos_rule == null || contains(["count", "none"], var.anti_ddos_rule.override_action)
+    error_message = "anti_ddos_rule override_action must be count or none."
+  }
+
+  validation {
+    condition     = var.anti_ddos_rule == null || contains(["LOW", "MEDIUM", "HIGH"], var.anti_ddos_rule.sensitivity_to_block)
+    error_message = "anti_ddos_rule sensitivity_to_block must be LOW, MEDIUM or HIGH."
   }
 }
 

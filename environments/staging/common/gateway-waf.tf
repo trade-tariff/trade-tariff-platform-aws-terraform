@@ -36,7 +36,7 @@ module "waf_apigw" {
   ip_rate_based_rule = var.mcp_enabled ? null : {
     name            = "ip-rate-limit"
     priority        = 3
-    rpm_limit       = var.waf_apigw_rpm_limit
+    rpm_limit       = local.waf_apigw_rpm_limit
     action          = "block"
     custom_response = local.apigw_rate_limit_response
   }
@@ -56,7 +56,7 @@ module "waf_apigw" {
     {
       name            = "ip-rate-limit-non-mcp"
       priority        = 4
-      limit           = var.waf_apigw_rpm_limit
+      limit           = local.waf_apigw_rpm_limit
       action          = "block"
       label           = "non-mcp"
       custom_response = local.apigw_rate_limit_response

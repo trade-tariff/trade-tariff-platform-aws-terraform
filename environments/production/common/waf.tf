@@ -100,6 +100,33 @@ module "waf" {
     }
   ]
 
+  # Non-browser TLS clients on HTML page paths (HMRC-2724).
+  #
+  # Characters 9 and 10 of the first JA4 part (t13d1811"00") are the ALPN
+  # value. "00" means that the client sent no ALPN. Real browsers always send
+  # ALPN (h2), so a client with "00" that claims a browser User-Agent is a
+  # script. The 1 Oct 2026 scraper used t13d181100_85036bcba153_d41ae481755e
+  # from 31 IPs.
+  #
+  # label-no-alpn-pages labels these requests. ratelimiting-no-alpn-pages
+  # (below) then counts them per JA4 fingerprint, not per IP, so the limit
+  # applies however many IPs a bot uses. Real users never see a CAPTCHA or
+  # challenge from this: the only action is a 429 above the limit.
+  #
+  # The path regex covers the tariff browse and search pages, with the
+  # optional /uk/ or /xi/ prefix. It does not match /api/, /uk/api/,
+  # /xi/api/ or /healthcheck. The allow rules at priorities 0-10 (MCP, TSS,
+  # assets, e2e, healthcheck, mycommodities) come first, so they still apply.
+  ja4_path_label_rules = [
+    {
+      name              = "label-no-alpn-pages"
+      priority          = 13
+      ja4_regex_string  = "^[tqd][0-9a-z]{2}[di][0-9]{4}00_"
+      path_regex_string = "^/(uk/|xi/)?(sections|chapters|headings|subheadings|commodities|search|find_commodity|browse)(/|$)"
+      label             = "no-alpn-page"
+    }
+  ]
+
   label_rate_based_rules = [
     {
       name     = "ratelimiting-no-api-key"
@@ -107,6 +134,31 @@ module "waf" {
       limit    = var.waf_no_api_key_rpm_limit
       action   = "block"
       label    = "no-api-key"
+      custom_response = {
+        response_code = 429
+        body_key      = "rate-limit-exceeded"
+        response_header = {
+          name  = "X-Rate-Limit"
+          value = "1"
+        }
+      }
+    },
+    # Starts in count mode (HMRC-2724).
+    #
+    # The counter is per JA4 fingerprint, not per client. Every client with
+    # the same fingerprint shares one budget of
+    # var.waf_no_alpn_page_rpm_limit, including real users behind a
+    # TLS-inspection proxy. Before you change action to "block", examine the
+    # sampled requests and WAF logs for each fingerprint that goes above the
+    # limit. Confirm that the fingerprint is used only by scrapers, not by
+    # other clients (for example many IPs from corporate networks).
+    {
+      name          = "ratelimiting-no-alpn-pages"
+      priority      = 14
+      limit         = var.waf_no_alpn_page_rpm_limit
+      action        = "count"
+      label         = "no-alpn-page"
+      aggregate_key = "JA4"
       custom_response = {
         response_code = 429
         body_key      = "rate-limit-exceeded"
@@ -143,6 +195,29 @@ module "waf" {
     },
   ]
 
+  # AWS Anti-DDoS managed rule group (HMRC-2724). It is in count mode, so it
+  # only labels and counts requests. The module disables its challenge
+  # action, so it never shows an interstitial page to real users.
+  #
+  # Priority 5 puts it after the TSS, MCP and asset allow rules (0-3) and
+  # the general rate limit (4), and before the other rules. AWS recommends
+  # that this group runs early, and it must inspect all traffic (including
+  # API paths) to learn the normal traffic baseline. Before you set
+  # override_action = "none", examine its CloudWatch metrics and check the
+  # effect on /api/, /uk/api/ and /xi/api/ requests.
+  #
+  # Also before you set override_action = "none": allow-e2e-tests (8),
+  # allow-healthcheck (9) and allow-mycommodities-path (10) come after this
+  # group. In count mode this has no effect. With "none", a flood event can
+  # block e2e, healthcheck and mycommodities requests before those allow
+  # rules run. Move those allow rules to a priority lower than 5, or make
+  # sure that their requests are not blocked.
+  anti_ddos_rule = {
+    priority             = 5
+    override_action      = "count"
+    sensitivity_to_block = "LOW"
+  }
+
   bot_control_rule = {
     priority                = 70
     override_action         = "none"
@@ -152,46 +227,46 @@ module "waf" {
     captcha_override_rules  = []
   }
 
+  # Page paths can have an optional /uk/ or /xi/ service prefix (see the
+  # frontend service_path_prefix_handler route filter). Each regex covers the
+  # unprefixed, UK and XI paths, so one counter per IP applies to all three.
+  # The anchor at the start stops the rules matching API paths such as
+  # /uk/api/commodities/. HMRC-2724.
   ip_rate_url_based_rules = [
     {
-      name                  = "rate-limit-commodity-pages"
-      priority              = 15
-      limit                 = var.waf_page_rpm_limit
-      action                = "block"
-      search_string         = "/commodities/"
-      positional_constraint = "STARTS_WITH"
+      name         = "rate-limit-commodity-pages"
+      priority     = 15
+      limit        = var.waf_page_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?commodities/"
     },
     {
-      name                  = "rate-limit-heading-pages"
-      priority              = 16
-      limit                 = var.waf_page_rpm_limit
-      action                = "block"
-      search_string         = "/headings/"
-      positional_constraint = "STARTS_WITH"
+      name         = "rate-limit-heading-pages"
+      priority     = 16
+      limit        = var.waf_page_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?headings/"
     },
     {
-      name                  = "rate-limit-chapter-pages"
-      priority              = 17
-      limit                 = var.waf_page_rpm_limit
-      action                = "block"
-      search_string         = "/chapters/"
-      positional_constraint = "STARTS_WITH"
+      name         = "rate-limit-chapter-pages"
+      priority     = 17
+      limit        = var.waf_page_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?chapters/"
     },
     {
-      name                  = "rate-limit-subheading-pages"
-      priority              = 18
-      limit                 = var.waf_page_rpm_limit
-      action                = "block"
-      search_string         = "/subheadings/"
-      positional_constraint = "STARTS_WITH"
+      name         = "rate-limit-subheading-pages"
+      priority     = 18
+      limit        = var.waf_page_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?subheadings/"
     },
     {
-      name                  = "rate-limit-search"
-      priority              = 19
-      limit                 = var.waf_search_rpm_limit
-      action                = "block"
-      search_string         = "/search"
-      positional_constraint = "EXACTLY"
+      name         = "rate-limit-search"
+      priority     = 19
+      limit        = var.waf_search_rpm_limit
+      action       = "block"
+      regex_string = "^/(uk/|xi/)?search$"
     },
   ]
 

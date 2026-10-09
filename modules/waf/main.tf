@@ -328,7 +328,17 @@ resource "aws_wafv2_web_acl_rule" "label_rate_based" {
     rate_based_statement {
       limit                 = each.value.limit
       evaluation_window_sec = 60
-      aggregate_key_type    = "IP"
+      aggregate_key_type    = each.value.aggregate_key == "JA4" ? "CUSTOM_KEYS" : "IP"
+
+      dynamic "custom_keys" {
+        for_each = each.value.aggregate_key == "JA4" ? [1] : []
+        content {
+          ja4_fingerprint {
+            fallback_behavior = "NO_MATCH"
+          }
+        }
+      }
+
       scope_down_statement {
         label_match_statement {
           key   = each.value.label
@@ -411,9 +421,88 @@ resource "aws_wafv2_web_acl_rule" "ip_rate_url_based" {
       limit              = each.value.limit
       aggregate_key_type = "IP"
       scope_down_statement {
-        byte_match_statement {
-          positional_constraint = each.value.positional_constraint
-          search_string         = each.value.search_string
+        dynamic "byte_match_statement" {
+          for_each = each.value.regex_string == null ? [1] : []
+          content {
+            positional_constraint = each.value.positional_constraint
+            search_string         = each.value.search_string
+            field_to_match {
+              uri_path {}
+            }
+            text_transformation {
+              priority = 0
+              type     = "URL_DECODE"
+            }
+          }
+        }
+
+        dynamic "regex_match_statement" {
+          for_each = each.value.regex_string != null ? [1] : []
+          content {
+            regex_string = each.value.regex_string
+            field_to_match {
+              uri_path {}
+            }
+            text_transformation {
+              priority = 0
+              type     = "URL_DECODE"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
+
+# Labels requests by TLS client fingerprint (JA4) and URI path together, so
+# that a later label_rate_based_rule can rate limit that class of traffic.
+# A JA4 fingerprint does not change when a client changes its IP address or
+# its User-Agent header, so a limit on it still applies to a bot that spreads
+# its requests across many IPs and claims to be a browser.
+#
+# The action is always count: it is non-terminating, so the label is attached
+# and evaluation continues to the remaining rules.
+resource "aws_wafv2_web_acl_rule" "ja4_path_label" {
+  for_each = { for r in var.ja4_path_label_rules : r.name => r }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    count {}
+  }
+
+  rule_label {
+    name = each.value.label
+  }
+
+  statement {
+    and_statement {
+      statement {
+        regex_match_statement {
+          regex_string = each.value.ja4_regex_string
+          field_to_match {
+            ja4_fingerprint {
+              fallback_behavior = "NO_MATCH"
+            }
+          }
+          text_transformation {
+            priority = 0
+            type     = "NONE"
+          }
+        }
+      }
+
+      statement {
+        regex_match_statement {
+          regex_string = each.value.path_regex_string
           field_to_match {
             uri_path {}
           }
@@ -930,5 +1019,55 @@ resource "aws_wafv2_web_acl_rule" "bot_control" {
     cloudwatch_metrics_enabled = true
     metric_name                = "AWSManagedRulesBotControlRuleSet"
     sampled_requests_enabled   = false
+  }
+}
+
+# AWS Anti-DDoS managed rule group. It learns a traffic baseline and labels
+# or blocks requests that are part of a sudden flood, across all IPs.
+#
+# The challenge action is always DISABLED, so this group never shows a
+# challenge interstitial page to real users (HMRC-2724). With
+# override_action = count the group only labels and counts requests.
+resource "aws_wafv2_web_acl_rule" "anti_ddos" {
+  for_each = var.anti_ddos_rule != null ? { "AWSManagedRulesAntiDDoSRuleSet" = var.anti_ddos_rule } : {}
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = "AWSManagedRulesAntiDDoSRuleSet"
+  priority    = each.value.priority
+
+  override_action {
+    dynamic "none" {
+      for_each = each.value.override_action == "none" ? [1] : []
+      content {}
+    }
+    dynamic "count" {
+      for_each = each.value.override_action == "count" ? [1] : []
+      content {}
+    }
+  }
+
+  statement {
+    managed_rule_group_statement {
+      name        = "AWSManagedRulesAntiDDoSRuleSet"
+      vendor_name = "AWS"
+
+      managed_rule_group_configs {
+        aws_managed_rules_anti_ddos_rule_set {
+          sensitivity_to_block = each.value.sensitivity_to_block
+
+          client_side_action_config {
+            challenge {
+              usage_of_action = "DISABLED"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "AWSManagedRulesAntiDDoSRuleSet"
+    sampled_requests_enabled   = true
   }
 }
