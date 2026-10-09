@@ -79,6 +79,8 @@ jobs:
       - run: pip install pre-commit
 
       - run: pre-commit run --all-files --show-diff-on-failure
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
   plan-development:
     if: github.event_name != 'merge_group' && github.actor != 'github-actions[bot]'
