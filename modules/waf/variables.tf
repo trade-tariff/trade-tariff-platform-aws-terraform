@@ -303,6 +303,26 @@ variable "bot_control_rule" {
   }
 }
 
+variable "anti_ddos_rule" {
+  description = "Configuration for the AWS Anti-DDoS managed rule group (AWSManagedRulesAntiDDoSRuleSet). Set to null to disable it. Use override_action = count to measure it before you set none. sensitivity_to_block is LOW, MEDIUM or HIGH. The module always disables the group's challenge action, so the group can block requests but never shows an interstitial page to users."
+  type = object({
+    priority             = number
+    override_action      = string
+    sensitivity_to_block = string
+  })
+  default = null
+
+  validation {
+    condition     = var.anti_ddos_rule == null || contains(["count", "none"], var.anti_ddos_rule.override_action)
+    error_message = "anti_ddos_rule override_action must be count or none."
+  }
+
+  validation {
+    condition     = var.anti_ddos_rule == null || contains(["LOW", "MEDIUM", "HIGH"], var.anti_ddos_rule.sensitivity_to_block)
+    error_message = "anti_ddos_rule sensitivity_to_block must be LOW, MEDIUM or HIGH."
+  }
+}
+
 variable "uri_path_match_rules" {
   description = "Custom URI path match rules"
   type = list(object({
