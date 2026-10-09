@@ -1,5 +1,10 @@
 require 'securerandom'
+require 'uri'
 require 'notifications/client'
+
+# Only a local development inbox may replace the GOV.UK Notify address. Deployed
+# Lambdas read their environment from a secret, so any other host is ignored.
+LOCAL_NOTIFY_HOSTS = %w[identity-inbox localhost].freeze
 
 def lambda_handler(event:, context:) # rubocop:disable Metrics/MethodLength
   email = event.dig('request', 'userAttributes', 'email')
@@ -24,7 +29,7 @@ end
 def generate_and_send_code(email) # rubocop:disable Metrics/MethodLength
   url = ENV['URL']
   api_key = ENV['GOVUK_NOTIFY_API_KEY']
-  notify = Notifications::Client.new(api_key)
+  notify = Notifications::Client.new(api_key, local_notify_url)
   code = SecureRandom.rand(1_000_000).to_s.rjust(6, '0')
 
   if url.include? 'dev'
@@ -48,4 +53,13 @@ def generate_and_send_code(email) # rubocop:disable Metrics/MethodLength
   )
 
   code
+end
+
+def local_notify_url
+  url = ENV['GOVUK_NOTIFY_API_URL']
+  return if url.nil?
+
+  url if LOCAL_NOTIFY_HOSTS.include?(URI(url).host)
+rescue URI::InvalidURIError
+  nil
 end
