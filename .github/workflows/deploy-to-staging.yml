@@ -36,10 +36,6 @@ jobs:
           role-to-assume: arn:aws:iam::451934005581:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
 
-      - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-ssh@main
-        with:
-          ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
-
       - uses: ruby/setup-ruby@v1.327.0
 
       - run: bundle config set path 'vendor/bundle' && bundle config set without 'test' && bundle install
