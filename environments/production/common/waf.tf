@@ -113,7 +113,8 @@ module "waf" {
   # applies however many IPs a bot uses. Real users never see a CAPTCHA or
   # challenge from this: the only action is a 429 above the limit.
   #
-  # The path regex covers the tariff browse and search pages, with the
+  # The path regex covers the tariff browse and search pages, the
+  # measure_types, feedback and geographical_areas pages, with the
   # optional /uk/ or /xi/ prefix. It does not match /api/, /uk/api/,
   # /xi/api/ or /healthcheck. The allow rules at priorities 0-10 (MCP, TSS,
   # assets, e2e, healthcheck, mycommodities) come first, so they still apply.
@@ -122,7 +123,7 @@ module "waf" {
       name              = "label-no-alpn-pages"
       priority          = 13
       ja4_regex_string  = "^[tqd][0-9a-z]{2}[di][0-9]{4}00_"
-      path_regex_string = "^/(uk/|xi/)?(sections|chapters|headings|subheadings|commodities|search|find_commodity|browse)(/|$)"
+      path_regex_string = "^/(uk/|xi/)?(sections|chapters|headings|subheadings|commodities|search|find_commodity|browse|measure_types|feedback|geographical_areas)(/|$)"
       label             = "no-alpn-page"
     }
   ]
