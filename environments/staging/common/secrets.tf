@@ -15,6 +15,10 @@ module "dev" {
   name            = "dev-hub-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "devhub"
+  }
 }
 
 module "dev_hub_job_configuration" {
