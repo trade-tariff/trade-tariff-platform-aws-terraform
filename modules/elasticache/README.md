@@ -55,7 +55,7 @@ No modules.
 | <a name="input_snapshot_window"></a> [snapshot\_window](#input\_snapshot\_window) | Daily time range during which ElastiCache will take a snapshot of the cache cluster. Minimum time of 60 minutes. For example: `05:00-06:00`. | `string` | n/a | yes |
 | <a name="input_subnet_group_name"></a> [subnet\_group\_name](#input\_subnet\_group\_name) | Name of the subnet group to be used. Leave blank to have one be created. | `string` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of subnet IDs for Elasticache subnet group. | `list(string)` | `[]` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to the replication group and its log groups. | `map(string)` | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to the replication group, the subnet group that the module creates and its log groups. | `map(string)` | `{}` | no |
 | <a name="input_transit_encryption_enabled"></a> [transit\_encryption\_enabled](#input\_transit\_encryption\_enabled) | Encryption in transit. | `bool` | `false` | no |
 | <a name="input_transit_encryption_mode"></a> [transit\_encryption\_mode](#input\_transit\_encryption\_mode) | Whether to force transit encryption. `preferred` allows both, `required` forces it. Must use `preferred` on new replication groups. | `string` | `"preferred"` | no |
 
