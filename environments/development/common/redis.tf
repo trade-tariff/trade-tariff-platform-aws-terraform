@@ -83,6 +83,8 @@ resource "aws_secretsmanager_secret" "valkey_connection_string" {
   name                    = "valkey-${each.key}-connection-string"
   kms_key_id              = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window_in_days = local.development_secret_recovery_window
+
+  tags = local.valkey_tags[each.key]
 }
 
 resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {

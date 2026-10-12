@@ -56,12 +56,12 @@ run "has_no_tags_on_the_log_groups_by_default" {
   command = plan
 
   assert {
-    condition     = length(aws_cloudwatch_log_group.opensearch_application_logs.tags) == 0 && length(aws_cloudwatch_log_group.opensearch_audit_logs.tags) == 0
-    error_message = "The log groups must have no module tags when the caller gives none."
+    condition     = length(aws_cloudwatch_log_group.opensearch_application_logs.tags) == 0 && length(aws_cloudwatch_log_group.opensearch_audit_logs.tags) == 0 && length(aws_ssm_parameter.opensearch_url.tags) == 0
+    error_message = "The log groups and the URL parameter must have no module tags when the caller gives none."
   }
 }
 
-run "tags_both_log_groups_with_the_given_tags" {
+run "tags_both_log_groups_and_the_url_parameter_with_the_given_tags" {
   command = plan
 
   variables {
@@ -76,5 +76,10 @@ run "tags_both_log_groups_with_the_given_tags" {
   assert {
     condition     = aws_cloudwatch_log_group.opensearch_audit_logs.tags == tomap({ Component = "backend" })
     error_message = "The audit log group must carry the tags that the caller gives."
+  }
+
+  assert {
+    condition     = aws_ssm_parameter.opensearch_url.tags == tomap({ Component = "backend" })
+    error_message = "The URL parameter must carry the tags that the caller gives."
   }
 }

@@ -153,4 +153,6 @@ resource "aws_ssm_parameter" "opensearch_url" {
   description = "OpenSearch access Credentials"
   type        = "SecureString"
   value       = "https://${local.master_user_username}:${local.master_user_password}@${aws_route53_record.opensearch.fqdn}"
+
+  tags = var.tags
 }

@@ -82,6 +82,8 @@ resource "aws_secretsmanager_secret" "valkey_connection_string" {
   for_each   = local.valkey
   name       = "valkey-${each.key}-connection-string"
   kms_key_id = aws_kms_key.secretsmanager_kms_key.arn
+
+  tags = local.valkey_tags[each.key]
 }
 
 resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {

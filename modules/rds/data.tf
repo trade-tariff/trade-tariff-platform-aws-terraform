@@ -25,6 +25,8 @@ resource "aws_secretsmanager_secret" "this" {
   name                    = "${lower(var.name)}-connection-string"
   kms_key_id              = var.secret_kms_key_arn
   recovery_window_in_days = var.secret_recovery_window
+
+  tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
