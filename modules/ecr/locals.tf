@@ -82,7 +82,7 @@ locals {
       development_images_to_keep = 30
     },
     "ai-search-evaluation-suite" = {
-      component                  = "ai-search-evaluation-suite"
+      component                  = "backend"
       lifecycle_policy           = true
       production_images_to_keep  = 10
       development_images_to_keep = 30

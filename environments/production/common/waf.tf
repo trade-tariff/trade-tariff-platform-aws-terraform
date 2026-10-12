@@ -307,6 +307,10 @@ resource "aws_cloudwatch_log_group" "waf_logs" {
   provider          = aws.us_east_1
   name              = "aws-waf-logs-tariff-${var.environment}"
   retention_in_days = 60
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "waf_logs" {

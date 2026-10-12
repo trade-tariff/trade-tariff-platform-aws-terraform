@@ -103,11 +103,15 @@ resource "aws_opensearch_domain" "opensearch" {
 resource "aws_cloudwatch_log_group" "opensearch_application_logs" {
   name              = "/aws/opensearch/${var.cluster_name}/application-logs"
   retention_in_days = 90
+
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_log_group" "opensearch_audit_logs" {
   name              = "/aws/opensearch/${var.cluster_name}/audit-logs"
   retention_in_days = 90
+
+  tags = var.tags
 }
 
 data "aws_iam_policy_document" "opensearch_log_publishing" {
