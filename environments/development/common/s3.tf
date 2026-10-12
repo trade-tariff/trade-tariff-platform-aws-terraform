@@ -17,6 +17,7 @@ locals {
     persistence       = "shared"
     reporting         = "backend"
     ses-inbound       = "shared"
+    preevy-profile    = "shared"
   }
   buckets_with_versioning = {
     persistence = local.buckets.persistence
