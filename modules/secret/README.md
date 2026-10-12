@@ -29,6 +29,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_create_secret_version"></a> [create\_secret\_version](#input\_create\_secret\_version) | Whether to populate a version. Leave null to populate one when secret\_string is not empty. Set it to true when secret\_string holds values that are unknown until apply, because Terraform cannot compare an unknown string to the empty string at plan time. | `bool` | `null` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | KMS Key ARN with which to encrypt the secret. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the secret. | `string` | n/a | yes |
 | <a name="input_recovery_window"></a> [recovery\_window](#input\_recovery\_window) | Recovery window in days for the secret. | `number` | n/a | yes |
