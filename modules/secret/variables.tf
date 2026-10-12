@@ -5,6 +5,12 @@ variable "secret_string" {
   default     = ""
 }
 
+variable "create_secret_version" {
+  description = "Whether to populate a version. Leave null to populate one when secret_string is not empty. Set it to true when secret_string holds values that are unknown until apply, because Terraform cannot compare an unknown string to the empty string at plan time."
+  type        = bool
+  default     = null
+}
+
 variable "name" {
   description = "Name of the secret."
   type        = string

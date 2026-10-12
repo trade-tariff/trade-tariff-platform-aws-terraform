@@ -34,3 +34,24 @@ run "sampled_requests_are_always_off" {
     error_message = "managed rule groups must not sample requests"
   }
 }
+
+run "url_rate_and_anti_ddos_rules_do_not_sample" {
+  command = plan
+
+  variables {
+    ip_rate_url_based_rules = [
+      { name = "rate-url", priority = 50, limit = 100, action = "block", search_string = "/x", positional_constraint = "STARTS_WITH" }
+    ]
+    anti_ddos_rule = { priority = 60, override_action = "count", sensitivity_to_block = "LOW" }
+  }
+
+  assert {
+    condition     = alltrue([for rule in aws_wafv2_web_acl_rule.ip_rate_url_based : rule.visibility_config[0].sampled_requests_enabled == false])
+    error_message = "URL rate rules must not sample requests"
+  }
+
+  assert {
+    condition     = alltrue([for rule in aws_wafv2_web_acl_rule.anti_ddos : rule.visibility_config[0].sampled_requests_enabled == false])
+    error_message = "the anti-DDoS rule must not sample requests"
+  }
+}

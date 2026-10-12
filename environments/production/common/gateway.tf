@@ -116,6 +116,9 @@ module "mcp_shared_credentials" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
 
+  # The secret string holds values that are unknown until apply.
+  create_secret_version = true
+
   secret_string = jsonencode({
     MCP_SECRET_TOKEN   = var.mcp_enabled ? random_password.mcp_secret_token[0].result : ""
     MCP_USAGE_KEY      = var.mcp_enabled ? random_password.mcp_usage_plan_key[0].result : ""

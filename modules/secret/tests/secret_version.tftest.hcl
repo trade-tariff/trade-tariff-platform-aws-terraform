@@ -41,3 +41,33 @@ run "encrypts_secret_with_given_kms_key" {
     error_message = "The secret must be encrypted with the KMS key that the caller gives."
   }
 }
+
+# When the caller passes a string that is unknown until apply (for example a
+# random_password result), Terraform cannot compare it to "". The caller sets
+# create_secret_version so the count is known at plan time.
+run "creates_version_when_flag_is_true_and_secret_string_is_empty" {
+  command = plan
+
+  variables {
+    create_secret_version = true
+  }
+
+  assert {
+    condition     = length(aws_secretsmanager_secret_version.this) == 1
+    error_message = "One secret version must be created when create_secret_version is true."
+  }
+}
+
+run "creates_no_version_when_flag_is_false_and_secret_string_is_given" {
+  command = plan
+
+  variables {
+    secret_string         = "a-secret-value"
+    create_secret_version = false
+  }
+
+  assert {
+    condition     = length(aws_secretsmanager_secret_version.this) == 0
+    error_message = "No secret version must be created when create_secret_version is false."
+  }
+}

@@ -456,7 +456,7 @@ resource "aws_wafv2_web_acl_rule" "ip_rate_url_based" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = each.value.name
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = false
   }
 }
 
@@ -1068,6 +1068,6 @@ resource "aws_wafv2_web_acl_rule" "anti_ddos" {
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "AWSManagedRulesAntiDDoSRuleSet"
-    sampled_requests_enabled   = true
+    sampled_requests_enabled   = false
   }
 }
