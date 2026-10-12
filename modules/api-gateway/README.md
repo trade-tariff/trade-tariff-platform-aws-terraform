@@ -10,7 +10,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.37.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.43.0 |
 
 ## Modules
 
@@ -96,6 +96,7 @@ No modules.
 | <a name="input_long_cache_ttl"></a> [long\_cache\_ttl](#input\_long\_cache\_ttl) | The TTL for long cache duration in seconds. | `number` | `3600` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | List of private subnet IDs for the V2 VPC Link. | `list(string)` | n/a | yes |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | List of security group IDs to give access to the V2 VPC Link. | `list(string)` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to the taggable resources in this module. | `map(string)` | `{}` | no |
 | <a name="input_uk_uncached_paths"></a> [uk\_uncached\_paths](#input\_uk\_uncached\_paths) | List of API paths that should not be cached on the UK service. | `set(string)` | <pre>[<br/>  "chemical_substances",<br/>  "description_intercepts",<br/>  "exchange_rates",<br/>  "healthcheck",<br/>  "live_issues",<br/>  "news",<br/>  "search",<br/>  "search_suggestions",<br/>  "search_references"<br/>]</pre> | no |
 | <a name="input_validated_certificate_arn"></a> [validated\_certificate\_arn](#input\_validated\_certificate\_arn) | The ARN of the validated SSL certificate. | `string` | n/a | yes |
 | <a name="input_xi_uncached_paths"></a> [xi\_uncached\_paths](#input\_xi\_uncached\_paths) | List of API paths that should not be cached on the XI service. | `set(string)` | <pre>[<br/>  "chemical_substances",<br/>  "description_intercepts",<br/>  "green_lanes",<br/>  "healthcheck",<br/>  "search",<br/>  "search_suggestions",<br/>  "search_references"<br/>]</pre> | no |

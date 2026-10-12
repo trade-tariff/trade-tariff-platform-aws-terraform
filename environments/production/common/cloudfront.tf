@@ -309,6 +309,10 @@ module "cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 module "docs_cdn" {
@@ -375,6 +379,10 @@ module "docs_cdn" {
     depends_on = [
       module.acm.validated_certificate_arn
     ]
+  }
+
+  tags = {
+    Component = "docs"
   }
 }
 
@@ -444,6 +452,10 @@ module "reporting_cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "backups_cdn" {
@@ -493,6 +505,10 @@ module "backups_cdn" {
     depends_on = [
       module.acm.validated_certificate_arn
     ]
+  }
+
+  tags = {
+    Component = "backend"
   }
 }
 

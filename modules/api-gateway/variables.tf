@@ -257,3 +257,9 @@ variable "cache_key_params" {
     "filter.type",
   ]
 }
+
+variable "tags" {
+  description = "A map of tags to add to the taggable resources in this module."
+  type        = map(string)
+  default     = {}
+}

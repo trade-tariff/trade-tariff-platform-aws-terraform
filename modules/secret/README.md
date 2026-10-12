@@ -12,7 +12,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.37.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.88.0 |
 
 ## Modules
 
@@ -33,6 +33,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | Name of the secret. | `string` | n/a | yes |
 | <a name="input_recovery_window"></a> [recovery\_window](#input\_recovery\_window) | Recovery window in days for the secret. | `number` | n/a | yes |
 | <a name="input_secret_string"></a> [secret\_string](#input\_secret\_string) | Value of the secret. Leave empty to not populate a version. | `string` | `""` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to the taggable resources in this module. | `map(string)` | `{}` | no |
 
 ## Outputs
 

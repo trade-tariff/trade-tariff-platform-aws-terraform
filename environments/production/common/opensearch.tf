@@ -74,6 +74,10 @@ module "opensearch" {
   create_master_user = true
   encrypt_kms_key_id = aws_kms_key.opensearch_kms_key.key_id
   ssm_secret_name    = "/${var.environment}/ELASTICSEARCH_URL"
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 #----------------------------------------------------------#

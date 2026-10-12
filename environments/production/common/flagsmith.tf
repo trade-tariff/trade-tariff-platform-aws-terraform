@@ -34,6 +34,7 @@ module "postgres_flagsmith" {
   ]
 
   tags = {
+    Component  = "flagsmith"
     Name       = "FlagsmithPostgres${title(var.environment)}"
     "RDS_Type" = "Instance"
   }
@@ -110,6 +111,10 @@ module "flagsmith_configuration" {
   name            = "flagsmith-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "flagsmith"
+  }
 }
 
 module "flagsmith_edge_configuration" {
@@ -117,6 +122,10 @@ module "flagsmith_edge_configuration" {
   name            = "flagsmith-edge-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "flagsmith"
+  }
 }
 
 # ── CloudFront ────────────────────────────────────────────────────────────────
@@ -179,6 +188,10 @@ module "flags_cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+
+  tags = {
+    Component = "flagsmith"
+  }
 }
 
 module "flags_edge_cdn" {
@@ -234,5 +247,9 @@ module "flags_edge_cdn" {
     depends_on = [
       module.acm.validated_certificate_arn
     ]
+  }
+
+  tags = {
+    Component = "flagsmith"
   }
 }

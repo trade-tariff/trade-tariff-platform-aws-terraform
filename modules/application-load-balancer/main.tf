@@ -20,6 +20,8 @@ resource "aws_lb" "application_load_balancer" {
       prefix  = var.access_logs_prefix
     }
   }
+
+  tags = var.tags
 }
 
 resource "aws_lb_target_group" "trade_tariff_https_target_groups" {
@@ -245,6 +247,8 @@ resource "aws_lb_listener_rule" "http_services" {
 resource "aws_s3_bucket" "access_logs" {
   count  = var.enable_access_logs && var.access_logs_bucket == null ? 1 : 0
   bucket = "${var.alb_name}-access-logs-${local.account_id}"
+
+  tags = var.tags
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {

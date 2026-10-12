@@ -297,6 +297,10 @@ module "waf" {
     }
   ]
 
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "waf_logs" {

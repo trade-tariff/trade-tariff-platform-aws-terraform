@@ -75,6 +75,10 @@ module "identity_cognito" {
     { scope_name = "fpo", scope_description = "Access freeports/FPO endpoints" },
     { scope_name = "write", scope_description = "Enables authenticated write access to admin apis" }
   ]
+
+  tags = {
+    Component = "identity"
+  }
 }
 
 resource "aws_route53_record" "id_cognito_custom_domain" {

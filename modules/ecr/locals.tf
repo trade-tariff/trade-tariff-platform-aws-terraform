@@ -32,53 +32,63 @@ locals {
     # is higher than the other CD apps below since release cadence bursts can hit
     # several deploys within a single day)
     "admin" = {
+      component                  = "admin"
       lifecycle_policy           = true
       production_images_to_keep  = 15
       development_images_to_keep = 30
     },
     "backend" = {
+      component                  = "backend"
       lifecycle_policy           = true
       production_images_to_keep  = 15
       development_images_to_keep = 30
     },
     "frontend" = {
+      component                  = "frontend"
       lifecycle_policy           = true
       production_images_to_keep  = 15
       development_images_to_keep = 30
     },
     # Scheduled lambdas
     "database-backups" = {
+      component                  = "backend"
       lifecycle_policy           = true
       production_images_to_keep  = 5
       development_images_to_keep = 5
     },
     "database-replication" = {
+      component                  = "backend"
       lifecycle_policy           = true
       production_images_to_keep  = 5
       development_images_to_keep = 5
     },
     # Continuous deployment applications
     "fpo-search" = {
+      component                  = "fpo-search"
       lifecycle_policy           = true
       production_images_to_keep  = 10
       development_images_to_keep = 30
     },
     "dev-hub" = {
+      component                  = "devhub"
       lifecycle_policy           = true
       production_images_to_keep  = 10
       development_images_to_keep = 30
     }
     "identity" = {
+      component                  = "identity"
       lifecycle_policy           = true
       production_images_to_keep  = 10
       development_images_to_keep = 30
     },
     "ai-search-evaluation-suite" = {
+      component                  = "ai-search-evaluation-suite"
       lifecycle_policy           = true
       production_images_to_keep  = 10
       development_images_to_keep = 30
     },
     "mcp" = {
+      component                  = "mcp"
       lifecycle_policy           = true
       production_images_to_keep  = 10
       development_images_to_keep = 30

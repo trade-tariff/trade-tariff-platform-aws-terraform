@@ -168,6 +168,10 @@ module "waf" {
       positional_constraint = "CONTAINS"
     }
   ]
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "waf_logs" {

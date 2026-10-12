@@ -34,6 +34,10 @@ module "waf_apigw" {
       positional_constraint = "CONTAINS"
     }
   ]
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_wafv2_web_acl_association" "apigw" {

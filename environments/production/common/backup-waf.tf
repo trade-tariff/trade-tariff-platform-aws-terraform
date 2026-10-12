@@ -22,6 +22,10 @@ module "waf_backup" {
       }
     }
   }
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "backup_waf_logs" {
