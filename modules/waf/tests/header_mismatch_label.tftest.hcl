@@ -65,3 +65,15 @@ run "missing_value_fails_validation" {
     var.header_mismatch_label_values,
   ]
 }
+
+run "header_mismatch_label_rejects_reserved_label" {
+  command = plan
+
+  variables {
+    header_mismatch_label_rules = [
+      { name = "label-non-mcp", priority = 2, header_name = "X-Mcp-Token", label = "aws" }
+    ]
+  }
+
+  expect_failures = [var.header_mismatch_label_rules]
+}

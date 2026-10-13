@@ -368,6 +368,13 @@ variable "header_mismatch_label_rules" {
     label       = string
   }))
   default = []
+
+  validation {
+    condition = alltrue([
+      for r in var.header_mismatch_label_rules : !can(regex("(?i)^(awswaf|aws|waf|rulegroup|webacl|regexpatternset|ipset|managed)$", r.label))
+    ])
+    error_message = "label must not be one of the strings AWS WAF reserves for its own label namespaces (awswaf, aws, waf, rulegroup, webacl, regexpatternset, ipset, managed)."
+  }
 }
 
 variable "header_mismatch_label_values" {
