@@ -180,15 +180,16 @@ module "waf" {
         }
       }
     },
-    # Starts in count mode. The same caution as ratelimiting-no-alpn-pages
-    # applies: all clients with one JA4 share one budget. Before you change
-    # action to "block", check in the WAF logs that no real-user fingerprint
-    # goes above the limit on these pages.
+    # All clients with one JA4 share one budget, as for
+    # ratelimiting-no-alpn-pages. In count mode on 13 Oct 2026, every request
+    # above the limit (88,428 from 3,868 IPs) had the scraper's JA4
+    # t13d1516h2_8daaf6152771_d8a2da3f94cd. No other fingerprint went above
+    # the limit on these pages.
     {
       name          = "ratelimiting-ja4-scraped-pages"
       priority      = 24
       limit         = var.waf_ja4_scraped_page_rpm_limit
-      action        = "count"
+      action        = "block"
       label         = "scraped-page"
       aggregate_key = "JA4"
       custom_response = {
