@@ -7,6 +7,8 @@ resource "aws_api_gateway_rest_api" "this" {
   description    = "Main API Gateway for trade-tariff ${var.environment} (ALB Proxy)"
   api_key_source = var.authorizer_enabled ? "AUTHORIZER" : "HEADER"
   endpoint_configuration { types = ["REGIONAL"] }
+
+  tags = var.tags
 }
 
 resource "aws_api_gateway_authorizer" "this" {
@@ -48,12 +50,16 @@ resource "aws_api_gateway_stage" "this" {
   }
 
   depends_on = [aws_api_gateway_account.this]
+
+  tags = var.tags
 }
 
 resource "aws_apigatewayv2_vpc_link" "this" {
   name               = "api-alb-vpc-link-${var.environment}"
   security_group_ids = var.security_group_ids
   subnet_ids         = var.private_subnet_ids
+
+  tags = var.tags
 }
 
 # ------------------------------------------------------------------------------

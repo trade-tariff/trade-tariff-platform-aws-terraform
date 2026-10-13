@@ -3,6 +3,10 @@ resource "aws_kms_key" "secretsmanager_kms_key" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_kms_alias" "secretsmanager_kms_alias" {

@@ -44,20 +44,28 @@ resource "aws_elasticache_replication_group" "this" {
   }
 
   apply_immediately = var.apply_immediately
+
+  tags = var.tags
 }
 
 resource "aws_elasticache_subnet_group" "this" {
   count      = var.subnet_group_name == null ? 1 : 0
   name       = "${var.replication_group_id}-subnet-group"
   subnet_ids = var.subnet_ids
+
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_log_group" "slow_lg" {
   name              = "${var.replication_group_id}-slow-lg"
   retention_in_days = var.log_retention_days
+
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_log_group" "engine_lg" {
   name              = "${var.replication_group_id}-engine-lg"
   retention_in_days = var.log_retention_days
+
+  tags = var.tags
 }

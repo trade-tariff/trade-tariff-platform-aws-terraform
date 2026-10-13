@@ -9,6 +9,16 @@ locals {
     ses-inbound       = "trade-tariff-ses-inbound-${local.account_id}"
     preevy-profile    = "preevy-profile-store"
   }
+  bucket_components = {
+    tech-docs         = "docs"
+    api-docs          = "docs"
+    database-backups  = "backend"
+    lambda-deployment = "shared"
+    persistence       = "shared"
+    reporting         = "backend"
+    ses-inbound       = "shared"
+    preevy-profile    = "shared"
+  }
   buckets_with_versioning = {
     persistence = local.buckets.persistence
   }
@@ -31,6 +41,10 @@ resource "aws_kms_key" "s3" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 data "aws_iam_policy_document" "s3_kms_key_policy" {
@@ -72,12 +86,20 @@ resource "aws_kms_alias" "s3_kms_alias" {
 resource "aws_s3_bucket" "this" {
   for_each = local.buckets
   bucket   = each.value
+
+  tags = {
+    Component = local.bucket_components[each.key]
+  }
 }
 
 # NOTE: Edge Lambda functions must be deployed from us-east-1
 resource "aws_s3_bucket" "deployment-bucket-us-east-1" {
   bucket = "${local.buckets["lambda-deployment"]}-us-east-1"
   region = "us-east-1"
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_s3_bucket_versioning" "this" {

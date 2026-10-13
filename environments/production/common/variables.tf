@@ -56,6 +56,12 @@ variable "waf_page_rpm_limit" {
   default     = 100
 }
 
+variable "waf_ja4_scraped_page_rpm_limit" {
+  description = "Rate limit per JA4 TLS fingerprint per minute for the measure type preference code, feedback and geographical area pages. Counts across all IPs that share the fingerprint."
+  type        = number
+  default     = 300
+}
+
 variable "waf_no_alpn_page_rpm_limit" {
   description = "Rate limit per JA4 TLS fingerprint per minute for tariff page requests from clients that send no ALPN (non-browser clients). Counts across all IPs that share the fingerprint."
   type        = number

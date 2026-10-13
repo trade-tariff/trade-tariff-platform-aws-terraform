@@ -6,6 +6,15 @@ locals {
     "sidekiq-uk" = "cache.t3.micro",
     "sidekiq-xi" = "cache.t3.micro",
   }
+
+  # Each cluster belongs to one component. Service is the UK or XI instance, where there is one.
+  valkey_tags = {
+    "frontend"   = { Component = "frontend" }
+    "backend-uk" = { Component = "backend", Service = "uk" }
+    "backend-xi" = { Component = "backend", Service = "xi" }
+    "sidekiq-uk" = { Component = "backend", Service = "uk" }
+    "sidekiq-xi" = { Component = "backend", Service = "xi" }
+  }
 }
 
 resource "aws_elasticache_subnet_group" "this" {
@@ -58,6 +67,8 @@ module "valkey" {
   transit_encryption_mode    = "required"
   auth_token                 = random_password.valkey_auth[each.key].result
   auth_token_update_strategy = "ROTATE"
+
+  tags = local.valkey_tags[each.key]
 }
 
 # Generate a password for each cluster, to avoid credential sharing
@@ -72,6 +83,8 @@ resource "aws_secretsmanager_secret" "valkey_connection_string" {
   name                    = "valkey-${each.key}-connection-string"
   kms_key_id              = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window_in_days = local.development_secret_recovery_window
+
+  tags = local.valkey_tags[each.key]
 }
 
 resource "aws_secretsmanager_secret_version" "valkey_connection_string_value" {

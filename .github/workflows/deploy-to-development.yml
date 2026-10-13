@@ -43,10 +43,6 @@ jobs:
 
       - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-tflint@main
 
-      - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-ssh@main
-        with:
-          ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
-
       - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-terragrunt@main
         with:
           terragrunt-version: ${{ env.TERRAGRUNT_VERSION }}
@@ -79,6 +75,8 @@ jobs:
       - run: pip install pre-commit
 
       - run: pre-commit run --all-files --show-diff-on-failure
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
   plan-development:
     if: github.event_name != 'merge_group' && github.actor != 'github-actions[bot]'
@@ -94,10 +92,6 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::844815912454:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
-
-      - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-ssh@main
-        with:
-          ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
       - uses: ruby/setup-ruby@v1.327.0
 
@@ -150,10 +144,6 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::844815912454:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
-
-      - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-ssh@main
-        with:
-          ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
       - uses: ruby/setup-ruby@v1.327.0
 
@@ -212,10 +202,6 @@ jobs:
           role-to-assume: arn:aws:iam::451934005581:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
 
-      - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-ssh@main
-        with:
-          ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
-
       - uses: ruby/setup-ruby@v1.327.0
 
       - run: bundle config set path 'vendor/bundle' && bundle config set without 'test' && bundle install
@@ -262,10 +248,6 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::382373577178:role/GithubActions-Terraform-Role
           aws-region: ${{ env.AWS_REGION }}
-
-      - uses: trade-tariff/trade-tariff-tools/.github/actions/setup-ssh@main
-        with:
-          ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
       - uses: ruby/setup-ruby@v1.327.0
 

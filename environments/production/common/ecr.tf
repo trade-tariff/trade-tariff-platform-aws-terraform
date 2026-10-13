@@ -55,6 +55,10 @@ data "aws_iam_policy_document" "ecr_policy_document" {
 module "ecr" {
   source      = "../../../modules/ecr/"
   environment = var.environment
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_ecr_repository_policy" "ecr_allow_staging_and_development" {

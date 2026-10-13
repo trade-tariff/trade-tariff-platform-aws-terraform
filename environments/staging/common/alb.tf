@@ -109,6 +109,10 @@ module "alb" {
       priority = 5
     }
   }
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_lb_listener_certificate" "mcp" {

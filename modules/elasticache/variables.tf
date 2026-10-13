@@ -166,3 +166,9 @@ variable "transit_encryption_mode" {
     error_message = "Must be one of `preferred` or `required`."
   }
 }
+
+variable "tags" {
+  description = "A map of tags to add to the replication group, the subnet group that the module creates and its log groups."
+  type        = map(string)
+  default     = {}
+}

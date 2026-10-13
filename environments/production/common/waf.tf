@@ -113,7 +113,8 @@ module "waf" {
   # applies however many IPs a bot uses. Real users never see a CAPTCHA or
   # challenge from this: the only action is a 429 above the limit.
   #
-  # The path regex covers the tariff browse and search pages, with the
+  # The path regex covers the tariff browse and search pages, the
+  # measure_types, feedback and geographical_areas pages, with the
   # optional /uk/ or /xi/ prefix. It does not match /api/, /uk/api/,
   # /xi/api/ or /healthcheck. The allow rules at priorities 0-10 (MCP, TSS,
   # assets, e2e, healthcheck, mycommodities) come first, so they still apply.
@@ -122,8 +123,19 @@ module "waf" {
       name              = "label-no-alpn-pages"
       priority          = 13
       ja4_regex_string  = "^[tqd][0-9a-z]{2}[di][0-9]{4}00_"
-      path_regex_string = "^/(uk/|xi/)?(sections|chapters|headings|subheadings|commodities|search|find_commodity|browse)(/|$)"
+      path_regex_string = "^/(uk/|xi/)?(sections|chapters|headings|subheadings|commodities|search|find_commodity|browse|measure_types|feedback|geographical_areas)(/|$)"
       label             = "no-alpn-page"
+    },
+    # Labels every request to the pages that the October 2026 scraper hits,
+    # whatever its JA4. ratelimiting-ja4-scraped-pages (below) counts them
+    # per JA4 fingerprint. The scraper changed its User-Agent three times and
+    # used about 80,000 IPs, but it kept one JA4.
+    {
+      name              = "label-scraped-pages"
+      priority          = 23
+      ja4_regex_string  = "^.+$"
+      path_regex_string = "^/(uk/|xi/)?(measure_types/[0-9]+/preference_codes/|feedback$|geographical_areas/[0-9]+)"
+      label             = "scraped-page"
     }
   ]
 
@@ -158,6 +170,27 @@ module "waf" {
       limit         = var.waf_no_alpn_page_rpm_limit
       action        = "count"
       label         = "no-alpn-page"
+      aggregate_key = "JA4"
+      custom_response = {
+        response_code = 429
+        body_key      = "rate-limit-exceeded"
+        response_header = {
+          name  = "X-Rate-Limit"
+          value = "1"
+        }
+      }
+    },
+    # All clients with one JA4 share one budget, as for
+    # ratelimiting-no-alpn-pages. In count mode on 13 Oct 2026, every request
+    # above the limit (88,428 from 3,868 IPs) had the scraper's JA4
+    # t13d1516h2_8daaf6152771_d8a2da3f94cd. No other fingerprint went above
+    # the limit on these pages.
+    {
+      name          = "ratelimiting-ja4-scraped-pages"
+      priority      = 24
+      limit         = var.waf_ja4_scraped_page_rpm_limit
+      action        = "block"
+      label         = "scraped-page"
       aggregate_key = "JA4"
       custom_response = {
         response_code = 429
@@ -287,12 +320,20 @@ module "waf" {
     }
   ]
 
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "waf_logs" {
   provider          = aws.us_east_1
   name              = "aws-waf-logs-tariff-${var.environment}"
   retention_in_days = 60
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "waf_logs" {

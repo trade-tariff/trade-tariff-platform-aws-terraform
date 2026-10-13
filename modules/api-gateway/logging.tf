@@ -2,6 +2,8 @@ resource "aws_cloudwatch_log_group" "access_logs" {
   count             = var.access_logging_enabled ? 1 : 0
   name              = "/aws/apigateway/api-${var.environment}/access-logs"
   retention_in_days = var.access_log_retention_days
+
+  tags = var.tags
 }
 
 # Account-level singleton (one per AWS account/region). Safe to declare here
