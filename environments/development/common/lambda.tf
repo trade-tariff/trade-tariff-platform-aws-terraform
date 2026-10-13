@@ -38,6 +38,10 @@ module "create_auth_challenge" {
 
   environment_variables = local.create_auth_challenge_configuration_secret_map
 
+
+  tags = {
+    Component = "identity"
+  }
 }
 
 resource "aws_lambda_permission" "allow_cognito_invoke_create_auth_challenge" {
@@ -58,6 +62,10 @@ module "define_auth_challenge" {
   source_code_hash   = data.archive_file.define_auth_challenge.output_base64sha256
   memory_size        = 512
   log_retention_days = 7
+
+  tags = {
+    Component = "identity"
+  }
 }
 
 resource "aws_lambda_permission" "allow_cognito_invoke_define_auth_challenge" {
@@ -78,6 +86,10 @@ module "verify_auth_challenge" {
   source_code_hash   = data.archive_file.verify_auth_challenge.output_base64sha256
   memory_size        = 512
   log_retention_days = 7
+
+  tags = {
+    Component = "identity"
+  }
 }
 
 resource "aws_lambda_permission" "allow_cognito_invoke_verify_auth_challenge" {

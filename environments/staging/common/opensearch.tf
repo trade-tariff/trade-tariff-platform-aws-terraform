@@ -3,6 +3,10 @@ resource "aws_kms_key" "opensearch_kms_key" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 resource "aws_kms_alias" "opensearch_kms_alias" {
@@ -32,6 +36,10 @@ module "opensearch_packages_bucket" {
     target_bucket = module.logs.s3_bucket_id
     target_prefix = "log/"
   }
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "search_configuration_bucket" {
@@ -56,6 +64,10 @@ module "search_configuration_bucket" {
     target_bucket = module.logs.s3_bucket_id
     target_prefix = "log/"
   }
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "opensearch" {
@@ -74,4 +86,8 @@ module "opensearch" {
   create_master_user = true
   encrypt_kms_key_id = aws_kms_key.opensearch_kms_key.key_id
   ssm_secret_name    = "/${var.environment}/ELASTICSEARCH_URL"
+
+  tags = {
+    Component = "backend"
+  }
 }

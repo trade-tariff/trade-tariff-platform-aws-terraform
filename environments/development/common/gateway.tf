@@ -21,6 +21,10 @@ module "gateway" {
     random_password.origin_header[0].result,
     random_password.origin_header[1].result
   ]
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 ############################################

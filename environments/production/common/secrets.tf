@@ -3,6 +3,10 @@ module "admin_configuration" {
   name            = "admin-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "admin"
+  }
 }
 
 module "dev_hub_configuration" {
@@ -10,6 +14,10 @@ module "dev_hub_configuration" {
   name            = "dev-hub-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "devhub"
+  }
 }
 
 module "dev_hub_job_configuration" {
@@ -17,6 +25,10 @@ module "dev_hub_job_configuration" {
   name            = "dev-hub-job-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "devhub"
+  }
 }
 
 module "frontend_configuration" {
@@ -24,6 +36,10 @@ module "frontend_configuration" {
   name            = "frontend-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "frontend"
+  }
 }
 
 module "mcp_configuration" {
@@ -31,6 +47,10 @@ module "mcp_configuration" {
   name            = "mcp-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "mcp"
+  }
 }
 
 module "backend_uk_worker_configuration" {
@@ -38,6 +58,11 @@ module "backend_uk_worker_configuration" {
   name            = "backend-uk-worker-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "backend"
+    Service   = "uk"
+  }
 }
 
 module "backend_xi_worker_configuration" {
@@ -45,6 +70,11 @@ module "backend_xi_worker_configuration" {
   name            = "backend-xi-worker-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "backend"
+    Service   = "xi"
+  }
 }
 
 module "backend_uk_api_configuration" {
@@ -52,6 +82,11 @@ module "backend_uk_api_configuration" {
   name            = "backend-uk-api-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "backend"
+    Service   = "uk"
+  }
 }
 
 module "backend_xi_api_configuration" {
@@ -59,6 +94,11 @@ module "backend_xi_api_configuration" {
   name            = "backend-xi-api-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "backend"
+    Service   = "xi"
+  }
 }
 
 module "backend_job_configuration" {
@@ -66,6 +106,10 @@ module "backend_job_configuration" {
   name            = "backend-job-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "eval_api_configuration" {
@@ -81,6 +125,10 @@ module "db_replicate_configuration" {
   name            = "db-replicate-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "download_cds_files_configuration" {
@@ -88,6 +136,10 @@ module "download_cds_files_configuration" {
   name            = "download-cds-files-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "etf_configuration" {
@@ -102,6 +154,10 @@ module "fpo_search_configuration" {
   name            = "fpo-search-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "fpo-search"
+  }
 }
 
 module "identity_configuration" {
@@ -109,6 +165,10 @@ module "identity_configuration" {
   name            = "identity-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "identity"
+  }
 }
 
 module "slack_notify_lambda_slack_webhook_url" {
@@ -116,6 +176,10 @@ module "slack_notify_lambda_slack_webhook_url" {
   name            = "slack-notify-lambda-slack-webhook-url"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 module "backups_basic_auth" {
@@ -123,6 +187,10 @@ module "backups_basic_auth" {
   name            = "backups-basic-auth"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "identity_create_auth_challenge_configuration" {
@@ -130,6 +198,10 @@ module "identity_create_auth_challenge_configuration" {
   name            = "identity-create-auth-challenge-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "identity"
+  }
 }
 
 module "newrelic_configuration" {
@@ -137,6 +209,10 @@ module "newrelic_configuration" {
   name            = "newrelic-configuration"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 module "apigw_internal_test_key" {
@@ -144,6 +220,10 @@ module "apigw_internal_test_key" {
   name            = "apigw-${var.environment}-internal-test-api-key"
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = 7
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 module "ecs_tls_certificate" {
@@ -156,4 +236,8 @@ module "ecs_tls_certificate" {
     private_key = tls_private_key.ecs_tls.private_key_pem
     certificate = tls_self_signed_cert.ecs_tls.cert_pem
   })
+
+  tags = {
+    Component = "shared"
+  }
 }

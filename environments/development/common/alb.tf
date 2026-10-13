@@ -117,6 +117,10 @@ module "alb" {
       priority = 5
     }
   }
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 # The ALB's primary cert covers *.origin.domain — attach the wildcard public cert

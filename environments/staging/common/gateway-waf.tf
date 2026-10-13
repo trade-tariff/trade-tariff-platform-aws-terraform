@@ -34,6 +34,10 @@ module "waf_apigw" {
       positional_constraint = "CONTAINS"
     }
   ]
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_wafv2_web_acl_association" "apigw" {
@@ -44,6 +48,10 @@ resource "aws_wafv2_web_acl_association" "apigw" {
 resource "aws_cloudwatch_log_group" "apigw_waf_logs" {
   name              = "aws-waf-logs-apigw-${var.environment}"
   retention_in_days = 7
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "apigw_waf_logging" {

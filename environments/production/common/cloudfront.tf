@@ -309,6 +309,10 @@ module "cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 module "docs_cdn" {
@@ -376,6 +380,10 @@ module "docs_cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+
+  tags = {
+    Component = "docs"
+  }
 }
 
 # Gives equal API requests one cache key. See the comment in the function code.
@@ -384,6 +392,10 @@ resource "aws_cloudfront_function" "normalise_api_accept_header" {
   comment = "Normalises the Accept header on cached API requests"
   runtime = "cloudfront-js-2.0"
   code    = file("../../../common/normalise_api_accept_header.js")
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 locals {
@@ -399,6 +411,10 @@ resource "aws_cloudfront_function" "docs_cdn_directory_index_rewrite" {
   comment = "Allows extensionless URLs on the API docs CDN"
   runtime = "cloudfront-js-2.0"
   code    = file("../../../common/directory_index_rewrite.js")
+
+  tags = {
+    Component = "docs"
+  }
 }
 
 module "reporting_cdn" {
@@ -443,6 +459,10 @@ module "reporting_cdn" {
     depends_on = [
       module.acm.validated_certificate_arn
     ]
+  }
+
+  tags = {
+    Component = "backend"
   }
 }
 
@@ -494,6 +514,10 @@ module "backups_cdn" {
       module.acm.validated_certificate_arn
     ]
   }
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 resource "aws_cloudfront_function" "basic_auth" {
@@ -501,4 +525,8 @@ resource "aws_cloudfront_function" "basic_auth" {
   runtime = "cloudfront-js-1.0"
   publish = true
   code    = local.cloudfront_auth
+
+  tags = {
+    Component = "backend"
+  }
 }

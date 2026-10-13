@@ -109,6 +109,7 @@ module "postgres_developer_hub" {
   ]
 
   tags = {
+    Component  = "devhub"
     Name       = "DeveloperHubPostgres${title(var.environment)}"
     "RDS_Type" = "Instance"
   }
@@ -139,6 +140,7 @@ module "postgres_aurora" {
   cloudwatch_log_exports = ["postgresql"]
 
   tags = {
+    Component  = "backend"
     "RDS_Type" = "Aurora"
   }
 }
@@ -149,6 +151,10 @@ module "rw_aurora_connection_string" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = local.development_secret_recovery_window
   secret_string   = module.postgres_aurora.rw_connection_string
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "ro_aurora_connection_string" {
@@ -157,6 +163,10 @@ module "ro_aurora_connection_string" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = local.development_secret_recovery_window
   secret_string   = module.postgres_aurora.ro_connection_string
+
+  tags = {
+    Component = "backend"
+  }
 }
 
 module "postgres_admin_aurora" {
@@ -185,6 +195,7 @@ module "postgres_admin_aurora" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.admin_aurora_pg_18.name
 
   tags = {
+    Component  = "admin"
     "RDS_Type" = "Aurora"
   }
 }
@@ -195,6 +206,10 @@ module "admin_connection_string" {
   kms_key_arn     = aws_kms_key.secretsmanager_kms_key.arn
   recovery_window = local.development_secret_recovery_window
   secret_string   = module.postgres_admin_aurora.rw_connection_string
+
+  tags = {
+    Component = "admin"
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////

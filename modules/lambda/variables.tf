@@ -46,3 +46,9 @@ variable "log_retention_days" {
   type        = number
   default     = 14
 }
+
+variable "tags" {
+  description = "A map of tags to add to the taggable resources in this module."
+  type        = map(string)
+  default     = {}
+}

@@ -103,11 +103,15 @@ resource "aws_opensearch_domain" "opensearch" {
 resource "aws_cloudwatch_log_group" "opensearch_application_logs" {
   name              = "/aws/opensearch/${var.cluster_name}/application-logs"
   retention_in_days = 90
+
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_log_group" "opensearch_audit_logs" {
   name              = "/aws/opensearch/${var.cluster_name}/audit-logs"
   retention_in_days = 90
+
+  tags = var.tags
 }
 
 data "aws_iam_policy_document" "opensearch_log_publishing" {
@@ -149,4 +153,6 @@ resource "aws_ssm_parameter" "opensearch_url" {
   description = "OpenSearch access Credentials"
   type        = "SecureString"
   value       = "https://${local.master_user_username}:${local.master_user_password}@${aws_route53_record.opensearch.fqdn}"
+
+  tags = var.tags
 }

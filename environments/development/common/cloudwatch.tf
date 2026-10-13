@@ -49,6 +49,10 @@ resource "aws_kms_key" "logs_bucket_kms_key" {
   deletion_window_in_days = 10
   key_usage               = "ENCRYPT_DECRYPT"
   enable_key_rotation     = true
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 resource "aws_kms_alias" "logs_bucket_kms_alias" {
@@ -132,6 +136,10 @@ module "logs" {
       }
     }
   ]
+
+  tags = {
+    Component = "shared"
+  }
 }
 
 module "cloudwatch-logs-exporter" {

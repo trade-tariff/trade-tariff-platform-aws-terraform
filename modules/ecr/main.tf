@@ -1,6 +1,8 @@
 resource "aws_kms_key" "this" {
   description         = "ECR KMS key"
   enable_key_rotation = true
+
+  tags = var.tags
 }
 
 resource "aws_kms_alias" "this" {
@@ -22,6 +24,8 @@ resource "aws_ecr_repository" "this" {
     encryption_type = "KMS"
     kms_key         = aws_kms_key.this.arn
   }
+
+  tags = merge(var.tags, { Component = each.value.component })
 }
 
 resource "aws_ecr_lifecycle_policy" "expire_untagged_images_policy" {
