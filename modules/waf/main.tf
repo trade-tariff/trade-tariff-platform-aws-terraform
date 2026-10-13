@@ -650,6 +650,59 @@ resource "aws_wafv2_web_acl_rule" "uri_path_match" {
   }
 }
 
+resource "aws_wafv2_web_acl_rule" "header_country_match" {
+  for_each = { for r in var.header_country_match_rules : r.name => r }
+
+  web_acl_arn = aws_wafv2_web_acl.this.arn
+  name        = each.value.name
+  priority    = each.value.priority
+
+  action {
+    dynamic "count" {
+      for_each = each.value.action == "count" ? [1] : []
+      content {}
+    }
+    dynamic "block" {
+      for_each = each.value.action == "block" ? [1] : []
+      content {}
+    }
+  }
+
+  statement {
+    and_statement {
+      statement {
+        byte_match_statement {
+          positional_constraint = each.value.positional_constraint
+          search_string         = each.value.search_string
+
+          field_to_match {
+            single_header {
+              name = lower(each.value.header_name)
+            }
+          }
+
+          text_transformation {
+            priority = 0
+            type     = "NONE"
+          }
+        }
+      }
+
+      statement {
+        geo_match_statement {
+          country_codes = each.value.country_codes
+        }
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = each.value.name
+    sampled_requests_enabled   = true
+  }
+}
+
 resource "aws_wafv2_web_acl_rule" "header_allow" {
   for_each = { for r in var.header_allow_rules : r.name => r }
 

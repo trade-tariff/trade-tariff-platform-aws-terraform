@@ -370,3 +370,22 @@ variable "host_path_allow_rules" {
   }))
   default = []
 }
+
+variable "header_country_match_rules" {
+  description = "Rules that match requests where a header contains a value and the source IP is in one of the given countries."
+  type = list(object({
+    name                  = string
+    priority              = number
+    action                = string # block | count
+    header_name           = string
+    search_string         = string
+    positional_constraint = string # EXACTLY | STARTS_WITH | CONTAINS | ENDS_WITH
+    country_codes         = list(string)
+  }))
+  default = []
+
+  validation {
+    condition     = alltrue([for r in var.header_country_match_rules : contains(["block", "count"], r.action)])
+    error_message = "header_country_match_rules action must be block or count."
+  }
+}

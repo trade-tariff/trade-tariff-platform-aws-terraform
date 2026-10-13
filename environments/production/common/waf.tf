@@ -280,6 +280,24 @@ module "waf" {
     },
   ]
 
+  # Blocks a distributed scraper first seen on 12 Oct 2026. It uses this
+  # User-Agent from about 80,000-100,000 US IPs at about one request per IP,
+  # so the per-IP rate limits do not apply to it. Real UK traffic uses newer
+  # browser versions. Priority 22 puts it after all allow rules (0-10).
+  # Replaces the console rule block-crawler-ua-2026-10. Delete that rule
+  # after this is applied.
+  header_country_match_rules = [
+    {
+      name                  = "block-crawler-ua-edge148-us"
+      priority              = 22
+      action                = "block"
+      header_name           = "user-agent"
+      search_string         = "Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"
+      positional_constraint = "CONTAINS"
+      country_codes         = ["US"]
+    }
+  ]
+
   uri_path_match_rules = [
     {
       name                  = "allow-healthcheck"
