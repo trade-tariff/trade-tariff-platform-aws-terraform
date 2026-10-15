@@ -51,8 +51,7 @@ resource "aws_iam_role_policy" "log_exporter" {
           "ssm:GetParameter",
           "ssm:GetParameters",
           "ssm:GetParametersByPath",
-          "ssm:PutParameter",
-          "ssm:DeleteParameter"
+          "ssm:PutParameter"
         ],
         "Resource": [
           "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-last-export/*",
@@ -86,6 +85,11 @@ resource "aws_iam_role_policy" "log_exporter" {
               "s3:GetBucketAcl"
           ],
           "Resource": "arn:aws:s3:::${var.cloudwatch_logs_export_bucket}"
+      },
+      {
+        "Action": "ssm:DeleteParameter",
+        "Resource": "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-pending-export/*",
+        "Effect": "Allow"
       }
     ]
   }

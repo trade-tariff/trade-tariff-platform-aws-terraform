@@ -20,6 +20,7 @@ def export_task_status(task_id):
     tasks = logs.describe_export_tasks(taskId=task_id)['exportTasks']
     return tasks[0]['status']['code'] if tasks else "NOT_FOUND"
 
+
 def lambda_handler(event, context):
     extra_args = {}
     log_groups = []
@@ -48,24 +49,28 @@ def lambda_handler(event, context):
     for log_group_name in log_groups_to_export:
         ssm_parameter_name = ("/log-exporter-last-export/%s" % log_group_name).replace("//", "/")
         pending_parameter_name = ("/log-exporter-pending-export/%s" % log_group_name).replace("//", "/")
-        last_export = int(get_parameter(ssm_parameter_name) or "0")
 
         print("--> Exporting %s to %s" % (log_group_name, os.environ['S3_BUCKET']))
 
-        pending = get_parameter(pending_parameter_name)
-        if pending:
-            task_id, task_to = pending.split(":")
-            status = export_task_status(task_id)
-            if status in ("PENDING", "PENDING_CANCEL", "RUNNING"):
-                print("    Skipped until export task %s is finished (%s)" % (task_id, status))
-                continue
-            if status == "COMPLETED":
-                last_export = int(task_to)
-                ssm.put_parameter(Name=ssm_parameter_name, Type="String", Value=str(last_export), Overwrite=True)
-                print("    Export task %s completed. Last export is now %s" % (task_id, last_export))
-            else:
-                print("    Export task %s did not complete (%s). Exporting the same period again" % (task_id, status))
-            ssm.delete_parameter(Name=pending_parameter_name)
+        try:
+            last_export = int(get_parameter(ssm_parameter_name) or "0")
+            pending = get_parameter(pending_parameter_name)
+            if pending:
+                task_id, task_to = pending.split(":")
+                status = export_task_status(task_id)
+                if status in ("PENDING", "PENDING_CANCEL", "RUNNING"):
+                    print("    Skipped until export task %s is finished (%s)" % (task_id, status))
+                    continue
+                if status == "COMPLETED":
+                    last_export = int(task_to)
+                    ssm.put_parameter(Name=ssm_parameter_name, Type="String", Value=str(last_export), Overwrite=True)
+                    print("    Export task %s completed. Last export is now %s" % (task_id, last_export))
+                else:
+                    print("    Export task %s did not complete (%s). Exporting the same period again" % (task_id, status))
+                ssm.delete_parameter(Name=pending_parameter_name)
+        except Exception as e:
+            print("    Error checking the last export of %s: %s" % (log_group_name, getattr(e, 'message', repr(e))))
+            continue
 
         # CloudWatch can take up to 12 hours to make log data exportable
         export_to_time = int(round(time.time() * 1000)) - EXPORT_LAG_MS
