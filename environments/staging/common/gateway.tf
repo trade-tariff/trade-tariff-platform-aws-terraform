@@ -10,7 +10,7 @@ module "gateway" {
   lb_arn                           = module.alb.lb_arn
   cache_cluster_enabled            = true
   cache_cluster_size               = "0.5"
-  log_level                        = "INFO"
+  log_level                        = "ERROR"
   authorizer_enabled               = true
   authorizer_name                  = "api-authorizer-${var.environment}"
   authorizer_lambda_invoke_arn     = data.aws_lambda_function.api_gateway_authorizer.invoke_arn
