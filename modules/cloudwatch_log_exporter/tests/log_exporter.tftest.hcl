@@ -95,8 +95,8 @@ run "role_policy_limits_ssm_logs_and_s3_resources" {
   command = plan
 
   assert {
-    condition     = jsondecode(aws_iam_role_policy.log_exporter.policy).Statement[1].Resource == "arn:aws:ssm:eu-west-2:123456789012:parameter/log-exporter-last-export/*"
-    error_message = "SSM access must be limited to the log-exporter-last-export parameters in this account and region."
+    condition     = jsondecode(aws_iam_role_policy.log_exporter.policy).Statement[1].Resource == ["arn:aws:ssm:eu-west-2:123456789012:parameter/log-exporter-last-export/*", "arn:aws:ssm:eu-west-2:123456789012:parameter/log-exporter-pending-export/*"]
+    error_message = "SSM access must be limited to the log-exporter parameters in this account and region."
   }
 
   assert {
@@ -112,5 +112,10 @@ run "role_policy_limits_ssm_logs_and_s3_resources" {
   assert {
     condition     = jsondecode(aws_iam_role_policy.log_exporter.policy).Statement[4].Resource == "arn:aws:s3:::trade-tariff-logs-staging"
     error_message = "S3 bucket ACL access must be limited to the export bucket."
+  }
+
+  assert {
+    condition     = jsondecode(aws_iam_role_policy.log_exporter.policy).Statement[5].Resource == "arn:aws:ssm:eu-west-2:123456789012:parameter/log-exporter-pending-export/*"
+    error_message = "SSM delete access must be limited to the log-exporter-pending-export parameters."
   }
 }
