@@ -51,9 +51,13 @@ resource "aws_iam_role_policy" "log_exporter" {
           "ssm:GetParameter",
           "ssm:GetParameters",
           "ssm:GetParametersByPath",
-          "ssm:PutParameter"
+          "ssm:PutParameter",
+          "ssm:DeleteParameter"
         ],
-        "Resource": "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-last-export/*",
+        "Resource": [
+          "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-last-export/*",
+          "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/log-exporter-pending-export/*"
+        ],
         "Effect": "Allow"
       },
       {
