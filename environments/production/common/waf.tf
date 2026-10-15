@@ -352,7 +352,32 @@ resource "aws_wafv2_web_acl_logging_configuration" "waf_logs" {
   resource_arn            = module.waf.web_acl_id
 
   logging_filter {
-    default_behavior = "KEEP"
+    default_behavior = "DROP"
+
+    # Drop NoUserAgent_Header logs where the rule action is COUNT. They are
+    # noise, as we count instead of block for a missing user agent.
+
+    filter {
+      behavior = "DROP"
+
+      condition {
+        label_name_condition {
+          label_name = "awswaf:managed:aws:core-rule-set:NoUserAgent_Header"
+        }
+      }
+
+      condition {
+        action_condition {
+          action = "COUNT"
+        }
+      }
+
+      requirement = "MEETS_ALL"
+    }
+
+    # Keep requests that a rule blocked, challenged or counted, so rules in
+    # COUNT mode can still be analysed. Requests that matched no rule are
+    # dropped.
 
     filter {
       behavior = "KEEP"
@@ -360,6 +385,24 @@ resource "aws_wafv2_web_acl_logging_configuration" "waf_logs" {
       condition {
         action_condition {
           action = "BLOCK"
+        }
+      }
+
+      condition {
+        action_condition {
+          action = "COUNT"
+        }
+      }
+
+      condition {
+        action_condition {
+          action = "CAPTCHA"
+        }
+      }
+
+      condition {
+        action_condition {
+          action = "CHALLENGE"
         }
       }
 
