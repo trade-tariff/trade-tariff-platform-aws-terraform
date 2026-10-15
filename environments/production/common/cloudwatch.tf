@@ -1,7 +1,7 @@
 module "cloudwatch-ecs-logs" {
   source            = "../../../modules/cloudwatch/"
   name              = "platform-logs-${var.environment}"
-  retention_in_days = 1096
+  retention_in_days = 90
 }
 
 module "cloudwatch-rds-logs" {
