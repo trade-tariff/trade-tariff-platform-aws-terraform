@@ -18,7 +18,7 @@ locals {
     },
     {
       name         = "log_error_verbosity"
-      value        = "VERBOSE"
+      value        = "DEFAULT"
       apply_method = "immediate"
     },
     {
