@@ -99,6 +99,12 @@ variable "access_log_retention_days" {
   default     = 90
 }
 
+variable "execution_log_retention_days" {
+  description = "Retention period in days for the API Gateway execution log group. When null, the module does not manage the group."
+  type        = number
+  default     = null
+}
+
 variable "cloudwatch_role_arn" {
   description = "ARN of an existing IAM role API Gateway can assume to write to CloudWatch (account-level setting). Required when access_logging_enabled = true."
   type        = string

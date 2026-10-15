@@ -4,6 +4,22 @@ module "cloudwatch-ecs-logs" {
   retention_in_days = 90
 }
 
+resource "aws_cloudwatch_log_group" "trade_tariff_logs_us_east_1" {
+  provider          = aws.us_east_1
+  name              = "trade-tariff-logs-${local.account_id}"
+  retention_in_days = 365
+
+  tags = {
+    Component = "shared"
+  }
+}
+
+import {
+  provider = aws.us_east_1
+  to       = aws_cloudwatch_log_group.trade_tariff_logs_us_east_1
+  id       = "trade-tariff-logs-${local.account_id}"
+}
+
 module "cloudwatch-rds-logs" {
   source            = "../../../modules/cloudwatch/"
   name              = "/aws/rds/cluster/postgres-aurora-${var.environment}/postgresql"

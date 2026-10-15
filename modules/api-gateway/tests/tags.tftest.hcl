@@ -45,3 +45,31 @@ run "tags_every_taggable_resource" {
     error_message = "The access log group must carry the tags that the caller gives."
   }
 }
+
+run "manages_execution_logs_only_when_asked" {
+  command = plan
+
+  assert {
+    condition     = length(aws_cloudwatch_log_group.execution_logs) == 0
+    error_message = "The execution log group must not be managed when no retention is given."
+  }
+}
+
+run "tags_execution_log_group" {
+  command = plan
+
+  variables {
+    execution_log_retention_days = 30
+    tags                         = { Component = "shared" }
+  }
+
+  assert {
+    condition     = aws_cloudwatch_log_group.execution_logs[0].retention_in_days == 30
+    error_message = "The execution log group must use the retention that the caller gives."
+  }
+
+  assert {
+    condition     = aws_cloudwatch_log_group.execution_logs[0].tags == tomap({ Component = "shared" })
+    error_message = "The execution log group must carry the tags that the caller gives."
+  }
+}
