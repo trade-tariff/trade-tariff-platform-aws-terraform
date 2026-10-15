@@ -1,7 +1,7 @@
 This module is derived from https://github.com/DNXLabs/terraform-aws-log-exporter/ with minor changes.
 It creates a lambda function that exports log groups on the AWS account and region deployed(default every 4 hours).
 
-It will only export each log group if it has the tag ExportToS3=true, if the last export was more than 24 hours ago it creates an export task to the S3_BUCKET defined saving the current timestamp in a SSM parameter.
+It will only export each log group if it has the tag ExportToS3=true, if the last export was more than 24 hours ago it creates an export task to the S3_BUCKET defined and saves the task ID in an SSM parameter. The last export time moves forward only after the task completes. Each export ends 12 hours before the current time, because CloudWatch can take up to 12 hours to make log data exportable. If the export task fails or CloudWatch no longer returns it, the Lambda exports the same period again. This can write duplicate log files to S3.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
