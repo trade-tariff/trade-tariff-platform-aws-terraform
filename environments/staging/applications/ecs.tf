@@ -5,7 +5,7 @@ module "ecs" {
 
   cluster_configuration = {
     execute_command_configuration = {
-      logging = "OVERRIDE"
+      logging           = "OVERRIDE"
       log_configuration = {}
     }
   }
