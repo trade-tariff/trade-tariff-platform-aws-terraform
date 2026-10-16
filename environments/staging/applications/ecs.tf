@@ -5,10 +5,8 @@ module "ecs" {
 
   cluster_configuration = {
     execute_command_configuration = {
-      logging = "OVERRIDE"
-      log_configuration = {
-        cloud_watch_log_group_name = "/aws/ecs/trade-tariff-ecs-${var.environment}"
-      }
+      logging           = "OVERRIDE"
+      log_configuration = {}
     }
   }
 
@@ -61,4 +59,14 @@ resource "aws_service_discovery_private_dns_namespace" "this" {
   name        = "tariff.internal"
   description = "Private DNS namespace."
   vpc         = data.terraform_remote_state.base.outputs.vpc_id
+}
+
+resource "aws_cloudwatch_log_group" "container_insights_performance" {
+  name              = "/aws/ecs/containerinsights/trade-tariff-cluster-${var.environment}/performance"
+  retention_in_days = 1
+}
+
+import {
+  to = aws_cloudwatch_log_group.container_insights_performance
+  id = "/aws/ecs/containerinsights/trade-tariff-cluster-${var.environment}/performance"
 }
