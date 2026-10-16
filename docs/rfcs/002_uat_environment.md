@@ -35,7 +35,7 @@ A new Terragrunt root `environments/uat` with four layers:
 
 - WAF resources (`waf.tf`, `gateway-waf.tf`, `backup-waf.tf`) are removed.
 - Bootstrap resources are read from the `bootstrap` remote state instead of being created.
-- Account-level security services (Security Hub, GuardDuty, Inspector, Config) move to `bootstrap`. They are not torn down with the workload.
+- Security services (Security Hub, GuardDuty, Inspector, Config) are removed. UAT does not need them.
 - Production-only integrations are removed: New Relic metric stream, e2e metrics, ECR repositories (UAT pulls from the production ECR, as staging does).
 - All S3 buckets set `force_destroy = true`, and RDS sets `skip_final_snapshot = true` and `deletion_protection = false`, so destroy leaves no orphans.
 
@@ -120,6 +120,7 @@ Every resource gets `Environment = uat` through the provider `default_tags`. The
 | Alerts | `production-alerts` | `non-production-alerts` |
 | Data | Live | Production dump, restored on request |
 | New Relic metric stream | Enabled | Not created |
+| Security Hub, GuardDuty, Inspector, Config | Enabled | Not created |
 | RDS deletion protection, final snapshot | On | Off |
 
 Instance sizes, task counts and service configuration are the same as production.
