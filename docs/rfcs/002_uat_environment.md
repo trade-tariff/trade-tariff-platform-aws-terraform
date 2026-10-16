@@ -26,10 +26,12 @@ A new Terragrunt root `environments/uat` with four layers:
 
 | Layer | Contents | Lifecycle |
 |-------|----------|-----------|
-| `bootstrap` | Route 53 zone `uat.trade-tariff.service.gov.uk`, ACM certificates (eu-west-2 and us-east-1), Secrets Manager secrets (including basic auth), KMS keys, Slack notifier, GitHub OIDC roles. | Applied once. Not destroyed by the stop job. |
+| `bootstrap` | Route 53 zone `uat.trade-tariff.service.gov.uk`, ACM certificates (eu-west-2 and us-east-1), Secrets Manager secrets (including basic auth), KMS keys, Slack notifier, GitHub OIDC roles, SSM parameter `/uat/components`. | Applied once. Not destroyed by the stop job. |
 | `base` | VPC, subnets, NAT gateways. | Start/stop |
 | `common` | ALB, CloudFront, RDS Aurora, ElastiCache, OpenSearch, Cognito, S3, Lambdas, API Gateway (without WAF). | Start/stop |
-| `applications` | ECS cluster and services. | Start/stop |
+| `applications` | ECS cluster and service discovery namespace. | Start/stop |
+
+The ECS services are not in this repository. Each application repository (`trade-tariff-frontend`, `trade-tariff-backend`, `trade-tariff-admin`, `identity`, `trade-tariff-dev-hub`, `trade-tariff-flagsmith`, `mcp`) owns its services, task definitions and supporting resources in its own `terraform/` directory, with one backend and one `config_<environment>.tfvars` per environment. Each of these repositories gets a `uat` backend and `config_uat.tfvars`.
 
 `base`, `common` and `applications` start as a copy of `environments/production`, with these changes:
 
@@ -66,26 +68,30 @@ Each component's resources use `count` or `for_each` on membership of this set. 
 
 `database`, `cache`, `search` and `cognito` are internal components. Users do not select them directly.
 
+The SSM parameter `/uat/components` holds the expanded set that is currently deployed. The start job writes it. The stop job reads it. The parameter is in `bootstrap` with `ignore_changes` on its value, so it survives a stop.
+
 ### Start job
 
 `.github/workflows/uat-start.yml` in this repository, triggered by `workflow_dispatch`:
 
 1. Inputs: one boolean per selectable component, plus `replicate_database` (default `true`).
-2. Expand dependencies and set `TF_VAR_components`.
-3. `terragrunt apply` on `base`, then `common`, then `applications`.
-4. Deploy the current production image tag of each selected service with the `deploy-ecs` reusable workflow in `trade-tariff-tools`.
-5. If `replicate_database` is `true`, start `replicate-db-uat.yml` in `trade-tariff-backend`.
-6. Post the URL and the selected components to Slack.
-
-Running the start job again with a different selection adds or removes components in place.
+2. Expand dependencies. Read the previous set from `/uat/components`.
+3. For each component in the previous set that is not in the new set, destroy its application stack (see [Stop job](#stop-job), step 1).
+4. Set `TF_VAR_components` to the new set. Run `terragrunt apply` on `base`, then `common`, then `applications`.
+5. Deploy the current production image tag of each selected service with the `deploy-ecs` reusable workflow in `trade-tariff-tools`, with `environment: uat`. This applies each application stack.
+6. Write the new set to `/uat/components`.
+7. If `replicate_database` is `true` and the new set contains `backend`, start `replicate-db-uat.yml` in `trade-tariff-backend`. If the set does not contain `backend`, skip this step and say so in the job summary.
+8. Post the URL and the selected components to Slack.
 
 ### Stop job
 
 `.github/workflows/uat-stop.yml`, triggered by `workflow_dispatch` with a required `confirm` input that must equal `uat`:
 
-1. `terragrunt destroy` on `applications`, then `common`, then `base`.
-2. Use the Resource Groups Tagging API to find resources with `Environment = uat` that are not in `bootstrap`. If any remain, fail the job and list them.
-3. Post the result to Slack.
+1. Read the set from `/uat/components`. For each application component in the set, run `terraform destroy` on its application stack with a new `destroy-ecs` reusable workflow in `trade-tariff-tools` (`environment: uat`, `config_uat.tfvars`). This removes the ECS services before the cluster.
+2. Set `TF_VAR_components` to the same set. Run `terragrunt destroy` on `applications`, then `common`, then `base`.
+3. Write an empty set to `/uat/components`.
+4. Use the Resource Groups Tagging API to find resources with `Environment = uat` that are not in `bootstrap`. If any remain, fail the job and list them.
+5. Post the result to Slack.
 
 ### Data
 
@@ -99,7 +105,12 @@ Running the start job again with a different selection adds or removes component
 
 A CloudFront Function on viewer-request checks the `Authorization` header against the credentials in the `uat-basic-auth` secret. The function code is rendered at apply time, as staging does for `backups-basic-auth`.
 
-API clients that send their own `Authorization: Bearer` header conflict with basic auth. For `/api/*` paths, the function also accepts an `X-UAT-Token` header with the same secret value. This is the only open question for review (see below).
+API clients that send their own `Authorization: Bearer` header conflict with basic auth. For the paths that the ALB sends to `backend_uk` and `backend_xi` (`/api/*`, `/uk/api/*`, `/xi/api/*`, `/uk/user/*`), the function also accepts an `X-UAT-Token` header with the same secret value. The function takes this path list from the same local as the ALB listener rules, so the two stay the same.
+
+All public traffic must go through CloudFront, or it skips this check. Production has two direct routes that UAT does not copy:
+
+- `mcp.` is a Route 53 alias to the ALB, and its listener rule has `bypass_custom_header = true`. In UAT, `mcp.` goes through CloudFront like the other hosts, and no listener rule bypasses the origin header check.
+- `api.` is an API Gateway custom domain. In UAT, CloudFront is in front of API Gateway, the custom domain is not created, and `disable_execute_api_endpoint = true`.
 
 ### Alarms and notifications
 
@@ -116,6 +127,7 @@ Every resource gets `Environment = uat` through the provider `default_tags`. The
 |------|------------|-----|
 | WAF | Enabled | Not created |
 | Edge access | Public | Basic auth |
+| `mcp.` and `api.` routing | Direct to ALB and API Gateway | Through CloudFront |
 | Domain | `www.trade-tariff.service.gov.uk` | `uat.trade-tariff.service.gov.uk` |
 | Alerts | `production-alerts` | `non-production-alerts` |
 | Data | Live | Production dump, restored on request |
@@ -134,9 +146,10 @@ Instance sizes, task counts and service configuration are the same as production
 | 3 | `trade-tariff-platform-aws-terraform` | Manual bootstrap of the state bucket `terraform-state-uat-<account-id>`. Add `environments/uat/bootstrap`. Delegate `uat.` from the production zone. |
 | 4 | `trade-tariff-platform-aws-terraform` | Add `environments/uat/{base,common,applications}` with the `components` variable. Allow the UAT account in the production ECR and persistence bucket policies. |
 | 5 | `trade-tariff-platform-aws-terraform` | Add the `uat-start.yml`, `uat-stop.yml` and reminder workflows. |
-| 6 | `trade-tariff-tools` | Add `uat` to `configure-environment`. |
-| 7 | `trade-tariff-backend` | Add `uat` to `bin/db-replicate` and add `replicate-db-uat.yml`. |
-| 8 | `trade-tariff-platform-aws-terraform` | Runbook: start, select components, get basic auth credentials, replicate data, stop. |
+| 6 | `trade-tariff-tools` | Add `uat` to `configure-environment`. Add the `destroy-ecs` reusable workflow. |
+| 7 | Application repositories | Add the `uat` backend and `config_uat.tfvars`. |
+| 8 | `trade-tariff-backend` | Add `uat` to `bin/db-replicate` and add `replicate-db-uat.yml`. |
+| 9 | `trade-tariff-platform-aws-terraform` | Runbook: start, select components, get basic auth credentials, replicate data, stop. |
 
 ## Risks and mitigations
 
@@ -147,5 +160,5 @@ Instance sizes, task counts and service configuration are the same as production
 
 ## Open questions
 
-1. Is an `X-UAT-Token` header for `/api/*` acceptable for API clients, or should API paths use an IP allow list?
+1. Is an `X-UAT-Token` header on the API paths acceptable for API clients, or should API paths use an IP allow list?
 2. Which team members can run the start and stop jobs? The proposal is: anyone with write access to this repository, through the `uat` GitHub environment.
