@@ -19,7 +19,7 @@ module "postgres_flagsmith" {
 
   multi_az = true
 
-  instance_type      = "db.t3.small"
+  instance_type      = "db.t4g.small"
   private_subnet_ids = data.terraform_remote_state.base.outputs.private_subnet_ids
 
   allocated_storage  = 20
