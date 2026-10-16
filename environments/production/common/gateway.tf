@@ -17,6 +17,7 @@ module "gateway" {
   authorizer_identity_source       = "method.request.header.Authorization"
   authorizer_result_ttl_in_seconds = 0
   access_logging_enabled           = true
+  execution_log_retention_days     = 30
   cloudwatch_role_arn              = aws_iam_role.apigw_cloudwatch_logs.arn
 
   alb_secret_header = [
@@ -59,4 +60,9 @@ resource "aws_api_gateway_usage_plan" "default" {
     api_id = module.gateway.rest_api_id
     stage  = module.gateway.stage_name
   }
+}
+
+import {
+  to = module.gateway.aws_cloudwatch_log_group.execution_logs[0]
+  id = "API-Gateway-Execution-Logs_a8pczld040/production"
 }

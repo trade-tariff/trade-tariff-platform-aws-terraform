@@ -70,6 +70,7 @@ No modules.
 | [aws_api_gateway_stage.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage) | resource |
 | [aws_apigatewayv2_vpc_link.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_vpc_link) | resource |
 | [aws_cloudwatch_log_group.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_cloudwatch_log_group.execution_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_query_definition.active_api_keys](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_query_definition) | resource |
 | [aws_route53_record.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 
@@ -91,6 +92,7 @@ No modules.
 | <a name="input_cloudwatch_role_arn"></a> [cloudwatch\_role\_arn](#input\_cloudwatch\_role\_arn) | ARN of an existing IAM role API Gateway can assume to write to CloudWatch (account-level setting). Required when access\_logging\_enabled = true. | `string` | `null` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The domain name for the application. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The deployment environment (e.g., dev, staging, prod). | `string` | n/a | yes |
+| <a name="input_execution_log_retention_days"></a> [execution\_log\_retention\_days](#input\_execution\_log\_retention\_days) | Retention period in days for the API Gateway execution log group. When null, the module does not manage the group. | `number` | `null` | no |
 | <a name="input_lb_arn"></a> [lb\_arn](#input\_lb\_arn) | ALB ARN for the V2 VPC Link integrations. | `string` | n/a | yes |
 | <a name="input_log_level"></a> [log\_level](#input\_log\_level) | The log level for the API Gateway. | `string` | `"INFO"` | no |
 | <a name="input_long_cache_ttl"></a> [long\_cache\_ttl](#input\_long\_cache\_ttl) | The TTL for long cache duration in seconds. | `number` | `3600` | no |
