@@ -59,8 +59,3 @@ resource "aws_api_gateway_usage_plan" "default" {
     stage  = module.gateway.stage_name
   }
 }
-
-import {
-  to = module.gateway.aws_cloudwatch_log_group.execution_logs[0]
-  id = "API-Gateway-Execution-Logs_vdxtxcno2a/development"
-}
