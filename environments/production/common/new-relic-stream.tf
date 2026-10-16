@@ -16,10 +16,41 @@ module "cw_metric_stream" {
   firehose_arn = module.firehose_to_nr.firehose_arn
 
   include_metric_filters = {
-    "ECS/ContainerInsights" = [],
-    "AWS/ECS"               = [],
-    "AWS/RDS"               = [],
-    "AWS/ES"                = [],
-    "AWS/ApiGateway"        = []
+    "ECS/ContainerInsights" = [
+      "CpuReserved",
+      "CpuUtilized",
+      "DesiredTaskCount",
+      "MemoryReserved",
+      "MemoryUtilized",
+      "PendingTaskCount",
+      "RunningTaskCount",
+      "ServiceCount",
+      "TaskCount",
+    ],
+    "AWS/ECS" = [
+      "CPUUtilization",
+      "MemoryUtilization",
+    ],
+    "AWS/RDS" = [
+      "AuroraReplicaLag",
+      "AuroraReplicaLagMaximum",
+      "AuroraReplicaLagMinimum",
+      "CommitLatency",
+      "CommitThroughput",
+      "CPUCreditBalance",
+      "CPUCreditUsage",
+      "CPUUtilization",
+      "DatabaseConnections",
+      "NetworkReceiveThroughput",
+      "NetworkThroughput",
+      "NetworkTransmitThroughput",
+      "ReadIOPS",
+      "ReadLatency",
+      "SwapUsage",
+      "VolumeReadIOPs",
+      "VolumeWriteIOPs",
+      "WriteIOPS",
+      "WriteLatency",
+    ],
   }
 }
