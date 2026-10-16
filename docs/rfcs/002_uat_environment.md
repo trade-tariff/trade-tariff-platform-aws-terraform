@@ -39,9 +39,27 @@ The ECS services are not in this repository. Each application repository (`trade
 - Bootstrap resources are read from the `bootstrap` remote state instead of being created.
 - Security services (Security Hub, GuardDuty, Inspector, Config) are removed. UAT does not need them.
 - Production-only integrations are removed: New Relic metric stream, e2e metrics, ECR repositories (UAT pulls from the production ECR, as staging does).
-- All S3 buckets set `force_destroy = true`, and RDS sets `skip_final_snapshot = true` and `deletion_protection = false`, so destroy leaves no orphans.
+- Destroy guards are off (see [Destroy guards](#destroy-guards)).
 
 The bootstrap layer stays because DNS delegation, certificate validation and secret values must not churn on each start. Its standing cost is a few dollars a month (hosted zone, secrets, KMS keys).
+
+The API Gateway authorizer Lambda is not in this repository. `common/authorizer.tf` reads `api-gateway-authorizer-${var.environment}-authorizer` with a data source. `trade-tariff-lambdas-authenticator` deploys it with Serverless, one stage for each account. That repository gets a `deploy-to-uat.yml` workflow, and `bootstrap` gets the `GithubActions-Serverless-Lambda-Role`. The Lambda is deployed once before the first start and stays between starts. An idle Lambda has no cost.
+
+### Destroy guards
+
+Production uses guards that stop `terragrunt destroy` or block the next start. UAT turns each one off:
+
+| Guard | Where | UAT change |
+|-------|-------|------------|
+| `prevent_destroy = true` (hard-coded) | `modules/rds_cluster` (instances), `modules/opensearch`, `modules/elasticache` | New module variable `prevent_destroy` (default `true`). `lifecycle` does not accept variables, so each module has two copies of the resource, `protected` and `unprotected`, selected with `count`. A `moved` block moves the current address to `protected`. |
+| `skip_final_snapshot = false` (hard-coded) | `modules/rds_cluster`, `modules/rds` | New module variable `skip_final_snapshot` (default `false`). UAT sets `true`. |
+| `deletion_protection` | RDS and Aurora callers | UAT sets `false`. |
+| `prevent_deletion` (default `true`) | `modules/cognito` | UAT sets `false`. |
+| `enable_deletion_protection` (default `true`) | `modules/application-load-balancer` | UAT sets `false`. |
+| `recovery_window = 7` | Secrets in `common` (`rds.tf`, `flagsmith.tf`), `modules/rds` `secret_recovery_window` | UAT sets `0`. A secret in its recovery window blocks a new secret with the same name on the next start. |
+| No `force_destroy` | S3 buckets in `common/s3.tf` | UAT sets `force_destroy = true`. |
+
+The module defaults keep the production behaviour. The module change is a separate pull request. Its production plan must show no changes.
 
 ### Component selection
 
@@ -76,18 +94,19 @@ The SSM parameter `/uat/components` holds the expanded set that is currently dep
 
 1. Inputs: one boolean per selectable component, plus `replicate_database` (default `true`).
 2. Expand dependencies. Read the previous set from `/uat/components`.
-3. For each component in the previous set that is not in the new set, destroy its application stack (see [Stop job](#stop-job), step 1).
-4. Set `TF_VAR_components` to the new set. Run `terragrunt apply` on `base`, then `common`, then `applications`.
-5. Deploy the current production image tag of each selected service with the `deploy-ecs` reusable workflow in `trade-tariff-tools`, with `environment: uat`. This applies each application stack.
-6. Write the new set to `/uat/components`.
-7. If `replicate_database` is `true` and the new set contains `backend`, start `replicate-db-uat.yml` in `trade-tariff-backend`. If the set does not contain `backend`, skip this step and say so in the job summary.
-8. Post the URL and the selected components to Slack.
+3. Before any change, write the union of the previous set and the new set to `/uat/components`. If a later step fails, the parameter still names every component that can have resources, so the stop job removes them all.
+4. For each component in the previous set that is not in the new set, destroy its application stack (see [Stop job](#stop-job), step 1).
+5. Set `TF_VAR_components` to the new set. Run `terragrunt apply` on `base`, then `common`, then `applications`.
+6. Deploy the current production image tag of each selected service with the `deploy-ecs` reusable workflow in `trade-tariff-tools`, with `environment: uat`. This applies each application stack.
+7. After all steps succeed, write the new set to `/uat/components`.
+8. If `replicate_database` is `true` and the new set contains `backend`, start `replicate-db-uat.yml` in `trade-tariff-backend`. If the set does not contain `backend`, skip this step and say so in the job summary.
+9. Post the URL and the selected components to Slack.
 
 ### Stop job
 
 `.github/workflows/uat-stop.yml`, triggered by `workflow_dispatch` with a required `confirm` input that must equal `uat`:
 
-1. Read the set from `/uat/components`. For each application component in the set, run `terraform destroy` on its application stack with a new `destroy-ecs` reusable workflow in `trade-tariff-tools` (`environment: uat`, `config_uat.tfvars`). This removes the ECS services before the cluster.
+1. Read the set from `/uat/components`. For each application component in the set, run `terraform destroy` on its application stack with a new `destroy-ecs` reusable workflow in `trade-tariff-tools` (`environment: uat`, `config_uat.tfvars`). This removes the ECS services before the cluster. A destroy of a stack with no resources does nothing, so components that never deployed are safe.
 2. Set `TF_VAR_components` to the same set. Run `terragrunt destroy` on `applications`, then `common`, then `base`.
 3. Write an empty set to `/uat/components`.
 4. Use the Resource Groups Tagging API to find resources with `Environment = uat` that are not in `bootstrap`. If any remain, fail the job and list them.
@@ -110,7 +129,10 @@ API clients that send their own `Authorization: Bearer` header conflict with bas
 All public traffic must go through CloudFront, or it skips this check. Production has two direct routes that UAT does not copy:
 
 - `mcp.` is a Route 53 alias to the ALB, and its listener rule has `bypass_custom_header = true`. In UAT, `mcp.` goes through CloudFront like the other hosts, and no listener rule bypasses the origin header check.
-- `api.` is an API Gateway custom domain. In UAT, CloudFront is in front of API Gateway, the custom domain is not created, and `disable_execute_api_endpoint = true`.
+- `api.` is an API Gateway custom domain with a public DNS record. Not all API Gateway methods use the authorizer (the root `proxy` method has `authorization = "NONE"`), and API Gateway sends the ALB origin header. So direct access to API Gateway skips basic auth. In UAT:
+  - The regional custom domain is `api-origin.uat.trade-tariff.service.gov.uk`. It is the CloudFront origin for `api.uat.`, and `api.uat.` points to CloudFront.
+  - `disable_execute_api_endpoint = true`, so the default `execute-api` URL does not work.
+  - CloudFront adds an `X-Origin-Verify` header with a secret value from `bootstrap`. A WAF web ACL on the API Gateway stage has one rule: block requests without this header. This rule is an access control only. It is not one of the production WAF rules (see [Open questions](#open-questions)).
 
 ### Alarms and notifications
 
@@ -125,7 +147,7 @@ Every resource gets `Environment = uat` through the provider `default_tags`. The
 
 | Area | Production | UAT |
 |------|------------|-----|
-| WAF | Enabled | Not created |
+| WAF | Enabled | Production rules not created. One origin check rule on API Gateway. |
 | Edge access | Public | Basic auth |
 | `mcp.` and `api.` routing | Direct to ALB and API Gateway | Through CloudFront |
 | Domain | `www.trade-tariff.service.gov.uk` | `uat.trade-tariff.service.gov.uk` |
@@ -133,7 +155,7 @@ Every resource gets `Environment = uat` through the provider `default_tags`. The
 | Data | Live | Production dump, restored on request |
 | New Relic metric stream | Enabled | Not created |
 | Security Hub, GuardDuty, Inspector, Config | Enabled | Not created |
-| RDS deletion protection, final snapshot | On | Off |
+| Destroy guards | On | Off (see [Destroy guards](#destroy-guards)) |
 
 Instance sizes, task counts and service configuration are the same as production.
 
@@ -144,12 +166,14 @@ Instance sizes, task counts and service configuration are the same as production
 | 1 | `trade-tariff-platform-terraform-aws-accounts` | Create the `UAT` account. Fix the account email template. |
 | 2 | `trade-tariff-platform-aws-terraform` | This RFC. |
 | 3 | `trade-tariff-platform-aws-terraform` | Manual bootstrap of the state bucket `terraform-state-uat-<account-id>`. Add `environments/uat/bootstrap`. Delegate `uat.` from the production zone. |
-| 4 | `trade-tariff-platform-aws-terraform` | Add `environments/uat/{base,common,applications}` with the `components` variable. Allow the UAT account in the production ECR and persistence bucket policies. |
-| 5 | `trade-tariff-platform-aws-terraform` | Add the `uat-start.yml`, `uat-stop.yml` and reminder workflows. |
-| 6 | `trade-tariff-tools` | Add `uat` to `configure-environment`. Add the `destroy-ecs` reusable workflow. |
-| 7 | Application repositories | Add the `uat` backend and `config_uat.tfvars`. |
-| 8 | `trade-tariff-backend` | Add `uat` to `bin/db-replicate` and add `replicate-db-uat.yml`. |
-| 9 | `trade-tariff-platform-aws-terraform` | Runbook: start, select components, get basic auth credentials, replicate data, stop. |
+| 4 | `trade-tariff-lambdas-authenticator` | Add `deploy-to-uat.yml`. Deploy the authorizer to the UAT account. |
+| 5 | `trade-tariff-platform-aws-terraform` | Add the `prevent_destroy` and `skip_final_snapshot` module variables. The production plan must show no changes. |
+| 6 | `trade-tariff-platform-aws-terraform` | Add `environments/uat/{base,common,applications}` with the `components` variable. Allow the UAT account in the production ECR and persistence bucket policies. |
+| 7 | `trade-tariff-platform-aws-terraform` | Add the `uat-start.yml`, `uat-stop.yml` and reminder workflows. |
+| 8 | `trade-tariff-tools` | Add `uat` to `configure-environment`. Add the `destroy-ecs` reusable workflow. |
+| 9 | Application repositories | Add the `uat` backend and `config_uat.tfvars`. |
+| 10 | `trade-tariff-backend` | Add `uat` to `bin/db-replicate` and add `replicate-db-uat.yml`. |
+| 11 | `trade-tariff-platform-aws-terraform` | Runbook: start, select components, get basic auth credentials, replicate data, stop. |
 
 ## Risks and mitigations
 
@@ -162,3 +186,4 @@ Instance sizes, task counts and service configuration are the same as production
 
 1. Is an `X-UAT-Token` header on the API paths acceptable for API clients, or should API paths use an IP allow list?
 2. Which team members can run the start and stop jobs? The proposal is: anyone with write access to this repository, through the `uat` GitHub environment.
+3. The ticket says UAT has no WAF rules. Is one WAF rule that only checks the CloudFront origin header on API Gateway acceptable? The alternative is a request authorizer on every API Gateway method, which changes the authorizer Lambda and the `api-gateway` module.
